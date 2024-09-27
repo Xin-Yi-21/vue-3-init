@@ -1,0 +1,101 @@
+// ⭐一、常用自定义
+// body属性
+body {
+  height: 100%;
+  margin: 0;
+  overflow: auto;
+  font-family:PingFang SC,Helvetica Neue, Helvetica,  Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  // 滚动条大小
+  &::-webkit-scrollbar {
+    display: block;
+    width: 10px;
+    height: 10px;
+  }
+  // 滚动条轨道
+  &::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+  // 滚动条滑块
+  &::-webkit-scrollbar-thumb {
+    background-color: #55c791;
+  }
+  // 滚动条右下角
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  // &::-webkit-scrollbar-button:horizontal:single-button:start
+  // &::-webkit-scrollbar-button:horizontal:single-button:end
+  // &::-webkit-scrollbar-button:vertical:single-button:start
+  // &::-webkit-scrollbar-button:vertical:single-button:end
+  &::-webkit-scrollbar-button:horizontal:decrement {
+    background-image: url("~@/assets/images/scroll-left.svg");
+  }
+  &::-webkit-scrollbar-button:horizontal:increment {
+    background-image: url("~@/assets/images/scroll-right.svg");
+  }
+  &::-webkit-scrollbar-button:vertical:decrement {
+    background-image: url("~@/assets/images/scroll-up.svg");
+  }
+  &::-webkit-scrollbar-button:vertical:increment {
+    background-image: url("~@/assets/images/scroll-down.svg");
+  }
+  &::-webkit-scrollbar-button {
+    width: 10px;
+    height: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    &:hover {
+      background-color: #55c791;
+    }
+  }
+}
+// 竖向滚动
+.x-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  // 滚动条大小
+  &::-webkit-scrollbar {
+    display: block !important;
+    width: 5px !important;
+    height: 5px !important;
+  }
+  // 滚动条轨道
+  &::-webkit-scrollbar-track {
+    border-radius: 4px;
+    background-color: #efefef;
+  }
+  // 滚动条滑块
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: var(--tc);
+  }
+  // 滚动条右下角
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+.y-scroll {
+  overflow-x: hidden;
+  overflow-y: auto;
+  // 滚动条大小
+  &::-webkit-scrollbar {
+    display: block !important;
+    width: 5px !important;
+    height: 5px !important;
+  }
+  // 滚动条轨道
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #efefef;
+  }
+  // 滚动条滑块
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--tc);
+  }
+  // 滚动条右下角
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
