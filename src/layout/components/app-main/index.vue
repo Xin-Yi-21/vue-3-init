@@ -6,29 +6,20 @@
       </keep-alive>
     </transition>
   </section> -->
-  <div class="app-main-container"><router-view /></div>
+  <div class="app-main-vue"><router-view /></div>
 
 </template>
 
 <script>
-// export default {
-//   name: 'AppMain',
-//   computed: {
-//     cachedViews() {
-//       return this.$store.state.tagsView?.cachedViews || ''
-//     },
-//     key() {
-//       return this.$route.path
-//     }
-//   }
-// }
+  // export default {
+  //   name: 'AppMain',
+  //   computed: {
+  //     cachedViews() {
+  //       return this.$store.state.tagsView?.cachedViews || ''
+  //     },
+  //     key() {
+  //       return this.$route.path
+  //     }
+  //   }
+  // }
 </script>
-
-<style lang="scss" scoped>
-.app-main-container {
-  width: 100%;
-  height: calc(100% - 110px);
-  position: relative;
-  overflow: hidden;
-}
-</style>

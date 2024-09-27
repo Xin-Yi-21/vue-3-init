@@ -34,6 +34,9 @@ import '@/assets/styles/index.scss' // 全局样式
 import dayjs from 'dayjs'
 app.config.globalProperties.$dayjs = dayjs
 
+// 常用组件
+import cIcon from '@/components/custom/custom-icon'
+app.component('c-icon', cIcon)
 // app.component('DictTag', DictTag)
 
 // ⭐ 获取全局配置后执行的文件
