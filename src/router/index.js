@@ -6,7 +6,7 @@ export const constantRoutes = [
   {
     path: '/index',
     component: Layout,
-    redirect: '/production-monitor'
+    // redirect: '/production-monitor'
   },
   {
     path: '/redirect',
@@ -31,12 +31,12 @@ export const constantRoutes = [
   },
   {
     path: "/:pathMatch(.*)*",
-    component: () => import('@/components/error/404'),
+    component: () => import('@/components/system/error/404'),
     hidden: true
   },
   {
     path: '/401',
-    component: () => import('@/components/error/401'),
+    component: () => import('@/components/system/error/401'),
     hidden: true
   },
 ]
@@ -46,8 +46,14 @@ export const dynamicRoutes = [
   {
     path: '',
     component: Layout,
-    redirect: '/production-monitor',
+    redirect: '/home',
     children: [
+      {
+        path: '/home',
+        component: () => import('@/views/index'),
+        name: 'Home',
+        meta: { title: '首页', icon: 'home', affix: false, menu: ['home'], hidden: true },
+      },
       {
         path: '/production-monitor',
         component: () => import('@/views/production-monitor/index'),

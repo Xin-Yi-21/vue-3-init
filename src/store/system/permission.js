@@ -2,62 +2,61 @@ import auth from '@/plugins/auth'
 import router, { constantRoutes, dynamicRoutes } from '@/router'
 import { getRouters } from '@/api/system/menu'
 import Layout from '@/layout/index'
-import ParentView from '@/components/ParentView'
-import InnerLink from '@/components/InnerLink'
+import ParentView from '@/components/system/ParentView'
+import InnerLink from '@/components/system/InnerLink'
 
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')
 
-const usePermissionStore = defineStore(
-  'permission',
-  {
-    state: () => ({
-      routes: [],
-      addRoutes: [],
-      defaultRoutes: [],
-      topbarRouters: [],
-      sidebarRouters: []
-    }),
-    actions: {
-      setRoutes(routes) {
-        this.addRoutes = routes
-        this.routes = constantRoutes.concat(routes)
-      },
-      setDefaultRoutes(routes) {
-        this.defaultRoutes = constantRoutes.concat(routes)
-      },
-      setTopbarRoutes(routes) {
-        this.topbarRouters = routes
-      },
-      setSidebarRouters(routes) {
-        this.sidebarRouters = routes
-      },
-      generateRoutes(roles) {
-        return new Promise(resolve => {
-          // 向后端请求路由数据
-          getRouters().then(res => {
-            const sdata = JSON.parse(JSON.stringify(res.data))
-            const rdata = JSON.parse(JSON.stringify(res.data))
-            const defaultData = JSON.parse(JSON.stringify(res.data))
-            const sidebarRoutes = filterAsyncRouter(sdata)
-            const rewriteRoutes = filterAsyncRouter(rdata, false, true)
-            const defaultRoutes = filterAsyncRouter(defaultData)
-            const asyncRoutes = filterDynamicRoutes(dynamicRoutes)
-            asyncRoutes.forEach(route => { router.addRoute(route) })
-            this.setRoutes(rewriteRoutes)
-            this.setSidebarRouters(constantRoutes.concat(sidebarRoutes))
-            this.setDefaultRoutes(sidebarRoutes)
-            this.setTopbarRoutes(defaultRoutes)
-            resolve(rewriteRoutes)
-          })
+const usePermissionStore = defineStore('permission', {
+  state: () => ({
+    routes: [],
+    addRoutes: [],
+    defaultRoutes: [],
+    topbarRouters: [],
+    sidebarRouters: []
+  }),
+  actions: {
+    setRoutes(routes) {
+      this.addRoutes = routes
+      this.routes = constantRoutes.concat(routes)
+    },
+    setDefaultRoutes(routes) {
+      this.defaultRoutes = constantRoutes.concat(routes)
+    },
+    setTopbarRoutes(routes) {
+      this.topbarRouters = routes
+    },
+    setSidebarRouters(routes) {
+      this.sidebarRouters = routes
+    },
+    generateRoutes(roles) {
+      return new Promise(resolve => {
+        // 向后端请求路由数据
+        getRouters().then(res => {
+          const sdata = JSON.parse(JSON.stringify(res.data))
+          const rdata = JSON.parse(JSON.stringify(res.data))
+          const defaultData = JSON.parse(JSON.stringify(res.data))
+          const sidebarRoutes = filterAsyncRouter(sdata)
+          const rewriteRoutes = filterAsyncRouter(rdata, false, true)
+          const defaultRoutes = filterAsyncRouter(defaultData)
+          const asyncRoutes = filterDynamicRoutes(dynamicRoutes)
+          asyncRoutes.forEach(route => { router.addRoute(route) })
+          this.setRoutes(rewriteRoutes)
+          this.setSidebarRouters(constantRoutes.concat(sidebarRoutes))
+          this.setDefaultRoutes(sidebarRoutes)
+          this.setTopbarRoutes(defaultRoutes)
+          resolve(rewriteRoutes)
         })
-      }
+      })
     }
-  })
+  }
+})
 
 // 遍历后台传来的路由字符串，转换为组件对象
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
   return asyncRouterMap.filter(route => {
+    console.log('查route', route)
     if (type && route.children) {
       route.children = filterChildren(route.children)
     }

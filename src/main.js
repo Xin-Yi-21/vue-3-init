@@ -20,8 +20,8 @@ app.config.globalProperties.$message = message
 
 // ⭐ svg图标 相关文件 
 import 'virtual:svg-icons-register'
-import SvgIcon from '@/components/SvgIcon'
-import elementIcons from '@/components/SvgIcon/svgicon'
+import SvgIcon from '@/components/system/SvgIcon'
+import elementIcons from '@/components/system/SvgIcon/svgicon'
 app.use(elementIcons)
 app.component('svg-icon', SvgIcon)
 
