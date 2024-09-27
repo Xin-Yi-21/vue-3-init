@@ -32,8 +32,10 @@
     "js-cookie": "3.0.5",
     "jsencrypt": "3.3.2",
     "leaflet": "^1.9.4",
+    "mitt": "^3.0.1",
     "nprogress": "0.2.0",
     "pinia": "2.1.7",
+    "pinia-plugin-persistedstate": "^4.0.2",
     "vue": "3.4.31",
     "vue-cropper": "1.1.1",
     "vue-router": "4.4.0"

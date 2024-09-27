@@ -1,7 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
 import path from 'path'
 import createVitePlugins from './vite/plugins'
-
 export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd())                                   // 加载相应环境变量
   const { VITE_APP_ENV, VITE_APP_PATH } = env
