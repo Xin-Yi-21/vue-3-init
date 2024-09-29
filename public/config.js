@@ -1,7 +1,7 @@
 
 const env = window.V
 const common = {
-  VITE_APP_TITLE: '齐鲁风云·智枢  区域数值报分系统',
+  VITE_APP_TITLE: '项目初始化系统',
 }
 const ip = {
   'slx': '192.168.120.19:9002',

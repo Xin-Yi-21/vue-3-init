@@ -1,15 +1,16 @@
 import { login, logout, getInfo } from '@/api/system/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import defAva from '@/assets/images/profile.jpg'
+import defaultAvatar from '@/assets/icons/svg/c-profile.svg'
 
 const useUserStore = defineStore('user', {
   state: () => ({
     token: getToken(),
     id: '',
     name: '',
-    avatar: '',
+    avatar: defaultAvatar,
     roles: [],
-    permissions: []
+    permissions: [],
+    info: {},
   }),
   actions: {
     // 登录
@@ -33,7 +34,8 @@ const useUserStore = defineStore('user', {
       return new Promise((resolve, reject) => {
         getInfo().then(res => {
           const user = res.user
-          const avatar = (user.avatar == "" || user.avatar == null) ? defAva : import.meta.env.VITE_APP_BASE_API + user.avatar;
+          const avatar = user.avatar ? defaultAvatar : defaultAvatar
+          // const avatar = (user.avatar == "" || user.avatar == null) ? defaultAvatar : import.meta.env.VITE_APP_BASE_API + user.avatar;
 
           if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             this.roles = res.roles

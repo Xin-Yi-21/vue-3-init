@@ -1,5 +1,5 @@
 <template>
-  <i :class="{ 'c-icon': true, 'is-disabled': disabled }" :style="`color:${color};font-size:${size}px;`" @click="handleIconClick">
+  <i :class="{ 'c-icon': true, 'is-disabled': disabled }" :style="`color:${color};font-size:${size}px;cursor:${cursor};`" @click="handleIconClick">
     <svg-icon :icon-class="i"></svg-icon>
     <span class="icon-tip" v-if="tip" :style="`top:${topTipPx}px`">{{ tip }}</span>
     <!-- <el-tooltip ref="tooltip" effect="light" placement="top" popper-class="custom-icon-el-tooltip" :visible-arrow="false" v-if="tip">
@@ -35,6 +35,10 @@
     topTipPx: {
       type: [Number, String],
       default: -1,
+    },
+    cursor: {
+      type: String,
+      default: 'pointer',
     }
   })
   const handleIconClick = () => {

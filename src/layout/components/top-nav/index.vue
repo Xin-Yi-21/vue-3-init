@@ -1,25 +1,51 @@
 <template>
   <div class="top-nav-vue">
-    <div class="part-1">
-      <c-icon i="init-logo" color="#0ff"></c-icon>
+    <div class="project">
+      <c-icon i="c-logo" color="#0ff" cursor="auto"></c-icon>
       <div class="title">项目初始化系统</div>
     </div>
-    <div class="part-2 header-tab">
+    <div class="menu"></div>
 
-    </div>
     <div class="time" v-html="time"></div>
-    <div class="part-4">
-      <span class="account">
-        <c-icon i="init-account"></c-icon>
-        <span>admin</span>
-      </span>
-      <span class="post">xx岗位</span>
-    </div>
-    <div class="part-5 logout">退出</div>
+
+    <!-- <div class="user-name">
+      <c-icon i="c-account"></c-icon>
+      <span>admin</span>
+    </div> -->
+
+    <el-dropdown @command="handleCommand" class="setting" trigger="click">
+      <div class="avatar">
+        <img :src="userStore.avatar" />
+        <span class="name">admin</span>
+        <el-icon><caret-bottom /></el-icon>
+      </div>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item command="profile">
+            <c-icon i="c-account"></c-icon>
+            <span>个人中心</span>
+          </el-dropdown-item>
+          <el-dropdown-item command="userManage">
+            <c-icon i="c-user-manage"></c-icon>
+            <span>用户管理</span>
+          </el-dropdown-item>
+          <el-dropdown-item command="layoutSet">
+            <c-icon i="c-layout"></c-icon>
+            <span>布局设置</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided command="logout">
+            <c-icon i="c-logout"></c-icon>
+            <span>退出登录</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
   </div>
 </template>
 <script setup>
   const { proxy } = getCurrentInstance()
+  import useUserStore from '@/store/system/user'
+  const userStore = useUserStore()
   const router = useRouter()
   const route = useRoute()
   // 一、初始化相关
@@ -43,6 +69,43 @@
     currentTab.value = tab
     router.push('/' + tab)
   }
+  // 2、点击设置
+  const handleCommand = command => {
+    switch (command) {
+      case "profile":
+        goProfile()
+        break;
+      case "setLayout":
+        setLayout()
+        break;
+      case "logout":
+        logout()
+        break;
+      default: break;
+    }
+  }
+  // 3、个人中心
+  function goProfile() {
+    router.push('/user/profile')
+  }
+  // 4、布局设置
+  function setLayout() {
+    // emits('setLayout')
+  }
+  // 5、登出
+  function logout() {
+    ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      userStore.logOut().then(() => {
+        location.href = '/index';
+      })
+    }).catch(() => { });
+  }
+
+
 
 </script>
 <style lang="scss" scoped>
@@ -55,12 +118,12 @@
   background-size: cover;
   font-size: 14px;
 
-  .part-1 {
+  .project {
     display: flex;
     align-items: center;
 
-    .logo {
-      font-size: 40px;
+    :deep(.svg-icon) {
+      font-size: 24px !important;
       margin: 0 10px;
     }
 
@@ -72,42 +135,13 @@
       font-size: 30px;
       color: #ffffff;
       text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.33);
-      transform: translateY(-3px);
-
-      i {
-        font-size: 20px;
-        font-style: normal;
-        padding: 0 5px;
-      }
-
-      span {
-        color: #ffdd00;
-        padding-right: 20px;
-      }
     }
   }
 
-  .part-2,
-  .head-tab {
-    display: flex;
+  .menu {
     flex: 1;
-    justify-content: center;
-
-    .header-tab-item {
-      padding: 5px 15px;
-      font-size: 18px;
-      color: #ffffff;
-      text-align: center;
-      cursor: pointer;
-      margin: 0 10px;
-
-      &.active {
-        background-color: #ffa033;
-        font-weight: 500;
-        border-radius: 4px;
-      }
-    }
   }
+
 
   .time {
     font-family: PingFang SC, PingFang SC;
@@ -119,36 +153,43 @@
     margin-right: 50px;
   }
 
-  .part-4 {
+  .user-name {
     display: flex;
     align-items: center;
     margin-right: 50px;
-    vertical-align: middle;
+    // vertical-align: middle;
+  }
 
-    .account,
-    .post {
-      height: 24px;
-      line-height: 24px;
-      font-size: 16px;
-      color: #fff;
-      padding: 0 15px;
+  .setting {
+    margin-right: 10px;
+    cursor: pointer;
 
-      .svg-icon {
-        margin: 0 5px;
+    &:hover {
+      img {
+        scale: 1.1;
       }
     }
 
-    .account {
-      border-right: 1px solid #fff;
-    }
-  }
+    .avatar {
+      height: 40px;
+      display: flex;
+      align-items: center;
 
-  .part-5 {
-    margin-right: 40px;
-    cursor: pointer;
-    color: #fff;
-    font-size: 16px;
-    transform: translateY(-3px);
+      img {
+        width: 36px;
+        height: 36px;
+        padding: 2px;
+        border-radius: 50%;
+        /* 确保头像是圆形 */
+        border-radius: 50%;
+        border: 2px solid #333;
+        margin-right: 10px;
+      }
+
+      >span {
+        margin-right: 10px;
+      }
+    }
   }
 }
 </style>
