@@ -13,6 +13,9 @@ NProgress.configure({ showSpinner: false });
 const whiteList = ['/login', '/register'];
 
 router.beforeEach((to, from, next) => {
+  // if (to.path.startsWith('/undefined')) {
+  //   next(to.path.replace('/undefined', ''))
+  // }
   return next()
   NProgress.start()
   if (getToken()) {

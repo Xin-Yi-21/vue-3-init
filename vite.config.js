@@ -1,12 +1,16 @@
 import { defineConfig, loadEnv } from 'vite'
 import path from 'path'
 import createVitePlugins from './vite/plugins'
-export default defineConfig(({ mode, command }) => {
+
+export default defineConfig(async ({ mode, command }) => {
   const env = loadEnv(mode, process.cwd())                                   // 加载相应环境变量
-  const { VITE_APP_ENV, VITE_APP_PATH } = env
   return {
-    base: VITE_APP_PATH,                                                     // vite默认应用部署在域名的根路径，指定其子路径
+    // base: VITE_APP_PATH,                                                  // vite默认应用部署在域名的根路径，指定其子路径
+    base: './',                                                              // 使用相对路径
     plugins: createVitePlugins(env, command === 'build'),                    // 根据传入的参数（环境变量和构建命令,server-开发模式，build-生产模式，是否处于构建模式）创建和返回一个插件数组。
+    build: {
+      outDir: 'dist',                                                        // 设置打包文件夹名称
+    },
     resolve: {
       // 设置模块解析的路径和别名
       alias: {
@@ -48,6 +52,9 @@ export default defineConfig(({ mode, command }) => {
           }
         ]
       }
+    },
+    define: {
+      ENV: env
     }
   }
 })

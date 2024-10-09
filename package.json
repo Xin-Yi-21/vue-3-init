@@ -1,8 +1,8 @@
 {
   "name": "jnyl-project",
   "version": "1.0.0",
-  "description": "齐鲁风云·智枢  区域数值报分系统",
-  "author": "jnyl",
+  "description": "ZSD 项目初始化系统",
+  "author": "zsd",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -13,8 +13,11 @@
     "dev": "vite",
     "dev:test": "vite --mode test",
     "dev:prod": "vite --mode prod",
+    "build": "vite build",
     "build:test": "vite build --mode test",
     "build:prod": "vite build",
+    "zip": "node zip.cjs",
+    "baz": "npm run build:prod && npm run zip",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -22,6 +25,7 @@
     "@vueup/vue-quill": "1.2.0",
     "@vueuse/core": "10.11.0",
     "ant-design-vue": "^4.2.3",
+    "archiver": "^7.0.1",
     "axios": "0.28.1",
     "dayjs": "^1.11.13",
     "echarts": "5.5.1",
@@ -42,6 +46,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "5.0.5",
+    "archiver": "^7.0.1",
     "sass": "1.77.5",
     "unplugin-auto-import": "0.17.6",
     "unplugin-vue-setup-extend-plus": "1.0.1",

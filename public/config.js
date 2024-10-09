@@ -1,14 +1,15 @@
 
-const env = window.V
+const ENV = window.V
 const common = {
   VITE_APP_TITLE: '项目初始化系统',
+  VITE_APP_PATH: '/A',
 }
 const ip = {
   'slx': '192.168.120.19:9002',
   'zjj': '121.42.244.240:10020',
   'tey': '192.168.120.60:9002',
-  'test': '121.42.244.240:10020',
-  'prod': '',
+  'test': '192.168.120.19:9002',
+  'prod': '192.168.120.19:9002',
 }
 const config = {
   'development': {
@@ -27,4 +28,6 @@ const config = {
     VITE_APP_USER_API: `http://${ip.prod}/user`,
   }
 }
-return config[env.VITE_APP_ENV]
+
+return config[ENV.VITE_APP_ENV]
+

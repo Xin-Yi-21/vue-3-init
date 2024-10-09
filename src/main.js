@@ -3,7 +3,7 @@ import App from './App'
 const app = createApp(App)
 // ⭐ 项目全局配置
 window.V = import.meta.env
-import { setConfig, $config } from '@/api/system/config'
+import { setConfig, cENV } from '@/api/system/config'
 
 // ⭐ element-plus 相关文件
 import ElementPlus from 'element-plus'
@@ -34,14 +34,9 @@ import '@/assets/styles/index.scss' // 全局样式
 import dayjs from 'dayjs'
 app.config.globalProperties.$dayjs = dayjs
 
-// 常用组件
-import cIcon from '@/components/custom/custom-icon'
-app.component('c-icon', cIcon)
-// app.component('DictTag', DictTag)
-
 // ⭐ 获取全局配置后执行的文件
 setConfig(app).then(async () => {
-  document.title = $config.VITE_APP_TITLE || import.meta.env.VITE_APP_TITLE
+  document.title = cENV.VITE_APP_TITLE
   await import('./utils/request')                            // import('./utils/request')
   await import('./permission')                               // import('./permission')
   const directive = (await import('./directive')).default    // import directive from './directive'
@@ -56,6 +51,4 @@ setConfig(app).then(async () => {
 })
 
 export default app
-
-
 
