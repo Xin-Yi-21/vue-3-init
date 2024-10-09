@@ -43,10 +43,6 @@
     display: flex;
     height: calc(100% - 50px);
 
-    .left-nav-vue {
-      width: 230px;
-      height: 100%;
-    }
 
     .main-right-container {
       flex: 1;
@@ -58,6 +54,7 @@
         width: 100%;
         background-color: yellowgreen;
       }
+
 
       .app-main-vue {
         height: calc(100% - 50px);

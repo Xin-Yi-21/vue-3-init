@@ -34,6 +34,10 @@ import '@/assets/styles/index.scss' // 全局样式
 import dayjs from 'dayjs'
 app.config.globalProperties.$dayjs = dayjs
 
+// 封装组件
+import cIcon from '@/components/custom/custom-icon'
+app.component('c-icon', cIcon)
+
 // ⭐ 获取全局配置后执行的文件
 setConfig(app).then(async () => {
   document.title = cENV.VITE_APP_TITLE

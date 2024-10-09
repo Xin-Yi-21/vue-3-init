@@ -41,6 +41,7 @@
       default: 'pointer',
     }
   })
+  const emit = defineEmits()
   const handleIconClick = () => {
     if (!props.disabled) {
       emit('click')

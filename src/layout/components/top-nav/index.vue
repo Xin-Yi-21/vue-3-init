@@ -64,6 +64,9 @@
     clearInterval(timer)
   })
   // 二、操作相关
+  function handleToggle() {
+    appStore.toggleSideBar()
+  }
   // 1、点击tab
   const handleTabChange = tab => {
     currentTab.value = tab
