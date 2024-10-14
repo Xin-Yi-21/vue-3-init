@@ -1,7 +1,6 @@
 <template>
-  <!-- <div :class="['left-nav-vue', isCollapse ? 'is-collapse' : 'is-expand']"> -->
-  <!-- <left-nav-logo v-if="showLogo" :collapse="isCollapse" /> -->
-  <!-- :background-color="sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
+  <div :class="['left-nav-vue', isCollapse ? 'is-collapse' : 'is-expand']">
+    <!-- :background-color="sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
     :text-color="sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
     :active-text-color="theme"
     :default-active="activeMenu"
@@ -9,22 +8,24 @@
     :unique-opened="true"
     :collapse-transition="false"
     mode="vertical" -->
-  <!-- -->
-  <!-- <el-menu :collapse="isCollapse" :unique-opened="true" :collapse-transition="false" class="el-menu-vertical-demo">
+    <!-- -->
+    <!-- <el-menu :collapse="isCollapse" :unique-opened="true" :collapse-transition="false" class="el-menu-vertical-demo">
     <template v-for="(item, index) in leftNavRoutes" :key="index">
       <left-nav-item :navInfo="item" :isNest="true" :basePath="''" v-if="!item.hidden" />
     </template>
 </el-menu> -->
+    <!-- -->
+    <el-scrollbar wrap-class="c-el-scrollbar">
+      <el-menu :collapse="isCollapse" :unique-opened="false" :collapse-transition="false" popper-class="left-nav-menu-modal">
+        <left-nav-item v-for="(item, index) in leftNavRoutes" :key="index" :navInfo="item" :isNest="true" :basePath="''" />
+      </el-menu>
+    </el-scrollbar>
 
-  <el-menu :collapse="isCollapse" :unique-opened="true" :collapse-transition="false" class="el-menu-vertical-demo">
-    <left-nav-item v-for="(item, index) in leftNavRoutes" :key="index" :navInfo="item" :isNest="true" :basePath="''" />
-  </el-menu>
-
+  </div>
 
 </template>
 
 <script setup>
-  import LeftNavLogo from './components/left-nav-logo'
   import LeftNavItem from './components/left-nav-item'
   import useAppStore from '@/store/system/app'
   import useRouterStore from '@/store/system/router'
@@ -33,7 +34,7 @@
   const route = useRoute()
 
 
-  const isCollapse = computed(() => !appStore.leftNav.isExpand)
+  const isCollapse = computed(() => appStore.leftNav.isCollapse)
   const leftNavRoutes = computed(() => routerStore.leftNavRoutes)
 
   const activeMenu = computed(() => {
@@ -47,4 +48,85 @@
 
 </script>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped>
+.left-nav-vue {
+  height: 100%;
+  overflow: hidden;
+  border-right: 1px solid #ccc;
+
+  :deep(.el-menu) {
+    width: 100%;
+    height: 100%;
+    border-right: 0;
+
+    a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .svg-icon {
+      font-size: 18px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .menu-title {
+      flex: 1;
+      height: 60px;
+      line-height: 60px;
+      font-size: 14px;
+      margin-left: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .el-menu-item {
+      display: flex;
+      height: 60px;
+
+      &.is-active {
+        font-weight: 700;
+      }
+    }
+  }
+
+  &.is-collapse {
+    width: 60px;
+
+    :deep(.el-menu) {
+      .menu-title {
+        margin-left: 0;
+      }
+    }
+  }
+
+  &.is-expand {
+    width: 200px;
+  }
+
+
+
+}
+</style>
+<style lang="scss">
+// 组件内全局样式
+.left-nav-menu-modal {
+  a {
+    color: #333;
+    text-decoration: none;
+  }
+
+  .svg-icon {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .menu-title {
+    height: 60px;
+    line-height: 60px;
+    font-size: 14px;
+    margin-left: 10px;
+  }
+}
+</style>

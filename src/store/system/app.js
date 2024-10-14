@@ -3,8 +3,8 @@ import Cookies from 'js-cookie'
 const useAppStore = defineStore('app', {
   state: () => ({
     leftNav: {
-      // isExpand: Cookies.get('leftNavStatus') ? !!+Cookies.get('leftNavStatus') : false,
-      isExpand: true,
+      // isCollapse: Cookies.get('leftNavStatus') ? !!+Cookies.get('leftNavStatus') : false,
+      isCollapse: false,
       withoutAnimation: false,
       isHide: false
     },
@@ -14,13 +14,13 @@ const useAppStore = defineStore('app', {
   actions: {
     toggleLeftNav(withoutAnimation) {
       if (this.leftNav.isHide) { return false }
-      this.leftNav.isExpand = !this.leftNav.isExpand
+      this.leftNav.isCollapse = !this.leftNav.isCollapse
       this.leftNav.withoutAnimation = withoutAnimation
-      Cookies.set('leftNavStatus', this.leftNav.isExpand ? true : false)
+      Cookies.set('leftNavStatus', this.leftNav.isCollapse ? true : false)
     },
     closeLeftNav({ withoutAnimation }) {
       Cookies.set('leftNavStatus', 0)
-      this.leftNav.isExpand = false
+      this.leftNav.isCollapse = false
       this.leftNav.withoutAnimation = withoutAnimation
     },
     toggleDevice(device) {

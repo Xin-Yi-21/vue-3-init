@@ -1,12 +1,12 @@
 <template>
   <div class="hamburger" @click="handleToggle">
-    <c-icon i="c-hamburger-expand" :class="{ 'is-expand': isExpand }" size="24"></c-icon>
+    <c-icon i="c-hamburger-collapse" :class="{ 'is-collapse': isCollapse }" size="24"></c-icon>
   </div>
 </template>
 
 <script setup>
   defineProps({
-    isExpand: {
+    isCollapse: {
       type: Boolean,
       default: false
     }
@@ -24,7 +24,7 @@
   display: inline-flex;
   align-items: center;
 
-  .is-expand {
+  .is-collapse {
     transform: rotate(180deg);
   }
 }

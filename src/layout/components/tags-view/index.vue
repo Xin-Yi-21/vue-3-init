@@ -1,6 +1,6 @@
 <template>
   <div class="tags-view-vue">
-    <hamburger :isExpand="appStore.leftNav.isExpand" @toggleClick="handleToggle" />
+    <hamburger :isCollapse="appStore.leftNav.isCollapse" @toggleClick="handleToggle" />
   </div>
 </template>
 
@@ -10,7 +10,7 @@
   const appStore = useAppStore()
   const handleToggle = () => {
     appStore.toggleLeftNav()
-    console.log('查', appStore.leftNav.isExpand)
+    console.log('查', appStore.leftNav.isCollapse)
   }
 </script>
 

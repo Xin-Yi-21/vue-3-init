@@ -112,5 +112,28 @@
   }
 }
 
+// c-el-scrollbar
+.el-scrollbar:has(>.c-el-scrollbar) {
+  .el-scrollbar__bar {
+    bottom: 2px;
+    right: 2px;
+
+    &.is-vertical {
+      width: 5px;
+      top: 2px;
+    }
+
+    &.is-horizontal {
+      height: 5px;
+      left: 2px;
+    }
+
+    .el-scrollbar__thumb {
+      background-color: var(--tc);
+      opacity: 1;
+    }
+  }
+}
+
 
 
