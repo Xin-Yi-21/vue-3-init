@@ -1,5 +1,6 @@
 <template>
   <div class="index-home">
+    首页
   </div>
 </template>
 

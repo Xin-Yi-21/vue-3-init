@@ -3,7 +3,8 @@ import Cookies from 'js-cookie'
 const useAppStore = defineStore('app', {
   state: () => ({
     leftNav: {
-      isExpand: Cookies.get('leftNavStatus') ? !!+Cookies.get('leftNavStatus') : true,
+      // isExpand: Cookies.get('leftNavStatus') ? !!+Cookies.get('leftNavStatus') : false,
+      isExpand: true,
       withoutAnimation: false,
       isHide: false
     },

@@ -23,10 +23,10 @@
   import useEnumsStore from '@/store/project/enums'
 
   const isDataInitDone = ref(true)
-  useEnumsStore().getEnums().then(res => {
-    isDataInitDone.value = true
-    // console.log('全部枚举', useEnumsStore().allEnums)
-  })
+  // useEnumsStore().getEnums().then(res => {
+  //   isDataInitDone.value = true
+  //   // console.log('全部枚举', useEnumsStore().allEnums)
+  // })
 </script>
 
 <style lang="scss" scoped>
