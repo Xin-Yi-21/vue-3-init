@@ -92,12 +92,10 @@
   }
 
   function handleGo(navItem) {
-    console.log('navItem', navItem)
     let path = handlePath(navItem.path, navItem.query)
     if (isExternal(path)) {
       window.open(path, '_blank', 'noopener,noreferrer') // 出于安全考虑，防止新页面获取原页面的引用。
     } else {
-      console.log('查path', path)
       router.push(path)
     }
   }

@@ -10,7 +10,6 @@
   const appStore = useAppStore()
   const handleToggle = () => {
     appStore.toggleLeftNav()
-    console.log('查', appStore.leftNav.isCollapse)
   }
 </script>
 
