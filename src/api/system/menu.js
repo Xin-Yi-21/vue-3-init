@@ -65,7 +65,7 @@ export const getRouters = () => {
           name: '模版',
           path: '/template',
           component: 'Layout',
-          hidden: false,
+          hidden: true,
           alwaysShow: true,
           redirect: 'noRedirect',
           meta: { title: '模版', icon: 'c-template', noCache: false, link: null },
