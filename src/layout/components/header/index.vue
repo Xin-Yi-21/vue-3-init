@@ -4,11 +4,16 @@
       <svg-icon icon-class="logo" class-name="logo"></svg-icon>
       <div class="title">项目初始化系统</div>
     </div>
-    <div class="part-2 header-tab">
+    <!-- <div class="part-2 header-tab">
       <div :class="['header-tab-item', currentTab === 'production-monitor' ? 'active' : '']" @click="handleTabChange('production-monitor')">生产监管</div>
       <div :class="['header-tab-item', currentTab === 'forecast-result' ? 'active' : '']" @click="handleTabChange('forecast-result')">预报结果</div>
       <div :class="['header-tab-item', currentTab === 'forecast-test' ? 'active' : '']" @click="handleTabChange('forecast-test')">预报检验</div>
-    </div>
+    </div> -->
+
+    <Breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+
+
+
     <div class="part-3">
       <!-- {{ time }} -->
       <div class="header-time" v-html="time"></div>
@@ -24,6 +29,7 @@
   </div>
 </template>
 <script setup>
+  import Breadcrumb from '@/components/system/breadcrumb'
   const { proxy } = getCurrentInstance()
   const router = useRouter()
   const route = useRoute()

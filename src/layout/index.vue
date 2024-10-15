@@ -1,12 +1,11 @@
 <template>
   <div class="layout-vue" v-if="isDataInitDone">
-    <!-- <Header></Header>
-    <Warn></Warn>
-    <AppMain /> -->
-    <top-nav></top-nav>
+
+    <top-header></top-header>
     <div class="main-container">
       <left-nav></left-nav>
       <div class="main-right-container">
+        <top-nav></top-nav>
         <tags-view></tags-view>
         <app-main />
       </div>
@@ -14,8 +13,7 @@
   </div>
 </template>
 <script setup>
-  // import Header from './components/header/index.vue'
-  // import Warn from './components/warn/index.vue'
+  import TopHeader from '@/layout/components/top-header/index.vue'
   import TopNav from '@/layout/components/top-nav/index.vue'
   import LeftNav from '@/layout/components/left-nav/index.vue'
   import TagsView from '@/layout/components/tags-view/index.vue'
@@ -34,31 +32,20 @@
   width: 100%;
   height: 100%;
 
-  .top-nav-vue {
-    height: 50px;
-    background-color: skyblue;
-  }
-
   .main-container {
     display: flex;
-    height: calc(100% - 50px);
-
+    height: calc(100% - 60px);
 
     .main-right-container {
+      display: flex;
+      flex-direction: column;
       flex: 1;
       flex-shrink: 0;
       height: 100%;
 
-      .tags-view-vue {
-        height: 50px;
-        width: 100%;
-        background-color: yellowgreen;
-      }
-
-
       .app-main-vue {
-        height: calc(100% - 50px);
-        // background-color: red;
+        flex: 1;
+        flex-shrink: 0;
       }
     }
   }
