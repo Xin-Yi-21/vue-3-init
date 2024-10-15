@@ -1,15 +1,11 @@
 <template>
-  <el-scrollbar
-    ref="scrollContainer"
-    :vertical="false"
-    class="scroll-container"
-    @wheel.prevent="handleScroll">
+  <el-scrollbar ref="scrollContainer" :vertical="false" class="scroll-container" @wheel.prevent="handleScroll">
     <slot />
   </el-scrollbar>
 </template>
 
 <script setup>
-  import useTagsViewStore from '@/store/modules/tagsView'
+  import useTagsViewStore from '@/store/system/tagsView'
 
   const tagAndTagSpacing = ref(4);
   const { proxy } = getCurrentInstance();

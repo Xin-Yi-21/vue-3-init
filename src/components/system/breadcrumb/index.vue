@@ -48,7 +48,7 @@
   height: 100%;
   display: inline-flex;
   align-items: center;
-  margin-left: 30px;
+  margin-left: 10px;
   font-size: 14px;
 
   .no-redirect {

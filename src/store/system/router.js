@@ -21,7 +21,7 @@ const useRouterStore = defineStore('permission', {
   actions: {
     // 设置 结构路由
     setRoutes(routes) {
-      this.routes = constantRoutes.concat(routes)
+      this.routes = routes
     },
     // 设置增加路由
     setAddRoutes(routes) {
@@ -58,7 +58,7 @@ const useRouterStore = defineStore('permission', {
 
           // console.log('后端结构路由backendRoutes', backendRoutes)
           // console.log('后端访问路由accessBackendRoutes', accessBackendRoutes)
-          console.log('全部路由(结构) routes', this.routes)
+          // console.log('全部路由(结构) routes', this.routes)
           // console.log('左侧导航路由(结构) leftNavRoutes', this.leftNavRoutes)
           // console.log('顶部导航路由(结构) topNavRoutes', this.topNavRoutes)
           // console.log('运行添加路由 accessRoutes', this.accessRoutes)

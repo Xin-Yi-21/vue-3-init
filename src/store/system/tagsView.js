@@ -6,39 +6,28 @@ const useTagsViewStore = defineStore('tags-view', {
   }),
   actions: {
     addView(view) {
+      console.log('查view', view)
       this.addVisitedView(view)
       this.addCachedView(view)
     },
-    addIframeView(view) {
-      if (this.iframeViews.some(v => v.path === view.path)) return
-      this.iframeViews.push(
-        Object.assign({}, view, {
-          title: view.meta.title || 'no-name'
-        })
-      )
-    },
     addVisitedView(view) {
       if (this.visitedViews.some(v => v.path === view.path)) return
-      this.visitedViews.push(
-        Object.assign({}, view, {
-          title: view.meta.title || 'no-name'
-        })
-      )
+      this.visitedViews.push(Object.assign({}, view, { title: view.meta.title || 'no-name' }))
     },
     addCachedView(view) {
       if (this.cachedViews.includes(view.name)) return
-      if (!view.meta.noCache) {
-        this.cachedViews.push(view.name)
-      }
+      if (!view.meta.noCache) { this.cachedViews.push(view.name) }
+      console.log('cachedViews', this.cachedViews)
+    },
+    addIframeView(view) {
+      if (this.iframeViews.some(v => v.path === view.path)) return
+      this.iframeViews.push(Object.assign({}, view, { title: view.meta.title || 'no-name' }))
     },
     delView(view) {
       return new Promise(resolve => {
         this.delVisitedView(view)
         this.delCachedView(view)
-        resolve({
-          visitedViews: [...this.visitedViews],
-          cachedViews: [...this.cachedViews]
-        })
+        resolve({ visitedViews: [...this.visitedViews], cachedViews: [...this.cachedViews] })
       })
     },
     delVisitedView(view) {

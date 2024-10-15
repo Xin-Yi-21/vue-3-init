@@ -62,7 +62,7 @@ export const getRouters = () => {
           ]
         },
         {
-          name: '模版',
+          name: 'Template',
           path: '/template',
           component: 'Layout',
           hidden: false,
@@ -71,14 +71,14 @@ export const getRouters = () => {
           meta: { title: '模版', icon: 'c-template', noCache: false, link: null },
           children: [
             {
-              name: '基础模版',
+              name: 'Model',
               path: 'modal',
               component: 'template/basic/index',
               hidden: false,
               meta: { title: '基础模版', icon: 'c-basic-template', noCache: false, link: null }
             },
             {
-              name: '文件系统',
+              name: 'File',
               path: 'file',
               component: 'template/file/index',
               hidden: false,

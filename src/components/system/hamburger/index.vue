@@ -19,7 +19,7 @@
 
 <style lang="scss" scoped>
 .hamburger {
-  padding: 0 8px;
+  padding: 0 10px;
   height: 100%;
   display: inline-flex;
   align-items: center;
