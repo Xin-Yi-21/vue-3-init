@@ -17,7 +17,6 @@ const useRouterStore = defineStore('permission', {
     addRoutes: [],
     leftNavRoutes: [],     // 左侧导航结构路由
     topNavRoutes: [],      // 顶部导航结构路由
-
   }),
   actions: {
     // 设置 结构路由
