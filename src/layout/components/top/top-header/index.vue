@@ -39,72 +39,97 @@
   </div>
 </template>
 <script setup>
-  import useUserStore from '@/store/system/user'
-  const { proxy } = getCurrentInstance()
-  const userStore = useUserStore()
-  const router = useRouter()
-  const route = useRoute()
-  // 一、初始化相关
-  // 1、运行时间
-  const weekdayLRV = { Monday: '星期一', Tuesday: '星期二', Wednesday: '星期三', Thursday: '星期四', Friday: '星期五', Staturday: '星期六', Sunday: '星期日' }
-  const time = ref('')
-  const timer = ref(null)
-  const timeStart = () => {
-    time.value = proxy.$dayjs().format('YYYY-MM-DD') + ' ' + weekdayLRV[proxy.$dayjs().format('dddd')] + ' ' + proxy.$dayjs().format('HH:mm:ss')
-  }
+import useUserStore from '@/store/system/user'
+const { proxy } = getCurrentInstance()
+const userStore = useUserStore()
+const router = useRouter()
+const route = useRoute()
+// 一、初始化相关
+// 1、运行时间
+const weekdayLRV = { Monday: '星期一', Tuesday: '星期二', Wednesday: '星期三', Thursday: '星期四', Friday: '星期五', Staturday: '星期六', Sunday: '星期日' }
+const time = ref('')
+const timer = ref(null)
+const timeStart = () => {
+  time.value = proxy.$dayjs().format('YYYY-MM-DD') + ' ' + weekdayLRV[proxy.$dayjs().format('dddd')] + ' ' + proxy.$dayjs().format('HH:mm:ss')
+}
+timeStart()
+timer.vlaue = setInterval(() => {
   timeStart()
-  timer.vlaue = setInterval(() => {
-    timeStart()
-  }, 1000)
-  onBeforeUnmount(() => {
-    clearInterval(timer)
-  })
-  // 二、操作相关
+}, 1000)
+onBeforeUnmount(() => {
+  clearInterval(timer)
+})
+// 二、操作相关
 
-  // 1、点击tab
-  const handleTabChange = tab => {
-    currentTab.value = tab
-    router.push('/' + tab)
+// 1、点击tab
+const handleTabChange = tab => {
+  currentTab.value = tab
+  router.push('/' + tab)
+}
+// 2、点击设置
+const handleCommand = command => {
+  console.log('查x', command)
+  switch (command) {
+    case "profile":
+      goProfile()
+      break;
+    case "layoutSet":
+      console.log('查0',)
+      setLayout()
+      break;
+    case "logout":
+      logout()
+      break;
+    default: break;
   }
-  // 2、点击设置
-  const handleCommand = command => {
-    switch (command) {
-      case "profile":
-        goProfile()
-        break;
-      case "setLayout":
-        setLayout()
-        break;
-      case "logout":
-        logout()
-        break;
-      default: break;
-    }
-  }
-  // 3、个人中心
-  function goProfile() {
-    router.push('/user/profile')
-  }
-  // 4、布局设置
-  function setLayout() {
-    // emits('setLayout')
-  }
-  // 5、登出
-  function logout() {
-    ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }).then(() => {
-      userStore.logOut().then(() => {
-        location.href = '/index';
-      })
-    }).catch(() => { });
-  }
+}
+// 3、个人中心
+function goProfile() {
+  router.push('/user/profile')
+}
+// 4、布局设置
+const emits = defineEmits(['setLayout'])
+function setLayout() {
+  console.log('查1',)
+  emits('setLayout')
+}
+// 5、登出
+function logout() {
+  ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    userStore.logOut().then(() => {
+      location.href = '/index';
+    })
+  }).catch(() => { });
+}
 
 
 
 </script>
+<style lang="scss" scoped>
+.project {
+  display: flex;
+  align-items: center;
+
+  :deep(.svg-icon) {
+    font-size: 24px !important;
+    margin: 0 10px;
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 800;
+    font-size: 30px;
+    color: #ffffff;
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.33);
+  }
+}
+</style>
 <style lang="scss" scoped>
 .top-header-vue {
   height: 60px;

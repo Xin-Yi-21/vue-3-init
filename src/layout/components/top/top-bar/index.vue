@@ -6,13 +6,13 @@
 </template>
 
 <script setup>
-  import Hamburger from '@/components/system/hamburger'
-  import Breadcrumb from '@/components/system/breadcrumb'
-  import useAppStore from '@/store/system/app'
-  const appStore = useAppStore()
-  const handleToggle = () => {
-    appStore.toggleLeftNav()
-  }
+import Hamburger from '@/components/system/hamburger'
+import Breadcrumb from '@/components/system/breadcrumb'
+import useAppStore from '@/store/system/app'
+const appStore = useAppStore()
+const handleToggle = () => {
+  appStore.toggleLeftNav()
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
 <template>
-  <div class="tags-view-vue">
+  <div class="top-tag-vue">
     <scroll-pane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleCloseContextMenu">
-      <router-link v-for="tag in visitedViews" :key="index" :class="['tags-view-item', isActive(tag) ? 'active' : '']" :style="activeStyle(tag)"
+      <router-link v-for="(tag, index) in visitedViews" :key="index" :class="['tags-view-item', isActive(tag) ? 'active' : '']" :style="activeStyle(tag)"
         :dataPath="tag.path"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         @click.middle="handleMiddleClickTag(tag)"
@@ -242,8 +242,8 @@
 </script>
 
 <style lang='scss' scoped>
-.tags-view-vue {
-  height: 34px;
+.top-tag-vue {
+  height: 40px;
   width: 100%;
   background: #fff;
   border-bottom: 1px solid #d8dce5;

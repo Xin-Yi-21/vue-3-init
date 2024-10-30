@@ -1,20 +1,25 @@
 import defaultSettings from '@/settings'
 // import { useDynamicTitle } from '@/utils/dynamicTitle'
 
-const { sideTheme, showSettings, topNav, tagsView, fixedHeader, sidebarLogo, dynamicTitle } = defaultSettings
+const { themeStyle, themeColor, isLeftNav, isTopNav, isTopBar, isTopTag, fixedHeader, dynamicTitle } = defaultSettings
 
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 
 const useSettingStore = defineStore('setting', {
   state: () => ({
     title: '',
-    theme: storageSetting.theme || '#409EFF',
-    sideTheme: storageSetting.sideTheme || sideTheme,
-    showSettings: showSettings,
-    topNav: storageSetting.topNav === undefined ? topNav : storageSetting.topNav,
-    tagsView: storageSetting.tagsView === undefined ? tagsView : storageSetting.tagsView,
+    // theme: storageSetting.theme || '#409EFF',
+    // sideTheme: storageSetting.sideTheme || sideTheme,
+    // showSettings: showSettings,
+
+    themeStyle: storageSetting.themeStyle === undefined ? themeStyle : storageSetting.themeStyle,
+    themeColor: storageSetting.themeColor === undefined ? themeColor : storageSetting.themeColor,
+    isLeftNav: storageSetting.isLeftNav === undefined ? isLeftNav : storageSetting.isLeftNav,
+    isTopNav: storageSetting.isTopNav === undefined ? isTopNav : storageSetting.isTopNav,
+    isTopBar: storageSetting.isTopBar === undefined ? isTopBar : storageSetting.isTopBar,
+    isTopTag: storageSetting.isTopTag === undefined ? isTopTag : storageSetting.isTopTag,
+
     fixedHeader: storageSetting.fixedHeader === undefined ? fixedHeader : storageSetting.fixedHeader,
-    sidebarLogo: storageSetting.sidebarLogo === undefined ? sidebarLogo : storageSetting.sidebarLogo,
     dynamicTitle: storageSetting.dynamicTitle === undefined ? dynamicTitle : storageSetting.dynamicTitle
   }),
   actions: {

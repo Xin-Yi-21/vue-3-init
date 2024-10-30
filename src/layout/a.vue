@@ -15,29 +15,32 @@
 </template>
 
 <script setup>
-import TopHeader from '@/layout/components/top/top-header/index.vue'
-import TopBar from '@/layout/components/top/top-bar/index.vue'
-import TopTag from '@/layout/components/top/top-tag/index.vue'
-import TopNav from '@/layout/components/top/top-nav/index.vue'
-import LeftNav from '@/layout/components/left-nav/index.vue'
-import AppMain from '@/layout/components/app-main/index.vue'
-import Setting from '@/layout/components/setting/index.vue'
-import useEnumsStore from '@/store/project/enums'
+import TopHeader from "@/layout/components/top/top-header/index.vue";
+import TopBar from "@/layout/components/top/top-bar/index.vue";
+import TopTag from "@/layout/components/top/top-tag/index.vue";
+import TopNav from "@/layout/components/top/top-nav/index.vue";
+import LeftNav from "@/layout/components/left-nav/index.vue";
+import AppMain from "@/layout/components/app-main/index.vue";
+import Setting from "@/layout/components/setting/index.vue";
+import useEnumsStore from "@/store/project/enums";
 
-import useSettingStore from '@/store/system/setting'
-const setting = useSettingStore()
-console.log('查setting', setting)
-const isDataInitDone = ref(true)
-// useEnumsStore().getEnums().then(res => {
-//   isDataInitDone.value = true
-//   // console.log('全部枚举', useEnumsStore().allEnums)
-// })
+import useSettingStore from "@/store/system/setting";
+const setting = useSettingStore();
+console.log("查setting", setting);
+const isDataInitDone = ref(true);
+useEnumsStore()
+  .getEnums()
+  .then((res) => {
+    isDataInitDone.value = true;
+    // console.log('全部枚举', useEnumsStore().allEnums)
+  });
 
 // 打开布局抽屉
-const settingRef = ref(null)
+const settingRef = ref(null);
 function setLayout() {
-  settingRef.value.openSetting()
+  settingRef.value.openSetting();
 }
+
 </script>
 
 <style lang="scss" scoped>

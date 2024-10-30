@@ -42,7 +42,7 @@ app.component('c-icon', cIcon)
 setConfig(app).then(async () => {
   document.title = cENV.VITE_APP_TITLE
   await import('./utils/request')                            // import('./utils/request')
-  await import('./permission')                               // import('./permission')
+  await import('./permission.js')                            // import('./permission')
   const directive = (await import('./directive')).default    // import directive from './directive'
   const plugins = (await import('./plugins')).default        // import plugins from './plugins'
   const store = (await import('./store')).default            // import store from './store'
