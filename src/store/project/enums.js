@@ -1,4 +1,4 @@
-import { ynGet, siteListGet, siteTypeGet, warnTypeGet, forecastModelTypeGet, forecastFileTypeGet, forecastMeteorologyTypeGet, forecastOutputTypeGet, } from '@/api/common/enums.js'
+import { ynGet, } from '@/api/common/enums.js'
 
 const useEnumsStore = defineStore('enums', () => {
   // 前端枚举

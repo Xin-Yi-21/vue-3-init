@@ -9,12 +9,7 @@
     :collapse-transition="false"
     mode="vertical" -->
     <!-- -->
-    <!-- <el-menu :collapse="isCollapse" :unique-opened="true" :collapse-transition="false" class="el-menu-vertical-demo">
-    <template v-for="(item, index) in leftNavRoutes" :key="index">
-      <left-nav-item :navInfo="item" :isNest="true" :basePath="''" v-if="!item.hidden" />
-    </template>
-</el-menu> -->
-    <!-- -->
+
     <el-scrollbar wrap-class="c-el-scrollbar">
       <el-menu :unique-opened="false" :collapse-transition="false" mode="horizontal" popper-class="top-nav-menu-modal">
         <left-nav-item v-for="(item, index) in leftNavRoutes" :key="index" :navInfo="item" :isNest="true" :basePath="''" />

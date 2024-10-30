@@ -26,7 +26,6 @@ import useEnumsStore from '@/store/project/enums'
 
 import useSettingStore from '@/store/system/setting'
 const setting = useSettingStore()
-console.log('查setting', setting)
 const isDataInitDone = ref(true)
 // useEnumsStore().getEnums().then(res => {
 //   isDataInitDone.value = true
