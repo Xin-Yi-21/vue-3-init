@@ -37,208 +37,208 @@
 </template>
 
 <script setup>
-  import ScrollPane from './components/scroll-pane'
-  import { getNormalPath } from '@/utils/ruoyi'
-  import useTagsViewStore from '@/store/system/tagsView'
-  import useSettingStore from '@/store/system/setting'
-  import useRouterStore from '@/store/system/router'
+import ScrollPane from './components/scroll-pane'
+import { getNormalPath } from '@/utils/ruoyi'
+import useTagsViewStore from '@/store/system/tagsView'
+import useSettingStore from '@/store/system/setting'
+import useRouterStore from '@/store/system/router'
 
-  const { proxy } = getCurrentInstance()
-  const route = useRoute()
-  const router = useRouter()
+const { proxy } = getCurrentInstance()
+const route = useRoute()
+const router = useRouter()
 
-  const routes = computed(() => useRouterStore().routes)
-  const theme = computed(() => useSettingStore().theme)
-  const visitedViews = computed(() => useTagsViewStore().visitedViews)
+const routes = computed(() => useRouterStore().routes)
+const theme = computed(() => useSettingStore().themeColor)
+const visitedViews = computed(() => useTagsViewStore().visitedViews)
 
-  const selectedTag = ref({})
-  const affixTags = ref([])
-  const scrollPaneRef = ref(null)
-  // 一、初始化相关
-  // 监听路由
-  watch(route, () => {
-    addTags()            // 添加当前路由标签
-    moveToCurrentTag()   // 高亮当前路由标签
-  })
-  // 监听右键菜单
-  const isContextMenuVisible = ref(false)
-  const top = ref(0)
-  const left = ref(0)
-  watch(isContextMenuVisible, (value) => {
-    if (value) {
-      document.body.addEventListener('click', handleCloseContextMenu)
-    } else {
-      document.body.removeEventListener('click', handleCloseContextMenu)
+const selectedTag = ref({})
+const affixTags = ref([])
+const scrollPaneRef = ref(null)
+// 一、初始化相关
+// 监听路由
+watch(route, () => {
+  addTags()            // 添加当前路由标签
+  moveToCurrentTag()   // 高亮当前路由标签
+})
+// 监听右键菜单
+const isContextMenuVisible = ref(false)
+const top = ref(0)
+const left = ref(0)
+watch(isContextMenuVisible, (value) => {
+  if (value) {
+    document.body.addEventListener('click', handleCloseContextMenu)
+  } else {
+    document.body.removeEventListener('click', handleCloseContextMenu)
+  }
+})
+// dom加载
+onMounted(() => {
+  initTags()   // 初始化固定标签
+  addTags()    // 添加当前路由标签
+})
+// 固定标签
+function initTags() {
+  const res = filterAffixTags(routes.value)
+  affixTags.value = res
+  res.forEach(item => { item.name && useTagsViewStore().addVisitedView(item) })
+}
+// 工具函数-筛选固定标签
+function filterAffixTags(routes, basePath = '') {
+  let tags = []
+  routes.forEach(route => {
+    if (route.meta && route.meta.affix) {
+      const tagPath = getNormalPath(basePath + '/' + route.path)
+      tags.push({ path: tagPath, fullPath: tagPath, name: route.name, meta: { ...route.meta } })
+    }
+    if (route.children) {
+      const tempTags = filterAffixTags(route.children, route.path)
+      if (tempTags.length >= 1) {
+        tags = [...tags, ...tempTags]
+      }
     }
   })
-  // dom加载
-  onMounted(() => {
-    initTags()   // 初始化固定标签
-    addTags()    // 添加当前路由标签
-  })
-  // 固定标签
-  function initTags() {
-    const res = filterAffixTags(routes.value)
-    affixTags.value = res
-    res.forEach(item => { item.name && useTagsViewStore().addVisitedView(item) })
+  return tags
+}
+// 添加当前路由标签
+function addTags() {
+  if (route.name) {
+    useTagsViewStore().addView(route)
+    route.meta.link && useTagsViewStore().addIframeView(route)
   }
-  // 工具函数-筛选固定标签
-  function filterAffixTags(routes, basePath = '') {
-    let tags = []
-    routes.forEach(route => {
-      if (route.meta && route.meta.affix) {
-        const tagPath = getNormalPath(basePath + '/' + route.path)
-        tags.push({ path: tagPath, fullPath: tagPath, name: route.name, meta: { ...route.meta } })
-      }
-      if (route.children) {
-        const tempTags = filterAffixTags(route.children, route.path)
-        if (tempTags.length >= 1) {
-          tags = [...tags, ...tempTags]
+  return false
+}
+// 视图移动至当前标签
+function moveToCurrentTag() {
+  nextTick(() => {
+    visitedViews.value.forEach(item => {
+      if (item.path === route.path) {
+        scrollPaneRef.value.moveToTarget(item)
+        // 用户当前标签进行操作或导航导致不同，更新访问记录为当前
+        if (item.fullPath !== route.fullPath) {
+          useTagsViewStore().updateVisitedView(route)
         }
       }
     })
-    return tags
-  }
-  // 添加当前路由标签
-  function addTags() {
-    if (route.name) {
-      useTagsViewStore().addView(route)
-      route.meta.link && useTagsViewStore().addIframeView(route)
+  })
+}
+// 视图跳转至最后标签
+function moveToLastTag(visitedViews, view) {
+  const latestView = visitedViews.slice(-1)[0]
+  if (latestView) {
+    router.push(latestView.fullPath)
+  } else {
+    // now the default is to redirect to the home page if there is no tags-view,
+    // you can adjust it according to your needs.
+    if (view.name === 'Home') {
+      // to reload home page
+      router.replace({ path: '/redirect' + view.fullPath })
+    } else {
+      router.push('/')
     }
+  }
+}
+
+// 二、操作类
+// 打开右键菜单
+function handleOpenContextMenu(tag, e) {
+  const menuMinWidth = 105
+  const offsetLeft = proxy.$el.getBoundingClientRect().left // container margin left
+  const offsetWidth = proxy.$el.offsetWidth // container width
+  const maxLeft = offsetWidth - menuMinWidth // left boundary
+  // const l = e.clientX - offsetLeft + 15 // 15: margin right
+  const l = e.clientX // 15: margin right
+  // console.log('查宽度', e.clientX, offsetLeft, offsetWidth, l)
+
+  if (l > maxLeft) {
+    left.value = maxLeft
+  } else {
+    left.value = l
+  }
+
+  top.value = e.clientY + 18
+  isContextMenuVisible.value = true
+  selectedTag.value = tag
+}
+// 关闭右键菜单
+function handleCloseContextMenu() {
+  isContextMenuVisible.value = false
+}
+// 中键点击标签
+function handleMiddleClickTag(tag) {
+  !isAffix(tag) && closeSelectedTag(tag)
+}
+// 刷新选中标签
+function refreshSelectedTag(view) {
+  proxy.$tag.refreshPage(view)
+  if (route.meta.link) {
+    useTagsViewStore().delIframeView(route)
+  }
+}
+// 关闭选中标签
+function closeSelectedTag(view) {
+  proxy.$tag.closePage(view).then(({ visitedViews }) => {
+    if (isActive(view)) {
+      moveToLastTag(visitedViews, view)
+    }
+  })
+}
+// 关闭左侧标签
+function closeLeftTags() {
+  proxy.$tag.closeLeftPage(selectedTag.value).then(visitedViews => {
+    if (!visitedViews.find(i => i.fullPath === route.fullPath)) { moveToLastTag(visitedViews) }
+  })
+}
+// 关闭右侧标签
+function closeRightTags() {
+  proxy.$tag.closeRightPage(selectedTag.value).then(visitedViews => {
+    if (!visitedViews.find(i => i.fullPath === route.fullPath)) { moveToLastTag(visitedViews) }
+  })
+}
+// 关闭其他标签
+function closeOthersTags() {
+  router.push(selectedTag.value).catch(() => { });
+  proxy.$tag.closeOtherPage(selectedTag.value).then(() => { moveToCurrentTag() })
+}
+// 关闭全部标签
+function closeAllTags(view) {
+  proxy.$tag.closeAllPage().then(({ visitedViews }) => {
+    if (affixTags.value.some(tag => tag.path === route.path)) { return }
+    moveToLastTag(visitedViews, view)
+  })
+}
+// X、判断类
+// 判断是否激活项
+function isActive(rowItem) {
+  return rowItem.path === route.path
+}
+// 激活项样式设置
+function activeStyle(tag) {
+  if (!isActive(tag)) return {}
+  return {
+    "background-color": theme.value,
+    "border-color": theme.value
+  }
+}
+// 判断是否不是
+function isAffix(tag) {
+  return tag.meta && tag.meta.affix
+}
+// 判断是否首标签
+function isFirstView() {
+  try {
+    return selectedTag.value.fullPath === '/index' || selectedTag.value.fullPath === visitedViews.value[1].fullPath
+  } catch (err) {
     return false
   }
-  // 视图移动至当前标签
-  function moveToCurrentTag() {
-    nextTick(() => {
-      visitedViews.value.forEach(item => {
-        if (item.path === route.path) {
-          scrollPaneRef.value.moveToTarget(item)
-          // 用户当前标签进行操作或导航导致不同，更新访问记录为当前
-          if (item.fullPath !== route.fullPath) {
-            useTagsViewStore().updateVisitedView(route)
-          }
-        }
-      })
-    })
+}
+// 判断是否末标签
+function isLastView() {
+  try {
+    return selectedTag.value.fullPath === visitedViews.value[visitedViews.value.length - 1].fullPath
+  } catch (err) {
+    return false
   }
-  // 视图跳转至最后标签
-  function moveToLastTag(visitedViews, view) {
-    const latestView = visitedViews.slice(-1)[0]
-    if (latestView) {
-      router.push(latestView.fullPath)
-    } else {
-      // now the default is to redirect to the home page if there is no tags-view,
-      // you can adjust it according to your needs.
-      if (view.name === 'Home') {
-        // to reload home page
-        router.replace({ path: '/redirect' + view.fullPath })
-      } else {
-        router.push('/')
-      }
-    }
-  }
-
-  // 二、操作类
-  // 打开右键菜单
-  function handleOpenContextMenu(tag, e) {
-    const menuMinWidth = 105
-    const offsetLeft = proxy.$el.getBoundingClientRect().left // container margin left
-    const offsetWidth = proxy.$el.offsetWidth // container width
-    const maxLeft = offsetWidth - menuMinWidth // left boundary
-    // const l = e.clientX - offsetLeft + 15 // 15: margin right
-    const l = e.clientX // 15: margin right
-    // console.log('查宽度', e.clientX, offsetLeft, offsetWidth, l)
-
-    if (l > maxLeft) {
-      left.value = maxLeft
-    } else {
-      left.value = l
-    }
-
-    top.value = e.clientY + 18
-    isContextMenuVisible.value = true
-    selectedTag.value = tag
-  }
-  // 关闭右键菜单
-  function handleCloseContextMenu() {
-    isContextMenuVisible.value = false
-  }
-  // 中键点击标签
-  function handleMiddleClickTag(tag) {
-    !isAffix(tag) && closeSelectedTag(tag)
-  }
-  // 刷新选中标签
-  function refreshSelectedTag(view) {
-    proxy.$tag.refreshPage(view)
-    if (route.meta.link) {
-      useTagsViewStore().delIframeView(route)
-    }
-  }
-  // 关闭选中标签
-  function closeSelectedTag(view) {
-    proxy.$tag.closePage(view).then(({ visitedViews }) => {
-      if (isActive(view)) {
-        moveToLastTag(visitedViews, view)
-      }
-    })
-  }
-  // 关闭左侧标签
-  function closeLeftTags() {
-    proxy.$tag.closeLeftPage(selectedTag.value).then(visitedViews => {
-      if (!visitedViews.find(i => i.fullPath === route.fullPath)) { moveToLastTag(visitedViews) }
-    })
-  }
-  // 关闭右侧标签
-  function closeRightTags() {
-    proxy.$tag.closeRightPage(selectedTag.value).then(visitedViews => {
-      if (!visitedViews.find(i => i.fullPath === route.fullPath)) { moveToLastTag(visitedViews) }
-    })
-  }
-  // 关闭其他标签
-  function closeOthersTags() {
-    router.push(selectedTag.value).catch(() => { });
-    proxy.$tag.closeOtherPage(selectedTag.value).then(() => { moveToCurrentTag() })
-  }
-  // 关闭全部标签
-  function closeAllTags(view) {
-    proxy.$tag.closeAllPage().then(({ visitedViews }) => {
-      if (affixTags.value.some(tag => tag.path === route.path)) { return }
-      moveToLastTag(visitedViews, view)
-    })
-  }
-  // X、判断类
-  // 判断是否激活项
-  function isActive(rowItem) {
-    return rowItem.path === route.path
-  }
-  // 激活项样式设置
-  function activeStyle(tag) {
-    if (!isActive(tag)) return {}
-    return {
-      "background-color": theme.value,
-      "border-color": theme.value
-    }
-  }
-  // 判断是否不是
-  function isAffix(tag) {
-    return tag.meta && tag.meta.affix
-  }
-  // 判断是否首标签
-  function isFirstView() {
-    try {
-      return selectedTag.value.fullPath === '/index' || selectedTag.value.fullPath === visitedViews.value[1].fullPath
-    } catch (err) {
-      return false
-    }
-  }
-  // 判断是否末标签
-  function isLastView() {
-    try {
-      return selectedTag.value.fullPath === visitedViews.value[visitedViews.value.length - 1].fullPath
-    } catch (err) {
-      return false
-    }
-  }
+}
 </script>
 
 <style lang='scss' scoped>
