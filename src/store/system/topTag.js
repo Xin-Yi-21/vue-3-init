@@ -1,4 +1,4 @@
-const useTagsViewStore = defineStore('tags-view', {
+const useTopTagStore = defineStore('top-tag', {
   state: () => ({
     visitedViews: [],
     cachedViews: [],
@@ -6,7 +6,7 @@ const useTagsViewStore = defineStore('tags-view', {
   }),
   actions: {
     addView(view) {
-      console.log('查view', view)
+      // console.log('查view', view)
       this.addVisitedView(view)
       this.addCachedView(view)
     },
@@ -17,7 +17,7 @@ const useTagsViewStore = defineStore('tags-view', {
     addCachedView(view) {
       if (this.cachedViews.includes(view.name)) return
       if (!view.meta.noCache) { this.cachedViews.push(view.name) }
-      console.log('cachedViews', this.cachedViews)
+      // console.log('cachedViews', this.cachedViews)
     },
     addIframeView(view) {
       if (this.iframeViews.some(v => v.path === view.path)) return
@@ -166,4 +166,4 @@ const useTagsViewStore = defineStore('tags-view', {
   }
 })
 
-export default useTagsViewStore
+export default useTopTagStore

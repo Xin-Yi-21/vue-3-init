@@ -5,6 +5,8 @@ export default {
   themeStyle: 'light',
   // 主题颜色
   themeColor: '#55c791',
+  // 主题大小
+  themeSize: '14',
   // 主题轻量级颜色
   themeLightColor: '#55c79166',
   // 显示布局

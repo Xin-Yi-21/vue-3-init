@@ -26,25 +26,23 @@
 </template>
 
 <script setup>
-  import LeftNavItem from './components/left-nav-item'
-  import useAppStore from '@/store/system/app'
-  import useRouterStore from '@/store/system/router'
-  const appStore = useAppStore()
-  const routerStore = useRouterStore()
-  const route = useRoute()
+import LeftNavItem from './components/left-nav-item'
+import useSettingStore from '@/store/system/setting'
+import useRouterStore from '@/store/system/router'
+const settingStore = useSettingStore()
+const routerStore = useRouterStore()
+const route = useRoute()
+const isCollapse = computed(() => settingStore.leftNav.isCollapse)
+const leftNavRoutes = computed(() => routerStore.leftNavRoutes)
 
-
-  const isCollapse = computed(() => appStore.leftNav.isCollapse)
-  const leftNavRoutes = computed(() => routerStore.leftNavRoutes)
-
-  const activeMenu = computed(() => {
-    const { meta, path } = route
-    // if set path, the sidebar will highlight the path you set
-    if (meta.activeMenu) {
-      return meta.activeMenu
-    }
-    return path
-  })
+const activeMenu = computed(() => {
+  const { meta, path } = route
+  // if set path, the sidebar will highlight the path you set
+  if (meta.activeMenu) {
+    return meta.activeMenu
+  }
+  return path
+})
 
 </script>
 

@@ -2,8 +2,8 @@
   <section class="app-main">
     <router-view v-slot="{ Component, route }">
       <transition name="fade-transform" mode="out-in">
-        <keep-alive :include="tagsViewStore.cachedViews">
-          <component v-if="!route.meta.link" :is="Component" :key="route.path"/>
+        <keep-alive :include="topTagStore.cachedViews">
+          <component v-if="!route.meta.link" :is="Component" :key="route.path" />
         </keep-alive>
       </transition>
     </router-view>
@@ -13,9 +13,9 @@
 
 <script setup>
 import iframeToggle from "./IframeToggle/index"
-import useTagsViewStore from '@/store/modules/tagsView'
+import useTopTagStore from '@/store/modules/topTag'
 
-const tagsViewStore = useTagsViewStore()
+const topTagStore = useTopTagStore()
 </script>
 
 <style lang="scss" scoped>
@@ -27,7 +27,7 @@ const tagsViewStore = useTagsViewStore()
   overflow: hidden;
 }
 
-.fixed-header + .app-main {
+.fixed-header+.app-main {
   padding-top: 50px;
 }
 
@@ -37,7 +37,7 @@ const tagsViewStore = useTagsViewStore()
     min-height: calc(100vh - 84px);
   }
 
-  .fixed-header + .app-main {
+  .fixed-header+.app-main {
     padding-top: 84px;
   }
 }
@@ -65,4 +65,3 @@ const tagsViewStore = useTagsViewStore()
   border-radius: 3px;
 }
 </style>
-

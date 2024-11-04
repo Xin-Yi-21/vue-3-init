@@ -3,7 +3,7 @@
     <!-- :background-color="sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
     :text-color="sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
     :active-text-color="theme"
-    :default-active="activeMenu"
+   
     :collapse="isCollapse"
     :unique-opened="true"
     :collapse-transition="false"
@@ -11,7 +11,7 @@
     <!-- -->
 
     <el-scrollbar wrap-class="c-el-scrollbar">
-      <el-menu :unique-opened="false" :collapse-transition="false" mode="horizontal" popper-class="top-nav-menu-modal">
+      <el-menu :unique-opened="false" :collapse-transition="false" mode="horizontal" :default-active="activeMenu" popper-class="top-nav-menu-modal">
         <left-nav-item v-for="(item, index) in leftNavRoutes" :key="index" :navInfo="item" :isNest="true" :basePath="''" />
       </el-menu>
     </el-scrollbar>
@@ -22,22 +22,24 @@
 
 <script setup>
 import LeftNavItem from './components/left-nav-item'
-import useAppStore from '@/store/system/app'
+// import useSettingStore from '@/store/system/setting'
 import useRouterStore from '@/store/system/router'
-const appStore = useAppStore()
+
 const routerStore = useRouterStore()
 const route = useRoute()
 
 
-const isCollapse = computed(() => appStore.leftNav.isCollapse)
 const leftNavRoutes = computed(() => routerStore.leftNavRoutes)
 
 const activeMenu = computed(() => {
   const { meta, path } = route
   // if set path, the sidebar will highlight the path you set
+  console.log('route', route)
   if (meta.activeMenu) {
+    console.log('meta.activeMenu', meta.activeMenu)
     return meta.activeMenu
   }
+  console.log('path', path)
   return path
 })
 
