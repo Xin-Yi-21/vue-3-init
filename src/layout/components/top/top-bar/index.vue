@@ -1,7 +1,7 @@
 <template>
-  <div class="top-nav-vue">
+  <div class="top-bar-vue">
     <hamburger :isCollapse="settingStore.leftNav.isCollapse" @toggleClick="handleToggle" />
-    <Breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <Breadcrumb class="breadcrumb-container" />
   </div>
 </template>
 
@@ -16,9 +16,10 @@ const handleToggle = () => {
 </script>
 
 <style lang="scss" scoped>
-.top-nav-vue {
+.top-bar-vue {
   display: flex;
-  height: 50px;
+  height: 40px;
   border-bottom: 1px solid #ccc;
+  background-color: #fff;
 }
 </style>

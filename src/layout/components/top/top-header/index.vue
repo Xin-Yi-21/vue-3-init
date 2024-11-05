@@ -1,8 +1,9 @@
 <template>
   <div class="top-header-vue">
     <div class="project">
-      <c-icon i="c-logo" color="#0ff" cursor="auto"></c-icon>
+      <c-icon i="c-logo" cursor="auto"></c-icon>
       <div class="title">项目初始化系统</div>
+      <Breadcrumb v-if="settingStore.isBreadcrumb" separator=">" class="breadcrumb-container" />
     </div>
 
     <div class="menu"> </div>
@@ -40,8 +41,11 @@
 </template>
 <script setup>
 import useUserStore from '@/store/system/user'
+import useSettingStore from '@/store/system/setting'
+import Breadcrumb from '@/components/system/breadcrumb'
 const { proxy } = getCurrentInstance()
 const userStore = useUserStore()
+const settingStore = useSettingStore()
 const router = useRouter()
 const route = useRoute()
 // 一、初始化相关
@@ -68,13 +72,12 @@ const handleTabChange = tab => {
 }
 // 2、点击设置
 const handleCommand = command => {
-  console.log('查x', command)
   switch (command) {
     case "profile":
       goProfile()
       break;
     case "layoutSet":
-      console.log('查0',)
+
       setLayout()
       break;
     case "logout":
@@ -90,7 +93,7 @@ function goProfile() {
 // 4、布局设置
 const emits = defineEmits(['setLayout'])
 function setLayout() {
-  console.log('查1',)
+
   emits('setLayout')
 }
 // 5、登出
@@ -110,27 +113,6 @@ function logout() {
 
 </script>
 <style lang="scss" scoped>
-.project {
-  display: flex;
-  align-items: center;
-
-  :deep(.svg-icon) {
-    font-size: 24px !important;
-    margin: 0 10px;
-  }
-
-  .title {
-    display: flex;
-    align-items: center;
-    font-family: PingFang SC, PingFang SC;
-    font-weight: 800;
-    font-size: 30px;
-    color: #ffffff;
-    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.33);
-  }
-}
-</style>
-<style lang="scss" scoped>
 .top-header-vue {
   height: 60px;
   display: flex;
@@ -140,6 +122,14 @@ function logout() {
   background-size: cover;
   background-color: skyblue;
   font-size: 14px;
+
+  &.is-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99;
+  }
 
   .project {
     display: flex;
@@ -153,11 +143,35 @@ function logout() {
     .title {
       display: flex;
       align-items: center;
-      font-family: PingFang SC, PingFang SC;
-      font-weight: 800;
+      font-weight: 700;
       font-size: 30px;
-      color: #ffffff;
+      color: #fff;
       text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.33);
+    }
+
+    :deep(.breadcrumb-container) {
+      font-size: 16px;
+
+      &::before {
+        content: '>';
+        margin-right: 10px;
+        color: #fff;
+        font-size: 16px;
+      }
+
+      .el-breadcrumb__inner {
+        a {
+          color: #fff;
+        }
+
+        .no-redirect {
+          color: #fff;
+        }
+      }
+
+      .el-breadcrumb__separator {
+        color: #fff;
+      }
     }
   }
 

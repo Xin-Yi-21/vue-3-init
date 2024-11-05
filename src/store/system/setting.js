@@ -1,13 +1,12 @@
 import defaultSetting from '@/setting'
 // import { useDynamicTitle } from '@/utils/dynamicTitle'
 
-const { themeStyle, themeColor, themeSize, isLeftNav, isTopNav, isTopBar, isTopTag, fixedHeader, dynamicTitle } = defaultSetting
-
+const { defaultTitle, themeStyle, themeColor, elSize, isLeftNav, isTopNav, isTopBar, isBreadcrumb, isTopTag, isDynamicTitle, isFixHeader, isFullScreen } = defaultSetting
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 
 const useSettingStore = defineStore('setting', {
   state: () => ({
-    title: '',
+    routeTitle: '',
     leftNav: {
       isCollapse: false,
       withoutAnimation: false,
@@ -17,14 +16,17 @@ const useSettingStore = defineStore('setting', {
     // sideTheme: storageSetting.sideTheme || sideTheme,
     // showSettings: showSettings,
     // fixedHeader: storageSetting.fixedHeader === undefined ? fixedHeader : storageSetting.fixedHeader,
-    // dynamicTitle: storageSetting.dynamicTitle === undefined ? dynamicTitle : storageSetting.dynamicTitle
     themeStyle: storageSetting.themeStyle === undefined ? themeStyle : storageSetting.themeStyle,
     themeColor: storageSetting.themeColor === undefined ? themeColor : storageSetting.themeColor,
-    themeSize: storageSetting.themeSize === undefined ? themeSize : storageSetting.themeSize,
+    elSize: storageSetting.elSize === undefined ? elSize : storageSetting.elSize,
     isLeftNav: storageSetting.isLeftNav === undefined ? isLeftNav : storageSetting.isLeftNav,
     isTopNav: storageSetting.isTopNav === undefined ? isTopNav : storageSetting.isTopNav,
     isTopBar: storageSetting.isTopBar === undefined ? isTopBar : storageSetting.isTopBar,
     isTopTag: storageSetting.isTopTag === undefined ? isTopTag : storageSetting.isTopTag,
+    isBreadcrumb: storageSetting.isBreadcrumb === undefined ? isBreadcrumb : storageSetting.isBreadcrumb,
+    isDynamicTitle: storageSetting.isDynamicTitle === undefined ? isDynamicTitle : storageSetting.isDynamicTitle,
+    isFixHeader: storageSetting.isFixHeader === undefined ? isFixHeader : storageSetting.isFixHeader,
+    // isFullScreen: storageSetting.isFullScreen === undefined ? isFullScreen : storageSetting.isFullScreen,
   }),
   actions: {
     // 修改布局设置
@@ -36,8 +38,12 @@ const useSettingStore = defineStore('setting', {
     },
     // 设置网页标题
     setTitle(title) {
-      this.title = title
-      // useDynamicTitle();
+      this.routeTitle = title
+      if (this.isDynamicTitle) {
+        document.title = this.routeTitle + ' - ' + defaultTitle
+      } else {
+        document.title = defaultTitle
+      }
     },
     // 切换左侧导航显示
     toggleLeftNav(withoutAnimation) {

@@ -1,12 +1,15 @@
+import { cENV } from '@/api/system/config'
 export default {
   // 网页标题
-  title: import.meta.env.VITE_APP_TITLE,
+  defaultTitle: cENV.VITE_APP_TITLE || '',
+  // 动态标题
+  isDynamicTitle: true,
   // 主题风格
   themeStyle: 'light',
   // 主题颜色
   themeColor: '#55c791',
   // 主题大小
-  themeSize: '14',
+  elSize: 'default',
   // 主题轻量级颜色
   themeLightColor: '#55c79166',
   // 显示布局
@@ -15,12 +18,16 @@ export default {
   isLeftNav: true,
   // 顶部导航
   isTopNav: true,
-  // 面包屑
+  // 顶部面包屑
+  isBreadcrumb: true,
+  // 面包栏
   isTopBar: true,
   // 标签
   isTopTag: true,
-  // 动态标题
-  dynamicTitle: false,
+  // 固定头部
+  isFixHeader: false,
+  // 是否全屏
+  isFullScreen: false,
   /**
    * @type {string | array} 'production' | ['production', 'development']
    * @description Need show err logs component.

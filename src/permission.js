@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth'
 import { isHttp } from '@/utils/validate'
 import { isRelogin } from '@/utils/request'
 import useUserStore from '@/store/system/user'
-// import useSettingsStore from '@/store/modules/settings'
+import useSettingStore from '@/store/system/setting'
 import useRouterStore from '@/store/system/router'
 
 NProgress.configure({ showSpinner: false });
@@ -16,6 +16,7 @@ let isRoutesGenerated = false; // 状态变量，用于标记路由是否已生�
 router.beforeEach((to, from, next) => {
   // if (to.path.startsWith('/undefined')) { next(to.path.replace('/undefined', '')) }
   NProgress.start()
+  to.meta.title && useSettingStore().setTitle(to.meta.title)
   if (!isRoutesGenerated) {
     useRouterStore().generateRoutes().then(accessRoutes => {
       // console.log('查accessRoutes', accessRoutes)
@@ -33,7 +34,7 @@ router.beforeEach((to, from, next) => {
   }
 
   // if (getToken()) {
-  //   to.meta.title && useSettingsStore().setTitle(to.meta.title)
+  //   to.meta.title && useSettingStore().setTitle(to.meta.title)
   //   /* has token*/
   //   if (to.path === '/login') {
   //     next({ path: '/' })

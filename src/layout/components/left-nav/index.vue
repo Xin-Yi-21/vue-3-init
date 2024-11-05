@@ -4,29 +4,18 @@
     :text-color="sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
     :active-text-color="theme"
     :default-active="activeMenu"
-    :collapse="isCollapse"
-    :unique-opened="true"
-    :collapse-transition="false"
-    mode="vertical" -->
-    <!-- -->
-    <!-- <el-menu :collapse="isCollapse" :unique-opened="true" :collapse-transition="false" class="el-menu-vertical-demo">
-    <template v-for="(item, index) in leftNavRoutes" :key="index">
-      <left-nav-item :navInfo="item" :isNest="true" :basePath="''" v-if="!item.hidden" />
-    </template>
-</el-menu> -->
-    <!-- -->
+    -->
     <el-scrollbar wrap-class="c-el-scrollbar">
-      <el-menu :collapse="isCollapse" :unique-opened="false" :collapse-transition="false" popper-class="left-nav-menu-modal">
-        <left-nav-item v-for="(item, index) in leftNavRoutes" :key="index" :navInfo="item" :isNest="true" :basePath="''" />
+      <el-menu :collapse="isCollapse" :unique-opened="false" :collapse-transition="false" :default-active="activeMenu" popper-class="left-nav-menu-modal">
+        <nav-item v-for="(item, index) in leftNavRoutes" :key="index" :navInfo="item" :isNest="true" :basePath="''" />
       </el-menu>
     </el-scrollbar>
-
   </div>
 
 </template>
 
 <script setup>
-import LeftNavItem from './components/left-nav-item'
+import NavItem from './components/nav-item'
 import useSettingStore from '@/store/system/setting'
 import useRouterStore from '@/store/system/router'
 const settingStore = useSettingStore()
@@ -37,7 +26,6 @@ const leftNavRoutes = computed(() => routerStore.leftNavRoutes)
 
 const activeMenu = computed(() => {
   const { meta, path } = route
-  // if set path, the sidebar will highlight the path you set
   if (meta.activeMenu) {
     return meta.activeMenu
   }
@@ -102,9 +90,6 @@ const activeMenu = computed(() => {
   &.is-expand {
     width: 200px;
   }
-
-
-
 }
 </style>
 <style lang="scss">

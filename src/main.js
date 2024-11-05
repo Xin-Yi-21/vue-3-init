@@ -9,7 +9,11 @@ import { setConfig, cENV } from '@/api/system/config'
 import ElementPlus from 'element-plus'
 import locale from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/dist/index.css'
-app.use(ElementPlus, { locale: locale, })
+const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
+app.use(ElementPlus, {
+  locale: locale,
+  size: storageSetting.elSize || 'default'
+})
 
 // ⭐ ant-design 相关文件
 import Antd from 'ant-design-vue'

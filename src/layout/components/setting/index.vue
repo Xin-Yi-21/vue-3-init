@@ -1,32 +1,40 @@
 <template>
-  <el-drawer v-model="isShowSet" :withHeader="false" direction="rtl" size="300px">
+  <el-drawer v-model="isShowSet" :withHeader="false" direction="rtl" size="320px">
     <div class="setting-part">
       <div class="setting-item">
-        <div class="set-title">主题风格</div>
+        <span class="setting-label">主题风格</span>
         <el-radio-group v-model="setting.themeStyle" @change="handleThemeStyle">
-          <el-radio label="dark">黑色</el-radio>
-          <el-radio label="light">白色</el-radio>
+          <el-radio value="dark">黑色</el-radio>
+          <el-radio value="light">白色</el-radio>
         </el-radio-group>
       </div>
       <div class="setting-item">
-        <div class="set-title">主题颜色</div>
+        <span class="setting-label">主题颜色</span>
         <el-color-picker v-model="setting.themeColor" :predefine="predefineColors" @change="handleThemeColor" />
       </div>
       <div class="setting-item">
         <span class="setting-label">开启顶部导航</span>
-        <el-switch v-model="setting.isTopNav" @change="handleTopNav" />
+        <el-switch v-model="setting.isTopNav" />
       </div>
       <div class="setting-item">
         <span class="setting-label">开启左侧导航</span>
-        <el-switch v-model="setting.isLeftNav" @change="handleLeftNav" />
+        <el-switch v-model="setting.isLeftNav" />
       </div>
       <div class="setting-item">
-        <span class="setting-label">开启面包屑</span>
-        <el-switch v-model="setting.isTopBar" @change="handleTopBar" />
+        <span class="setting-label">开启面包栏</span>
+        <el-switch v-model="setting.isTopBar" />
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">开启导航面包栏</span>
+        <el-switch v-model="setting.isBreadcrumb" />
       </div>
       <div class="setting-item">
         <span class="setting-label">开启标签</span>
-        <el-switch v-model="setting.isTopTag" @change="handleTopTag" />
+        <el-switch v-model="setting.isTopTag" />
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">开启动态标题</span>
+        <el-switch v-model="setting.isDynamicTitle" />
       </div>
       <div class="setting-item">
         <span class="setting-label">开启水印</span>
@@ -34,14 +42,18 @@
       </div>
       <div class="setting-item">
         <span class="setting-label">开启全屏</span>
-        <el-switch v-model="setting.isFullScreen" @change="handleFullScreen" />
+        <el-switch v-model="setting.isFullScreen" @change="handleFullScreen(setting)" />
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">固定头部</span>
+        <el-switch v-model="setting.isFixHeader" @change="handleFixHeader(setting)" />
       </div>
       <div class="setting-item">
         <span class="setting-label">布局大小</span>
-        <el-radio-group v-model="setting.size" @change="handleSize">
-          <el-radio label="big">较大</el-radio>
-          <el-radio label="normal">普通</el-radio>
-          <el-radio label="small">较小</el-radio>
+        <el-radio-group v-model="setting.elSize">
+          <el-radio value="large">较大</el-radio>
+          <el-radio value="default">普通</el-radio>
+          <el-radio value="small">较小</el-radio>
         </el-radio-group>
       </div>
       <div class="setting-item">
@@ -59,6 +71,7 @@
 <script setup>
 import useSettingStore from '@/store/system/setting'
 import { handleColor } from '@/utils/theme'
+import { handleFixHeader, handleFullScreen } from '@/utils/setting'
 
 const { proxy } = getCurrentInstance()
 const setting = useSettingStore()
@@ -80,34 +93,12 @@ function handleThemeStyle() {
 function handleThemeColor(val) {
   handleColor(val)
 }
-// 顶部导航
-function handleTopNav() {
 
-}
-// 左侧导航
-function handleLeftNav() {
-
-}
-// 面包屑
-function handleTopBar() {
-
-}
-// 标签
-function handleTopTag() {
-
-}
 // 水印
 function handleWaterMark() {
 
 }
-// 全屏 
-function handleFullScreen() {
 
-}
-// 大小
-function handleSize() {
-
-}
 // 缩放
 function handleScale() {
 
@@ -118,13 +109,18 @@ function handleSaveSetting() {
   let layoutSetting = {
     "themeStyle": setting.themeStyle,
     "themeColor": setting.themeColor,
-    "themeLightColor": setting.themeLightColor,
-    "isLeftNav": setting.isLeftNav,
+    "elSize": setting.elSize,
     "isTopNav": setting.isTopNav,
+    "isLeftNav": setting.isLeftNav,
     "isTopBar": setting.isTopBar,
     "isTopTag": setting.isTopTag,
+    "isBreadcrumb": setting.isBreadcrumb,
+    "isDynamicTitle": setting.isDynamicTitle,
+    "isFixHeader": setting.isFixHeader,
+    "isFullScreen": setting.isFullScreen,
   }
-  localStorage.setItem("layout-setting", JSON.stringify(layoutSetting));
+  localStorage.setItem("layout-setting", JSON.stringify(layoutSetting))
+  setTimeout("window.location.reload()", 1000)
   setTimeout(proxy.$modal.closeLoading(), 1000)
 }
 // 重置配置
@@ -138,6 +134,26 @@ function handleResetSetting() {
 
 <style lang="scss" scoped>
 .el-overlay {
-  background-color: pink;
+  .setting-part {
+    .setting-item {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .setting-label {
+        width: 100px;
+        margin-right: 10px;
+      }
+
+      .el-radio-group {
+        flex-wrap: nowrap;
+
+        .el-radio {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
 }
 </style>

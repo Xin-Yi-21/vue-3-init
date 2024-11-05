@@ -1,11 +1,14 @@
 // 处理主题样式
 export function handleColor(theme) {
   document.documentElement.style.setProperty('--el-color-primary', theme)
+  document.documentElement.style.setProperty('--tc', theme)
   for (let i = 1; i <= 9; i++) {
     document.documentElement.style.setProperty(`--el-color-primary-light-${i}`, `${getLightColor(theme, i / 10)}`)
+    document.documentElement.style.setProperty(`--tcl-${i}`, `${getLightColor(theme, i / 10)}`)
   }
   for (let i = 1; i <= 9; i++) {
     document.documentElement.style.setProperty(`--el-color-primary-dark-${i}`, `${getDarkColor(theme, i / 10)}`)
+    document.documentElement.style.setProperty(`--tcl-${i}`, `${getDarkColor(theme, i / 10)}`)
   }
 }
 
