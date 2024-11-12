@@ -5,8 +5,8 @@ import createVitePlugins from './vite/plugins'
 export default defineConfig(async ({ mode, command }) => {
   const env = loadEnv(mode, process.cwd())                                   // 加载相应环境变量
   return {
-    // base: VITE_APP_PATH,                                                  // vite默认应用部署在域名的根路径，指定其子路径
-    base: './',                                                              // 使用相对路径
+    base: VITE_APP_PATH,                                                  // vite默认应用部署在域名的根路径，指定其子路径
+    // base: env.VITE_APP_ENV === 'development' ? env.VITE_APP_PATH : '',       // 使用相对路径
     plugins: createVitePlugins(env, command === 'build'),                    // 根据传入的参数（环境变量和构建命令,server-开发模式，build-生产模式，是否处于构建模式）创建和返回一个插件数组。
     build: {
       outDir: 'dist',                                                        // 设置打包文件夹名称
@@ -22,7 +22,7 @@ export default defineConfig(async ({ mode, command }) => {
     },
     // 定义开发服务器行为
     server: {
-      port: 80,
+      port: 8080,
       host: true,                                                            // 允许本地网络访问。
       hmr: true,                                                             // 启用热模块替换（Hot Module Replacement）。应用运行时更新模块，无需完全重新加载页面，修改代码后看到效果。
       open: true,                                                            // 自动将开发服务器url在默认浏览器启动。

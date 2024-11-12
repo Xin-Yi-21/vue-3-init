@@ -10,7 +10,8 @@
 let cENV = {}
 const setConfig = async (app) => {
   try {
-    const res = await fetch(ENV.VITE_APP_ENV === 'development' ? `/config.js` : `./config.js`)
+    const res = await fetch(`${ENV.VITE_APP_PATH}/config.js`)
+    // const res = await fetch(ENV.VITE_APP_ENV === 'development' ? `${ENV.VITE_APP_PATH}/config.js` : `./config.js`)
     const text = await res.text()
     cENV = new Function('res', text + '\nreturn res')({})
     // console.log('config.js文件内容', text)
