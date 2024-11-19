@@ -26,8 +26,9 @@ import AppMain from '@/layout/components/app-main/index.vue'
 import Setting from '@/layout/components/setting/index.vue'
 import useEnumsStore from '@/store/project/enums'
 import { handleAllSetting } from '@/utils/setting'
-
+import { handleColor } from '@/utils/theme'
 import useSettingStore from '@/store/system/setting'
+
 const setting = useSettingStore()
 const isDataInitDone = ref(true)
 // useEnumsStore().getEnums().then(res => {
@@ -35,6 +36,7 @@ const isDataInitDone = ref(true)
 //   // console.log('全部枚举', useEnumsStore().allEnums)
 // })
 
+handleColor(setting.themeColor)
 // 打开布局抽屉
 const settingRef = ref(null)
 function setLayout() {
