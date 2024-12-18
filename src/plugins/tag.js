@@ -1,4 +1,4 @@
-import useTopTagStore from '@/store/system/topTag'
+import useTagStore from '@/store/system/tag'
 import router from '@/router'
 
 export default {
@@ -14,7 +14,7 @@ export default {
         }
       });
     }
-    return useTopTagStore().delCachedView(obj).then(() => {
+    return useTagStore().delCachedView(obj).then(() => {
       const { path, query } = obj
       router.replace({
         path: '/redirect' + path,
@@ -24,7 +24,7 @@ export default {
   },
   // 关闭当前tab页签，打开新页签
   closeOpenPage(obj) {
-    useTopTagStore().delView(router.currentRoute.value);
+    useTagStore().delView(router.currentRoute.value);
     if (obj !== undefined) {
       return router.push(obj);
     }
@@ -32,7 +32,7 @@ export default {
   // 关闭指定tab页签
   closePage(obj) {
     if (obj === undefined) {
-      return useTopTagStore().delView(router.currentRoute.value).then(({ visitedViews }) => {
+      return useTagStore().delView(router.currentRoute.value).then(({ visitedViews }) => {
         const latestView = visitedViews.slice(-1)[0]
         if (latestView) {
           return router.push(latestView.fullPath)
@@ -40,23 +40,23 @@ export default {
         return router.push('/');
       });
     }
-    return useTopTagStore().delView(obj);
+    return useTagStore().delView(obj);
   },
   // 关闭所有tab页签
   closeAllPage() {
-    return useTopTagStore().delAllViews();
+    return useTagStore().delAllViews();
   },
   // 关闭左侧tab页签
   closeLeftPage(obj) {
-    return useTopTagStore().delLeftTags(obj || router.currentRoute.value);
+    return useTagStore().delLeftTags(obj || router.currentRoute.value);
   },
   // 关闭右侧tab页签
   closeRightPage(obj) {
-    return useTopTagStore().delRightTags(obj || router.currentRoute.value);
+    return useTagStore().delRightTags(obj || router.currentRoute.value);
   },
   // 关闭其他tab页签
   closeOtherPage(obj) {
-    return useTopTagStore().delOthersViews(obj || router.currentRoute.value);
+    return useTagStore().delOthersViews(obj || router.currentRoute.value);
   },
   // 打开tab页签
   openPage(url) {
@@ -64,6 +64,6 @@ export default {
   },
   // 修改tab页签
   updatePage(obj) {
-    return useTopTagStore().updateVisitedView(obj);
+    return useTagStore().updateVisitedView(obj);
   }
 }

@@ -1,31 +1,39 @@
 import defaultSetting from '@/setting'
 // import { useDynamicTitle } from '@/utils/dynamicTitle'
 
-const { defaultTitle, themeStyle, themeColor, elSize, isLeftNav, isTopNav, isTopBar, isBreadcrumb, isTopTag, isDynamicTitle, isFixHeader, isFullScreen } = defaultSetting
+const { defaultTitle, isDynamicTitle, themeStyle, themeColor, elSize, topHeader, leftNav, topNav, topBar, topTag, isFullScreen } = defaultSetting
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 
 const useSettingStore = defineStore('setting', {
   state: () => ({
     routeTitle: '',
-    leftNav: {
-      isCollapse: false,
-      withoutAnimation: false,
-      isHide: false
+    topHeader: {
+      isShow: storageSetting.topHeader?.isShow === undefined ? topHeader.isShow : storageSetting.topHeader.isShow,
+      isBreadcrumbShow: storageSetting.topHeader?.isBreadcrumbShow === undefined ? topHeader.isBreadcrumbShow : storageSetting.topHeader.isBreadcrumbShow,
     },
-    // theme: storageSetting.theme || '#409EFF',
-    // sideTheme: storageSetting.sideTheme || sideTheme,
-    // showSettings: showSettings,
-    // fixedHeader: storageSetting.fixedHeader === undefined ? fixedHeader : storageSetting.fixedHeader,
+    leftNav: {
+      isShow: storageSetting.leftNav?.isShow === undefined ? leftNav.isShow : storageSetting.leftNav.isShow,
+      isCollapse: storageSetting.leftNav?.isCollapse === undefined ? leftNav.isCollapse : storageSetting.leftNav.isCollapse,
+      withoutAnimation: storageSetting.leftNav?.withoutAnimation === undefined ? leftNav.withoutAnimation : storageSetting.leftNav.withoutAnimation,
+    },
+    topNav: {
+      isShow: storageSetting.topNav?.isShow === undefined ? topNav.isShow : storageSetting.topNav.isShow,
+    },
+    topBar: {
+      isShow: storageSetting.topBar?.isShow === undefined ? topBar.isShow : storageSetting.topBar.isShow,
+    },
+    topTag: {
+      isShow: storageSetting.topTag?.isShow === undefined ? topTag.isShow : storageSetting.topTag.isShow,
+    },
+
     themeStyle: storageSetting.themeStyle === undefined ? themeStyle : storageSetting.themeStyle,
     themeColor: storageSetting.themeColor === undefined ? themeColor : storageSetting.themeColor,
+    theme: {},
     elSize: storageSetting.elSize === undefined ? elSize : storageSetting.elSize,
-    isLeftNav: storageSetting.isLeftNav === undefined ? isLeftNav : storageSetting.isLeftNav,
-    isTopNav: storageSetting.isTopNav === undefined ? isTopNav : storageSetting.isTopNav,
-    isTopBar: storageSetting.isTopBar === undefined ? isTopBar : storageSetting.isTopBar,
-    isTopTag: storageSetting.isTopTag === undefined ? isTopTag : storageSetting.isTopTag,
-    isBreadcrumb: storageSetting.isBreadcrumb === undefined ? isBreadcrumb : storageSetting.isBreadcrumb,
+    // isTopNav: storageSetting.isTopNav === undefined ? isTopNav : storageSetting.isTopNav,
+    // isTopBar: storageSetting.isTopBar === undefined ? isTopBar : storageSetting.isTopBar,
+    // isTopTag: storageSetting.isTopTag === undefined ? isTopTag : storageSetting.isTopTag,
     isDynamicTitle: storageSetting.isDynamicTitle === undefined ? isDynamicTitle : storageSetting.isDynamicTitle,
-    isFixHeader: storageSetting.isFixHeader === undefined ? isFixHeader : storageSetting.isFixHeader,
     // isFullScreen: storageSetting.isFullScreen === undefined ? isFullScreen : storageSetting.isFullScreen,
   }),
   actions: {

@@ -1,4 +1,4 @@
-const useTopTagStore = defineStore('top-tag', {
+const useTagStore = defineStore('tag', {
   state: () => ({
     visitedViews: [],
     cachedViews: [],
@@ -166,4 +166,4 @@ const useTopTagStore = defineStore('top-tag', {
   }
 })
 
-export default useTopTagStore
+export default useTagStore

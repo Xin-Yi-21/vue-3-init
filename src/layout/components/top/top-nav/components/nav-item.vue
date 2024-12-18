@@ -20,9 +20,7 @@
 <script setup>
 import { isExternal } from '@/utils/validate'
 import Link from './link'
-// import { getNormalPath } from '@/utils/ruoyi'
-const router = useRouter()
-
+// 一、综合初始化
 const props = defineProps({
   navInfo: {
     type: Object,
@@ -40,13 +38,11 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  // key: {
-
-  // },
 })
-
+const router = useRouter()
+// 二、模块功能
 // console.log('查navInfo', props.navInfo.meta?.title, props.navInfo)
-// 导航子项判断
+//  1、导航子项判断
 const onlyOne = ref({})
 function judgeChild(children = [], parent) {
   const showChildren = children?.filter(item => !item.hidden) || []
@@ -61,8 +57,7 @@ function judgeChild(children = [], parent) {
   }
   return false
 }
-
-// 处理index路径
+// 2、处理index路径
 function handlePath(routePath, routeQuery) {
   if (isExternal(routePath)) { return routePath }
   if (isExternal(props.basePath)) { return props.basePath }
@@ -73,8 +68,7 @@ function handlePath(routePath, routeQuery) {
   // console.log('查indexPath', getNormalPath(path))
   return getNormalPath(path)
 }
-
-// 路径规范化处理
+// 3、路径规范化处理
 function getNormalPath(p) {
   if (p.length === 0 || !p || p == 'undefined') {
     return p
@@ -85,11 +79,11 @@ function getNormalPath(p) {
   }
   return res
 }
-// 标题处理
+// 4、标题处理
 function hasTitle(title) {
   return title.length > 5 ? title : ''
 }
-
+// 5、跳转
 function handleGo(navItem) {
   let path = handlePath(navItem.path, navItem.query)
   if (isExternal(path)) {

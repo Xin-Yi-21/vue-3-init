@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import useTopTagStore from '@/store/system/topTag'
+import useTagStore from '@/store/system/tag'
 
 const tagAndTagSpacing = ref(4);
 const { proxy } = getCurrentInstance();
@@ -31,7 +31,7 @@ const emitScroll = () => {
   emits('scroll')
 }
 
-const topTagStore = useTopTagStore()
+const topTagStore = useTagStore()
 const visitedViews = computed(() => topTagStore.visitedViews);
 
 function moveToTarget(currentTag) {

@@ -1,7 +1,7 @@
 
 const ENV = window.V
 const common = {
-  VITE_APP_TITLE: '项目初始化系统',
+  VITE_APP_TITLE: 'V3项目初始化系统',
   VITE_APP_PATH: '/A',
 }
 const ip = {

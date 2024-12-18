@@ -39,17 +39,17 @@
 <script setup>
 import ScrollPane from './components/scroll-pane'
 import { getNormalPath } from '@/utils/ruoyi'
-import useTopTagStore from '@/store/system/topTag'
+import useTagStore from '@/store/system/tag'
 import useSettingStore from '@/store/system/setting'
-import useRouterStore from '@/store/system/router'
+import useMenuStore from '@/store/system/menu'
 
 const { proxy } = getCurrentInstance()
 const route = useRoute()
 const router = useRouter()
 
-const routes = computed(() => useRouterStore().routes)
+const routes = computed(() => useMenuStore().routes)
 const theme = computed(() => useSettingStore().themeColor)
-const visitedViews = computed(() => useTopTagStore().visitedViews)
+const visitedViews = computed(() => useTagStore().visitedViews)
 
 const selectedTag = ref({})
 const affixTags = ref([])
@@ -80,7 +80,7 @@ onMounted(() => {
 function initTags() {
   const res = filterAffixTags(routes.value)
   affixTags.value = res
-  res.forEach(item => { item.name && useTopTagStore().addVisitedView(item) })
+  res.forEach(item => { item.name && useTagStore().addVisitedView(item) })
 }
 // 工具函数-筛选固定标签
 function filterAffixTags(routes, basePath = '') {
@@ -102,8 +102,8 @@ function filterAffixTags(routes, basePath = '') {
 // 添加当前路由标签
 function addTags() {
   if (route.name) {
-    useTopTagStore().addView(route)
-    route.meta.link && useTopTagStore().addIframeView(route)
+    useTagStore().addView(route)
+    route.meta.link && useTagStore().addIframeView(route)
   }
   return false
 }
@@ -115,7 +115,7 @@ function moveToCurrentTag() {
         scrollPaneRef.value.moveToTarget(item)
         // 用户当前标签进行操作或导航导致不同，更新访问记录为当前
         if (item.fullPath !== route.fullPath) {
-          useTopTagStore().updateVisitedView(route)
+          useTagStore().updateVisitedView(route)
         }
       }
     })
@@ -171,7 +171,7 @@ function handleMiddleClickTag(tag) {
 function refreshSelectedTag(view) {
   proxy.$tag.refreshPage(view)
   if (route.meta.link) {
-    useTopTagStore().delIframeView(route)
+    useTagStore().delIframeView(route)
   }
 }
 // 关闭选中标签

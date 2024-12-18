@@ -8,7 +8,7 @@ import InnerLink from '@/components/system/inner-link'
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')
 
-const useRouterStore = defineStore('permission', {
+const useMenuStore = defineStore('menu', {
   state: () => ({
     // 全部结构路由(routes) = 常量路由(constantRoutes) + 动态路由(dynamicRoutes) + 后端路由(backendRoutes)
     // 全部可访问路由(accessRoutes) = 常量路由(constantRoutes) + 动态路由(dynamicRoutes) + 后端可访问路由(accessBackendRoutes)
@@ -151,4 +151,4 @@ export const loadView = (view) => {
   return res
 }
 
-export default useRouterStore
+export default useMenuStore

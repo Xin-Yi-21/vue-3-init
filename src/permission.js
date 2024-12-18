@@ -7,7 +7,7 @@ import { isHttp } from '@/utils/validate'
 import { isRelogin } from '@/utils/request'
 import useUserStore from '@/store/system/user'
 import useSettingStore from '@/store/system/setting'
-import useRouterStore from '@/store/system/router'
+import useMenuStore from '@/store/system/menu'
 
 NProgress.configure({ showSpinner: false });
 
@@ -19,7 +19,7 @@ router.beforeEach((to, from, next) => {
   console.log('查a', to, from)
   to.meta.title && useSettingStore().setTitle(to.meta.title)
   if (!isRoutesGenerated) {
-    useRouterStore().generateRoutes().then(accessRoutes => {
+    useMenuStore().generateRoutes().then(accessRoutes => {
       // console.log('查accessRoutes', accessRoutes)
       // 根据roles权限生成可访问的路由表
       accessRoutes.forEach(route => {
@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
   //       // 判断当前用户是否已拉取完user_info信息
   //       useUserStore().getInfo().then(() => {
   //         isRelogin.show = false
-  //         useRouterStore().generateRoutes().then(accessRoutes => {
+  //         useMenuStore().generateRoutes().then(accessRoutes => {
   //           console.log('accessRoutes', accessRoutes)
   //           // 根据roles权限生成可访问的路由表
   //           accessRoutes.forEach(route => {

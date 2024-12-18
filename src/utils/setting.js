@@ -44,6 +44,6 @@ export function handleFullScreen(setting) {
 
 // 处理全部
 export function handleAllSetting(setting) {
-  handleFixHeader(setting)
+  // handleFixHeader(setting)
   // handleFullScreen(setting)
 }

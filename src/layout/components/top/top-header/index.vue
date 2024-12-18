@@ -1,16 +1,16 @@
 <template>
   <div class="top-header-vue">
     <div class="project">
-      <c-icon i="c-logo" cursor="auto"></c-icon>
+      <c-icon i="c-logo" cursor="auto" size="24"></c-icon>
       <div class="title">项目初始化系统</div>
-      <Breadcrumb v-if="settingStore.isBreadcrumb" separator=">" class="breadcrumb-container" />
+      <Breadcrumb v-if="settingStore.topHeader.isBreadcrumbShow" separator=">" class="breadcrumb-container" />
     </div>
 
     <div class="menu"> </div>
 
     <div class="time" v-html="time"></div>
     <!-- <div class="user-name"><c-icon i="c-account"></c-icon> <span>admin</span></div> -->
-    <el-dropdown @command="handleCommand" class="setting" trigger="click">
+    <el-dropdown @command="handleCommand" class="setting" trigger="click" append-to-body="true">
       <div class="avatar">
         <img :src="userStore.avatar" />
         <span class="name">admin</span>
@@ -40,63 +40,59 @@
   </div>
 </template>
 <script setup>
+// 一、综合初始化
 import useUserStore from '@/store/system/user'
 import useSettingStore from '@/store/system/setting'
 import Breadcrumb from '@/components/system/breadcrumb'
+
 const { proxy } = getCurrentInstance()
 const userStore = useUserStore()
 const settingStore = useSettingStore()
 const router = useRouter()
-const route = useRoute()
-// 一、初始化相关
+function init() {
+  initTime()
+}
+onMounted(() => {
+  init()
+})
+onBeforeUnmount(() => {
+  clearInterval(timer)
+})
+// 二、模块功能
 // 1、运行时间
 const weekdayLRV = { Monday: '星期一', Tuesday: '星期二', Wednesday: '星期三', Thursday: '星期四', Friday: '星期五', Staturday: '星期六', Sunday: '星期日' }
 const time = ref('')
 const timer = ref(null)
-const timeStart = () => {
+function initTime() {
   time.value = proxy.$dayjs().format('YYYY-MM-DD') + ' ' + weekdayLRV[proxy.$dayjs().format('dddd')] + ' ' + proxy.$dayjs().format('HH:mm:ss')
 }
-timeStart()
-timer.vlaue = setInterval(() => {
-  timeStart()
-}, 1000)
-onBeforeUnmount(() => {
-  clearInterval(timer)
-})
-// 二、操作相关
+timer.vlaue = setInterval(() => { initTime() }, 1000)
 
-// 1、点击tab
-const handleTabChange = tab => {
-  currentTab.value = tab
-  router.push('/' + tab)
-}
-// 2、点击设置
+// 2、处理dropdown
+// (0) 综合
 const handleCommand = command => {
   switch (command) {
     case "profile":
       goProfile()
-      break;
+      break
     case "layoutSet":
-
       setLayout()
-      break;
+      break
     case "logout":
       logout()
-      break;
-    default: break;
+      break
   }
 }
-// 3、个人中心
+// (1) 个人中心
 function goProfile() {
   router.push('/user/profile')
 }
-// 4、布局设置
+// (2) 布局设置
 const emits = defineEmits(['setLayout'])
 function setLayout() {
-
   emits('setLayout')
 }
-// 5、登出
+// (3) 登出
 function logout() {
   ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
     confirmButtonText: '确定',
@@ -104,13 +100,10 @@ function logout() {
     type: 'warning'
   }).then(() => {
     userStore.logOut().then(() => {
-      location.href = '/index';
+      location.href = '/index'
     })
-  }).catch(() => { });
+  }).catch(() => { })
 }
-
-
-
 </script>
 <style lang="scss" scoped>
 .top-header-vue {

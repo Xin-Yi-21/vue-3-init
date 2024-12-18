@@ -1,24 +1,21 @@
 <template>
   <div class="top-nav-vue">
-    <!-- :background-color="sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
-    :text-color="sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
-    :active-text-color="theme"
-    -->
-    <!-- <el-scrollbar wrap-class="c-el-scrollbar"> -->
-    <el-menu :unique-opened="true" :collapse-transition="false" mode="horizontal" :ellipsis="false" :default-active="activeMenu" menu-trigger="click" popper-class="top-nav-menu-modal" :teleported="true">
-      <nav-item v-for="(item, index) in leftNavRoutes" :key="index" :navInfo="item" :isNest="true" :basePath="''" />
-    </el-menu>
-    <!-- </el-scrollbar> -->
+    <el-scrollbar wrap-class="c-el-scrollbar">
+      <el-menu :unique-opened="true" :collapse-transition="false" mode="horizontal" :ellipsis="false" :default-active="activeMenu" menu-trigger="hover" popper-class="top-nav-menu-modal" :teleported="true">
+        <nav-item v-for="(item, index) in topNavRoutes" :key="index" :navInfo="item" :isNest="true" :basePath="''" />
+      </el-menu>
+    </el-scrollbar>
   </div>
-
 </template>
 
 <script setup>
+// 一、综合初始化
 import NavItem from './components/nav-item'
-import useRouterStore from '@/store/system/router'
-const routerStore = useRouterStore()
+import userMenuStore from '@/store/system/menu'
+
+const routerStore = userMenuStore()
 const route = useRoute()
-const leftNavRoutes = computed(() => routerStore.leftNavRoutes)
+const topNavRoutes = computed(() => routerStore.topNavRoutes)
 const activeMenu = computed(() => {
   const { meta, path } = route
   if (meta.activeMenu) {
@@ -26,7 +23,6 @@ const activeMenu = computed(() => {
   }
   return path
 })
-
 </script>
 
 <style lang="scss" scoped>

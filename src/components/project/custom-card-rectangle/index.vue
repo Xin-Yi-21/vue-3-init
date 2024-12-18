@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import variable from '@/assets/styles/variable.scss'
+// import variable from '@/assets/styles/variable.scss'
 export default {
   props: {
     bg: {

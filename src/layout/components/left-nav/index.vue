@@ -1,12 +1,7 @@
 <template>
   <div :class="['left-nav-vue', isCollapse ? 'is-collapse' : 'is-expand']">
-    <!-- :background-color="sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
-    :text-color="sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
-    :active-text-color="theme"
-    :default-active="activeMenu"
-    -->
     <el-scrollbar wrap-class="c-el-scrollbar">
-      <el-menu :collapse="isCollapse" :unique-opened="false" :collapse-transition="false" :default-active="activeMenu" popper-class="left-nav-menu-modal">
+      <el-menu mode="vertical" :collapse="isCollapse" :unique-opened="false" :collapse-transition="false" :default-active="activeMenu" popper-class="left-nav-menu-modal">
         <nav-item v-for="(item, index) in leftNavRoutes" :key="index" :navInfo="item" :isNest="true" :basePath="''" />
       </el-menu>
     </el-scrollbar>
@@ -15,15 +10,16 @@
 </template>
 
 <script setup>
+// 一、综合初始化
 import NavItem from './components/nav-item'
 import useSettingStore from '@/store/system/setting'
-import useRouterStore from '@/store/system/router'
+import useMenuStore from '@/store/system/menu'
+
 const settingStore = useSettingStore()
-const routerStore = useRouterStore()
+const routerStore = useMenuStore()
 const route = useRoute()
 const isCollapse = computed(() => settingStore.leftNav.isCollapse)
 const leftNavRoutes = computed(() => routerStore.leftNavRoutes)
-
 const activeMenu = computed(() => {
   const { meta, path } = route
   if (meta.activeMenu) {

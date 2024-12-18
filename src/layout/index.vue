@@ -1,13 +1,13 @@
 <template>
-  <div :class="['layout-vue', setting.isFixHeader ? 'is-fixed' : '']" v-if="isDataInitDone">
-    <top-header @setLayout="setLayout"></top-header>
+  <div class="layout-vue">
+    <top-header @setLayout="setLayout" v-if="settingStore.topHeader.isShow"></top-header>
     <div class="main-container">
-      <left-nav v-if="setting.isLeftNav"></left-nav>
+      <left-nav v-if="settingStore.leftNav.isShow"></left-nav>
       <div class="main-right-container">
         <div class="top-container">
-          <top-nav v-if="setting.isTopNav"></top-nav>
-          <top-bar v-if="setting.isTopBar"></top-bar>
-          <top-tag v-if="setting.isTopTag"></top-tag>
+          <top-nav v-if="settingStore.topNav.isShow"></top-nav>
+          <top-bar v-if="settingStore.topBar.isShow"></top-bar>
+          <top-tag v-if="settingStore.topTag.isShow"></top-tag>
         </div>
         <app-main />
       </div>
@@ -24,27 +24,33 @@ import TopNav from '@/layout/components/top/top-nav/index.vue'
 import LeftNav from '@/layout/components/left-nav/index.vue'
 import AppMain from '@/layout/components/app-main/index.vue'
 import Setting from '@/layout/components/setting/index.vue'
-import useEnumsStore from '@/store/project/enums'
-import { handleAllSetting } from '@/utils/setting'
+
 import { handleColor } from '@/utils/theme'
+import useEnumsStore from '@/store/project/enums'
 import useSettingStore from '@/store/system/setting'
 
-const setting = useSettingStore()
+// 一、综合初始化
+const settingStore = useSettingStore()
+onMounted(() => { init() })
+function init() {
+  getEnums()
+}
+// 二、模块功能
+// 1、获取枚举
 const isDataInitDone = ref(true)
-// useEnumsStore().getEnums().then(res => {
-//   isDataInitDone.value = true
-//   // console.log('全部枚举', useEnumsStore().allEnums)
-// })
+async function getEnums() {
+  try { await useEnumsStore().getEnums() } catch { }
+  isDataInitDone.value = true
+}
 
-handleColor(setting.themeColor)
-// 打开布局抽屉
+// 2、处理颜色
+handleColor(settingStore.themeColor)
+
+// 3、打开布局抽屉
 const settingRef = ref(null)
 function setLayout() {
   settingRef.value.openSetting()
 }
-onMounted(() => {
-  nextTick(() => { handleAllSetting(setting) })
-})
 </script>
 
 <style lang="scss" scoped>
