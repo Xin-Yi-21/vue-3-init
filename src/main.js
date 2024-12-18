@@ -43,30 +43,29 @@ setConfig(app).then(async () => {
   app.use(store)
   app.use(router)
   // // 全局组件
-  // const cTooltip = (await import('@/components/project/custom-tooltip')).default
-  // const cPagination = (await import('@/components/project/custom-pagination')).default
-  // const cButton = (await import('@/components/project/custom-button')).default
+  const cTooltip = (await import('@/components/project/custom-tooltip')).default
+  const cPagination = (await import('@/components/project/custom-pagination')).default
+  const cButton = (await import('@/components/project/custom-button')).default
   const cIcon = (await import('@/components/project/custom-icon')).default
   // // const cPreview = (await import('@/components/project/custom-preview')).default
   // const cFileList = (await import('@/components/project/custom-file-list')).default
-  // const cCardCircle = (await import('@/components/project/custom-card-circle')).default
-  // const cCardRectangle = (await import('@/components/project/custom-card-rectangle')).default
-  // const cCardTitle = (await import('@/components/project/custom-card-title')).default
-  // const cCardHeader = (await import('@/components/project/custom-card-header')).default
-  // const cTab = (await import('@/components/project/custom-tab')).default
+  const cCardCircle = (await import('@/components/project/custom-card-circle')).default
+  const cCardRectangle = (await import('@/components/project/custom-card-rectangle')).default
+  const cCardTitle = (await import('@/components/project/custom-card-title')).default
+  const cCardHeader = (await import('@/components/project/custom-card-header')).default
+  const cTab = (await import('@/components/project/custom-tab')).default
 
-  // app.component('cTooltip', cTooltip)
-  // app.component('cPagination', cPagination)
-  // app.component('cButton', cButton)
+  app.component('cTooltip', cTooltip)
+  app.component('cPagination', cPagination)
+  app.component('cButton', cButton)
   app.component('cIcon', cIcon)
   // // app.component('cPreview', cPreview)
   // app.component('cFileList', cFileList)
-  // app.component('cCardCircle', cCardCircle)
-  // app.component('cCardRectangle', cCardRectangle)
-  // app.component('cCardTitle', cCardTitle)
-  // app.component('cCardHeader', cCardHeader)
-  // app.component('cTab', cTab)
-
+  app.component('cCardCircle', cCardCircle)
+  app.component('cCardRectangle', cCardRectangle)
+  app.component('cCardTitle', cCardTitle)
+  app.component('cCardHeader', cCardHeader)
+  app.component('cTab', cTab)
 
   // // 全局方法
   // // getTableHeaderLRVByGlobal

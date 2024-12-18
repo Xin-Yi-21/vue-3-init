@@ -6,7 +6,7 @@
 // import variable from '@/assets/styles/variable.scss'
 const props = defineProps({
   // 矩形背景色
-  bg: { type: String, default: variable.tc, },
+  bg: { type: String, default: '', },
   // 矩形宽度
   width: { type: [String, Number], default: 5, },
   // 矩形高度
