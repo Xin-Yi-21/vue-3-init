@@ -1,7 +1,7 @@
 import { cENV } from '@/api/system/config'
 export default {
   // 网页标题
-  defaultTitle: cENV.VUE_APP_TITLE || '',
+  defaultTitle: cENV.VITE_APP_TITLE || '',
   // 动态标题
   isDynamicTitle: true,
   // 主题风格

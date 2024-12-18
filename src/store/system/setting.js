@@ -44,8 +44,25 @@ const useSettingStore = defineStore('setting', {
         this[key] = value
       }
     },
+    // 设置顶部页头
+    setTopHeader(state) {
+      if (state.topHeader.isShow) {
+        document.body.setAttribute('topHeaderStatus', 'show')
+      } else {
+        document.body.setAttribute('topHeaderStatus', 'hide')
+      }
+    },
+    // 设置左侧导航
+    setLeftNav(state, withoutAnimation) {
+      if (state.leftNav.isShow) {
+        document.body.setAttribute('leftNavStatus', state.leftNav.isCollapse ? 'collapse' : 'expand')
+      } else {
+        document.body.setAttribute('leftNavStatus', 'hide')
+      }
+    },
     // 设置网页标题
     setTitle(title) {
+      console.log('走title', title, defaultTitle)
       this.routeTitle = title
       if (this.isDynamicTitle) {
         document.title = this.routeTitle + ' - ' + defaultTitle

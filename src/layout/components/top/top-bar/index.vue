@@ -10,11 +10,7 @@ import Hamburger from '@/components/system/hamburger'
 import Breadcrumb from '@/components/system/breadcrumb'
 import useSettingStore from '@/store/system/setting'
 const settingStore = useSettingStore()
-// // 1、面包屑折叠展开
-
-// const handleToggle = () => {
-//   settingStore.toggleLeftNav()
-// }
+const handleToggle = () => { settingStore.toggleLeftNav() }
 </script>
 
 <style lang="scss" scoped>

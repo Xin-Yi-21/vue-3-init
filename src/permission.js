@@ -9,22 +9,20 @@ import useUserStore from '@/store/system/user'
 import useSettingStore from '@/store/system/setting'
 import useMenuStore from '@/store/system/menu'
 
-NProgress.configure({ showSpinner: false });
+NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/login', '/register'];
-let isRoutesGenerated = false; // 状态变量，用于标记路由是否已生成
+let isRoutesGenerated = false         // 状态变量，用于标记路由是否已生成
 router.beforeEach((to, from, next) => {
   // if (to.path.startsWith('/undefined')) { next(to.path.replace('/undefined', '')) }
   NProgress.start()
-  console.log('查a', to, from)
   to.meta.title && useSettingStore().setTitle(to.meta.title)
   if (!isRoutesGenerated) {
     useMenuStore().generateRoutes().then(accessRoutes => {
       // console.log('查accessRoutes', accessRoutes)
-      // 根据roles权限生成可访问的路由表
       accessRoutes.forEach(route => {
         if (!isHttp(route.path)) {
-          router.addRoute(route) // 动态添加可访问路由表
+          router.addRoute(route)     // 动态添加可访问路由表
         }
       })
       isRoutesGenerated = true
