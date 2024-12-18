@@ -1,4 +1,7 @@
 // ⭐一、常用自定义
+* {
+  box-sizing: border-box;
+}
 // body属性
 body {
   height: 100%;
@@ -6,7 +9,7 @@ body {
   overflow: auto;
   font-family: Microsoft YaHei;
   font-size: 14px;
-
+  color: var(--fcs);
   // 滚动条大小
   &::-webkit-scrollbar {
     display: block;
@@ -21,7 +24,7 @@ body {
 
   // 滚动条滑块
   &::-webkit-scrollbar-thumb {
-    background-color: #55c791;
+    background-color: var(--tc);
   }
 
   // 滚动条右下角
@@ -34,19 +37,19 @@ body {
   // &::-webkit-scrollbar-button:vertical:single-button:startz
   // &::-webkit-scrollbar-button:vertical:single-button:end
   &::-webkit-scrollbar-button:horizontal:decrement {
-    background-image: url('@/assets/icons/svg/c-scroll-left.svg');
+    background-image: url("~@/assets/images/c-scroll-left.svg");
   }
 
   &::-webkit-scrollbar-button:horizontal:increment {
-    background-image: url('@/assets/icons/svg/c-scroll-right.svg');
+    background-image: url("~@/assets/images/c-scroll-right.svg");
   }
 
   &::-webkit-scrollbar-button:vertical:decrement {
-    background-image: url('@/assets/icons/svg/c-scroll-up.svg');
+    background-image: url("~@/assets/images/c-scroll-up.svg");
   }
 
   &::-webkit-scrollbar-button:vertical:increment {
-    background-image: url('@/assets/icons/svg/c-scroll-down.svg');
+    background-image: url("~@/assets/images/c-scroll-down.svg");
   }
 
   &::-webkit-scrollbar-button {
@@ -57,7 +60,7 @@ body {
     cursor: pointer;
 
     &:hover {
-      background-color: #55c791;
+      background-color: var(--tc);
     }
   }
 }

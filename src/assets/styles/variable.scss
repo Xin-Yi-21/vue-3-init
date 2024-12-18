@@ -1,25 +1,51 @@
-
+// 一、自定义变量配置
 :root {
-  --tc: rgb(64, 150, 255);
-  --tcRGB: 64, 150, 255;
-  --tcl: rgba(60, 150, 255, 0.6);
+  // --tc: rgb(85, 199, 145); // 字体主题色
+  // --tcRGB: 85, 199, 145;
+  --top-nav-height: 50px;
+  --top-bar-height: 40px;
+  --top-tag-height: 30px;
+  // 头部
+  & {
+    &:has(body[topHeaderStatus='show']) {
+      --top-header-height: 60px;
+    }
+    &:has(body[topHeaderStatus='hide']) {
+      --top-header-height: 0px;
+    }
+  }
+  // 左侧导航
+  & {
+    &:has(body[leftNavStatus='expand']) {
+      --left-nav-width: 220px;
+    }
+    &:has(body[leftNavStatus='collapse']) {
+      --left-nav-width: 60px;
+    }
+    &:has(body[leftNavStatus='hide']) {
+      --left-nav-width: 0px;
+    }
+  }
 }
 
-$--color-primary: #409EFF;
-$--color-success: #67C23A;
-$--color-warning: #E6A23C;
-$--color-danger: #F56C6C;
-$--color-info: #909399;
+// 二、element变量配置
+$--color-primary: #55c791;
+$--color-success: #13ce66;
+$--color-warning: #ffba00;
+$--color-danger: #ff4949;
+$--color-info: #1e1e1e;
+$--button-font-weight: 400;
+// $--color-text-regular: #1f2d3d;
+$--border-color-light: #dfe4ed;
+$--border-color-lighter: #e6ebf5;
+$--table-border: 1px solid #dfe6ec;
+// $--font-path: "~element-ui/lib/theme-chalk/fonts";
+// @import "~element-ui/packages/theme-chalk/src/index";
+// :export {
 
-// the :export directive is the magic sauce for webpack
-// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
-:export {
-  primaryColor:$--color-primary;
-}
+// }
 
-
-
-// 变量样式
+// 三、变量类名
 @for $i from 0 through 100 {
   .w-#{$i} {
     width: calc(#{$i} * 1%);
@@ -76,11 +102,12 @@ $--color-info: #909399;
     transform: translateY(calc(#{$i}* (-1) * 1px));
   }
 }
+
 @for $i from 0 through 100 {
   @for $j from 0 through 100 {
     @if $j != 0 {
-      $width:calc($i / $j) * 100%;
-      .cw-#{$i}\/#{$j} {
+      $width: calc($i / $j) * 100%;
+      #app .cw-#{$i}\/#{$j} {
         width: $width;
       }
     }

@@ -16,6 +16,7 @@ let isRoutesGenerated = false; // 状态变量，用于标记路由是否已生�
 router.beforeEach((to, from, next) => {
   // if (to.path.startsWith('/undefined')) { next(to.path.replace('/undefined', '')) }
   NProgress.start()
+  console.log('查a', to, from)
   to.meta.title && useSettingStore().setTitle(to.meta.title)
   if (!isRoutesGenerated) {
     useRouterStore().generateRoutes().then(accessRoutes => {

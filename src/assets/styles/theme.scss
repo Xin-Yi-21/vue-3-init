@@ -1,0 +1,431 @@
+// 一、主题变量
+:root {
+  &[theme-style="light"] {
+    // 固定主题配置
+    --bg-primary: #fff; // 主要背景色
+    --bg-layout: #f3f3f3; // 布局背景色
+    --bg-card: #eff; // 卡片背景色
+    --bg-inner-primary: #fff; // 组件主要背景色
+    --bg-inner-secondary: #fff; // 组件二级背景色
+    --bg-inner-tertiary: #fff; // 组件三级背景色
+    // --bg-inner-hover: #f5f7fa; // 组件悬浮背景色
+    --bg-inner-hover: var(--bg-hover); // 表格悬浮行背景色
+    --bg-inner-modal: #fff; // 动框背景色
+
+    --fcp: #333; // font-color-primary : app-main主要字体色。用于app-main内容字体色。
+    --fcpl: #333; // font-color-primary-layout : layout主要字体色。用于layout布局字体色。区分是为考虑主题风格app-main保持不变的情况。
+    --fcs: #666; // font-color-secondray : 次级字体色
+    --fct: #999; // font-color-tertiary : 三级字体色
+    --fcsts: #fff; // font-color-same-theme-style : 主题同色字体色
+    --fcl: #333; // font-color-label : label字体色
+    --fcc: #666; // font-color-content : content字体色
+
+    --bcp: #ccc; // border-color-primary : 主要边框色
+    --bcs: #ddd; // border-color-secondary : 次级边框色
+    --bct: #eee; // border-color-tertiary: 三级边框色
+
+    // 其他自定义主题配置
+    --bg-topHeader: skyblue; // top-header 背景色
+    --bg-leftNav: #e5ffff; // left-nav 背景色
+    --bg-topNav: #e5ffff; // top-nav 背景色
+    --bg-topBar: #f0ffff; // top-bar 背景色
+    --bg-topTag: #f0ffff; // top-bar 背景色
+    // --bg-tableHeader: #f1f1f1; // 表格头部背景色
+    // --bg-tableHoverRow: #f0ffff; // 表格悬浮行背景色
+    // // --bg-tableHoverRow: var(--bg-hover); // 表格悬浮行背景色
+    // --bg-tableOddRow: #fff; // 表格奇数行背景色
+    // --bg-tableEvenRow: #f5f7fa; // 表格偶数行背景色
+    --bg-tableHeader: #22becd; // 表格头部背景色
+    --bg-tableHoverRow: #cffeff; // 表格悬浮行背景色
+    --bg-tableOddRow: #e0ffff; // 表格奇数行背景色
+    --bg-tableEvenRow: #f0ffff; // 表格偶数行背景色
+    --bg-tableBody: #eff;
+  }
+  &[theme-style="dark"] {
+    // 固定主题配置
+    --bg-primary: #333; // 主要背景色
+    --bg-layout: #1a1a1a; // 布局背景色
+    --bg-card: #333; // 卡片背景色
+    --bg-inner-primary: #1a1a1a; // 组件主要背景色
+    --bg-inner-secondary: #333; // 组件二级背景色
+    --bg-inner-tertiary: #666; // 组件三级背景色
+    // --bg-inner-hover: #666; // 组件悬浮背景色
+    --bg-inner-hover: var(--bg-hover); // 表格悬浮行背景色
+    --bg-inner-modal: #1a1a1a; // 组件弹窗背景色
+
+    --fcp: #fff; // font-color-primary : app-main主要字体色。用于app-main内容字体色。
+    --fcpl: #fff; // font-color-primary : app-main主要字体色。用于app-main内容字体色。
+    --fcs: rgba(255, 255, 255, 0.8); // font-color-secondray : 次级字体色
+    --fct: rgba(255, 255, 255, 0.6); // font-color-tertiary : 三级字体色
+    --fcsts: #000; // font-color-same-theme-style : 主题同色字体色
+    --fcl: rgba(255, 255, 255, 0.8); // font-color-label : label字体色
+    --fcc: rgba(255, 255, 255, 0.6); // font-color-content : content字体色
+
+    --bcp: #efefef; // border-color-primary : 主要边框色
+    --bcs: #5d5d5d; // border-color-secondary : 次级边框色
+    --bct: #666; // border-color-tertiary: 三级边框色
+
+    // 其他自定义主题配置
+    --bg-topHeader: #1a1a1a; // top-header 背景色
+    --bg-leftNav: #333; // left-nav 背景色
+    --bg-topNav: #333; // top-nav 背景色
+    --bg-topBar: #1e2338; // top-bar 背景色
+    --bg-topTag: #1e2338; // top-bar 背景色
+    --bg-tableHeader: #1e2338; // 表格头部背景色
+    // --bg-tableHoverRow: #008080; // 表格悬浮行背景色
+    --bg-tableHoverRow: var(--bg-hover); // 表格悬浮行背景色
+    --bg-tableOddRow: #aaa; // 表格奇数行背景色
+    --bg-tableEvenRow: #ccc; // 表格偶数行背景色
+    --bg-tableBody: #333;
+  }
+}
+
+// 二、element主题风格样式
+:root {
+  &[theme-style="light"] {
+  }
+  &[theme-style="dark"] {
+    // el-input
+    .el-input__inner,
+    .el-textarea__inner {
+      background-color: var(--bg-inner-primary);
+      color: var(--fcs);
+      border: 1px solid var(--bcs);
+      &[disabled*="disabled"] {
+        background-color: var(--bg-inner-primary);
+        color: var(--fcs);
+        border: 1px solid var(--bcs);
+      }
+      &:focus {
+        border-color: var(--tc) !important;
+      }
+    }
+
+    // el-select
+    .el-select {
+    }
+    .el-select-dropdown,
+    .el-cascader__dropdown {
+      background-color: var(--bg-inner-primary);
+      border: 1px solid var(--bcs);
+      .el-select-dropdown__item {
+        color: var(--fcs);
+        background-color: var(--bg-innner-primary);
+        &[class*="selected"] {
+          color: var(--tc);
+        }
+        &[class*="hover"] {
+          background-color: var(--bg-inner-hover);
+        }
+      }
+    }
+
+    // el-form-item
+    .el-form-item {
+      .el-form-item__label {
+        color: var(--fcp);
+      }
+    }
+
+    // el-date
+    .el-date-editor {
+      .el-input__inner {
+        background-color: var(--bg-inner-primary);
+        color: var(--fcs);
+        border: 1px solid var(--bcs);
+      }
+      .el-range-input {
+        background-color: var(--bg-inner-secondary);
+        color: var(--fcs);
+      }
+      .el-range-separator {
+        color: var(--fcs);
+      }
+    }
+    .el-date-picker {
+      &.el-picker-panel {
+        background-color: var(--bg-inner-primary);
+        border: 1px solid var(--bcs);
+        .el-picker-panel__body {
+          .el-input__inner {
+            background-color: var(--bg-inner-secondary);
+          }
+          .el-time-panel {
+            background-color: var(--bg-inner-primary);
+            .el-time-panel__content {
+              .el-time-spinner__item {
+                color: var(--fcs);
+              }
+            }
+            .el-time-panel__footer {
+              .el-time-panel__btn.cancel {
+                color: var(--fcs);
+              }
+            }
+          }
+        }
+        .el-date-picker__header {
+          .el-picker-panel__icon-btn {
+            color: var(--fcs);
+          }
+          span {
+            color: var(--fcs);
+          }
+        }
+        .el-picker-panel__content {
+          color: var(--fcs);
+          th {
+            color: var(--fcs);
+          }
+          td[class*="disabled"] div {
+            background-color: var(--bg-inner-tertiary);
+          }
+        }
+        .el-picker-panel__footer {
+          background-color: var(--bg-inner);
+          .el-button--default {
+            background-color: var(--bg-inner-secondary);
+            color: var(--fcs);
+            border: 1px solid var(--bcs);
+            &:hover {
+              border: 1px solid var(--tc);
+              color: var(--tc);
+            }
+          }
+        }
+      }
+    }
+    // el-range
+    .el-range-editor {
+      background-color: var(--bg-inner-primary);
+      .in-range div {
+        background-color: var(--bg-inner-secondary);
+      }
+      .el-time-panel {
+        background-color: var(--bg-inner-primary);
+
+        .el-time-spinner__item {
+          color: var(--fcp);
+          &:hover {
+            background-color: var(--bg-inner-secondary);
+          }
+        }
+        .el-time-panel__btn.cancel {
+          color: rgba(255, 255, 255, 0.8);
+        }
+      }
+    }
+    // el-pagination
+    .el-pagination {
+      .el-pagination__total {
+        color: var(--fcp);
+      }
+      .btn-prev,
+      .btn-next {
+        background-color: var(--bg-inner-primary);
+        span {
+          color: var(--fcp);
+        }
+        &[disabled*="disabled"] {
+          background-color: var(--bg-inner-primary);
+        }
+      }
+      .el-pager {
+        li {
+          background-color: var(--bg-inner-primary);
+          color: var(--fcs);
+        }
+      }
+      .el-pagination__jump {
+        color: var(--fcp);
+      }
+    }
+    // el-dropdown
+    .el-dropdown-menu {
+      border-color: var(--bcs);
+      background-color: var(--bg-inner-primary);
+      & * {
+        color: var(--fcpl);
+      }
+      .el-dropdown-menu__item {
+        &:hover {
+          background-color: var(--tca6);
+        }
+      }
+    }
+    // el-popper
+    .el-popper {
+      &[x-placement="bottom-start"] .popper__arrow,
+      &[x-placement="bottom-end"] .popper__arrow {
+        border-bottom-color: var(--bcs);
+        &::after {
+          border-bottom-color: var(--bg-inner-primary);
+        }
+      }
+    }
+
+    // el-message-box
+    .el-message-box {
+      border-bottom: 1px solid var(bcp);
+      background-color: var(--bg-inner-primary);
+      .el-message-box__header {
+        .el-message-box__title {
+          color: var(--fcp);
+        }
+        border-bottom: 1px solid var(bcs);
+        .el-message-box__headerbtn {
+          .el-message-box__close {
+            color: var(--fcp);
+          }
+        }
+      }
+      .el-message-box__content {
+        .el-message-box__container {
+          color: var(--fcs);
+        }
+      }
+      .el-message-box__btns {
+        .el-button {
+          &:last-child {
+            background: var(--tc);
+            border-color: var(--tc);
+            &:hover {
+              border-color: var(--tca6);
+              background-color: var(--tca6);
+            }
+          }
+        }
+      }
+    }
+
+    // el-dialog
+    .el-dialog__wrapper {
+      .el-dialog {
+        background-color: var(--bg-inner-primary);
+      }
+    }
+  }
+
+  // el-table
+  .el-table {
+    margin: 10px;
+    width: calc(100% - 20px);
+    background-color: var(--bg-inner-primary);
+    &::before {
+      display: none;
+    }
+
+    .el-table__header-wrapper {
+      .el-table__header {
+        border-left: 0;
+        .el-table__cell {
+          background-color: var(--bg-tableHeader);
+          border-bottom-color: var(--bcs);
+          padding: 12px 0 12px;
+          .cell {
+            color: var(--fcp);
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 25px;
+          }
+        }
+      }
+    }
+    .el-table__body-wrapper {
+      background-color: var(--bg-tableBody);
+      .el-table__body {
+        border-left: 0;
+        .el-table__row {
+          td {
+            border-bottom: 1px solid var(--bcs);
+            background: transparent;
+          }
+          &:hover {
+            td {
+              background-color: var(--bg-tableHoverRow);
+            }
+          }
+          &:nth-child(2n + 1) {
+            background-color: var(--bg-tableOddRow);
+          }
+
+          &:nth-child(2n) {
+            background-color: var(--bg-tableOddRow);
+          }
+
+          .el-table__cell {
+            padding: 8px 0 8px;
+            box-sizing: content-box;
+            .cell {
+              color: #333;
+              font-size: 14px;
+              font-weight: 400;
+              line-height: 23px;
+              min-height: 20px;
+            }
+          }
+        }
+      }
+    }
+
+    // 斑马纹
+    &.el-table--striped {
+      .el-table__body-wrapper {
+        .el-table__body {
+          .el-table__row {
+            &:nth-child(2n) {
+              background-color: var(--bg-tableEvenRow);
+            }
+          }
+        }
+      }
+    }
+
+    // 边框
+    &.el-table--border {
+      border: 1px solid var(--bcs);
+      &::before,
+      &::after {
+        display: none;
+      }
+      .el-table__header-wrapper {
+        .el-table__header {
+          th {
+            border-right-color: var(--bcs);
+          }
+        }
+      }
+      .el-table__body-wrapper {
+        .el-table__body {
+          .el-table__row {
+            td {
+              border-right-color: var(--bcs);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 三、element主题基础样式
+:root {
+  // el-tooltip
+  .el-tooltip__popper {
+    max-width: 600px;
+    line-height: 24px;
+    white-space: wrap;
+    &.is-dark {
+      background-color: #1a1a1a;
+      color: #fff;
+    }
+  }
+}
+
+// 四、组件主题样式
+:root {
+  //   &[theme-style="light"] #app .top-header-vue {
+  //   }
+  //   &[theme-style="dark"] #app .top-header-vue {
+  //   }
+}
