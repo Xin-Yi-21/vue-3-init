@@ -4,58 +4,37 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    icon: {
-      type: String,
-      default: ''
-    },
-    tabList: {
-      type: Array,
-      default: () => []
-    },
-    currentTab: {
-      type: String,
-      default: ''
-    },
-  },
-  data() {
-    return {
-
-    }
-  },
-
-  methods: {
-    handleChangeTab(tabItem) {
-      this.$emit('change', tabItem)
-    }
-  },
-}
+<script setup>
+const props = defineProps({
+  // tab页数组
+  tabList: { type: Array, default: () => [] },
+  // 当前tab页
+  currentTab: { type: String, default: '' },
+})
+const emit = defineEmits(['change'])
+emit('change', tabItem)
 </script>
 
 <style lang="scss" scoped>
 .c-tab {
-  width: auto;
-  height: 100%;
   display: inline-flex;
+  width: auto;
   height: 36px;
-  border-radius: 18px;
   overflow: hidden;
+  border-radius: 18px;
 
   .tab-item {
     min-width: 120px;
     height: 100%;
-    text-align: center;
-    line-height: 36px;
+    padding: 0 20px;
     border: 1px solid var(--bcs);
     border-right: 0;
-    cursor: pointer;
     color: var(--fcp);
-    padding: 0 20px;
+    line-height: 36px;
+    text-align: center;
+    cursor: pointer;
 
     &:first-child {
-      // border: 1px solid #ccc;
       border-top-left-radius: 18px;
       border-bottom-left-radius: 18px;
     }
@@ -68,15 +47,14 @@ export default {
 
     &.is-active {
       background-color: var(--tc);
+      border-color: var(--tc);
       color: #fff;
       font-weight: 700;
-      border-color: var(--tc);
 
       &+div {
         border-left-color: var(--tc);
       }
     }
   }
-
 }
 </style>

@@ -3,87 +3,67 @@
   </el-pagination>
 </template>
 
-<script>
-export default {
-  props: {
-    currentPageNum: {
-      type: Number,
-      default: 1,
-    },
-    currentPageSize: {
-      type: Number,
-      dafault: 10,
-    },
-    pageSizeList: {
-      type: Array,
-      default: () => { return [5, 10, 15, 20, 30] }
-    },
-    layout: {
-      type: String,
-      default: 'total,prev,pager,next,sizes,jumper',
-    },
-    total: {
-      type: Number,
-      default: 0
-    }
-  },
-  computed: {
-    pageNum: {
-      get() { return this.currentPageNum },
-      set() { }
-    },
-    pageSize: {
-      get() { return this.currentPageSize },
-      set() { }
-    }
-  },
-  mounted() {
-  },
-  data() {
-    return {
+<script setup>
+const props = defineProps({
+  // 当前页码值
+  currentPageNum: { type: Number, default: 1, },
+  // 当前页容量
+  currentPageSize: { type: Number, dafault: 10, },
+  // 总数
+  total: { type: Number, default: 0 },
+  // 页容量选择数组
+  pageSizeList: { type: Array, default: () => { return [5, 10, 15, 20, 30] } },
+  // 分页布局配置
+  layout: { type: String, default: 'total,prev,pager,next,sizes,jumper', },
+})
 
-    }
-  },
-  methods: {
-    // 分页-改变页容量
-    handleChangePageSize(pageSize) {
-      this.$emit('update:currentPageSize', pageSize)       // this.$parent.form.currentPageSize = pageSize // 写法2
-      this.$emit('getTable')
-      // this.$parent.getTableData()
-    },
-    // 分页-改变页码值
-    handleChangePageNum(pageNum) {
-      this.$emit('update:currentPageNum', pageNum)
-      // this.$parent.getTableData()
-      this.$emit('getTable')
-    }
-  },
+const emit = defineEmits(['update:currentPageNum', 'update:currentPageSize', 'getTable'])
+const pageNum = computed({
+  get: () => props.currentPageNum,
+  set: (newValue) => emit('update:currentPageNum', newValue)
+})
+
+const pageSize = computed({
+  get: () => props.currentPageSize,
+  set: (newValue) => emit('update:currentPageSize', newValue)
+})
+// 分页-改变页容量
+function handleChangePageSize(pageSize) {
+  emit('update:currentPageSize', pageSize)       // this.$parent.form.currentPageSize = pageSize // vue2写法2
+  emit('getTable')
+}
+// 分页-改变页码值
+function handleChangePageNum(pageNum) {
+  emit('update:currentPageNum', pageNum)
+  emit('getTable')
 }
 </script>
 
 <style lang="scss" scoped>
-::v-deep.c-pagination {
+:v-deep(.c-pagination) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 30px;
   margin: 10px 20px;
+  padding: 0;
   text-align: right;
-  padding: 1px 5px;
+
   .btn-prev,
   .btn-next {
-    padding: 0 5px;
+    padding: 0 5px !important;
   }
 
   .el-pager {
-    // .number {
-    // &:hover {
-    //   color: #3ea48b !important;
-    // }
-    // }
     .active {
-      background-color: var(--themeColor) !important;
+      background-color: var(--tc) !important;
     }
   }
+
   .el-pagination__sizes {
     margin: 0 5px;
   }
+
   .el-pagination__jump {
     margin-left: 5px;
   }

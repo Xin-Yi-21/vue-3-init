@@ -2,43 +2,24 @@
   <span class="c-card-rectangle" :style="`width:${width}px;height:${height}px;backgroundColor:${bg};`"></span>
 </template>
 
-<script>
+<script setup>
 // import variable from '@/assets/styles/variable.scss'
-export default {
-  props: {
-    bg: {
-      type: String,
-      default: variable.tc,
-    },
-    width: {
-      type: [String, Number],
-      default: 5,
-    },
-    height: {
-      type: [String, Number],
-      default: 20,
-    }
-  },
-  created() {
-  },
-  data() {
-    return {
-
-    }
-  },
-
-  methods: {
-
-  },
-}
+const props = defineProps({
+  // 矩形背景色
+  bg: { type: String, default: variable.tc, },
+  // 矩形宽度
+  width: { type: [String, Number], default: 5, },
+  // 矩形高度
+  height: { type: [String, Number], default: 20, }
+})
 </script>
 
 <style lang="scss" scoped>
 .c-card-rectangle {
-  width: 5px;
-  height: 20px;
   position: relative;
   display: inline-block;
+  width: 5px;
+  height: 20px;
   margin-right: 5px;
   background-color: var(--tc);
 }

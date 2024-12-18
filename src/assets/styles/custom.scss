@@ -139,7 +139,7 @@
   &.el-form-item {
     .el-form-item__label {
       &::before {
-        content: "*";
+        content: '*';
         color: #ff4949;
         margin-right: 4px;
       }
@@ -147,7 +147,7 @@
   }
   &:not(.el-form-item) {
     &::before {
-      content: "*";
+      content: '*';
       color: #ff4949;
       margin-right: 4px;
     }
@@ -158,10 +158,10 @@
   width: 100%;
   display: flex;
   flex-shrink: 0;
-  &[class*="c-row-aic"] {
+  &[class*='c-row-aic'] {
     align-items: center;
   }
-  &[class*="c-row-fdc"] {
+  &[class*='c-row-fdc'] {
     flex-direction: column;
   }
   .c-column {
@@ -414,7 +414,7 @@
           }
         }
 
-        &[class*="is-disabled"] {
+        &[class*='is-disabled'] {
           .el-textarea__inner {
             border-color: #dfe4ed;
             background-color: #fff;
@@ -677,6 +677,32 @@
     }
   }
 }
+
+// c-el-scrollbar
+.el-scrollbar:has(> .c-el-scrollbar) {
+  height: 100%;
+  .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
+  .el-scrollbar__bar {
+    bottom: 2px;
+    right: 2px;
+    &.is-vertical {
+      width: 5px;
+      top: 2px;
+      right: 0;
+    }
+    &.is-horizontal {
+      height: 5px;
+      left: 2px;
+    }
+    .el-scrollbar__thumb {
+      background-color: var(--tc);
+      opacity: 1;
+    }
+  }
+}
+
 // echart tooltip样式
 .c-echart-tooltip {
   min-width: 100px;
@@ -731,27 +757,13 @@
     }
   }
 }
-// c-el-scrollbar
-.el-scrollbar:has(> .c-el-scrollbar) {
-  height: 100%;
-  .el-scrollbar__wrap {
-    overflow-x: hidden;
-  }
-  .el-scrollbar__bar {
-    bottom: 2px;
-    right: 2px;
-    &.is-vertical {
-      width: 5px;
-      top: 2px;
-      right: 0;
-    }
-    &.is-horizontal {
-      height: 5px;
-      left: 2px;
-    }
-    .el-scrollbar__thumb {
-      background-color: var(--tc);
-      opacity: 1;
-    }
-  }
+// c-icon tooltip样式
+.c-icon-tooltip {
+  padding: 0 !important;
+  border: 0 !important;
+  background-color: transparent !important;
+  line-height: 1 !important;
+  transform: translateY(5px);
+  transition: none !important;
+  color: var(--fcp);
 }

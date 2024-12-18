@@ -7,49 +7,31 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    icon: {
-      type: String,
-      default: ''
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-  },
-  data() {
-    return {
-
-    }
-  },
-
-  methods: {
-
-  },
-}
+<script setup>
+const props = defineProps({
+  icon: { type: String, default: '', },
+  title: { type: String, default: '', },
+})
 </script>
 
 <style lang="scss" scoped>
 .c-card-title {
-  height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 10px;
   flex-shrink: 0;
   overflow: hidden;
+  height: 100%;
+  padding: 0 10px;
 
   .card-title-icon-svg {
-    font-size: 18px;
     flex-shrink: 0;
+    font-size: 18px;
   }
 
   .card-title {
-    font-family: PingFang SC, PingFang SC;
+    color: var(--fcp);
     font-weight: 700;
     font-size: 16px;
-    color: var(--fcp);
     white-space: nowrap;
   }
 }

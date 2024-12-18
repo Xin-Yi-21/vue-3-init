@@ -46,7 +46,7 @@ setConfig(app).then(async () => {
   // const cTooltip = (await import('@/components/project/custom-tooltip')).default
   // const cPagination = (await import('@/components/project/custom-pagination')).default
   // const cButton = (await import('@/components/project/custom-button')).default
-  // const cIcon = (await import('@/components/project/custom-icon')).default
+  const cIcon = (await import('@/components/project/custom-icon')).default
   // // const cPreview = (await import('@/components/project/custom-preview')).default
   // const cFileList = (await import('@/components/project/custom-file-list')).default
   // const cCardCircle = (await import('@/components/project/custom-card-circle')).default
@@ -58,7 +58,7 @@ setConfig(app).then(async () => {
   // app.component('cTooltip', cTooltip)
   // app.component('cPagination', cPagination)
   // app.component('cButton', cButton)
-  // app.component('cIcon', cIcon)
+  app.component('cIcon', cIcon)
   // // app.component('cPreview', cPreview)
   // app.component('cFileList', cFileList)
   // app.component('cCardCircle', cCardCircle)

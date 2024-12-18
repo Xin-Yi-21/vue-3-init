@@ -10,55 +10,38 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    icon: {
-      type: String,
-      default: ''
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    border: {
-      type: Boolean,
-      default: true
-    }
-  },
-  data() {
-    return {
-
-    }
-  },
-
-  methods: {
-
-  },
-}
+<script setup>
+const props = defineProps({
+  // 头部图标
+  icon: { type: String, default: '' },
+  // 头部标题
+  title: { type: String, default: '' },
+  // 是否有底部边框线
+  border: { type: Boolean, default: true },
+})
 </script>
 
 <style lang="scss" scoped>
 .c-card-header {
-  width: 100%;
-  height: 50px;
   display: flex;
   align-items: center;
-  padding: 0 10px;
   flex-shrink: 0;
   overflow: hidden;
+  width: 100%;
+  height: 50px;
+  padding: 0 10px;
 
   .left {
-    margin-right: auto;
-    height: 100%;
     display: flex;
     align-items: center;
+    height: 100%;
+    margin-right: auto;
   }
 
   .right {
-    height: 100%;
     display: flex;
     align-items: center;
+    height: 100%;
   }
 }
 </style>

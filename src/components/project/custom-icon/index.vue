@@ -1,72 +1,66 @@
 <template>
   <i :class="{ 'c-icon': true, 'is-disabled': disabled }" :style="`color:${color};font-size:${size}px;cursor:${cursor};`" @click="handleIconClick">
-    <svg-icon :icon-class="i"></svg-icon>
-    <span class="icon-tip" v-if="tip" :style="`top:${topTipPx}px`">{{ tip }}</span>
-    <!-- <el-tooltip ref="tooltip" effect="light" placement="top" popper-class="custom-icon-el-tooltip" :visible-arrow="false" v-if="tip">
-      <svg-icon :icon-class="i" :style="`color:${color};`"></svg-icon>
-      <span slot="content" :style="`color:${color};`">{{tip}}</span>
+    <el-tooltip ref="tooltip" effect="light" placement="top" popper-class="c-icon-tooltip" :visible-arrow="false" v-if="tip && showType == 'el'">
+      <svg-icon :icon-class="i"></svg-icon>
+      <span slot="content" :style="`color:${hoverColor};`">{{ tip }}</span>
     </el-tooltip>
-    <svg-icon v-else :icon-class="i" :style="`color:${color};`"></svg-icon> -->
+    <template v-else>
+      <svg-icon :icon-class="i"></svg-icon>
+      <span class="icon-tip" :style="`top:${topTipPx}px`" v-if="tip">{{ tip }}</span>
+    </template>
   </i>
 </template>
 
 <script setup>
-  const props = defineProps({
-    i: {    // svg-icon的名称
-      type: String,
-      default: '',
-    },
-    color: { // 图标颜色
-      type: String,
-      default: 'inherit',
-    },
-    size: {  // 图标大小
-      type: [Number, String],
-      default: '16',
-    },
-    tip: {   // 图标提示
-      type: String,
-      default: '',
-    },
-    disabled: {  // 禁用
-      type: Boolean,
-      default: false,
-    },
-    topTipPx: {
-      type: [Number, String],
-      default: -1,
-    },
-    cursor: {
-      type: String,
-      default: 'pointer',
-    }
-  })
-  const emit = defineEmits()
-  const handleIconClick = () => {
-    if (!props.disabled) {
-      emit('click')
-    }
+const props = defineProps({
+  // 引用svg文件名称
+  i: { type: String, default: '', },
+  // 图标颜色
+  color: { type: String, default: 'inherit', },
+  // 图标悬浮颜色
+  hoverColor: { type: String, default: 'inherit', },
+  // 图标大小
+  size: { type: [Number, String], default: '16', },
+  // 图标提示
+  tip: { type: String, default: '', },
+  // 禁用
+  disabled: { type: Boolean, default: false, },
+  // 间距
+  topTipPx: { type: [Number, String], default: -1, },
+  // 显示类型
+  showType: { type: String, default: 'custom', },
+  // 悬浮效果
+  cursor: { type: String, default: 'pointer', },
+})
+const emit = defineEmits()
+const handleIconClick = () => {
+  if (!props.disabled) {
+    emit('click')
   }
+}
 </script>
 
 <style lang="scss" scoped>
 .c-icon {
-  display: inline-flex;
   position: relative;
+  display: inline-flex;
   font-style: normal;
   font-weight: 400;
-  cursor: pointer;
+  color: var(--color);
+
+  &:hover {
+    * {
+      color: var(--hoverColor);
+    }
+  }
 
   &[class*="is-disabled"] {
     cursor: not-allowed !important;
-    /* 改变鼠标指针样式为不允许操作 */
-    // pointer-events: none; /* 禁止元素接收鼠标事件 */
+    // pointer-events: none; 禁止元素接收鼠标事件
     opacity: 0.6;
-    /* 设置元素透明度为半透明，以表示禁用状态 */
   }
 
   .svg-icon {
-    color: inherit;
     font-size: inherit;
     margin: 0 5px;
   }
@@ -76,8 +70,8 @@
   }
 
   .icon-tip {
-    display: none;
     position: absolute;
+    display: none;
     top: -1px;
     left: 50%;
     transform: translate(-50%, calc(-100% - 2px));
@@ -86,15 +80,5 @@
     line-height: 12px;
     z-index: 9999;
   }
-}
-</style>
-<style lang="scss">
-.custom-icon-el-tooltip {
-  border: 0 !important;
-  background-color: transparent !important;
-  padding: 0 !important;
-  line-height: 1 !important;
-  transform: translateY(5px);
-  transition: none !important;
 }
 </style>
