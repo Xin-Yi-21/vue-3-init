@@ -17,6 +17,7 @@
 </template>
 
 <script setup>
+// 一、综合初始化
 import TopHeader from '@/layout/components/top/top-header/index.vue'
 import TopBar from '@/layout/components/top/top-bar/index.vue'
 import TopTag from '@/layout/components/top/top-tag/index.vue'
@@ -26,7 +27,6 @@ import AppMain from '@/layout/components/app-main/index.vue'
 import Setting from '@/layout/components/setting/index.vue'
 import useEnumsStore from '@/store/project/enums'
 import useSettingStore from '@/store/system/setting'
-// 一、综合初始化
 const settingStore = useSettingStore()
 onMounted(() => { init() })
 function init() {
@@ -49,10 +49,13 @@ function setLayout() {
 
 // 3、初始布局设置
 function setSetting() {
+  settingStore.setThemeStyle()
   settingStore.setThemeColor()
   settingStore.setTopHeader()
   settingStore.setLeftNav()
 }
+
+
 </script>
 
 <style lang="scss" scoped>

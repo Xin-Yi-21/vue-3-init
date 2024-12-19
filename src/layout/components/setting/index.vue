@@ -93,11 +93,11 @@ function openSetting() {
 defineExpose({ openSetting, })
 // 2、修改主题风格
 function handleThemeStyle() {
-
+  setting.setThemeStyle()
 }
 // 3、修改主题颜色
-function handleThemeColor(val) {
-  setting.setThemeColor(val)
+function handleThemeColor() {
+  setting.setThemeColor()
 }
 // 4、保存配置
 function handleSaveSetting() {

@@ -5,9 +5,8 @@
 </template>
 
 <script setup>
-import useSettingStore from '@/store/system/setting'
 // 一、综合初始化
-import { handleThemeStyle } from '@/utils/theme'
+
 // 二、模块功能
 // 1、适配缩放
 const fitScale = (() => {
@@ -63,11 +62,9 @@ const fitScale = (() => {
   // console.log('window.outerWidth:', window.outerWidth, '      ', 'window.outerHeight:', window.outerHeight)
   // console.log('window.innerWidth:', window.innerWidth, '      ', 'window.innerHeight:', window.innerHeight)
 })
-
 // 三、生命周期
 onMounted(() => {
   fitScale()
-  handleThemeStyle(useSettingStore().themeStyle)
 })
 
 </script>

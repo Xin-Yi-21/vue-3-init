@@ -1,30 +1,26 @@
 window.vEnv = import.meta.env
 import { setConfig } from '@/api/system/config'
-import { createApp } from 'vue'
-import App from './App'
-
+import app from './app.js'
 // ⭐ element-plus 相关文件
 import ElementPlus from 'element-plus'
 import locale from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/dist/index.css'
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
+app.use(ElementPlus, { locale: locale, size: storageSetting.elSize || 'default' })
 // ⭐ ant-design 相关文件
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/reset.css'
 // import { message } from 'ant-design-vue'
+app.use(Antd)
+// app.config.globalProperties.$message = message
 // ⭐ svg图标 相关文件 
 import 'virtual:svg-icons-register'
 import SvgIcon from '@/components/system/svg-icon'
 import elementIcons from '@/components/system/svg-icon/svgicon'
+app.component('svg-icon', SvgIcon)
+app.use(elementIcons)
 // ⭐ 常用样式
 import '@/assets/styles/index.scss' // 全局样式
-
-const app = createApp(App)
-app.use(ElementPlus, { locale: locale, size: storageSetting.elSize || 'default' })
-app.use(Antd)
-// app.config.globalProperties.$message = message
-app.use(elementIcons)
-app.component('svg-icon', SvgIcon)
 setConfig().then(async (cEnv) => {
   try {
     document.title = cEnv.VITE_APP_TITLE

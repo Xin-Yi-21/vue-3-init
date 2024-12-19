@@ -1,3 +1,5 @@
+
+import app from '@/app.js'
 // 处理主题样式
 export function handleThemeColor(themeColor) {
   document.documentElement.style.setProperty('--el-color-primary', themeColor)
@@ -15,10 +17,11 @@ export function handleThemeColor(themeColor) {
 // 处理主题样式
 export function handleThemeStyle(themeStyle) {
   document.documentElement.setAttribute('theme-style', themeStyle)
+  app.config.globalProperties.$color = 'red'
   if (themeStyle === 'light') {
-    window.vueApp.config.globalProperties.$echartTheme = { bg: '#fff', fcp: '#333', fcs: '#666', fct: '#999', bcp: '#ccc', bcs: '#ddd', bct: '#eee', }
+    app.config.globalProperties.$echartTheme = { bg: '#fff', fcp: '#333', fcs: '#666', fct: '#999', bcp: '#ccc', bcs: '#ddd', bct: '#eee', }
   } else if (themeStyle === 'dark') {
-    window.vueApp.config.globalProperties.$echartTheme = { bg: '#333', fcp: '#fff', fcs: 'rgba(255, 255, 255, 0.8)', fct: 'rgba(255, 255, 255, 0.6)', bcp: '#efefef', bcs: '#5d5d5d', bct: '#666', }
+    app.config.globalProperties.$echartTheme = { bg: '#333', fcp: '#fff', fcs: 'rgba(255, 255, 255, 0.8)', fct: 'rgba(255, 255, 255, 0.6)', bcp: '#efefef', bcs: '#5d5d5d', bct: '#666', }
   }
 
   // function getRootCssVariables() {
@@ -51,15 +54,19 @@ export function handleThemeStyle(themeStyle) {
   // }
   // console.log('11111', getRootCssVariables());
 
-  const theme = {}
-  const styles = document.documentElement.style
-  for (let i = 0; i < styles.length; i++) {
-    const property = styles[i]
-    if (property.startsWith('--')) {
-      theme[property] = styles.getPropertyValue(property).trim()
-    }
-  }
-  window.vueApp.config.globalProperties.$theme = theme
+  // here
+  // const theme = {}
+  // const styles = document.documentElement.style
+  // for (let i = 0; i < styles.length; i++) {
+  //   const property = styles[i]
+  //   if (property.startsWith('--')) {
+  //     theme[property] = styles.getPropertyValue(property).trim()
+  //   }
+  // }
+  // app.config.globalProperties.$theme = theme
+  // here
+
+
   // window.dispatchEvent(new CustomEvent('theme-style-change'))
   // window.removeEventListener('theme-style-change')
 }

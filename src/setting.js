@@ -1,6 +1,4 @@
 export default {
-  // // 网页标题
-  // defaultTitle: window?.cEnv?.VITE_APP_TITLE || '',
   // 动态标题
   isDynamicTitle: true,
   // 主题风格
