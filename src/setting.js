@@ -1,8 +1,6 @@
-import { cEnv } from '@/api/system/config'
-console.log('setting配置文件 [src/setting.js] cEnv', cEnv)
 export default {
-  // 网页标题
-  defaultTitle: cEnv.VITE_APP_TITLE || '',
+  // // 网页标题
+  // defaultTitle: window?.cEnv?.VITE_APP_TITLE || '',
   // 动态标题
   isDynamicTitle: true,
   // 主题风格

@@ -1,21 +1,15 @@
 <template>
-  <router-view />
+  <div id="app">
+    <router-view />
+  </div>
 </template>
 
 <script setup>
-
-// 一、综合初始化
-
-// 二、模块功能
-// 1、执行设置
 import useSettingStore from '@/store/system/setting'
-const settingStore = useSettingStore()
-function setSetting() {
-  settingStore.setThemeColor()
-  settingStore.setTopHeader()
-  settingStore.setLeftNav()
-}
-// 2、适配缩放
+// 一、综合初始化
+import { handleThemeStyle } from '@/utils/theme'
+// 二、模块功能
+// 1、适配缩放
 const fitScale = (() => {
   // 任务栏的大小
   let taskbarX = window.screen.width - window.screen.availWidth
@@ -71,13 +65,10 @@ const fitScale = (() => {
 })
 
 // 三、生命周期
-
 onMounted(() => {
   fitScale()
-  nextTick(() => { setSetting() })
+  handleThemeStyle(useSettingStore().themeStyle)
 })
-
-
 
 </script>
 <style lang="scss" scoped>

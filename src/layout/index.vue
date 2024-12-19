@@ -26,12 +26,12 @@ import AppMain from '@/layout/components/app-main/index.vue'
 import Setting from '@/layout/components/setting/index.vue'
 import useEnumsStore from '@/store/project/enums'
 import useSettingStore from '@/store/system/setting'
-
 // 一、综合初始化
 const settingStore = useSettingStore()
 onMounted(() => { init() })
 function init() {
   getEnums()
+  setSetting()
 }
 // 二、模块功能
 // 1、获取枚举
@@ -45,6 +45,13 @@ async function getEnums() {
 const settingRef = ref(null)
 function setLayout() {
   settingRef.value.openSetting()
+}
+
+// 3、初始布局设置
+function setSetting() {
+  settingStore.setThemeColor()
+  settingStore.setTopHeader()
+  settingStore.setLeftNav()
 }
 </script>
 

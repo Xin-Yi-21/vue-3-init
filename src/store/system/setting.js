@@ -1,7 +1,7 @@
 import defaultSetting from '@/setting'
 // import { useDynamicTitle } from '@/utils/dynamicTitle'
 import { handleThemeColor } from '@/utils/theme'
-const { defaultTitle, isDynamicTitle, themeStyle, themeColor, elSize, topHeader, leftNav, topNav, topBar, topTag, isFullScreen } = defaultSetting
+const { isDynamicTitle, themeStyle, themeColor, elSize, topHeader, leftNav, topNav, topBar, topTag, isFullScreen } = defaultSetting
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 
 const useSettingStore = defineStore('setting', {
@@ -66,10 +66,9 @@ const useSettingStore = defineStore('setting', {
     },
     // 设置网页标题
     setTitle(title) {
-      console.log('走title', title, defaultTitle)
       this.routeTitle = title
       if (this.isDynamicTitle) {
-        document.title = this.routeTitle + ' - ' + defaultTitle
+        document.title = this.routeTitle + (window?.cEnv?.VITE_APP_Title ? ` - ${window.cEnv.VITE_APP_Title}` : '')
       } else {
         document.title = defaultTitle
       }
