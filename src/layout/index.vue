@@ -28,11 +28,7 @@ import Setting from '@/layout/components/setting/index.vue'
 import useEnumsStore from '@/store/project/enums'
 import useSettingStore from '@/store/system/setting'
 const settingStore = useSettingStore()
-onMounted(() => { init() })
-function init() {
-  getEnums()
-  setSetting()
-}
+
 // 二、模块功能
 // 1、获取枚举
 const isDataInitDone = ref(true)
@@ -40,13 +36,11 @@ async function getEnums() {
   try { await useEnumsStore().getEnums() } catch { }
   isDataInitDone.value = true
 }
-
 // 2、打开布局抽屉
 const settingRef = ref(null)
 function setLayout() {
   settingRef.value.openSetting()
 }
-
 // 3、初始布局设置
 function setSetting() {
   settingStore.setThemeStyle()
@@ -55,6 +49,12 @@ function setSetting() {
   settingStore.setLeftNav()
 }
 
+// 三、生命周期
+onMounted(() => { init() })
+function init() {
+  getEnums()
+  setSetting()
+}
 
 </script>
 
@@ -85,7 +85,7 @@ function setSetting() {
       height: 100%;
       overflow: hidden;
 
-      :v-deep(.app-main-vue) {
+      .app-main-vue {
         width: 100%;
         flex: 1;
         flex-shrink: 0;

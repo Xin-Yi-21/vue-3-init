@@ -70,7 +70,7 @@
       </div> -->
     </div>
     <div class="setting-footer">
-      <el-button @click="handleSaveSetting">保存配置</el-button>
+      <el-button type="primary" @click="handleSaveSetting">保存配置</el-button>
       <el-button @click="handleResetSetting">重置配置</el-button>
     </div>
   </el-drawer>
@@ -139,8 +139,21 @@ function handleResetSetting() {
 </script>
 
 <style lang="scss" scoped>
-.el-overlay {
+.el-drawer {
+
+  // padding: 0 10px;
+  .el-drawer__body {
+    padding: 20px;
+    background-color: var(--bg-primary);
+
+    & *:not(.el-button):not(.el-button *) {
+      color: var(--fcpl);
+    }
+  }
+
   .setting-part {
+    margin-bottom: 10px;
+
     .setting-item {
       height: 50px;
       display: flex;
@@ -153,13 +166,36 @@ function handleResetSetting() {
       }
 
       .el-radio-group {
+        display: inline-flex;
+        justify-content: flex-end;
         flex-wrap: nowrap;
+        flex: 1;
 
         .el-radio {
+          display: inline-flex;
+          align-items: center;
           margin-right: 10px;
+
+          .el-radio__input {
+            display: inline-flex;
+            align-items: center;
+          }
+
+          &:last-child {
+            margin-right: 0;
+          }
         }
       }
+
+      .el-slider {
+        flex: 1;
+      }
     }
+  }
+
+  .setting-footer {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>

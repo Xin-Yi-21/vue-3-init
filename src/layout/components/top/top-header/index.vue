@@ -219,6 +219,10 @@ function logout() {
         margin-right: 10px;
         color: var(--fcpl);
       }
+
+      .el-icon {
+        display: none;
+      }
     }
   }
 }

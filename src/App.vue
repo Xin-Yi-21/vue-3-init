@@ -62,6 +62,7 @@ const fitScale = (() => {
   // console.log('window.outerWidth:', window.outerWidth, '      ', 'window.outerHeight:', window.outerHeight)
   // console.log('window.innerWidth:', window.innerWidth, '      ', 'window.innerHeight:', window.innerHeight)
 })
+
 // 三、生命周期
 onMounted(() => {
   fitScale()
