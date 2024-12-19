@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import { cENV } from '@/api/system/config'
+import { cEnv } from '@/api/system/config'
 import Layout from '@/layout'
 // 常量路由
 export const constantRoutes = [
@@ -125,7 +125,7 @@ export const dynamicRoutes = [
 
 
 const router = createRouter({
-  history: createWebHistory(cENV.VITE_APP_PATH),
+  history: createWebHistory(cEnv.VITE_APP_PATH),
   routes: constantRoutes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

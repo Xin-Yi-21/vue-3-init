@@ -107,13 +107,12 @@ function logout() {
 </script>
 <style lang="scss" scoped>
 .top-header-vue {
-  height: 60px;
   display: flex;
   align-items: center;
   // background-image: url(@/assets/images/bg-header.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-color: skyblue;
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  background-color: var(--bg-topHeader);
   font-size: 14px;
 
   &.is-fixed {
@@ -129,41 +128,43 @@ function logout() {
     align-items: center;
 
     :deep(.svg-icon) {
-      font-size: 24px !important;
       margin: 0 10px;
+      color: var(--fcpl);
+      font-size: 24px !important;
     }
 
     .title {
       display: flex;
       align-items: center;
+      color: var(--fcpl);
       font-weight: 700;
       font-size: 30px;
-      color: #fff;
       text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.33);
     }
 
-    :deep(.breadcrumb-container) {
+    .breadcrumb-container {
+      margin-left: 10px;
       font-size: 16px;
 
       &::before {
-        content: '>';
+        // content: '>';
         margin-right: 10px;
-        color: #fff;
+        color: var(--fcs);
         font-size: 16px;
       }
 
       .el-breadcrumb__inner {
         a {
-          color: #fff;
+          color: var(--fcs);
         }
 
         .no-redirect {
-          color: #fff;
+          color: var(--fcs);
         }
       }
 
       .el-breadcrumb__separator {
-        color: #fff;
+        color: var(--fcs);
       }
     }
   }
@@ -174,20 +175,19 @@ function logout() {
 
 
   .time {
+    margin-right: 50px;
+    color: var(--fcs);
     font-family: PingFang SC, PingFang SC;
     font-weight: 800;
     font-size: 20px;
-    color: #ffffff;
     line-height: 28px;
     text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.33);
-    margin-right: 50px;
   }
 
   .user-name {
     display: flex;
     align-items: center;
     margin-right: 50px;
-    // vertical-align: middle;
   }
 
   .setting {
@@ -201,25 +201,43 @@ function logout() {
     }
 
     .avatar {
-      height: 40px;
       display: flex;
       align-items: center;
+      height: 40px;
 
       img {
         width: 36px;
         height: 36px;
-        padding: 2px;
-        border-radius: 50%;
-        /* 确保头像是圆形 */
-        border-radius: 50%;
-        border: 2px solid #333;
         margin-right: 10px;
+        padding: 2px;
+        border: 2px solid var(--fcpl);
+        border-radius: 50%;
+        background-color: #fff;
       }
 
       >span {
         margin-right: 10px;
+        color: var(--fcpl);
       }
     }
+  }
+}
+
+:deep(.el-dropdown-menu) {
+  .el-dropdown-menu__item {
+    display: flex;
+    align-items: center;
+
+    &>span {
+      margin-right: 5px;
+    }
+  }
+
+  .line {
+    width: 100%;
+    height: 1px;
+    margin: 5px 0;
+    background-color: var(--bcp);
   }
 }
 </style>

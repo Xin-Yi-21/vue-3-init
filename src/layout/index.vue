@@ -24,8 +24,6 @@ import TopNav from '@/layout/components/top/top-nav/index.vue'
 import LeftNav from '@/layout/components/left-nav/index.vue'
 import AppMain from '@/layout/components/app-main/index.vue'
 import Setting from '@/layout/components/setting/index.vue'
-
-import { handleColor } from '@/utils/theme'
 import useEnumsStore from '@/store/project/enums'
 import useSettingStore from '@/store/system/setting'
 
@@ -43,10 +41,7 @@ async function getEnums() {
   isDataInitDone.value = true
 }
 
-// 2、处理颜色
-handleColor(settingStore.themeColor)
-
-// 3、打开布局抽屉
+// 2、打开布局抽屉
 const settingRef = ref(null)
 function setLayout() {
   settingRef.value.openSetting()
@@ -57,81 +52,64 @@ function setLayout() {
 .layout-vue {
   width: 100%;
   height: 100%;
+  background-color: var(--bg-layout);
+
+  .top-header-vue {
+    height: var(--top-header-height);
+  }
 
   .main-container {
     display: flex;
-    height: calc(100% - 60px);
+    height: calc(100% - var(--top-header-height));
+
+    .left-nav-vue {
+      width: var(--left-nav-width);
+      flex-shrink: 0;
+    }
 
     .main-right-container {
       display: flex;
       flex-direction: column;
-      flex: 1;
       flex-shrink: 0;
+      width: calc(100% - var(--left-nav-width));
       height: 100%;
+      overflow: hidden;
 
-      .app-main-vue {
+      :v-deep(.app-main-vue) {
+        width: 100%;
         flex: 1;
         flex-shrink: 0;
-      }
-    }
-  }
-}
+        overflow: auto auto;
 
-.layout-vue.is-fixed {
-  .top-header-vue {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 99;
-  }
+        &>* {
+          // border-top: 1px solid transparent;
+          height: 100%;
+          overflow: hidden;
+        }
 
-  .main-container {
-    .left-nav-vue {
-      position: fixed;
-      width: 200px;
-      height: calc(100% - 60px);
-      top: 60px;
-      z-index: 99;
-    }
+        // 滚动条大小
+        &::-webkit-scrollbar {
+          display: block !important;
+          width: 5px !important;
+          height: 5px !important;
+        }
 
-    .main-right-container {
-      padding-left: 200px;
-      width: calc(100% - 200px);
+        // 滚动条轨道
+        &::-webkit-scrollbar-track {
+          border-radius: 10px;
+          background-color: #efefef;
+        }
 
-      .top-container {
-        position: fixed;
-        top: 60px;
-        left: 200px;
-        width: calc(100% - 200px);
-        z-index: 98;
-      }
+        // 滚动条滑块
+        &::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+          background-color: var(--tc);
+        }
 
-      .app-main-vue {
-        width: 100%;
-      }
-    }
-  }
-
-  .main-container:has(.left-nav-vue.is-collapse) {
-    .left-nav-vue {
-      width: 50px;
-    }
-
-    .main-right-container {
-      padding-left: 50px;
-      width: calc(100% - 50px);
-
-      .top-container {
-        position: fixed;
-        top: 60px;
-        left: 50px;
-        width: calc(100% - 50px);
-        z-index: 98;
-      }
-
-      .app-main-vue {
-        width: 100%;
+        // 滚动条右下角
+        &::-webkit-scrollbar-corner {
+          background: transparent;
+        }
       }
     }
   }

@@ -1,5 +1,6 @@
 
-const ENV = window.V
+console.log('部署配置文件 [public/config.js] vEnv', vEnv)
+// 部署配置文件
 const common = {
   VITE_APP_TITLE: 'V3项目初始化系统',
   VITE_APP_PATH: '/A',
@@ -28,6 +29,5 @@ const config = {
     VITE_APP_USER_API: `http://${ip.prod}/user`,
   }
 }
-
-return config[ENV.VITE_APP_ENV]
+return config[vEnv.VITE_APP_ENV]
 

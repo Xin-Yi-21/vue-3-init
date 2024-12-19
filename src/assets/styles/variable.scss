@@ -7,22 +7,22 @@
   --top-tag-height: 30px;
   // 头部
   & {
-    &:has(body[topHeaderStatus='show']) {
+    &[topHeaderStatus='show'] {
       --top-header-height: 60px;
     }
-    &:has(body[topHeaderStatus='hide']) {
+    &[topHeaderStatus='hide'] {
       --top-header-height: 0px;
     }
   }
   // 左侧导航
   & {
-    &:has(body[leftNavStatus='expand']) {
+    &[leftNavStatus='expand'] {
       --left-nav-width: 220px;
     }
-    &:has(body[leftNavStatus='collapse']) {
+    &[leftNavStatus='collapse'] {
       --left-nav-width: 60px;
     }
-    &:has(body[leftNavStatus='hide']) {
+    &[leftNavStatus='hide'] {
       --left-nav-width: 0px;
     }
   }

@@ -79,7 +79,6 @@
 <script setup>
 // 一、综合初始化
 import useSettingStore from '@/store/system/setting'
-import { handleColor } from '@/utils/theme'
 import { handleFixHeader, handleFullScreen } from '@/utils/setting'
 
 const { proxy } = getCurrentInstance()
@@ -98,7 +97,7 @@ function handleThemeStyle() {
 }
 // 3、修改主题颜色
 function handleThemeColor(val) {
-  handleColor(val)
+  setting.setThemeColor(val)
 }
 // 4、保存配置
 function handleSaveSetting() {

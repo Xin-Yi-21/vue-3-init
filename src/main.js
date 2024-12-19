@@ -2,8 +2,8 @@ import { createApp } from 'vue'
 import App from './App'
 const app = createApp(App)
 // ⭐ 项目全局配置
-window.V = import.meta.env
-import { setConfig, cENV } from '@/api/system/config'
+// window.vEnv = import.meta.env
+import { setConfig, cEnv } from '@/api/system/config'
 
 // ⭐ element-plus 相关文件
 import ElementPlus from 'element-plus'
@@ -21,8 +21,8 @@ app.config.globalProperties.$message = message
 
 // ⭐ svg图标 相关文件 
 import 'virtual:svg-icons-register'
-import SvgIcon from '@/components/system/SvgIcon'
-import elementIcons from '@/components/system/SvgIcon/svgicon'
+import SvgIcon from '@/components/system/svg-icon'
+import elementIcons from '@/components/system/svg-icon/svgicon'
 app.use(elementIcons)
 app.component('svg-icon', SvgIcon)
 
@@ -31,7 +31,7 @@ import '@/assets/styles/index.scss' // 全局样式
 
 // ⭐ 获取全局配置后执行的文件
 setConfig(app).then(async () => {
-  document.title = cENV.VITE_APP_TITLE
+  document.title = cEnv.VITE_APP_TITLE
   await import('./utils/request')                            // import('./utils/request')
   await import('./permission.js')                            // import('./permission')
   const directive = (await import('./directive')).default    // import directive from './directive'
@@ -93,6 +93,6 @@ setConfig(app).then(async () => {
   // app.config.globalProperties.$accurate = $accurate
   app.mount('#app')
 })
-
+// window.vueApp = app
 export default app
 

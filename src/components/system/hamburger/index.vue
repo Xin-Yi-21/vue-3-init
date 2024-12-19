@@ -5,24 +5,25 @@
 </template>
 
 <script setup>
-  defineProps({
-    isCollapse: {
-      type: Boolean,
-      default: false
-    }
-  })
-  const emit = defineEmits()
-  const handleToggle = () => {
-    emit('toggleClick')
+defineProps({
+  isCollapse: {
+    type: Boolean,
+    default: false
   }
+})
+const emit = defineEmits()
+const handleToggle = () => {
+  emit('toggleClick')
+}
 </script>
 
 <style lang="scss" scoped>
 .hamburger {
-  padding: 0 10px;
-  height: 100%;
   display: inline-flex;
   align-items: center;
+  height: 100%;
+  padding: 0 10px;
+  color: var(--fcpl);
 
   .is-collapse {
     transform: rotate(180deg);

@@ -1,22 +1,24 @@
 <template>
   <el-breadcrumb :separator="separator">
-    <!-- <transition-group name="breadcrumb"> -->
-    <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
-      <span v-if="item.redirect === 'noRedirect' || index == levelList.length - 1" class="no-redirect">{{ item.meta.title }}</span>
-      <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
-    </el-breadcrumb-item>
-    <!-- </transition-group> -->
+    <transition-group name="breadcrumb">
+      <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
+        <span v-if="item.redirect === 'noRedirect' || index == levelList.length - 1" class="no-redirect">{{ item.meta.title }}</span>
+        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+      </el-breadcrumb-item>
+    </transition-group>
   </el-breadcrumb>
 </template>
 
 <script setup>
+// 一、综合初始化
 const props = defineProps({
   separator: { type: String, default: '/' }
 })
 const route = useRoute()
 const router = useRouter()
-const levelList = ref([])
 
+// 二、模块功能
+const levelList = ref([])
 function getBreadcrumb() {
   let matched = route.matched.filter(item => item.meta && item.meta.title)
   // 判断是否为首页
@@ -38,24 +40,27 @@ function handleLink(item) {
 }
 
 watchEffect(() => {
-  // if you go to the redirect page, do not update the breadcrumbs
   if (route.path.startsWith('/redirect/')) { return }
   getBreadcrumb()
 })
-
+// 三、生命周期
 getBreadcrumb()
 </script>
 
 <style lang='scss' scoped>
 .el-breadcrumb {
-  height: 100%;
   display: inline-flex;
   align-items: center;
+  height: 100%;
   margin-left: 10px;
   font-size: 14px;
 
+  a {
+    color: var(--fcpl);
+  }
+
   .no-redirect {
-    color: #666;
+    color: var(--fcs);
     cursor: text;
   }
 }

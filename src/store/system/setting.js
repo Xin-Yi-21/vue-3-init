@@ -1,6 +1,6 @@
 import defaultSetting from '@/setting'
 // import { useDynamicTitle } from '@/utils/dynamicTitle'
-
+import { handleThemeColor } from '@/utils/theme'
 const { defaultTitle, isDynamicTitle, themeStyle, themeColor, elSize, topHeader, leftNav, topNav, topBar, topTag, isFullScreen } = defaultSetting
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 
@@ -45,20 +45,24 @@ const useSettingStore = defineStore('setting', {
       }
     },
     // 设置顶部页头
-    setTopHeader(state) {
-      if (state.topHeader.isShow) {
-        document.body.setAttribute('topHeaderStatus', 'show')
+    setTopHeader() {
+      if (this.topHeader.isShow) {
+        document.documentElement.setAttribute('topHeaderStatus', 'show')
       } else {
-        document.body.setAttribute('topHeaderStatus', 'hide')
+        document.documentElement.setAttribute('topHeaderStatus', 'hide')
       }
     },
     // 设置左侧导航
-    setLeftNav(state, withoutAnimation) {
-      if (state.leftNav.isShow) {
-        document.body.setAttribute('leftNavStatus', state.leftNav.isCollapse ? 'collapse' : 'expand')
+    setLeftNav(withoutAnimation) {
+      if (this.leftNav.isShow) {
+        document.documentElement.setAttribute('leftNavStatus', this.leftNav.isCollapseShow ? 'collapse' : 'expand')
       } else {
-        document.body.setAttribute('leftNavStatus', 'hide')
+        document.documentElement.setAttribute('leftNavStatus', 'hide')
       }
+    },
+    // 设置主题颜色
+    setThemeColor(value) {
+      handleThemeColor(this.themeColor)
     },
     // 设置网页标题
     setTitle(title) {

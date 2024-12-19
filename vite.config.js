@@ -54,7 +54,7 @@ export default defineConfig(async ({ mode, command }) => {
       }
     },
     define: {
-      ENV: env
+      vEnv: env
     }
   }
 })
