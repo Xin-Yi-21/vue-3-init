@@ -1,5 +1,5 @@
 <template>
-  <template v-if="!navInfo.hidden">
+  <div class="menu-item-container" v-if="!navInfo.hidden">
     <!-- [ 当前导航无子导航 , 当前导航有1个子导航 && 子导航无子项  && alwaysShow为true ] -->
     <Link v-if="judgeChild(navInfo.children, navInfo) && (!onlyOne.children || onlyOne.noshowChildren) && !navInfo.alwaysShow && onlyOne.meta" :to="handlePath(onlyOne.path, onlyOne.query)">
     <el-menu-item :index="handlePath(onlyOne.path)" :class="{ 'submenu-title-noDropdown': !isNest }" @click="handleGo(onlyOne)">
@@ -7,14 +7,15 @@
       <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta.title)">{{ onlyOne.meta.title }}</span></template>
     </el-menu-item>
     </Link>
-    <el-sub-menu v-else ref="subMenu" :index="handlePath(navInfo.path)" :teleported="true" expand-close-icon="CaretBottom" expand-open-icon="CaretTop" collapse-close-icon="CaretRight" collapse-open-icon="CaretLeft">
+    <!-- -->
+    <el-sub-menu v-else ref="subMenu" :index="handlePath(navInfo.path)" :teleported="true" expand-close-icon="CaretBottom" expand-open-icon="CaretTop" collapse-close-icon="CaretRight" collapse-open-icon="CaretLeft" popper-class="top-nav-vertical-menu">
       <template v-if="navInfo.meta" #title>
         <svg-icon :icon-class="navInfo.meta && navInfo.meta.icon" />
         <span class="menu-title" :title="hasTitle(navInfo.meta.title)">{{ navInfo.meta.title }}</span>
       </template>
       <nav-item v-for="(item, index) in navInfo.children" :key="index" :isNest="true" :navInfo="item" :basePath="handlePath(navInfo.path)" />
     </el-sub-menu>
-  </template>
+  </div>
 </template>
 
 <script setup>

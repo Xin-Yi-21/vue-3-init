@@ -1,7 +1,7 @@
 <template>
   <div class="top-nav-vue">
     <el-scrollbar wrap-class="c-el-scrollbar">
-      <el-menu :unique-opened="true" :collapse-transition="false" mode="horizontal" :ellipsis="false" :default-active="activeMenu" menu-trigger="hover" popper-class="top-nav-menu-modal" :teleported="true">
+      <el-menu :unique-opened="true" :collapse-transition="false" mode="horizontal" :ellipsis="false" :default-active="activeMenu" menu-trigger="hover" class="top-nav-menu" :teleported="true">
         <nav-item v-for="(item, index) in topNavRoutes" :key="index" :navInfo="item" :isNest="true" :basePath="''" />
       </el-menu>
     </el-scrollbar>
@@ -24,148 +24,232 @@ const activeMenu = computed(() => {
   return path
 })
 </script>
-
 <style lang="scss" scoped>
 .top-nav-vue {
-  height: 50px;
+  width: 100%;
+  height: var(--top-nav-height);
 
-  :deep(.el-menu) {
+  :deep(.top-nav-menu) {
+    box-sizing: border-box;
     width: 100%;
-    height: 50px;
-    border-bottom: 1px solid #ccc;
+    height: 100%;
+    display: flex;
+    background-color: var(--bg-topNav);
+    border-bottom: 1px solid var(--bcp);
 
-    &>* {
+    .menu-item-container {
       flex: 1;
-      border-right: 1px solid #ccc;
+      flex-shrink: 0;
+      height: 100%;
+      border-right: 1px solid var(--bcp);
 
-      // box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
       &:last-child {
         border-right: 0;
       }
-    }
 
-    .el-sub-menu {
-      position: relative;
+      a {
+        color: var(--fcpl);
+        text-decoration: none;
+      }
 
-      .el-sub-menu__title {
-        position: static;
-        display: inline-flex;
-        justify-content: center;
-        border-bottom: 0;
-        width: 100%;
-        height: 49px;
+      .svg-icon {
+        font-size: 16px;
+        font-weight: 700;
+      }
 
-        .el-sub-menu__icon-arrow {
-          width: auto;
-          right: 10px;
-          // &::before {
-          //   content: "\e790";
-          //   // content: url('assets/icons/svg/c-scroll-down.svg');
-          //   font-size: 16px;
-          //   // color: var(--first-font-color);
-          // }
+      li {
+        height: 100%;
+        position: relative;
+
+        &.el-menu-item {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--fcpl);
+          background-color: var(--bg-topNav);
+
+          &.is-active {
+            font-weight: 700;
+
+            & * {
+              color: var(--tc);
+            }
+          }
+
+          &:hover {
+            background-color: var(--tc);
+
+            & * {
+              color: var(--fcpl);
+            }
+
+          }
+
+        }
+
+        &.el-sub-menu {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &.is-active {
+            .el-sub-menu__title {
+              font-weight: 700;
+
+              & * {
+                color: var(--tc);
+              }
+            }
+          }
+
+          .el-sub-menu__title {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 0;
+            color: var(--fcpl);
+
+            &:hover {
+              background-color: var(--tc);
+
+              & * {
+                color: var(--fcpl);
+              }
+            }
+
+            .el-sub-menu__icon-arrow {
+              position: absolute;
+              top: 50%;
+              right: 10px;
+              transform: translateY(-50%) !important;
+              width: 20px;
+              margin-top: 0;
+              font-size: 16px;
+            }
+          }
+        }
+
+        .menu-title {
+          height: 100%;
+          margin: 0 10px;
+          line-height: 49px;
+          font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: inherit;
         }
       }
-
-      &.is-active {
-        background-color: #fcfcfc;
-
-        .el-sub-menu__title {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    .el-menu-item {
-      display: inline-flex;
-      justify-content: center;
-      width: 100%;
-      height: 49px;
-
-      &.is-active {
-        background-color: #fcfcfc;
-      }
-    }
-
-    .menu-title {
-      height: 49px;
-      line-height: 49px;
-      font-size: 16px;
-      font-weight: 700;
-      margin-left: 10px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    a {
-      color: #333;
-      text-decoration: none;
-    }
-
-    .svg-icon {
-      font-size: 18px;
-      font-weight: 700;
-      flex-shrink: 0;
     }
 
   }
 }
 </style>
 <style lang="scss">
-// 组件内全局样式
-.top-nav-menu-modal {
-  // min-width: 100%;
-  // margin-top: 2px;
-  // z-index: 99999;
+.top-nav-vertical-menu {
 
-  // .el-menu--popup {
-  //   display: flex;
-  //   flex-direction: column;
-  //   overflow: hidden;
-  //   margin-left: -1px;
-  //   padding: 0;
-  //   border: 1px solid var(--first-border-color);
-  //   border-radius: 4px 4px 4px 4px;
-  //   box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.25);
-  //   background-color: var(--top-nav-color-bg);
+  // width: calc((100% - var(--left-nav-width)) / 5);
+  .el-menu--popup {
+    padding: 0;
 
-  //   .el-menu-item {
-  //     min-width: 100%;
-  //     border-bottom: 1px solid var(--first-border-color);
-  //     background-color: var(--top-nav-color-bg);
-  //     color: var(--first-font-color);
+    .menu-item-container {
+      border-bottom: 1px solid var(--bcp);
 
-  //     &:last-child {
-  //       border-bottom: 0;
-  //     }
+      &:last-child {
+        border-bottom: 0;
+      }
 
-  //     &:hover {
-  //       background-color: var(--top-nav-color-bg-active);
-  //     }
-  //   }
+      a {
+        color: var(--fcpl);
+        text-decoration: none;
+      }
 
-  //   .is-active {
-  //     color: var(--active-color);
-  //     background-color: var(--top-nav-color-bg-active);
-  //   }
-  // }
+      .svg-icon {
+        font-size: 16px;
+        font-weight: 700;
+      }
 
-  a {
-    color: #333;
-    text-decoration: none;
-  }
 
-  .svg-icon {
-    font-size: 16px;
-    font-weight: 700;
-  }
+      li {
+        .menu-title {
+          height: 100%;
+          margin: 0 20px 0 10px;
+          line-height: 36px;
+          font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: var(--fcpl);
+        }
 
-  .menu-title {
-    height: 50px;
-    line-height: 50px;
-    font-size: 14px;
-    margin-left: 10px;
+        &.el-menu-item {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          background-color: var(--bg-primary);
+          color: var(--fcpl);
+
+          &.is-active {
+            font-weight: 700;
+
+            & * {
+              color: var(--tc);
+            }
+          }
+
+          &:hover {
+            background-color: var(--tc);
+
+            & * {
+              color: var(--fcpl);
+            }
+          }
+        }
+
+        &.el-sub-menu {
+          display: flex;
+          align-items: center;
+
+          &.is-active {
+            .el-sub-menu__title {
+              font-weight: 700;
+
+              & * {
+                color: var(--tc);
+              }
+            }
+          }
+
+          .el-sub-menu__title {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            border-bottom: 0;
+            background-color: var(--bg-primary);
+            color: var(--fcpl);
+
+            &:hover {
+              background-color: var(--tc);
+
+              & * {
+                color: var(--fcpl);
+              }
+            }
+
+            .el-sub-menu__icon-arrow {
+              width: auto;
+              right: 10px;
+            }
+
+          }
+        }
+      }
+    }
   }
 }
 </style>
