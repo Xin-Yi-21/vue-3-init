@@ -1,6 +1,6 @@
 <template>
   <div class="top-bar-vue">
-    <hamburger :isCollapse="settingStore.leftNav.isCollapse" @toggleClick="handleToggle" />
+    <hamburger :isCollapse="settingStore.leftNav.isCollapse" @toggleClick="handleLeftNav" />
     <Breadcrumb class="breadcrumb-container" />
   </div>
 </template>
@@ -10,7 +10,11 @@ import Hamburger from '@/components/system/hamburger'
 import Breadcrumb from '@/components/system/breadcrumb'
 import useSettingStore from '@/store/system/setting'
 const settingStore = useSettingStore()
-const handleToggle = () => { settingStore.toggleLeftNav() }
+const handleLeftNav = () => {
+  console.log('走1')
+  settingStore.leftNav.isCollapse = !settingStore.leftNav.isCollapse
+  settingStore.setLeftNav()
+}
 </script>
 
 <style lang="scss" scoped>

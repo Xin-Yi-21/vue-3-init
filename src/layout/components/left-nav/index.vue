@@ -1,7 +1,7 @@
 <template>
   <div :class="['left-nav-vue', isCollapse ? 'is-collapse' : 'is-expand']">
     <el-scrollbar wrap-class="c-el-scrollbar">
-      <el-menu mode="vertical" :collapse="isCollapse" :unique-opened="false" :collapse-transition="false" :default-active="activeMenu" popper-class="left-nav-menu-modal">
+      <el-menu mode="vertical" :collapse="isCollapse" :unique-opened="true" :collapse-transition="false" :default-active="activeMenu" class="left-nav-menu">
         <nav-item v-for="(item, index) in leftNavRoutes" :key="index" :navInfo="item" :isNest="true" :basePath="''" />
       </el-menu>
     </el-scrollbar>
@@ -29,83 +29,243 @@ const activeMenu = computed(() => {
 })
 
 </script>
-
 <style lang="scss" scoped>
 .left-nav-vue {
+  box-sizing: border-box;
   height: 100%;
-  overflow: hidden;
-  border-right: 1px solid #ccc;
+  border-right: 1px solid var(--bcp);
+  background-color: var(--bg-leftNav);
 
-  :deep(.el-menu) {
+  :deep(.left-nav-menu) {
     width: 100%;
-    height: 100%;
     border-right: 0;
+    background-color: transparent;
 
-    a {
-      color: #333;
-      text-decoration: none;
+    .el-menu {
+      background-color: transparent;
     }
 
-    .svg-icon {
-      font-size: 18px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
+    .menu-item-container {
+      min-height: 60px;
 
-    .menu-title {
-      flex: 1;
-      height: 60px;
-      line-height: 60px;
-      font-size: 14px;
-      margin-left: 10px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+      a {
+        text-decoration: none;
+      }
 
-    .el-menu-item {
-      display: flex;
-      height: 60px;
-
-      &.is-active {
+      .svg-icon {
+        flex-shrink: 0;
+        font-size: 18px;
         font-weight: 700;
+      }
+
+      li {
+        height: 100%;
+        background-color: var(--bg-leftNav);
+
+        .menu-title {
+          overflow: hidden;
+          flex: 1;
+          height: 60px;
+          margin: 0 20px 0 10px;
+          line-height: 60px;
+          color: inherit;
+          font-size: 14px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        &.el-menu-item {
+          display: flex;
+          align-items: center;
+          min-width: 0;
+          height: 60px;
+          color: var(--fcpl);
+
+          &.is-active {
+            font-weight: 700;
+
+            & * {
+              color: var(--tc);
+            }
+          }
+
+          &:hover {
+            background-color: var(--tc);
+
+            & * {
+              color: var(--fcpl);
+            }
+
+          }
+        }
+
+        &.el-sub-menu {
+
+          &.is-active {
+            .el-sub-menu__title {
+              font-weight: 700;
+            }
+          }
+
+          .el-sub-menu__title {
+            display: flex;
+            align-items: center;
+            height: 60px;
+            color: var(--fcpl);
+
+            &:hover {
+              background-color: var(--tc);
+
+              & * {
+                color: var(--fcpl);
+              }
+            }
+          }
+        }
       }
     }
   }
 
   &.is-collapse {
-    width: 60px;
-
-    :deep(.el-menu) {
+    :deep(.left-nav-menu) {
       .menu-title {
-        margin-left: 0;
+        // margin-left: 0;
+        display: none;
+      }
+
+      .el-sub-menu__icon-arrow {
+        display: none;
+      }
+
+      .el-menu-item {
+        padding: 0 !important;
+
+        .el-tooltip {
+          padding: 0 !important;
+          text-align: center;
+        }
+      }
+
+      .el-submenu__title {
+        justify-content: center;
+        padding: 0 !important;
       }
     }
-  }
-
-  &.is-expand {
-    width: 200px;
   }
 }
 </style>
 <style lang="scss">
 // 组件内全局样式
-.left-nav-menu-modal {
-  a {
-    color: #333;
-    text-decoration: none;
-  }
+.left-nav-vertical-menu {
 
-  .svg-icon {
-    font-size: 16px;
-    font-weight: 700;
-  }
+  .el-menu--popup {
+    padding: 0;
 
-  .menu-title {
-    height: 60px;
-    line-height: 60px;
-    font-size: 14px;
-    margin-left: 10px;
+    .menu-item-container {
+      min-height: 50px;
+      border-bottom: 1px solid var(--bcp);
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      a {
+        color: var(--fcpl);
+        text-decoration: none;
+      }
+
+      .svg-icon {
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      li {
+        &.is-active {
+          font-weight: 700;
+        }
+
+        &.el-menu-item {
+          display: flex;
+          align-items: center;
+          height: 100%;
+          background-color: var(--bg-primary);
+          color: var(--fcpl);
+
+          &.is-active {
+            font-weight: 700;
+
+            & * {
+              color: var(--tc);
+            }
+          }
+
+          &:hover {
+            background-color: var(--tc);
+
+            & * {
+              color: var(--fcpl);
+            }
+          }
+        }
+
+        &.el-sub-menu {
+          background-color: var(--bg-primary);
+
+          &.is-active {
+            .el-sub-menu__title {
+              font-weight: 700;
+
+              & * {
+                color: var(--tc);
+              }
+            }
+          }
+
+          .el-sub-menu__title {
+            display: flex;
+            align-items: center;
+            height: 50px;
+            background-color: var(--bg-primary);
+            color: var(--fcpl);
+
+            &:hover {
+              background-color: var(--tc);
+
+              & * {
+                color: var(--fcpl);
+              }
+            }
+
+            .el-sub-menu__icon-arrow {
+              width: auto;
+              right: 10px;
+
+              svg {
+                display: none;
+              }
+
+              &::before {
+                content: '\e677';
+                font-family: 'iconfont';
+                font-size: 18px;
+                font-style: normal;
+              }
+            }
+          }
+        }
+
+        .menu-title {
+          overflow: hidden;
+          height: 50px;
+          margin: 0 20px 0 10px;
+          line-height: 50px;
+          color: inherit;
+          font-size: 14px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
   }
 }
 </style>

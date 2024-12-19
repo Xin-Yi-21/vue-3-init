@@ -54,7 +54,7 @@ const useSettingStore = defineStore('setting', {
     // 设置左侧导航
     setLeftNav(withoutAnimation) {
       if (this.leftNav.isShow) {
-        document.documentElement.setAttribute('leftNavStatus', this.leftNav.isCollapseShow ? 'collapse' : 'expand')
+        document.documentElement.setAttribute('leftNavStatus', this.leftNav.isCollapse ? 'collapse' : 'expand')
       } else {
         document.documentElement.setAttribute('leftNavStatus', 'hide')
       }
@@ -76,13 +76,6 @@ const useSettingStore = defineStore('setting', {
       } else {
         document.title = defaultTitle
       }
-    },
-    // 切换左侧导航显示
-    toggleLeftNav(withoutAnimation) {
-      if (this.leftNav.isHide) { return false }
-      this.leftNav.isCollapse = !this.leftNav.isCollapse
-      this.leftNav.withoutAnimation = withoutAnimation
-      Cookies.set('leftNavStatus', this.leftNav.isCollapse ? true : false)
     },
   }
 })

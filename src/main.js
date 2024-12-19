@@ -17,6 +17,7 @@ app.use(Antd)
 import 'virtual:svg-icons-register'
 import SvgIcon from '@/components/system/svg-icon'
 import elementIcons from '@/components/system/svg-icon/svgicon'
+import '@/assets/iconfont/iconfont.css'
 app.component('svg-icon', SvgIcon)
 app.use(elementIcons)
 // ⭐ 常用样式

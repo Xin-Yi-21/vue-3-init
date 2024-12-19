@@ -22,11 +22,11 @@
       </div>
       <div class="setting-item">
         <span class="setting-label">开启左侧导航</span>
-        <el-switch v-model="setting.leftNav.isShow" />
+        <el-switch v-model="setting.leftNav.isShow" @change="handleLeftNav" />
       </div>
       <div class="setting-item">
         <span class="setting-label">开启左侧折叠</span>
-        <el-switch v-model="setting.leftNav.isCollapse" />
+        <el-switch v-model="setting.leftNav.isCollapse" @change="handleLeftNav" />
       </div>
       <div class="setting-item">
         <span class="setting-label">开启顶部页头</span>
@@ -98,6 +98,10 @@ function handleThemeStyle() {
 // 3、修改主题颜色
 function handleThemeColor() {
   setting.setThemeColor()
+}
+// 4、左侧导航
+function handleLeftNav() {
+  setting.setLeftNav()
 }
 // 4、保存配置
 function handleSaveSetting() {
