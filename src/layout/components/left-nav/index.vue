@@ -155,7 +155,7 @@ const activeMenu = computed(() => {
 }
 </style>
 <style lang="scss">
-// 组件内全局样式
+// 模块全局样式
 .left-nav-vertical-menu {
 
   .el-menu--popup {

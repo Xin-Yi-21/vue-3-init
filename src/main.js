@@ -1,3 +1,13 @@
+
+
+function vString(str, regex) {
+  const pattern = new RegExp(regex);  // 创建正则表达式
+  return pattern.test(str);  // 如果字符串匹配正则，返回 true，否则返回 false
+}
+console.log(vString('// # 啊', "^\\s*//.*#.*$"))
+console.log(vString('// # 啊', ""))
+console.log(vString('// 你好', "//.*#"))
+
 window.vEnv = import.meta.env
 import { setConfig } from '@/api/system/config'
 import app from './app.js'

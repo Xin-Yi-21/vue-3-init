@@ -78,8 +78,7 @@
 </template>
 
 <script setup>
-// nihao 
-// 一、综合 #
+// # 一、综合
 import Operate from './components/operate.vue'
 import useEnumsStore from '@/store/project/enums'
 const props = defineProps({
@@ -90,9 +89,9 @@ const pickerOptions = ref({
   start: { disabledDate: time => { if (form.value.endTime) { return (time.getTime() >= new Date(form.value.endTime).getTime()) } } },
   end: { disabledDate: time => { if (form.value.startTime) { return time.getTime() <= new Date(form.value.startTime).getTime() - 86400000 } } }
 })
-// ^
+// ^ 
 // # 二、模块功能 #
-// # 1、初始化 #
+// # 1、初始化  #
 // # (1) 获取枚举 #
 const enums = ref({})
 async function getEnums() {
@@ -117,7 +116,7 @@ function setDefaultParams() {
   form.value = Object.assign({}, form.value, newForm)
 }
 // ^
-// # (3) 获取表格数据 #
+// # (3) 获取表格数据 
 import { personGet } from '@/api/project/project.js'
 const tableData = ref([])
 const tableTotal = ref(1000)
@@ -137,14 +136,14 @@ async function getTableData() {
 }
 // ^
 // ^
-// # 2、切换tab #
+// # 2、切换tab 
 const tabList = ref([{ label: '要素1', value: '1' }, { label: '要素2', value: '2' }, { label: '要素3', value: '3' }, { label: '要素4', value: '4' },])
 const currentTab = ref('1')
 function handleChangeTab(tabItem) {
   currentTab.value = tabItem.value
 }
 // ^
-// 3、改变查询条件 #
+// # 3、改变查询条件 
 function handleChangeCondition(type) {
   switch (type) {
     case '':
@@ -155,12 +154,12 @@ function handleChangeCondition(type) {
   }
 }
 // ^
-// # 4、搜索 # 
+// # 4、搜索 
 function handleSearch() {
   getTableData()
 }
 // ^
-// # 5、模态框 #
+// # 5、模态框 
 const operateDialog = ref({})
 // (1) 新增 
 function handleAdd() {
@@ -203,8 +202,8 @@ function handleDelete(rowInfo) {
 }
 // ^
 // ^
-// # 三、生命周期 #
-// # 1、初始化 #
+// # 三、生命周期 
+// # 1、初始化 
 const isDataInitDone = ref(false)
 const init = () => {
   getEnums()

@@ -12,7 +12,10 @@ const props = defineProps({
   currentTab: { type: String, default: '' },
 })
 const emit = defineEmits(['change'])
-emit('change', tabItem)
+function handleChangeTab(tabItem) {
+  emit('change', tabItem)
+}
+
 </script>
 
 <style lang="scss" scoped>

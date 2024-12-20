@@ -150,6 +150,7 @@ const activeMenu = computed(() => {
 }
 </style>
 <style lang="scss">
+// 模块全局样式
 .top-nav-vertical-menu {
 
   // width: calc((100% - var(--left-nav-width)) / 5);
