@@ -14,9 +14,9 @@
       </div>
       <div class="setting-item">
         <span class="setting-label">布局大小</span>
-        <el-radio-group v-model="setting.elSize">
+        <el-radio-group v-model="setting.themeSize" @change="handleThemeSize">
           <el-radio value="large">较大</el-radio>
-          <el-radio value="default">普通</el-radio>
+          <el-radio value="normal">普通</el-radio>
           <el-radio value="small">较小</el-radio>
         </el-radio-group>
       </div>
@@ -99,17 +99,21 @@ function handleThemeStyle() {
 function handleThemeColor() {
   setting.setThemeColor()
 }
-// 4、左侧导航
+// 4、修改主题大小
+function handleThemeSize() {
+  setting.setThemeSize()
+}
+// 5、左侧导航
 function handleLeftNav() {
   setting.setLeftNav()
 }
-// 4、保存配置
+// 6、保存配置
 function handleSaveSetting() {
   proxy.$modal.loading("正在保存到本地，请稍候...");
   // let layoutSetting = {
   //   'themeStyle': setting.themeStyle,
   //   'themeColor': setting.themeColor,
-  //   'elSize': setting.elSize,
+  //   'themeSize': setting.themeSize,
   //   'leftNav': {
   //     'isShow': setting.leftNav.isShow,
   //     'isCollapse': setting.leftNav.isCollapse
@@ -167,6 +171,7 @@ function handleResetSetting() {
       .setting-label {
         width: 100px;
         margin-right: 10px;
+        font-size: var(--fs);
       }
 
       .el-radio-group {

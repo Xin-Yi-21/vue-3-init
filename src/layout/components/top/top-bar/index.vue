@@ -11,7 +11,6 @@ import Breadcrumb from '@/components/system/breadcrumb'
 import useSettingStore from '@/store/system/setting'
 const settingStore = useSettingStore()
 const handleLeftNav = () => {
-  console.log('走1')
   settingStore.leftNav.isCollapse = !settingStore.leftNav.isCollapse
   settingStore.setLeftNav()
 }

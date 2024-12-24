@@ -40,7 +40,7 @@ function handleChangePageNum(pageNum) {
 </script>
 
 <style lang="scss" scoped>
-:v-deep(.c-pagination) {
+.c-pagination {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -48,6 +48,11 @@ function handleChangePageNum(pageNum) {
   margin: 10px 20px;
   padding: 0;
   text-align: right;
+
+  * {
+    font-size: 13px;
+  }
+
 
   .btn-prev,
   .btn-next {

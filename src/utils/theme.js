@@ -1,6 +1,16 @@
-
-import app from '@/app.js'
-// 处理主题样式
+// import app from '@/app.js'
+// 处理主题风格
+export function handleThemeStyle(themeStyle) {
+  document.documentElement.setAttribute('theme-style', themeStyle)
+  // if (themeStyle === 'light') {
+  //   app.config.globalProperties.$echartTheme = { bg: '#fff', fcp: '#333', fcs: '#666', fct: '#999', bcp: '#ccc', bcs: '#ddd', bct: '#eee', }
+  // } else if (themeStyle === 'dark') {
+  //   app.config.globalProperties.$echartTheme = { bg: '#333', fcp: '#fff', fcs: 'rgba(255, 255, 255, 0.8)', fct: 'rgba(255, 255, 255, 0.6)', bcp: '#efefef', bcs: '#5d5d5d', bct: '#666', }
+  // }
+  // window.dispatchEvent(new CustomEvent('theme-style-change'))
+  // window.removeEventListener('theme-style-change')
+}
+// 处理主题颜色
 export function handleThemeColor(themeColor) {
   document.documentElement.style.setProperty('--el-color-primary', themeColor)
   document.documentElement.style.setProperty('--tc', themeColor)
@@ -14,63 +24,19 @@ export function handleThemeColor(themeColor) {
   }
 }
 
-// 处理主题样式
-export function handleThemeStyle(themeStyle) {
-  document.documentElement.setAttribute('theme-style', themeStyle)
-  app.config.globalProperties.$color = 'red'
-  if (themeStyle === 'light') {
-    app.config.globalProperties.$echartTheme = { bg: '#fff', fcp: '#333', fcs: '#666', fct: '#999', bcp: '#ccc', bcs: '#ddd', bct: '#eee', }
-  } else if (themeStyle === 'dark') {
-    app.config.globalProperties.$echartTheme = { bg: '#333', fcp: '#fff', fcs: 'rgba(255, 255, 255, 0.8)', fct: 'rgba(255, 255, 255, 0.6)', bcp: '#efefef', bcs: '#5d5d5d', bct: '#666', }
+
+
+// 处理主题大小
+export function handleThemeSize(themeSize) {
+  document.documentElement.setAttribute('theme-size', themeSize)
+  let tsLRV = {
+    'large': { themeSizeComponentHeight: '36px', fontSize: '14px' },
+    'normal': { themeSizeComponentHeight: '30px', fontSize: '13px' },
+    'small': { themeSizeComponentHeight: '24px', fontSize: '12px' },
   }
-
-  // function getRootCssVariables() {
-  //   const variables = {};
-
-  //   // 遍历所有样式表
-  //   for (const sheet of document.styleSheets) {
-  //     try {
-  //       // 遍历样式表中的所有规则
-  //       for (const rule of sheet.cssRules) {
-  //         // 如果是 :root 规则
-  //         if (rule.selectorText === ':root') {
-  //           // 遍历 :root 中的所有属性
-  //           for (let i = 0; i < rule.style.length; i++) {
-  //             const property = rule.style[i];
-  //             // 只获取 CSS 变量（以 '--' 开头的属性）
-  //             if (property.startsWith('--')) {
-  //               variables[property] = rule.style.getPropertyValue(property).trim();
-  //             }
-  //           }
-  //         }
-  //       }
-  //     } catch (e) {
-  //       // 如果访问跨域的样式表，会抛出错误（忽略这些样式表）
-  //       console.error(e);
-  //     }
-  //   }
-
-  //   return variables;
-  // }
-  // console.log('11111', getRootCssVariables());
-
-  // here
-  // const theme = {}
-  // const styles = document.documentElement.style
-  // for (let i = 0; i < styles.length; i++) {
-  //   const property = styles[i]
-  //   if (property.startsWith('--')) {
-  //     theme[property] = styles.getPropertyValue(property).trim()
-  //   }
-  // }
-  // app.config.globalProperties.$theme = theme
-  // here
-
-
-  // window.dispatchEvent(new CustomEvent('theme-style-change'))
-  // window.removeEventListener('theme-style-change')
+  document.documentElement.style.setProperty(`--hc`, tsLRV[themeSize]?.themeSizeComponentHeight)
+  document.documentElement.style.setProperty(`--fs`, tsLRV[themeSize]?.fontSize)
 }
-
 // hex颜色转rgb颜色
 export function hexToRgb(str) {
   str = str.replace('#', '')

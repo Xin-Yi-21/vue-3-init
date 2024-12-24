@@ -12,17 +12,18 @@
             <el-input v-model="form.name" placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item label="起始时间">
-            <el-date-picker v-model="form.startTime" type="datetime" :picker-options="pickerOptions.start" placeholder="请选择开始时间" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" :clearable="false"></el-date-picker>
+            <el-date-picker v-model="form.startTime" type="datetime" :disabled-date="pickerOptions.start" placeholder="请选择开始时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :clearable="false"></el-date-picker>
           </el-form-item>
           <el-form-item label="结束时间">
-            <el-date-picker v-model="form.endTime" type="datetime" :picker-options="pickerOptions.end" placeholder="请选择结束时间" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" :clearable="false"></el-date-picker>
+            <el-date-picker v-model="form.endTime" type="datetime" :disabled-date="pickerOptions.end" placeholder="请选择结束时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :clearable="false"></el-date-picker>
           </el-form-item>
         </el-form>
       </div>
       <div class="c-search-operate">
         <div class="left">
           <c-button type="primary" class="query-button" i="c-search" @click="getTableData">查询</c-button>
-          <el-button type="info" icon="el-icon-refresh-right" class="refresh-button" @click="setDefaultParams"></el-button>
+          <c-button type="info" class="refresh-button" i="c-refresh" @click="setDefaultParams"></c-button>
+          <!-- <el-button type="info" icon="el-icon-refresh-right" class="refresh-button" @click="setDefaultParams"></el-button> -->
         </div>
         <div class="right"> </div>
       </div>
@@ -78,7 +79,7 @@
 </template>
 
 <script setup>
-// #region 一、综合 #
+// # 一、综合
 import Operate from './components/operate.vue'
 import useEnumsStore from '@/store/project/enums'
 const props = defineProps({
@@ -86,25 +87,25 @@ const props = defineProps({
 })
 const { proxy } = getCurrentInstance()
 const pickerOptions = ref({
-  start: { disabledDate: time => { if (form.value.endTime) { return (time.getTime() >= new Date(form.value.endTime).getTime()) } } },
-  end: { disabledDate: time => { if (form.value.startTime) { return time.getTime() <= new Date(form.value.startTime).getTime() - 86400000 } } }
+  start: (time) => { if (form.value.endTime) { return time.getTime() >= new Date(form.value.endTime).getTime() }; return false },
+  end: (time) => { if (form.value.startTime) { return time.getTime() <= new Date(form.value.startTime).getTime() - 86400000 }; return false }
 })
-// #endregion
-// #reg 二、模块功能 
-// #region 1、初始化 
-// #region (1) 获取枚举 
+// ^
+// # 二、模块功能 
+// # 1、初始化 
+// # (1) 获取枚举 
 const enums = ref({})
 async function getEnums() {
   let allEnums = JSON.parse(JSON.stringify(useEnumsStore().allEnums))
-  console.log('查allEnums', allEnums)
+  // console.log('查allEnums', allEnums)
   let newEnums = {
     gender: allEnums.gender,
   }
   enums.value = Object.assign({}, enums.value, newEnums)
-  console.log('查 enums.value', enums.value)
+  // console.log('查 enums.value', enums.value)
 }
-// #endregion
-// #region (2) 设置默认查询参数 
+// ^
+// # (2) 设置默认查询参数 
 const form = ref({})
 function setDefaultParams() {
   let allEnums = JSON.parse(JSON.stringify(useEnumsStore().allEnums))
@@ -115,8 +116,8 @@ function setDefaultParams() {
   }
   form.value = Object.assign({}, form.value, newForm)
 }
-// #endregion
-// #region (3) 获取表格数据 
+// ^
+// # (3) 获取表格数据 
 import { personGet } from '@/api/project/project.js'
 const tableData = ref([])
 const tableTotal = ref(1000)
@@ -131,19 +132,19 @@ async function getTableData() {
     item.role = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
     item.genderName = proxy.$getEnumsLabel(useEnumsStore().allEnums.gender, item.gender)
   })
-  // for (var i = 0; i < 3; i++) { tableData.push(...tableData) }
+  for (var i = 0; i < 3; i++) { newTableData.push(...newTableData) }
   tableData.value = newTableData || []
 }
-// #endregion
-// #endregion
-// #region 2、切换tab #
+// ^
+// ^
+// # 2、切换tab #
 const tabList = ref([{ label: '要素1', value: '1' }, { label: '要素2', value: '2' }, { label: '要素3', value: '3' }, { label: '要素4', value: '4' },])
 const currentTab = ref('1')
 function handleChangeTab(tabItem) {
   currentTab.value = tabItem.value
 }
-// #endregion
-// #region 3、改变查询条件 #
+// ^
+// # 3、改变查询条件
 function handleChangeCondition(type) {
   switch (type) {
     case '':
@@ -153,40 +154,42 @@ function handleChangeCondition(type) {
       break
   }
 }
-// #endregion
-// #region 4、搜索 # 
+// ^
+// # 4、搜索 
 function handleSearch() {
   getTableData()
 }
-// #endregion
-// #region 5、模态框 #
+// ^
+// # 5、模态框 
 const operateDialog = ref({})
 // (1) 新增 
 function handleAdd() {
-  let operateDialog = {
+  let newOperateDialog = {
     visible: true,
     operate: 'add',
     info: {},
   }
-  operateDialog.value = operateDialog
+  operateDialog.value = newOperateDialog
 }
 // (2) 查看
 function handleView(rowInfo) {
-  let operateDialog = {
+  let newOperateDialog = {
     visible: true,
     operate: 'view',
     info: JSON.parse(JSON.stringify(rowInfo)),
   }
-  operateDialog.value = operateDialog
+  operateDialog.value = newOperateDialog
+  console.log('查看', operateDialog.value)
 }
 // (3) 编辑
 function handleUpdate(rowInfo) {
-  let operateDialog = {
+  let newOperateDialog = {
     visible: true,
     operate: 'update',
     info: JSON.parse(JSON.stringify(rowInfo)),
   }
-  operateDialog.value = operateDialog
+  console.log('编辑')
+  operateDialog.value = newOperateDialog
 }
 // (4) 删除
 function handleDelete(rowInfo) {
@@ -200,10 +203,10 @@ function handleDelete(rowInfo) {
   //   // })
   // }).catch()
 }
-// #endregion
-// #end
-// #region 三、生命周期 #
-// #region 1、初始化 #
+// ^
+// ^
+// # 三、生命周期
+// # 1、初始化 
 const isDataInitDone = ref(false)
 const init = () => {
   getEnums()
@@ -214,8 +217,8 @@ const init = () => {
 onMounted(() => {
   init()
 })
-// #endregion
-// #endregion
+// ^
+// ^
 </script>
 
 <style lang="scss" scoped>

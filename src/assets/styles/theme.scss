@@ -1,6 +1,6 @@
 // 一、主题变量
 :root {
-  &[theme-style="light"] {
+  &[theme-style='light'] {
     // 固定主题配置
     --bg-primary: #fff; // 主要背景色
     --bg-layout: #f3f3f3; // 布局背景色
@@ -41,7 +41,7 @@
     --bg-tableEvenRow: #f0ffff; // 表格偶数行背景色
     --bg-tableBody: #eff;
   }
-  &[theme-style="dark"] {
+  &[theme-style='dark'] {
     // 固定主题配置
     --bg-primary: #333; // 主要背景色
     --bg-layout: #1a1a1a; // 布局背景色
@@ -82,39 +82,56 @@
 
 // 二、element主题风格样式
 :root {
-  &[theme-style="light"] {
+  &[theme-style='light'] {
   }
-  &[theme-style="dark"] {
+  &[theme-style='dark'] {
     // el-input
-    .el-input__inner,
+    .el-input__wrapper,
     .el-textarea__inner {
       background-color: var(--bg-inner-primary);
-      color: var(--fcs);
       border: 1px solid var(--bcs);
-      &[disabled*="disabled"] {
+      box-shadow: 0 0 0 1px solid var(--bcs);
+
+      &[disabled*='disabled'] {
         background-color: var(--bg-inner-primary);
-        color: var(--fcs);
         border: 1px solid var(--bcs);
+        color: var(--fcs);
       }
-      &:focus {
+      &.is-focus {
         border-color: var(--tc) !important;
+        box-shadow: 0 0 0 1px solid var(--tc);
+      }
+      .el-input__inner {
+        color: var(--fcs);
       }
     }
 
     // el-select
     .el-select {
+      .el-select__wrapper {
+        background-color: var(--bg-inner-primary);
+        border: 1px solid var(--bcs);
+        box-shadow: 0 0 0 1px solid var(--bcs);
+        .el-select__placeholder {
+          color: var(--fcs);
+        }
+        &.is-focused {
+          border-color: var(--tc) !important;
+          box-shadow: 0 0 0 1px solid var(--tc);
+        }
+      }
     }
     .el-select-dropdown,
     .el-cascader__dropdown {
       background-color: var(--bg-inner-primary);
-      border: 1px solid var(--bcs);
+      // border: 1px solid var(--bcs);
       .el-select-dropdown__item {
         color: var(--fcs);
         background-color: var(--bg-innner-primary);
-        &[class*="selected"] {
+        &[class*='selected'] {
           color: var(--tc);
         }
-        &[class*="hover"] {
+        &[class*='hover'] {
           background-color: var(--bg-inner-hover);
         }
       }
@@ -132,7 +149,7 @@
       .el-input__inner {
         background-color: var(--bg-inner-primary);
         color: var(--fcs);
-        border: 1px solid var(--bcs);
+        // border: 1px solid var(--bcs);
       }
       .el-range-input {
         background-color: var(--bg-inner-secondary);
@@ -145,11 +162,15 @@
     .el-date-picker {
       &.el-picker-panel {
         background-color: var(--bg-inner-primary);
-        border: 1px solid var(--bcs);
+        // border: 1px solid var(--bcs);
         .el-picker-panel__body {
-          .el-input__inner {
+          .el-input__wrapper {
             background-color: var(--bg-inner-secondary);
+            .el-input__inner {
+              background-color: var(--bg-inner-secondary);
+            }
           }
+
           .el-time-panel {
             background-color: var(--bg-inner-primary);
             .el-time-panel__content {
@@ -177,19 +198,29 @@
           th {
             color: var(--fcs);
           }
-          td[class*="disabled"] div {
+          td[class*='disabled'] div {
             background-color: var(--bg-inner-tertiary);
           }
         }
         .el-picker-panel__footer {
           background-color: var(--bg-inner);
-          .el-button--default {
-            background-color: var(--bg-inner-secondary);
-            color: var(--fcs);
-            border: 1px solid var(--bcs);
-            &:hover {
-              border: 1px solid var(--tc);
+          .el-button {
+            &.is-text {
               color: var(--tc);
+              &:hover {
+                border: 0;
+                background-color: transparent;
+                color: var(--tc);
+              }
+            }
+            &.is-plain {
+              border: 1px solid var(--bcs);
+              background-color: var(--bg-inner-secondary);
+              color: var(--fcs);
+              &:hover {
+                border: 1px solid var(--tc);
+                color: var(--tc);
+              }
             }
           }
         }
@@ -226,7 +257,7 @@
         span {
           color: var(--fcp);
         }
-        &[disabled*="disabled"] {
+        &[disabled*='disabled'] {
           background-color: var(--bg-inner-primary);
         }
       }
@@ -255,8 +286,8 @@
     }
     // el-popper
     .el-popper {
-      &[x-placement="bottom-start"] .popper__arrow,
-      &[x-placement="bottom-end"] .popper__arrow {
+      &[x-placement='bottom-start'] .popper__arrow,
+      &[x-placement='bottom-end'] .popper__arrow {
         border-bottom-color: var(--bcs);
         &::after {
           border-bottom-color: var(--bg-inner-primary);

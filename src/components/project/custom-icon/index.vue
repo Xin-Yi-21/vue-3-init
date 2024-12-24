@@ -30,10 +30,11 @@ const props = defineProps({
   // 显示类型
   showType: { type: String, default: 'custom', },
   // 悬浮效果
-  cursor: { type: String, default: 'pointer', },
+  cursor: { type: String, default: 'auto', },
 })
 const emit = defineEmits()
-const handleIconClick = () => {
+const handleIconClick = (e) => {
+  e.stopImmediatePropagation()
   if (!props.disabled) {
     emit('click')
   }

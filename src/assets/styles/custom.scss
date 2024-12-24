@@ -277,65 +277,91 @@
   &.el-table {
     display: flex;
     flex-direction: column;
-    // flex: 1;
+    flex: 1;
     flex-shrink: 0;
     width: calc(100% - 20px);
 
     margin: 10px;
     overflow: hidden !important;
   }
+  .el-table__inner-wrapper {
+    &::before,
+    &::after {
+      height: 0;
+    }
+    .el-table__header-wrapper {
+      flex-shrink: 0;
+      .el-table__header {
+        width: 100% !important;
+      }
+    }
+    .el-table__body-wrapper {
+      flex: 1;
+      overflow-y: auto;
+      border-right: none;
+      .el-scrollbar__view {
+        width: 100% !important;
+      }
+      .el-scrollbar {
+        --el-scrollbar-opacity: 1;
+        --el-scrollbar-bg-color: var(--tc);
+        --el-scrollbar-hover-opacity: 1;
+        --el-scrollbar-hover-bg-color: var(--tc);
+      }
+      // // 滚动条大小
+      // &::-webkit-scrollbar {
+      //   display: block !important;
+      //   width: 4px !important;
+      //   height: 4px !important;
+      // }
+      // // 滚动条轨道
+      // &::-webkit-scrollbar-track {
+      //   border-radius: 0px;
+      //   background-color: #efefef;
+      // }
+      // // 滚动条滑块
+      // &::-webkit-scrollbar-thumb {
+      //   border-radius: 4px;
+      //   background-color: var(--tc);
+      // }
+      // // 滚动条右下角
+      // &::-webkit-scrollbar-corner {
+      //   background: transparent;
+      // }
 
-  .el-table__header-wrapper {
-    flex-shrink: 0;
-  }
-
-  .el-table__body-wrapper {
-    flex: 1;
-    overflow-y: auto;
-    border-right: none;
-
-    // 滚动条大小
-    &::-webkit-scrollbar {
-      display: block !important;
-      width: 4px !important;
-      height: 4px !important;
-    }
-    // 滚动条轨道
-    &::-webkit-scrollbar-track {
-      border-radius: 0px;
-      background-color: #efefef;
-    }
-    // 滚动条滑块
-    &::-webkit-scrollbar-thumb {
-      border-radius: 4px;
-      background-color: var(--tc);
-    }
-    // 滚动条右下角
-    &::-webkit-scrollbar-corner {
-      background: transparent;
-    }
-  }
-  .el-table__body {
-    overflow: visible !important;
-  }
-  tbody {
-    overflow: visible !important;
-  }
-  .el-table__row {
-    overflow: visible !important;
-  }
-  .el-table__cell {
-    &:has(.c-table-operate-row) {
-      overflow: visible !important;
-      .cell {
+      .el-table__body {
         overflow: visible !important;
-        .c-table-operate-row {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 100%;
-          padding: 0 10px 0 10px;
+        width: 100% !important;
+        tbody {
+          overflow: visible !important;
         }
+      }
+    }
+    .el-table__border-left-patch {
+      width: 0;
+    }
+
+    .el-table__row {
+      overflow: visible !important;
+      .el-table__cell {
+        &:has(.c-table-operate-row) {
+          overflow: visible !important;
+          .cell {
+            overflow: visible !important;
+            .c-table-operate-row {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              height: 100%;
+              padding: 0 10px 0 10px;
+            }
+          }
+        }
+      }
+    }
+    tr {
+      .el-table__cell:last-child {
+        border-right: 0 !important;
       }
     }
   }
@@ -438,45 +464,46 @@
 }
 // 模态框
 .c-dialog {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
   // 修改默认样式
-  .el-dialog {
-    max-width: 90vw;
-    max-height: 90vh;
+  &.el-dialog {
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    max-width: 90vw;
+    max-height: 90vh;
+    // margin: auto !important;
     padding: 0;
-    margin: 0 !important;
-    left: auto;
     box-shadow: 0 0 0 !important;
     &:not(.is-fullscreen) {
-      margin-top: 0 !important;
+      // margin-top: 0 !important;
     }
     .el-dialog__header {
       position: relative;
       display: flex;
       align-items: center;
       flex-shrink: 0;
+      width: 100%;
       height: 50px;
       padding: 0;
       border-bottom: 1px solid var(--bcs);
+
       // 原生标题和按钮
       .el-dialog__title {
-        width: 100%;
         position: relative;
         display: flex;
         align-items: center;
+        width: 100%;
         height: 100%;
         padding-left: 10px;
         padding-right: 40px;
+        line-height: normal;
+        color: var(--fcp);
         font-size: 18px;
         font-weight: 700;
-        color: var(--fcp);
-        line-height: normal;
       }
       .el-dialog__headerbtn {
         position: absolute;
@@ -484,25 +511,25 @@
         right: 10px;
         transform: translateY(-50%);
         .el-dialog__close {
-          font-size: 20px;
           color: var(--fcs);
+          font-size: 20px;
           &:hover {
             color: var(--tc);
           }
         }
       }
       // 自定义插槽标题和按钮
-      .s-d-title {
-        width: 100%;
+      .c-d-header {
         position: relative;
         display: flex;
         align-items: center;
+        width: 100%;
         height: 100%;
         padding-left: 10px;
         padding-right: 40px;
+        color: var(--fcp);
         font-size: 18px;
         font-weight: 700;
-        color: var(--fcp);
         .h-t {
           width: 100%;
           height: 100%;
@@ -560,15 +587,15 @@
       }
     }
     .el-dialog__footer {
-      height: 70px;
       flex-shrink: 0;
+      height: 70px;
       padding: 0;
       padding-top: 0;
-      .s-d-footer {
-        height: 100%;
+      .c-d-footer {
         display: flex;
         justify-content: flex-end;
         align-items: center;
+        height: 100%;
         padding-right: 20px;
         .el-button {
           margin: 0 20px 0 0;

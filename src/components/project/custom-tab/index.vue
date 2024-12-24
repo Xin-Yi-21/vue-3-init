@@ -22,10 +22,10 @@ function handleChangeTab(tabItem) {
 .c-tab {
   display: inline-flex;
   width: auto;
-  height: 36px;
+  height: var(--hc);
   overflow: hidden;
   border-radius: 18px;
-
+  font-size:var(--fs);
   .tab-item {
     min-width: 120px;
     height: 100%;
@@ -33,7 +33,7 @@ function handleChangeTab(tabItem) {
     border: 1px solid var(--bcs);
     border-right: 0;
     color: var(--fcp);
-    line-height: 36px;
+    line-height: var(--hc);
     text-align: center;
     cursor: pointer;
 

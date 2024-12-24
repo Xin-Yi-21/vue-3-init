@@ -6,7 +6,7 @@ export default {
   // 主题颜色
   themeColor: '#55c791',
   // 主题大小
-  elSize: 'default',
+  themeSize: 'large',
   // 主题轻量级颜色
   themeLightColor: '#55c79166',
   // 显示布局

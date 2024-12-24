@@ -1,23 +1,26 @@
 <template>
   <div class="layout-vue">
-    <top-header @setLayout="setLayout" v-if="settingStore.topHeader.isShow"></top-header>
-    <div class="main-container">
-      <left-nav v-if="settingStore.leftNav.isShow"></left-nav>
-      <div class="main-right-container">
-        <div class="top-container">
-          <top-nav v-if="settingStore.topNav.isShow"></top-nav>
-          <top-bar v-if="settingStore.topBar.isShow"></top-bar>
-          <top-tag v-if="settingStore.topTag.isShow"></top-tag>
+    <template v-if="isDataInitDone">
+      <top-header @setLayout="setLayout" v-if="settingStore.topHeader.isShow"></top-header>
+      <div class="main-container">
+        <left-nav v-if="settingStore.leftNav.isShow"></left-nav>
+        <div class="main-right-container">
+          <div class="top-container">
+            <top-nav v-if="settingStore.topNav.isShow"></top-nav>
+            <top-bar v-if="settingStore.topBar.isShow"></top-bar>
+            <top-tag v-if="settingStore.topTag.isShow"></top-tag>
+          </div>
+          <app-main />
         </div>
-        <app-main />
+        <setting ref="settingRef"></setting>
       </div>
-      <setting ref="settingRef"></setting>
-    </div>
+    </template>
   </div>
 </template>
 
 <script setup>
 // 一、综合初始化
+import app from '@/app.js'
 import TopHeader from '@/layout/components/top/top-header/index.vue'
 import TopBar from '@/layout/components/top/top-bar/index.vue'
 import TopTag from '@/layout/components/top/top-tag/index.vue'
@@ -28,13 +31,12 @@ import Setting from '@/layout/components/setting/index.vue'
 import useEnumsStore from '@/store/project/enums'
 import useSettingStore from '@/store/system/setting'
 const settingStore = useSettingStore()
-
 // 二、模块功能
 // 1、获取枚举
-const isDataInitDone = ref(true)
+const isDataInitDone = ref(false)
 async function getEnums() {
   try { await useEnumsStore().getEnums() } catch { }
-  isDataInitDone.value = true
+ 
 }
 // 2、打开布局抽屉
 const settingRef = ref(null)
@@ -45,15 +47,18 @@ function setLayout() {
 function setSetting() {
   settingStore.setThemeStyle()
   settingStore.setThemeColor()
+  settingStore.setThemeSize()
   settingStore.setTopHeader()
   settingStore.setLeftNav()
+  settingStore.setTheme()
 }
 
 // 三、生命周期
 onMounted(() => { init() })
-function init() {
-  getEnums()
-  setSetting()
+async function init() {
+  await getEnums()
+  await setSetting()
+  isDataInitDone.value = true
 }
 
 </script>

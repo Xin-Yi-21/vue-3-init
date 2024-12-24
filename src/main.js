@@ -1,13 +1,3 @@
-
-
-function vString(str, regex) {
-  const pattern = new RegExp(regex);  // 创建正则表达式
-  return pattern.test(str);  // 如果字符串匹配正则，返回 true，否则返回 false
-}
-console.log(vString('// # 啊', "^\\s*//.*#.*$"))
-console.log(vString('// # 啊', ""))
-console.log(vString('// 你好', "//.*#"))
-
 window.vEnv = import.meta.env
 import { setConfig } from '@/api/system/config'
 import app from './app.js'
@@ -16,7 +6,7 @@ import ElementPlus from 'element-plus'
 import locale from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/dist/index.css'
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
-app.use(ElementPlus, { locale: locale, size: storageSetting.elSize || 'default' })
+app.use(ElementPlus, { locale: locale, size: !storageSetting.themeSize ? 'large' : storageSetting.themeSize == 'normal' ? 'default' : storageSetting.themeSize })
 // ⭐ ant-design 相关文件
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/reset.css'
@@ -45,6 +35,33 @@ setConfig().then(async (cEnv) => {
     app.use(plugins)
     app.use(store)
     app.use(router)
+
+    // // 全局方法
+    // // getTableHeaderLRVByGlobal
+    const dayjs = (await import('dayjs')).default
+    const { $getEnumsLabel, $getEnumsLabelList, $exportEchartImg, $exportDomTable, $uniqueArray, $sortArray, $completeEchart, $completeTable, $newResizeObserver, $accurate } = await import("@/utils/common.js")
+    // const { throttle, debounce, deepClone } = await import("lodash")
+    // app.config.globalProperties.$bus = new Vue()
+    app.config.globalProperties.$dayjs = dayjs
+    app.config.globalProperties.$getEnumsLabel = $getEnumsLabel
+    // app.config.globalProperties.$getEnumsLabelList = $getEnumsLabelList
+    // app.config.globalProperties.$exportEchartImg = $exportEchartImg
+    // app.config.globalProperties.$exportDomTable = $exportDomTable
+    // app.config.globalProperties.$throttle = throttle
+    // app.config.globalProperties.$debounce = debounce
+    // app.config.globalProperties.$deepClone = deepClone
+    // app.config.globalProperties.$downloadFile = $downloadFile
+    // app.config.globalProperties.$previewFile = $previewFile
+    // app.config.globalProperties.$loadingStart = $loadingStart
+    // app.config.globalProperties.$loadingEnd = $loadingEnd
+    // app.config.globalProperties.$uniqueArray = $uniqueArray
+    // app.config.globalProperties.$sortArray = $sortArray
+    // app.config.globalProperties.$completeEchart = $completeEchart
+    // app.config.globalProperties.$completeTable = $completeTable
+    // app.config.globalProperties.$newResizeObserver = $newResizeObserver
+    // app.config.globalProperties.$accurate = $accurate
+
+
     // 全局组件
     const cTooltip = (await import('@/components/project/custom-tooltip')).default
     const cPagination = (await import('@/components/project/custom-pagination')).default
@@ -70,30 +87,6 @@ setConfig().then(async (cEnv) => {
     app.component('cCardHeader', cCardHeader)
     app.component('cTab', cTab)
 
-    // // 全局方法
-    // // getTableHeaderLRVByGlobal
-    const dayjs = (await import('dayjs')).default
-    // const { $getEnumsLabel, $getEnumsLabelList, $exportEchartImg, $exportDomTable, $uniqueArray, $sortArray, $completeEchart, $completeTable, $newResizeObserver, $accurate } = await import("@/utils/common.js")
-    // const { throttle, debounce, deepClone } = await import("lodash")
-    // app.config.globalProperties.$bus = new Vue()
-    app.config.globalProperties.$dayjs = dayjs
-    // app.config.globalProperties.$getEnumsLabel = $getEnumsLabel
-    // app.config.globalProperties.$getEnumsLabelList = $getEnumsLabelList
-    // app.config.globalProperties.$exportEchartImg = $exportEchartImg
-    // app.config.globalProperties.$exportDomTable = $exportDomTable
-    // app.config.globalProperties.$throttle = throttle
-    // app.config.globalProperties.$debounce = debounce
-    // app.config.globalProperties.$deepClone = deepClone
-    // app.config.globalProperties.$downloadFile = $downloadFile
-    // app.config.globalProperties.$previewFile = $previewFile
-    // app.config.globalProperties.$loadingStart = $loadingStart
-    // app.config.globalProperties.$loadingEnd = $loadingEnd
-    // app.config.globalProperties.$uniqueArray = $uniqueArray
-    // app.config.globalProperties.$sortArray = $sortArray
-    // app.config.globalProperties.$completeEchart = $completeEchart
-    // app.config.globalProperties.$completeTable = $completeTable
-    // app.config.globalProperties.$newResizeObserver = $newResizeObserver
-    // app.config.globalProperties.$accurate = $accurate
     app.mount('#app')
   } catch (error) {
     console.log('查error', error)

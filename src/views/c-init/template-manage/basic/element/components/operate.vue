@@ -1,9 +1,12 @@
 <template>
-  <el-dialog :visible="true" class="c-dialog" title="" :modal="true" :close-on-click-modal="false" :before-close="handleClose">
-    <div slot="title" class="s-d-title">
-      <div class="h-t"><c-icon :i="dialog.icon" class="mr-5" size="18"></c-icon> {{ dialog.title }}</div>
-      <svg-icon icon-class="c-close" class-name="n-o-i" @click="handleClose"></svg-icon>
-    </div>
+
+  <el-dialog v-model="visible" class="c-dialog" :before-close="handleClose" width="600" align-center draggable :close-on-click-modal="false">
+    <template #header="{ close }">
+      <div class="c-d-header">
+        <div class="h-t"><c-icon :i="dialog.icon" class="mr-5" size="18" cursor=""></c-icon> {{ dialog.title }}</div>
+        <svg-icon icon-class="c-close" class-name="n-o-i" @click="close"></svg-icon>
+      </div>
+    </template>
     <div class="c-d-c">
       <el-form :model="form" :rules="formRules" ref="formRef" class="c-form">
         <el-form-item label="姓名" prop="personName">
@@ -22,127 +25,125 @@
         </el-form-item>
       </el-form>
     </div>
-    <div slot="footer" class="s-d-footer">
-      <el-button @click="handleClose">取消</el-button>
-      <el-button type="primary" @click="handleConfirm" :loading="isConfirmLoading">确认</el-button>
-    </div>
+    <template #footer>
+      <div class="c-d-footer">
+        <el-button @click="handleClose">取消</el-button>
+        <el-button type="primary" @click="handleConfirm" :loading="isConfirmLoading">确认</el-button>
+      </div>
+    </template>
   </el-dialog>
+
+
 </template>
-<script>
+<script setup>
+// # 一、综合
 import { numberVerify } from '@/utils/verify'
-// import { dispatchManageAdd, dispatchManageUpdate } from '@/api/project/system-manage.js'
-// :before-close 属性，element自带关闭图标触发函数。
-// :modal : 是否需要遮罩层，默认true
-// :modal-append-to-body : modal是否插入至body元素，默认true
-// :append-to-body : dialog是否插入至body元素，默认false
-// :close-on-click-modal : 是否可通过点击modal关闭dialog，默认true。。
-// :close-on-press-escape : 是否可通过esc关闭dialog，默认true
-export default {
-  data() {
-    return {
-      form: {},
-      formRules: {
-        personName: [{ required: true, message: '姓名不能为空', trigger: 'blur' },],
-        gender: [{ required: true, message: '性别不能为空', trigger: 'change' },],
-        age: [{ required: true, message: '年龄不能为空', trigger: 'blur' }, { validator: numberVerify, trigger: 'blur' },],
-        role: [{ required: true, message: '身份不能为空', trigger: 'blur' },],
-      },
-      dialog: {},
-      enums: {},
-      isConfirmLoading: false,
-    }
-  },
-  props: {
-    operate: { type: String, default: 'add' },
-    info: { type: Object, default: () => { } },
-  },
-  created() {
-    this.init()
-  },
-  methods: {
-    // 一、初始化相关
-    // 0、初始化总调用
-    init() {
-      this.initForm()
-      this.getEnums()
-    },
-    // 1、初始化表单
-    initForm() {
-      let form = {
-        personId: this.info.personId,
-        personName: this.info.personName,
-        gender: this.info.gender,
-        age: this.info.age,
-        role: this.info.role,
-      }
-      switch (this.operate) {
-        case 'add':
-          this.$set(this, 'form', {})
-          this.$set(this, 'dialog', { operate: 'add', title: '人物管理 - 新增', icon: 'c-d-add' })
-          break
-        case 'view':
-          this.$set(this, 'form', form)
-          this.$set(this, 'dialog', { operate: 'view', title: '人物管理 - 查看', icon: 'c-d-view' })
-          break
-        case 'update':
-          this.$set(this, 'form', form)
-          this.$set(this, 'dialog', { operate: 'update', title: '人物管理 - 更新', icon: 'c-d-update' })
-          break
-      }
-    },
-    // 2、获取枚举
-    getEnums() {
-      let allEnums = JSON.parse(JSON.stringify(this.$store.state.enums.allEnums))
-      let enums = {
-        gender: allEnums.gender,
-      }
-      this.$set(this, 'enums', Object.assign({}, this.enums, enums))
-    },
-    // 二、操作相关
-    // 1、确认
-    handleConfirm() {
-      this.$refs.formRef.validate((valid) => {
-        if (!valid) return false
-        let params = {
-          personName: this.form.personName,
-          gender: this.form.gender,
-          age: this.form.age,
-          role: this.form.role,
-        }
-        switch (this.operate) {
-          case 'add':
-            dispatchManageAdd(params).then(res => {
-              this.$message.success('新增人物成功！')
-              this.$emit('refresh')
-              this.$emit('close')
-            })
-            break
-          case 'update':
-            params.personId = this.form.personId
-            dispatchManageUpdate(params).then(res => {
-              this.$message.success('更新人物成功！')
-              this.$emit('refresh')
-              this.$emit('close')
-            })
-            break
-        }
-      })
-    },
-    // 2、关闭
-    handleClose(done) {
-      this.$emit('close')
-    },
-  },
+import useEnumsStore from '@/store/project/enums'
+const props = defineProps({
+  operate: { type: String, default: 'add' },
+  info: { type: Object, default: () => { } },
+})
+const emit = defineEmits()
+const visible = ref(true)
+const isConfirmLoading = ref(false)
+// ^
+// # 二、模块功能
+// # 1、初始化
+// # (1) 初始化总调用
+function init() {
+  initForm()
+  getEnums()
 }
+// ^
+// # (2) 初始化表单
+const form = ref({})
+const formRules = ref({
+  personName: [{ required: true, message: '姓名不能为空', trigger: 'blur' },],
+  gender: [{ required: true, message: '性别不能为空', trigger: 'change' },],
+  age: [{ required: true, message: '年龄不能为空', trigger: 'blur' }, { validator: numberVerify, trigger: 'blur' },],
+  role: [{ required: true, message: '身份不能为空', trigger: 'blur' },],
+})
+const dialog = ref({})
+function initForm() {
+  let newForm = {
+    personId: props.info?.personId,
+    personName: props.info?.personName,
+    gender: props.info?.gender,
+    age: props.info?.age,
+    role: props.info?.role,
+  }
+  switch (props.operate) {
+    case 'add':
+      form.value = {}
+      dialog.value = { operate: 'add', title: '人物管理 - 新增', icon: 'c-d-add' }
+      break
+    case 'view':
+      form.value = newForm
+      dialog.value = { operate: 'view', title: '人物管理 - 查看', icon: 'c-d-view' }
+      break
+    case 'update':
+      form.value = newForm
+      dialog.value = { operate: 'update', title: '人物管理 - 更新', icon: 'c-d-update' }
+      break
+  }
+}
+// ^
+// # (3) 获取枚举
+const enums = ref({})
+function getEnums() {
+  let allEnums = JSON.parse(JSON.stringify(useEnumsStore().allEnums))
+  let newEnums = {
+    gender: allEnums.gender,
+  }
+  enums.value = Object.assign({}, enums.value, newEnums)
+}
+// ^
+// ^
+// # 2、确认
+function handleConfirm() {
+  this.$refs.formRef.validate((valid) => {
+    if (!valid) return false
+    let params = {
+      personName: form.value.personName,
+      gender: form.value.gender,
+      age: form.value.age,
+      role: form.value.role,
+    }
+    switch (this.operate) {
+      case 'add':
+        dispatchManageAdd(params).then(res => {
+          this.$message.success('新增人物成功！')
+          emit('refresh')
+          emit('close')
+        })
+        break
+      case 'update':
+        params.personId = this.form.personId
+        dispatchManageUpdate(params).then(res => {
+          this.$message.success('更新人物成功！')
+          emit('refresh')
+          emit('close')
+        })
+        break
+    }
+  })
+}
+// ^
+// # 3、关闭
+
+function handleClose(done) {
+  emit('close')
+}
+// ^
+// ^
+// # 三、生命周期
+init()
+// ^
 </script>
 <style lang="scss" scoped>
-::v-deep.c-dialog {
-  .el-dialog {
-    width: 600px;
-
-    .c-d-c {
-      padding: 20px 20px 10px 10px;
-    }
+.c-dialog {
+  .c-d-c {
+    padding: 20px 20px 10px 10px;
   }
 }
 </style>
