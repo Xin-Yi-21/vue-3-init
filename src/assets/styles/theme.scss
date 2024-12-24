@@ -330,9 +330,19 @@
     }
 
     // el-dialog
-    .el-dialog__wrapper {
-      .el-dialog {
-        background-color: var(--bg-inner-primary);
+    .el-dialog {
+      background-color: var(--bg-inner-primary);
+      border: 1px solid var(--bcs);
+    }
+
+    // el-popper
+    .el-popper {
+      border-color: var(--bcs);
+      .el-popper__arrow {
+        &::before {
+          border-color: var(--bcs);
+          background-color: var(--bg-inner-primary);
+        }
       }
     }
   }

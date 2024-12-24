@@ -478,9 +478,9 @@
     // margin: auto !important;
     padding: 0;
     box-shadow: 0 0 0 !important;
-    &:not(.is-fullscreen) {
-      // margin-top: 0 !important;
-    }
+    // &:not(.is-fullscreen) {
+    //   margin-top: 0 !important;
+    // }
     .el-dialog__header {
       position: relative;
       display: flex;
@@ -563,7 +563,6 @@
       flex: 1;
       padding: 0;
       box-shadow: 0;
-      background-color: var(--bg-inner-primary);
       overflow-y: auto;
       // 滚动条大小
       &::-webkit-scrollbar {
@@ -790,7 +789,8 @@
   border: 0 !important;
   background-color: transparent !important;
   line-height: 1 !important;
-  transform: translateY(5px);
-  transition: none !important;
   color: var(--fcp);
+  .el-popper__arrow {
+    display: none;
+  }
 }

@@ -1,8 +1,8 @@
 <template>
   <i :class="{ 'c-icon': true, 'is-disabled': disabled }" :style="`color:${color};font-size:${size}px;cursor:${cursor};`" @click="handleIconClick">
-    <el-tooltip ref="tooltip" effect="light" placement="top" popper-class="c-icon-tooltip" :visible-arrow="false" v-if="tip && showType == 'el'">
+    <el-tooltip trigger="hover" offset="5" placement="top" effect="light" popper-class="c-icon-tooltip" v-if="tip && showType == 'el'">
       <svg-icon :icon-class="i"></svg-icon>
-      <span slot="content" :style="`color:${hoverColor};`">{{ tip }}</span>
+      <template #content> <span :style="`color:${hoverColor};`">{{ tip }}</span></template>
     </el-tooltip>
     <template v-else>
       <svg-icon :icon-class="i"></svg-icon>

@@ -24,18 +24,17 @@ export function handleThemeColor(themeColor) {
   }
 }
 
-
-
 // 处理主题大小
 export function handleThemeSize(themeSize) {
   document.documentElement.setAttribute('theme-size', themeSize)
   let tsLRV = {
-    'large': { themeSizeComponentHeight: '36px', fontSize: '14px' },
+    'large': { themeSizeComponentHeight: '36px', fontSize: '14px', },
     'normal': { themeSizeComponentHeight: '30px', fontSize: '13px' },
     'small': { themeSizeComponentHeight: '24px', fontSize: '12px' },
   }
   document.documentElement.style.setProperty(`--hc`, tsLRV[themeSize]?.themeSizeComponentHeight)
   document.documentElement.style.setProperty(`--fs`, tsLRV[themeSize]?.fontSize)
+  document.documentElement.style.setProperty(`--fsnu`, 14)
 }
 // hex颜色转rgb颜色
 export function hexToRgb(str) {

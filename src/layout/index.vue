@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-// 一、综合初始化
+// # 一、综合初始化
 import app from '@/app.js'
 import TopHeader from '@/layout/components/top/top-header/index.vue'
 import TopBar from '@/layout/components/top/top-bar/index.vue'
@@ -31,19 +31,22 @@ import Setting from '@/layout/components/setting/index.vue'
 import useEnumsStore from '@/store/project/enums'
 import useSettingStore from '@/store/system/setting'
 const settingStore = useSettingStore()
-// 二、模块功能
-// 1、获取枚举
+// ^
+
+// # 二、模块功能
+// # 1、获取枚举
 const isDataInitDone = ref(false)
 async function getEnums() {
   try { await useEnumsStore().getEnums() } catch { }
- 
 }
-// 2、打开布局抽屉
+// ^
+// # 2、打开布局抽屉
 const settingRef = ref(null)
 function setLayout() {
   settingRef.value.openSetting()
 }
-// 3、初始布局设置
+// ^
+// # 3、初始布局设置
 function setSetting() {
   settingStore.setThemeStyle()
   settingStore.setThemeColor()
@@ -52,14 +55,17 @@ function setSetting() {
   settingStore.setLeftNav()
   settingStore.setTheme()
 }
+// ^
+// ^
 
-// 三、生命周期
+// # 三、生命周期
 onMounted(() => { init() })
 async function init() {
   await getEnums()
   await setSetting()
   isDataInitDone.value = true
 }
+// ^
 
 </script>
 
