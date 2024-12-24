@@ -4,28 +4,28 @@
       <line-echart></line-echart>
     </div>
     <div class="echart-card bar">
-      <bar-echart></bar-echart>
+      <!-- <bar-echart></bar-echart> -->
     </div>
     <div class="echart-card pie">
-      <pie-echart></pie-echart>
+      <!-- <pie-echart></pie-echart> -->
     </div>
     <div class="echart-card radar">
-      <radar-echart></radar-echart>
+      <!-- <radar-echart></radar-echart> -->
     </div>
     <div class="echart-card rose">
-      <wind-rose-echart></wind-rose-echart>
+      <!-- <wind-rose-echart></wind-rose-echart> -->
     </div>
     <div class="echart-card liquid">
-      <liquid-echart></liquid-echart>
+      <!-- <liquid-echart></liquid-echart> -->
     </div>
 
     <div class="echart-card gauge">
-      <dashbord-echart></dashbord-echart>
+      <!-- <dashbord-echart></dashbord-echart> -->
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import LineEchart from './components/line'
 import BarEchart from './components/bar'
 import PieEchart from './components/pie'
@@ -33,19 +33,6 @@ import RadarEchart from './components/radar'
 import LiquidEchart from './components/liquid'
 import DashbordEchart from './components/dashbord'
 import WindRoseEchart from './components/wind-rose'
-
-export default {
-  components: { LineEchart, BarEchart, PieEchart, RadarEchart, LiquidEchart, DashbordEchart, WindRoseEchart },
-  data() {
-    return {
-
-    }
-  },
-
-  methods: {
-
-  },
-}
 </script>
 
 <style lang="scss" scoped>

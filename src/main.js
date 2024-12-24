@@ -40,26 +40,26 @@ setConfig().then(async (cEnv) => {
     // // getTableHeaderLRVByGlobal
     const dayjs = (await import('dayjs')).default
     const { $getEnumsLabel, $getEnumsLabelList, $exportEchartImg, $exportDomTable, $uniqueArray, $sortArray, $completeEchart, $completeTable, $newResizeObserver, $accurate } = await import("@/utils/common.js")
-    // const { throttle, debounce, deepClone } = await import("lodash")
+    const { throttle, debounce, deepClone } = await import("lodash")
     // app.config.globalProperties.$bus = new Vue()
     app.config.globalProperties.$dayjs = dayjs
     app.config.globalProperties.$getEnumsLabel = $getEnumsLabel
-    // app.config.globalProperties.$getEnumsLabelList = $getEnumsLabelList
-    // app.config.globalProperties.$exportEchartImg = $exportEchartImg
-    // app.config.globalProperties.$exportDomTable = $exportDomTable
-    // app.config.globalProperties.$throttle = throttle
-    // app.config.globalProperties.$debounce = debounce
-    // app.config.globalProperties.$deepClone = deepClone
+    app.config.globalProperties.$getEnumsLabelList = $getEnumsLabelList
+    app.config.globalProperties.$exportEchartImg = $exportEchartImg
+    app.config.globalProperties.$exportDomTable = $exportDomTable
+    app.config.globalProperties.$throttle = throttle
+    app.config.globalProperties.$debounce = debounce
+    app.config.globalProperties.$deepClone = deepClone
     // app.config.globalProperties.$downloadFile = $downloadFile
     // app.config.globalProperties.$previewFile = $previewFile
     // app.config.globalProperties.$loadingStart = $loadingStart
     // app.config.globalProperties.$loadingEnd = $loadingEnd
-    // app.config.globalProperties.$uniqueArray = $uniqueArray
-    // app.config.globalProperties.$sortArray = $sortArray
-    // app.config.globalProperties.$completeEchart = $completeEchart
-    // app.config.globalProperties.$completeTable = $completeTable
-    // app.config.globalProperties.$newResizeObserver = $newResizeObserver
-    // app.config.globalProperties.$accurate = $accurate
+    app.config.globalProperties.$uniqueArray = $uniqueArray
+    app.config.globalProperties.$sortArray = $sortArray
+    app.config.globalProperties.$completeEchart = $completeEchart
+    app.config.globalProperties.$completeTable = $completeTable
+    app.config.globalProperties.$newResizeObserver = $newResizeObserver
+    app.config.globalProperties.$accurate = $accurate
 
 
     // 全局组件

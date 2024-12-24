@@ -1,6 +1,6 @@
 <template>
   <i :class="{ 'c-icon': true, 'is-disabled': disabled }" :style="`color:${color};font-size:${size}px;cursor:${cursor};`" @click="handleIconClick">
-    <el-tooltip trigger="hover" offset="5" placement="top" effect="light" popper-class="c-icon-tooltip" v-if="tip && showType == 'el'">
+    <el-tooltip trigger="hover" :offset="5" placement="top" effect="light" popper-class="c-icon-tooltip" v-if="tip && showType == 'el'">
       <svg-icon :icon-class="i"></svg-icon>
       <template #content> <span :style="`color:${hoverColor};`">{{ tip }}</span></template>
     </el-tooltip>

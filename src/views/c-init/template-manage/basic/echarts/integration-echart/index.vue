@@ -1,7 +1,7 @@
 <template>
-  <div class="line-vue">
-    <c-icon class="echart-export" i="c-download" tip="导出图片" size="20" cursor="pointer" :color="settingStore?.themeColor" :hoverColor="settingStore.theme.cssV.tc" showType="el" @click="handleExportEchart()"></c-icon>
-    <div id="line-echart"> </div>
+  <div class="integration-echart-vue">
+    <c-icon class="echart-export" i="c-download" tip="导出图片" size="20" cursor="pointer" :color="settingStore?.themeColor" :hoverColor="settingStore?.theme?.tc" showType="el" @click="handleExportEchart()"></c-icon>
+    <div id="integration-echart"> </div>
   </div>
 </template>
 
@@ -89,7 +89,7 @@ function initEchart() {
   echartInfo.value?.instance?.clear()
   echartInfo.value?.instance?.dispose()
   echartInfo.value?.resizer?.disconnect()
-  let chartDom = document.getElementById('line-echart')
+  let chartDom = document.getElementById('integration-echart')
   if (!chartDom) return
   chartDom && chartDom.removeAttribute('_echarts_instance_')
   let myChart = echarts.getInstanceByDom(chartDom) || echarts.init(chartDom)
@@ -194,21 +194,22 @@ watch(() => settingStore.themeStyle, (nv, ov) => {
 </script>
 
 <style lang="scss" scoped>
-.line-vue {
+.integration-echart-vue {
   position: relative;
   width: 100%;
   height: 100%;
+  background-color: var(--bg-card);
   color: var(--fcp);
 
   .echart-export {
     position: absolute;
     top: 5px;
     right: 10px;
-    z-index: 9;
     font-weight: 700;
+    z-index: 9;
   }
 
-  #line-echart {
+  #integration-echart {
     width: 100%;
     height: 100%;
   }

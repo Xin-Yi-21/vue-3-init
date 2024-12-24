@@ -5,40 +5,34 @@
     </div>
     <div class="v-content">
       <basic-echart v-if="currentTab == 'basic'"></basic-echart>
-      <interaction-echart v-if="currentTab == 'interaction'"></interaction-echart>
-      <map-echart v-if="currentTab == 'map'"></map-echart>
+      <integration-echart v-if="currentTab == 'integration'"></integration-echart>
+      <!-- <interaction-echart v-if="currentTab == 'interaction'"></interaction-echart>
+      <map-echart v-if="currentTab == 'map'"></map-echart> -->
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import BasicEchart from './basic-echart/index.vue'
-import InteractionEchart from './interaction-echart/index.vue'
-import MapEchart from './map-echart/index.vue'
-export default {
-  components: { BasicEchart, MapEchart, InteractionEchart },
-  data() {
-    return {
-      tabList: [
-        { label: '基础echarts', value: 'basic' },
-        { label: '图表交互echarts', value: 'interaction' },
-        { label: '地图echarts', value: 'map' },
-      ],
-      currentTab: 'interaction',
-    }
-  },
+import IntegrationEchart from './integration-echart/index.vue'
+// import InteractionEchart from './interaction-echart/index.vue'
+// import MapEchart from './map-echart/index.vue'
 
-  methods: {
-    handleChangeTab(currentTab) {
-      this.currentTab = currentTab.value
-    }
-  },
+const tabList = ref(
+  [{ label: '基础echarts', value: 'basic' },
+  { label: '集成echarts', value: 'integration' },
+  { label: '图表交互echarts', value: 'interaction' },
+  { label: '地图echarts', value: 'map' },]
+)
+const currentTab = ref('basic')
+
+function handleChangeTab(newCurrentTab) {
+  currentTab.value = newCurrentTab.value
 }
 </script>
 
 <style lang="scss" scoped>
 .echarts-vue {
-
   .v-header {
     width: calc(100% - 20px);
     height: 50px;

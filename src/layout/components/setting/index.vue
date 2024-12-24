@@ -94,14 +94,17 @@ defineExpose({ openSetting, })
 // 2、修改主题风格
 function handleThemeStyle() {
   setting.setThemeStyle()
+  setting.setTheme()
 }
 // 3、修改主题颜色
 function handleThemeColor() {
   setting.setThemeColor()
+  setting.setTheme()
 }
 // 4、修改主题大小
 function handleThemeSize() {
   setting.setThemeSize()
+  setting.setTheme()
 }
 // 5、左侧导航
 function handleLeftNav() {
