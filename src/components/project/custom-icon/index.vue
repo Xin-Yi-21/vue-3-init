@@ -1,11 +1,11 @@
 <template>
-  <i :class="{ 'c-icon': true, 'is-disabled': disabled }" :style="`color:${color};font-size:${size}px;cursor:${cursor};`" @click="handleIconClick">
-    <el-tooltip trigger="hover" :offset="5" placement="top" effect="light" popper-class="c-icon-tooltip" v-if="tip && showType == 'el'">
+  <i :class="{ 'c-icon': true, 'is-disabled': disabled }" :style="`color:${color};font-size:${size}px;cursor:${cursor};--hoverColor:${hoverColor || color};`" @click="handleIconClick">
+    <el-tooltip trigger="hover" :offset="5" placement="top" effect="light" popper-class="c-icon-tooltip" v-if="tip && showType == 'el'" :hide-after="0">
       <svg-icon :icon-class="i"></svg-icon>
-      <template #content> <span :style="`color:${hoverColor};`">{{ tip }}</span></template>
+      <template #content> <span :style="`color:${hoverColor || color};`">{{ tip }}</span></template>
     </el-tooltip>
     <template v-else>
-      <svg-icon :icon-class="i"></svg-icon>
+      <svg-icon :icon-class="i"> </svg-icon>
       <span class="icon-tip" :style="`top:${topTipPx}px`" v-if="tip">{{ tip }}</span>
     </template>
   </i>
@@ -18,7 +18,7 @@ const props = defineProps({
   // 图标颜色
   color: { type: String, default: 'inherit', },
   // 图标悬浮颜色
-  hoverColor: { type: String, default: 'inherit', },
+  hoverColor: { type: String, default: '', },
   // 图标大小
   size: { type: [Number, String], default: '16', },
   // 图标提示
@@ -47,7 +47,8 @@ const handleIconClick = (e) => {
   display: inline-flex;
   font-style: normal;
   font-weight: 400;
-  color: var(--color);
+  margin: 0 5px;
+  // color: var(--color);
 
   &:hover {
     * {
@@ -63,7 +64,6 @@ const handleIconClick = (e) => {
 
   .svg-icon {
     font-size: inherit;
-    margin: 0 5px;
   }
 
   .svg-icon:hover~.icon-tip {

@@ -1,14 +1,12 @@
 <template>
   <div class="integration-echart-vue">
-
     <div id="integration-echart"> </div>
-    <!-- showType="el" -->
     <div class="echart-tool">
-      <c-icon i="c-change-view" tip="切换视图" size="16" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" @click="handleExportEchart()"></c-icon>
-      <c-icon i="c-copy-text" tip="复制数据" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" @click="handleExportEchart()"></c-icon>
-      <c-icon i="c-export-image" tip="导出图片" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" @click="handleExportEchart()"></c-icon>
-      <c-icon i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" @click="handleExportEchart()"></c-icon>
-      <c-icon i="c-fullscreen-in" tip="开启全屏" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" @click="handleExportEchart()"></c-icon>
+      <c-icon i="c-change-view" tip="切换视图" size="16" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleChangeView()"></c-icon>
+      <c-icon i="c-copy-text" tip="复制数据" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleCopyData()"></c-icon>
+      <c-icon i="c-export-image" tip="导出图片" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportImage()"></c-icon>
+      <c-icon i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportExcel()"></c-icon>
+      <c-icon i="c-fullscreen-in" tip="开启全屏" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleFullscreenIn()"></c-icon>
     </div>
   </div>
 </template>
@@ -118,10 +116,32 @@ function initEchart() {
   proxy.$initEchart(echartInfo, 'integration-echart', option)
 }
 // ^
-// # 4、导出echart
-function handleExportEchart() {
-  // let exportFileName = '折线-柱状图'
-  // proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+
+// # 4、工具栏操作
+// # (1) 切换视图
+function handleChangeView() {
+
+}
+// ^
+// # (2) 复制数据
+function handleCopyData() {
+
+}
+// ^
+// # (3) 导出图片
+function handleExportImage() {
+  let exportFileName = '折线-柱状图'
+  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+}
+// ^
+// # (4) 导出表格
+function handleExportExcel() {
+
+}
+// ^
+// # (5) 开启全屏
+function handleFullscreenIn() {
+
 }
 // ^
 // ^
@@ -167,7 +187,7 @@ watch(() => settingStore.themeStyle, (nv, ov) => {
     z-index: 99;
 
     .c-icon {
-      margin: 0 5px;
+      margin: 0 10px;
       font-size: 12px;
     }
   }
