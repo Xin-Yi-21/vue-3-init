@@ -1,9 +1,15 @@
 <template>
   <div class="integration-echart-vue">
-    <c-icon class="echart-export" i="c-download" tip="导出图片" size="20" cursor="pointer" :color="settingStore?.themeColor" :hoverColor="settingStore?.theme?.tc" showType="el" @click="handleExportEchart()"></c-icon>
-    <div id="integration-echart"> </div>
 
-    <div class="echart-tool"></div>
+    <div id="integration-echart"> </div>
+    <!-- showType="el" -->
+    <div class="echart-tool">
+      <c-icon i="c-change-view" tip="切换视图" size="16" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" @click="handleExportEchart()"></c-icon>
+      <c-icon i="c-copy-text" tip="复制数据" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" @click="handleExportEchart()"></c-icon>
+      <c-icon i="c-export-image" tip="导出图片" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" @click="handleExportEchart()"></c-icon>
+      <c-icon i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" @click="handleExportEchart()"></c-icon>
+      <c-icon i="c-fullscreen-in" tip="开启全屏" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" @click="handleExportEchart()"></c-icon>
+    </div>
   </div>
 </template>
 
@@ -12,6 +18,7 @@
 import useSettingStore from '@/store/system/setting'
 const settingStore = useSettingStore()
 const { proxy } = getCurrentInstance()
+console.log('settingStore', settingStore)
 // ^
 
 // # 二、模块功能
@@ -113,8 +120,8 @@ function initEchart() {
 // ^
 // # 4、导出echart
 function handleExportEchart() {
-  let exportFileName = '折线-柱状图'
-  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+  // let exportFileName = '折线-柱状图'
+  // proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
 }
 // ^
 // ^
@@ -141,17 +148,28 @@ watch(() => settingStore.themeStyle, (nv, ov) => {
   background-color: var(--bg-card);
   color: var(--fcp);
 
-  .echart-export {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    font-weight: 700;
-    z-index: 9;
-  }
 
   #integration-echart {
     width: 100%;
     height: 100%;
+  }
+
+  .echart-tool {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 4px;
+    z-index: 99;
+
+    .c-icon {
+      margin: 0 5px;
+      font-size: 12px;
+    }
   }
 }
 </style>

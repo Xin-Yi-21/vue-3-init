@@ -1,6 +1,6 @@
 <template>
   <div class="line-bar-echart-vue">
-    <c-icon class="echart-export" i="c-download" tip="导出图片" size="20" cursor="pointer" :color="settingStore?.themeColor" :hoverColor="settingStore?.theme?.tc" showType="el" @click="handleExportEchart()"></c-icon>
+    <c-icon class="echart-export" i="c-download" tip="导出图片" size="20" cursor="pointer" :color="settingStore?.themeColor" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportEchart()"></c-icon>
     <div id="line-bar-echart"> </div>
   </div>
 </template>
