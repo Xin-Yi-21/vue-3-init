@@ -85,7 +85,7 @@ export function $exportEchartImage(chartObject, options) {
 
 
 // echart数据补全（xyData版本，考虑弃用）
-export function $completeEchart(chart) {
+export function $completeEchartXY(chart) {
   try {
     let xyData = chart.xyData || {}
     let xData = []
@@ -156,7 +156,7 @@ export function $getSeriesEchartColor(settingStore, echartInfo, showType, operat
 export function $getLineEchartOption(settingStore, echartInfo, showType, operateList) {
   let option = {
     title: { text: '', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
-    grid: { top: 70, left: 50, right: 50, bottom: 10, containLabel: true, },
+    grid: { top: 80, left: 50, right: 50, bottom: 10, containLabel: true, },
     legend: { top: 30, textStyle: { color: settingStore.theme.echartTheme.fcs }, },
     tooltip: {
       trigger: 'axis',

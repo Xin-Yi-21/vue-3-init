@@ -1,9 +1,7 @@
 <template>
-  <div class="integration-echart-vue">
+  <div class="line-bar-echart-vue">
     <c-icon class="echart-export" i="c-download" tip="导出图片" size="20" cursor="pointer" :color="settingStore?.themeColor" :hoverColor="settingStore?.theme?.tc" showType="el" @click="handleExportEchart()"></c-icon>
-    <div id="integration-echart"> </div>
-
-    <div class="echart-tool"></div>
+    <div id="line-bar-echart"> </div>
   </div>
 </template>
 
@@ -108,7 +106,7 @@ function initEchart() {
     series: echartInfo.value.sData,
   }
   let option = proxy.$merge({}, lineOption, addOption)
-  proxy.$initEchart(echartInfo, 'integration-echart', option)
+  proxy.$initEchart(echartInfo, 'line-bar-echart', option)
 }
 // ^
 // # 4、导出echart
@@ -134,7 +132,7 @@ watch(() => settingStore.themeStyle, (nv, ov) => {
 </script>
 
 <style lang="scss" scoped>
-.integration-echart-vue {
+.line-bar-echart-vue {
   position: relative;
   width: 100%;
   height: 100%;
@@ -149,7 +147,7 @@ watch(() => settingStore.themeStyle, (nv, ov) => {
     z-index: 9;
   }
 
-  #integration-echart {
+  #line-bar-echart {
     width: 100%;
     height: 100%;
   }

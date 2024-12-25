@@ -4,7 +4,10 @@
       <line-echart></line-echart>
     </div>
     <div class="echart-card bar">
-      <!-- <bar-echart></bar-echart> -->
+      <bar-echart></bar-echart>
+    </div>
+    <div class="echart-card line-bar">
+      <line-bar-echart></line-bar-echart>
     </div>
     <div class="echart-card pie">
       <!-- <pie-echart></pie-echart> -->
@@ -27,6 +30,7 @@
 
 <script setup>
 import LineEchart from './components/line'
+import LineBarEchart from './components/line-bar'
 import BarEchart from './components/bar'
 import PieEchart from './components/pie'
 import RadarEchart from './components/radar'
