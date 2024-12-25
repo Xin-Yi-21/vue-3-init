@@ -151,24 +151,6 @@ export function $getTableHeaderLRVByGlobal() {
 //   return wbout
 // }
 
-// echart 下载图片
-// chartObject:echart实例对象
-// options:配置参数。 type:导出图片类型；pixelRatio:放大倍数；backgroundColor:导出图片背景色；name:导出图片的名字
-export function $exportEchartImg(chartObject, options) {
-  let picInfo = chartObject.getDataURL({
-    type: options.type ? options.type : 'png',
-    pixelRatio: options.pixelRatio ? options.pixelRatio : 1,
-    backgroundColor: options.backgroundColor ? options.backgroundColor : '#fff',
-  });
-  let a = document.createElement('a')
-  a.download = options.name
-  a.style.display = 'none'
-  a.href = picInfo
-  document.body.appendChild(a)
-  a.click()
-  URL.revokeObjectURL(a.href)
-  document.body.removeChild(a)
-}
 
 
 // 数组去重
@@ -235,104 +217,6 @@ export function $sortArray(arr, type, key, order = 'asc',) {
     } else {
       return valA < valB ? 1 : valA > valB ? -1 : 0
     }
-  })
-}
-
-// echart数据补全
-export function $completeEchart(chart) {
-  try {
-    let xyData = chart.xyData || {}
-    let xData = []
-    let isTime = false
-    for (var k in xyData) {
-      xyData[k].forEach(item => { xData.push(item.value?.[0] || item[0]) })
-    }
-    xData = $uniqueArray(xData)
-    let isTimeField = xData.some(item => this.$dayjs(item).isValid())
-    this.$sortArray(xData, isTimeField ? 'time' : '')
-    for (var k in xyData) { xyData[k] = fill(xyData[k], xData) }
-    function fill(arr, xList) {
-      let result = []
-      let arrObj = {}
-      arr.forEach(item => {
-        if (item.value?.[0]) {
-          arrObj[item.value[0]] = { y: item.value[1], isValue: true }
-          arrObj.kPropertyValue = true
-        } else if (item[0]) {
-          arrObj[item[0]] = { y: item[1], isValue: false }
-        }
-      })
-      xList.forEach(item => {
-        if (arrObj[item]) {
-          result.push(arrObj[item].isValue ? { value: [item, arrObj[item].y] } : [item, arrObj[item].y])
-        } else {
-          result.push(arrObj.kPropertyValue ? { value: [item, null] } : [item, null])
-        }
-      })
-
-      // let arrMap = new Map(arr.map(item => [item.value?.[0] || item[0], item.value?.[1] || item[1]]))  // 将原数组转为一个 Map，方便查找
-      // xList.forEach(item => {
-      //   if (arrMap.has(item)) {
-      //     result.push({ value: [item, arrMap.get(item)] }) // 如果原数组中存在该时间，直接添加
-      //   } else {
-      //     result.push({ value: [item, null] })  // 如果原数组中没有该时间，填充 null
-      //   }
-      // })
-      return result
-    }
-
-    let tableData = []
-    xData.forEach(item1 => {
-      let rowItem = { time: item1, }
-      for (var k in xyData) {
-        xyData[k].forEach(item2 => {
-          if (item1 === (item2.value?.[0] || item2[0])) {
-            rowItem[k] = (item2.value?.[1] || item2.value?.[1] === 0 || item2[1] || item2[1] === 0) ? item2.value?.[1] || item2[1] : '-'
-          }
-        })
-      }
-      tableData.push(rowItem)
-    })
-    chart.xData = xData
-    chart.tableData = tableData
-  } catch {
-    this.$message.warning('数据补全出现问题！')
-  }
-
-}
-
-// 表格数据补全
-export function $completeTable(data, callback = null, xFieldT = 'time', xFieldN = 'time') {
-  let apiData = JSON.parse(JSON.stringify(data))
-  let res = []
-  let xData = []
-  for (var k in apiData) {
-    apiData[k].forEach(item => { xData.push(item[xFieldT]) })
-  }
-  xData = this.$uniqueArray(xData)
-  let isTimeField = xData.some(item => this.$dayjs(item).isValid())
-  this.$sortArray(xData, isTimeField ? 'time' : '')
-
-  xData.forEach((item1, index1) => {
-    res[index1] = { [xFieldN]: item1 }
-    for (var k in apiData) {
-      let matchItem = apiData[k].find(item2 => item1 === item2[xFieldT]) || {}
-      if (callback && typeof callback === 'function') {
-        callback(res[index1], matchItem, k)
-      }
-    }
-  })
-  return res
-}
-
-// echart容器大小变化监听
-export function $newResizeObserver(fn = () => { }, isFirstResize = true) {
-  return new ResizeObserver(() => {
-    if (isFirstResize) {
-      isFirstResize = false
-      return
-    }
-    fn()
   })
 }
 

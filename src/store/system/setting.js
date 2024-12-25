@@ -100,6 +100,12 @@ const useSettingStore = defineStore('setting', {
         document.title = defaultTitle
       }
     },
+  },
+  persist: {
+    key: 'setting',                          // 默认store.$id
+    storage: localStorage,                 // 默认localStorage存储
+    pick: ['theme'],              // 指定要持久化的state
+    // omit: ['backendEnums.x'],           // 指定不持久化的state
   }
 })
 

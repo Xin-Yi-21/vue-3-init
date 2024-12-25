@@ -36,31 +36,40 @@ setConfig().then(async (cEnv) => {
     app.use(store)
     app.use(router)
 
-    // // 全局方法
-    // // getTableHeaderLRVByGlobal
+    // 全局方法
     const dayjs = (await import('dayjs')).default
-    const { $getEnumsLabel, $getEnumsLabelList, $exportEchartImg, $exportDomTable, $uniqueArray, $sortArray, $completeEchart, $completeTable, $newResizeObserver, $accurate } = await import("@/utils/common.js")
-    const { throttle, debounce, deepClone } = await import("lodash")
-    // app.config.globalProperties.$bus = new Vue()
+    const { $getEnumsLabel, $getEnumsLabelList, $exportDomTable, $uniqueArray, $sortArray, $accurate } = await import("@/utils/common.js")
+    const { throttle, debounce, deepClone, merge } = await import("lodash")
+    const { $completeEchartTable, $transformEchartDataset, $newResizeObserver, $initEchart, $destroyEchart, $exportEchartImage, $getSeriesEchartColor, $getLineEchartOption, $getBarEchartOption } = await import("@/utils/echart.js")
+    // 基础公共方法
     app.config.globalProperties.$dayjs = dayjs
     app.config.globalProperties.$getEnumsLabel = $getEnumsLabel
     app.config.globalProperties.$getEnumsLabelList = $getEnumsLabelList
-    app.config.globalProperties.$exportEchartImg = $exportEchartImg
-    app.config.globalProperties.$exportDomTable = $exportDomTable
+    app.config.globalProperties.$uniqueArray = $uniqueArray
+    app.config.globalProperties.$sortArray = $sortArray
+    app.config.globalProperties.$accurate = $accurate
+    // loadsh 公共方法
     app.config.globalProperties.$throttle = throttle
     app.config.globalProperties.$debounce = debounce
     app.config.globalProperties.$deepClone = deepClone
+    app.config.globalProperties.$merge = merge
+    // echart 公共方法
+    app.config.globalProperties.$completeEchartTable = $completeEchartTable
+    app.config.globalProperties.$transformEchartDataset = $transformEchartDataset
+    app.config.globalProperties.$newResizeObserver = $newResizeObserver
+    app.config.globalProperties.$initEchart = $initEchart
+    app.config.globalProperties.$destroyEchart = $destroyEchart
+    app.config.globalProperties.$exportEchartImage = $exportEchartImage
+    app.config.globalProperties.$getSeriesEchartColor = $getSeriesEchartColor
+    app.config.globalProperties.$getLineEchartOption = $getLineEchartOption
+    app.config.globalProperties.$getBarEchartOption = $getBarEchartOption
+    // 待定
+    // app.config.globalProperties.$bus = new Vue()
+    // app.config.globalProperties.$exportDomTable = $exportDomTable
     // app.config.globalProperties.$downloadFile = $downloadFile
     // app.config.globalProperties.$previewFile = $previewFile
     // app.config.globalProperties.$loadingStart = $loadingStart
     // app.config.globalProperties.$loadingEnd = $loadingEnd
-    app.config.globalProperties.$uniqueArray = $uniqueArray
-    app.config.globalProperties.$sortArray = $sortArray
-    app.config.globalProperties.$completeEchart = $completeEchart
-    app.config.globalProperties.$completeTable = $completeTable
-    app.config.globalProperties.$newResizeObserver = $newResizeObserver
-    app.config.globalProperties.$accurate = $accurate
-
 
     // 全局组件
     const cTooltip = (await import('@/components/project/custom-tooltip')).default

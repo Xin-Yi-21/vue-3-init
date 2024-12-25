@@ -47,13 +47,13 @@ function setLayout() {
 }
 // ^
 // # 3、初始布局设置
-function setSetting() {
-  settingStore.setThemeStyle()
-  settingStore.setThemeColor()
-  settingStore.setThemeSize()
-  settingStore.setTopHeader()
-  settingStore.setLeftNav()
-  settingStore.setTheme()
+async function setSetting() {
+  await settingStore.setThemeStyle()
+  await settingStore.setThemeColor()
+  await settingStore.setThemeSize()
+  await settingStore.setTopHeader()
+  await settingStore.setLeftNav()
+  await settingStore.setTheme()
 }
 // ^
 // ^
@@ -63,7 +63,11 @@ onMounted(() => { init() })
 async function init() {
   await getEnums()
   await setSetting()
-  isDataInitDone.value = true
+  await nextTick(() => {
+    isDataInitDone.value = true
+  })
+  // console.log('查zou2',)
+  // isDataInitDone.value = true
 }
 // ^
 
