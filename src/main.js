@@ -85,18 +85,20 @@ setConfig().then(async (cEnv) => {
     const cCardTitle = (await import('@/components/project/custom-card-title')).default
     const cCardHeader = (await import('@/components/project/custom-card-header')).default
     const cTab = (await import('@/components/project/custom-tab')).default
+    const cEchart = (await import('@/components/project/custom-echart')).default
 
     app.component('cTooltip', cTooltip)
     app.component('cPagination', cPagination)
     app.component('cButton', cButton)
     app.component('cIcon', cIcon)
-    // // app.component('cPreview', cPreview)
+    // app.component('cPreview', cPreview)
     // app.component('cFileList', cFileList)
     app.component('cCardCircle', cCardCircle)
     app.component('cCardRectangle', cCardRectangle)
     app.component('cCardTitle', cCardTitle)
     app.component('cCardHeader', cCardHeader)
     app.component('cTab', cTab)
+    app.component('cEchart', cEchart)
 
     app.mount('#app')
   } catch (error) {

@@ -9,6 +9,9 @@
     <div class="echart-card line-bar">
       <line-bar-echart></line-bar-echart>
     </div>
+    <div class="echart-card test">
+      <test-echart></test-echart>
+    </div>
     <div class="echart-card pie">
       <!-- <pie-echart></pie-echart> -->
     </div>
@@ -21,7 +24,6 @@
     <div class="echart-card liquid">
       <!-- <liquid-echart></liquid-echart> -->
     </div>
-
     <div class="echart-card gauge">
       <!-- <dashbord-echart></dashbord-echart> -->
     </div>
@@ -30,8 +32,9 @@
 
 <script setup>
 import LineEchart from './components/line'
-import LineBarEchart from './components/line-bar'
 import BarEchart from './components/bar'
+import LineBarEchart from './components/line-bar'
+import TestEchart from './components/test'
 import PieEchart from './components/pie'
 import RadarEchart from './components/radar'
 import LiquidEchart from './components/liquid'
