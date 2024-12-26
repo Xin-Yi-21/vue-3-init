@@ -130,26 +130,26 @@ export function $getTableHeaderLRVByGlobal() {
 //   })
 // }
 
-// import FileSaver from "file-saver"
-// // import XLSX from "xlsx"
-// import * as XLSX from "xlsx"
-// export function $exportDomTable(domId, fileName, deleteIndexArr) {
-//   let xlsxParam = { raw: true }
-//   let wb = XLSX.utils.table_to_book(document.querySelector('#' + domId), xlsxParam)
-//   if (deleteIndexArr && deleteIndexArr.length > 0) {
-//     deleteIndexArr.forEach((item, index) => {
-//       wb.Sheets.Sheet1['!cols'][item] = { hidden: true }
-//     })
-//   }
-//   let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
-//   try {
-//     FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName + '.xlsx')
-//   } catch (e) {
-//     if (typeof console !== 'undefined') console.log(e, wbout)
-//   }
-//   this.isDownloading = false
-//   return wbout
-// }
+import FileSaver from "file-saver"
+// import XLSX from "xlsx"
+import * as XLSX from "xlsx"
+export function $exportDomTable(domId, fileName, deleteIndexArr) {
+  let xlsxParam = { raw: true }
+  let wb = XLSX.utils.table_to_book(document.querySelector('#' + domId), xlsxParam)
+  if (deleteIndexArr && deleteIndexArr.length > 0) {
+    deleteIndexArr.forEach((item, index) => {
+      wb.Sheets.Sheet1['!cols'][item] = { hidden: true }
+    })
+  }
+  let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+  try {
+    FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName + '.xlsx')
+  } catch (e) {
+    if (typeof console !== 'undefined') console.log(e, wbout)
+  }
+  this.isDownloading = false
+  return wbout
+}
 
 
 

@@ -8,10 +8,10 @@ import 'element-plus/dist/index.css'
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 app.use(ElementPlus, { locale: locale, size: !storageSetting.themeSize ? 'large' : storageSetting.themeSize == 'normal' ? 'default' : storageSetting.themeSize })
 // ⭐ ant-design 相关文件
-import Antd from 'ant-design-vue'
-import 'ant-design-vue/dist/reset.css'
+// import Antd from 'ant-design-vue'
+// import 'ant-design-vue/dist/reset.css'
 // import { message } from 'ant-design-vue'
-app.use(Antd)
+// app.use(Antd)
 // app.config.globalProperties.$message = message
 // ⭐ svg图标 相关文件 
 import 'virtual:svg-icons-register'
@@ -40,7 +40,7 @@ setConfig().then(async (cEnv) => {
     const dayjs = (await import('dayjs')).default
     const { $getEnumsLabel, $getEnumsLabelList, $exportDomTable, $uniqueArray, $sortArray, $accurate } = await import("@/utils/common.js")
     const { throttle, debounce, deepClone, merge } = await import("lodash")
-    const { $completeEchartTableData, $transformEchartDataset, $newResizeObserver, $initEchart, $destroyEchart, $completeEchartXY, $exportEchartImage, $getSeriesEchartColor, $getLineEchartOption, $getBarEchartOption } = await import("@/utils/echart.js")
+    const { $completeEchartTableData, $transformEchartDataset, $newResizeObserver, $initEchart, $destroyEchart, $completeEchartXY, $exportEchartImage, $getSeriesEchartColor, $getLineEchartOption, $getBarEchartOption, $getDataZoomEchartOption } = await import("@/utils/echart.js")
     // 基础公共方法
     app.config.globalProperties.$dayjs = dayjs
     app.config.globalProperties.$getEnumsLabel = $getEnumsLabel
@@ -63,6 +63,7 @@ setConfig().then(async (cEnv) => {
     app.config.globalProperties.$getSeriesEchartColor = $getSeriesEchartColor
     app.config.globalProperties.$getLineEchartOption = $getLineEchartOption
     app.config.globalProperties.$getBarEchartOption = $getBarEchartOption
+    app.config.globalProperties.$getDataZoomEchartOption = $getDataZoomEchartOption
     app.config.globalProperties.$completeEchartXY = $completeEchartXY // 待弃用
     // 待定
     // app.config.globalProperties.$bus = new Vue()

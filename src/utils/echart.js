@@ -306,7 +306,29 @@ export function $getBarEchartOption(settingStore, echartInfo, showType, operateL
   let res = filterOption(option, showType, operateList)
   return res
 }
-
+export function $getDataZoomEchartOption(settingStore, echartInfo, showType, operateList) {
+  let option = {
+    grid: { bottom: 40, },
+    dataZoom: [{
+      type: 'slider',
+      height: 20,
+      left: 140,
+      right: 140,
+      bottom: 10,
+      start: 0,
+      end: 100,
+      moveHandleSize: 0,
+      handleSize: '100%',
+      realtime: true,
+      backgroundColor: 'transparent',
+      fillerColor: settingStore.themeColor,
+      borderColor: settingStore.themeColor,
+      textStyle: { color: settingStore.themeColor },
+    }],
+  }
+  let res = filterOption(option, showType, operateList)
+  return res
+}
 // 筛选option
 export function filterOption(option, showType, operateList) {
   if (!showType) { return option }
