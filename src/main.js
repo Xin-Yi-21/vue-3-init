@@ -40,7 +40,7 @@ setConfig().then(async (cEnv) => {
     const dayjs = (await import('dayjs')).default
     const { $getEnumsLabel, $getEnumsLabelList, $exportDomTable, $uniqueArray, $sortArray, $accurate } = await import("@/utils/common.js")
     const { throttle, debounce, deepClone, merge } = await import("lodash")
-    const { $completeEchartTable, $transformEchartDataset, $newResizeObserver, $initEchart, $destroyEchart, $completeEchartXY, $exportEchartImage, $getSeriesEchartColor, $getLineEchartOption, $getBarEchartOption } = await import("@/utils/echart.js")
+    const { $completeEchartTableData, $transformEchartDataset, $newResizeObserver, $initEchart, $destroyEchart, $completeEchartXY, $exportEchartImage, $getSeriesEchartColor, $getLineEchartOption, $getBarEchartOption } = await import("@/utils/echart.js")
     // 基础公共方法
     app.config.globalProperties.$dayjs = dayjs
     app.config.globalProperties.$getEnumsLabel = $getEnumsLabel
@@ -54,7 +54,7 @@ setConfig().then(async (cEnv) => {
     app.config.globalProperties.$deepClone = deepClone
     app.config.globalProperties.$merge = merge
     // echart 公共方法
-    app.config.globalProperties.$completeEchartTable = $completeEchartTable
+    app.config.globalProperties.$completeEchartTableData = $completeEchartTableData
     app.config.globalProperties.$transformEchartDataset = $transformEchartDataset
     app.config.globalProperties.$newResizeObserver = $newResizeObserver
     app.config.globalProperties.$initEchart = $initEchart

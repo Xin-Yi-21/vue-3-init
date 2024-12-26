@@ -71,7 +71,7 @@ function handleEchartInfo() {
   })
   // 处理表格数据
   let ltField = 'time'
-  chart.tableData = proxy.$completeEchartTable(newApiData, (rowItem, matchData, k) => {
+  chart.tableData = proxy.$completeEchartTableData(newApiData, (rowItem, matchData, k) => {
     factor.forEach(item => { rowItem[k + (item.name && '-' + item.name)] = matchData[item.field] })
   }, 'time', ltField)
   // 处理dataset数据

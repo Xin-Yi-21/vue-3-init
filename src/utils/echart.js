@@ -1,5 +1,5 @@
 // echart 表格数据补全
-export function $completeEchartTable(data, callback = null, xFieldT = 'time', xFieldN = 'time') {
+export function $completeEchartTableData(data, callback = null, xFieldT = 'time', xFieldN = 'time') {
   let apiData = JSON.parse(JSON.stringify(data))
   let res = []
   let xData = []

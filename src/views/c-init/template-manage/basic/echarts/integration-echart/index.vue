@@ -8,6 +8,16 @@
       <c-icon i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportExcel()"></c-icon>
       <c-icon i="c-fullscreen-in" tip="开启全屏" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleFullscreenIn()"></c-icon>
     </div>
+
+
+    <div class="table-view">
+      <el-table :data="tableData">
+        <el-table-column label="列名" prop="field" align="center" />
+        <el-table-column label="状态" prop="" align="center">
+          <template #default="scope"> {{ scope.row.field }} </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
@@ -78,9 +88,10 @@ function handleEchartInfo() {
   })
   // 处理表格数据
   let ltField = 'time'
-  chart.tableData = proxy.$completeEchartTable(newApiData, (rowItem, matchData, k) => {
+  chart.tableData = proxy.$completeEchartTableData(newApiData, (rowItem, matchData, k) => {
     factor.forEach(item => { rowItem[k + (item.name && '-' + item.name)] = matchData[item.field] })
   }, 'time', ltField)
+
   // 处理dataset数据
   chart.datasetObj = { dimensions: [ltField, ...chart.lData], source: JSON.parse(JSON.stringify(chart.tableData)) }
   chart.datasetArr = { source: proxy.$transformEchartDataset(chart.datasetObj.source) }
@@ -98,7 +109,7 @@ function handleEchartInfo() {
   })
   // 全局赋值
   echartInfo.value = Object.assign({}, echartInfo.value, chart)
-  // console.log('查echartInfo', echartInfo.value)
+  console.log('查echartInfo', echartInfo.value)
   nextTick(() => { initEchart() })
 }
 // ^
