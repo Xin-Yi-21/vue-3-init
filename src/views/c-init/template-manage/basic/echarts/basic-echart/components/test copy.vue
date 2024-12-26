@@ -1,6 +1,7 @@
 <template>
   <div class="test-echart-vue">
-    <c-echart :eId="echartInfo.id" :eInfo="echartInfo" :eInfoFs="echartInfoFs" @refresh="nextTick(() => { initEchart() })"></c-echart>
+    <!-- @fullscreenIn="handleFullscreenIn" @fullscreenOut="handleFullscreenOut" -->
+    <c-echart :eId="echartInfo.id" :eInfo="echartInfo" :eInfoFs="echartInfoFs" @refresh="handleRefresh"></c-echart>
   </div>
 </template>
 
@@ -113,6 +114,42 @@ function initEchart() {
   echartInfoFs.value.option = proxy.$merge({}, option)
   proxy.$initEchart(echartInfo, option)
 }
+// function initEchartFs() {
+//   let lineOption = proxy.$getLineEchartOption(settingStore, echartInfo, 'exclude', ['series']) || {}
+//   let dataZoomOption = proxy.$getDataZoomEchartOption(settingStore, echartInfo, 'exclude', ['series']) || {}
+//   let addOption = {
+//     grid: { top: 90 },
+//     xAxis: [{ axisLabel: { formatter: (value) => { const time = value ? proxy.$dayjs(value).format('MM-DD HH:mm') : '?'; return time } }, }],
+//     yAxis: [{ name: '气温 ( ℃ )', }, { name: '降水 ( mm )', ...lineOption.yAxis[0] }],
+//     dataset: echartInfoFs.value.datasetObj,
+//     series: echartInfoFs.value.sData,
+//   }
+//   let option = proxy.$merge({}, lineOption, dataZoomOption, addOption)
+//   proxy.$initEchart(echartInfoFs, option)
+// }
+
+// ^
+// # 4、工具栏emit事件
+// # (1) 刷新
+function handleRefresh(type) {
+  if (type === 'fullscreen') {
+    nextTick(() => { initEchartFs() })
+  } else {
+    console.log('查123',)
+    nextTick(() => { initEchart() })
+  }
+}
+// ^
+// # (2) 全屏
+function handleFullscreenIn() {
+  nextTick(() => { initEchartFs() })
+}
+// ^
+// # (3) 退出全屏
+function handleFullscreenOut() {
+  proxy.$destroyEchart(echartInfoFs)
+}
+// ^
 // ^
 // ^
 

@@ -17,7 +17,7 @@
         <c-button type="primary" height="30" @click="handleCloseTableAndRefresh('normal')">关闭并刷新</c-button>
       </div>
       <el-table :data="eInfo.tableData" border class="c-table">
-        <el-table-column :label="item.label" :prop="item.field" align="center" v-for="(item, index) in eInfo.tableHeader" :key="index"></el-table-column>
+        <el-table-column :label="item.label" :prop="item.field" align="center" v-for="(item, index) in eInfo.tableHeader" :key="index" :width="item.label.includes('时间') ? '180px' : 'auto'"></el-table-column>
       </el-table>
     </div>
 
@@ -38,7 +38,7 @@
           <c-button type="primary" height="30" @click="handleCloseTableAndRefresh('fullscreen')">关闭并刷新</c-button>
         </div>
         <el-table :data="eInfoFs.tableData" border class="c-table">
-          <el-table-column :label="item.label" :prop="item.field" align="center" v-for="(item, index) in eInfoFs.tableHeader" :key="index"></el-table-column>
+          <el-table-column :label="item.label" :prop="item.field" align="center" v-for="(item, index) in eInfoFs.tableHeader" :key="index" :width="item.label.includes('时间') ? '200x' : 'auto'"></el-table-column>
         </el-table>
       </div>
     </el-dialog>
@@ -83,11 +83,11 @@ function handleCloseTable(type) {
 function handleCloseTableAndRefresh(type) {
   if (type === 'normal') {
     isShowTable.value.normal = false
-    emit('refresh', 'normal')
+    emit('refresh')
   }
   if (type === 'fullscreen') {
     isShowTable.value.fullscreen = false
-    emit('refresh', 'fullscreen')
+    nextTick(() => { initEchartFs() })
   }
 }
 // ^
@@ -156,6 +156,7 @@ function handleExportImage() {
 // ^
 // # (4) 导出表格
 import ExcelJS from 'exceljs'
+import { nextTick } from 'vue'
 function handleExportExcel() {
   const tableHeader = props.eInfo.tableHeader
   const tableData = props.eInfo.tableData
@@ -201,33 +202,33 @@ function handleExportExcel() {
 }
 // ^
 // # (5) 开启全屏
+function initEchartFs() {
+  let lineOption = proxy.$getLineEchartOption(settingStore, props.eInfoFs, 'exclude', ['series']) || {}
+  let dataZoomOption = proxy.$getDataZoomEchartOption(settingStore, props.eInfoFs, 'exclude', ['series']) || {}
+  let addOption = { grid: { top: 90 }, }
+  let option = proxy.$merge({}, lineOption, props.eInfoFs.option, dataZoomOption, addOption)
+  proxy.$initEchart(ref(props.eInfoFs), option)
+}
 const isShowFullscreen = ref(false)
 function handleFullscreenIn() {
   isShowFullscreen.value = true
-  emit('fullscreenIn')
-  // nextTick(() => { initEchartFs() })
+  nextTick(() => { initEchartFs() })
 }
 function handleFullscreenOut() {
   isShowFullscreen.value = false
-  emit('fullscreenOut')
-  // proxy.$destroyEchart(echartInfoFs)
+  proxy.$destroyEchart(ref(props.eInfoFs))
 }
 // ^
 // ^
 // ^
 
 // # 三、生命周期
-// init()
-// const timer = ref(null)
-// timer.value = setInterval(() => { init() }, 60000)
-// onBeforeUnmount(() => {
-//   clearInterval(timer.value)
-//   proxy.$destroyEchart(echartInfo)
-//   proxy.$destroyEchart(echartInfoFs)
-// })
-// watch(() => settingStore.themeStyle, (nv, ov) => {
-//   nextTick(() => { initEchart() })
-// })
+onBeforeUnmount(() => {
+  proxy.$destroyEchart(ref(props.eInfoFs))
+})
+watch(() => settingStore.themeStyle, (nv, ov) => {
+  nextTick(() => { initEchartFs() })
+})
 // ^
 </script>
 
