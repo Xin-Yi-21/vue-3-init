@@ -43,11 +43,11 @@ export function $newResizeObserver(fn = () => { }, isFirstResize = true) {
 
 // 初始化echart
 import * as echarts from 'echarts'
-export function $initEchart(echartInfo, id, option) {
+export function $initEchart(echartInfo, option) {
   echartInfo.value?.instance?.clear()
   echartInfo.value?.instance?.dispose()
   echartInfo.value?.resizer?.disconnect()
-  let chartDom = document.getElementById(id)
+  let chartDom = document.getElementById(echartInfo.value.id)
   if (!chartDom) return
   chartDom && chartDom.removeAttribute('_echarts_instance_')
   let myChart = echarts.getInstanceByDom(chartDom) || echarts.init(chartDom)

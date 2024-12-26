@@ -24,7 +24,7 @@ const tabList = ref(
   { label: '图表交互echarts', value: 'interaction' },
   { label: '地图echarts', value: 'map' },]
 )
-const currentTab = ref('integration')
+const currentTab = ref('basic')
 
 function handleChangeTab(newCurrentTab) {
   currentTab.value = newCurrentTab.value

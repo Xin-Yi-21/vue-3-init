@@ -1,13 +1,13 @@
 <template>
   <div class="test-echart-vue">
-    <c-icon class="echart-export" i="c-download" tip="导出图片" size="20" cursor="pointer" :color="settingStore?.themeColor" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportEchart()"></c-icon>
-    <div id="test-echart"> </div>
+    <c-echart :eId="echartInfo.id" :eInfo="echartInfo" :eInfoFs="echartInfoFs" @refresh="handleRefresh" @fullscreenIn="handleFullscreenIn" @fullscreenOut="handleFullscreenOut"></c-echart>
   </div>
 </template>
 
 <script setup>
 // # 一、综合
 import useSettingStore from '@/store/system/setting'
+import { nextTick, onMounted } from 'vue'
 const settingStore = useSettingStore()
 const { proxy } = getCurrentInstance()
 // ^
@@ -45,7 +45,8 @@ function init() {
 // ^
 // # 1、获取echart数据
 const apiData = ref({})
-const echartInfo = ref({})
+const echartInfo = ref({ id: 'custom-echart', exportFileName: '折线-柱状' })
+const echartInfoFs = ref({ id: 'custom-echart-fs', exportFileName: '折线-柱状' })
 async function getEchartInfo() {
   const res = await echartDataGet()
   apiData.value = res.data || {}
@@ -56,37 +57,46 @@ async function getEchartInfo() {
 function handleEchartInfo() {
   let newApiData = JSON.parse(JSON.stringify(apiData.value || {}))
   let chart = { lData: [], sData: [], tableData: [], color: proxy.$getSeriesEchartColor() }
-  let factor = [{ name: '', field: 'temperature', unit: '℃', type: 'line', yAxisIndex: 0 },]
+  let factor = [
+    { name: '气温', field: 'temperature', unit: '℃', type: 'line', yAxisIndex: 0 },
+    { name: '降水', field: 'rain', unit: 'mm', type: 'bar', yAxisIndex: 1 }
+  ]
   // 获取系列
   factor.forEach((item, index) => {
     for (var k in newApiData) {
-      let name = k
+      let name = k + (item.name && '-' + item.name)
       let sItem = Object.assign({}, item, { name })
       chart.lData.push(name)
       chart.sData.push(sItem)
     }
   })
   // 处理表格数据
-  let ltField = 'time'
+  let ltField = '时间'
+  let fieldList = [ltField, ...chart.lData]
   chart.tableData = proxy.$completeEchartTableData(newApiData, (rowItem, matchData, k) => {
     factor.forEach(item => { rowItem[k + (item.name && '-' + item.name)] = matchData[item.field] })
   }, 'time', ltField)
+  chart.tableHeader = fieldList.map(item => { return item = { label: item, field: item } })
+
   // 处理dataset数据
-  chart.datasetObj = { dimensions: [ltField, ...chart.lData], source: JSON.parse(JSON.stringify(chart.tableData)) }
+  chart.datasetObj = { dimensions: fieldList, source: JSON.parse(JSON.stringify(chart.tableData)) }
   chart.datasetArr = { source: proxy.$transformEchartDataset(chart.datasetObj.source) }
   // 定制系列样式
-  let seriesOption = proxy.$getLineEchartOption(settingStore, echartInfo, 'include', ['series'])?.series[0] || {}
+  let lineSeriesOption = proxy.$getLineEchartOption(settingStore, echartInfo, 'include', ['series'])?.series[0] || {}
+  let barSeriesOption = proxy.$getLineEchartOption(settingStore, echartInfo, 'include', ['series'])?.series[0] || {}
   chart.sData.forEach((item, index) => {
     let color = chart.color[index]
     let addOption = {
-      itemStyle: { borderColor: color, },
+      itemStyle: { borderColor: color, color: item.type === 'bar' ? color : '#fff' },
       lineStyle: { color: color },
     }
+    let seriesOption = item.type === 'line' ? lineSeriesOption : item.type === 'bar' ? barSeriesOption : {}
     chart.sData[index] = proxy.$merge({}, seriesOption, addOption, item)
   })
   // 全局赋值
   echartInfo.value = Object.assign({}, echartInfo.value, chart)
-  // console.log('查echartInfo', echartInfo.value)
+  echartInfoFs.value = Object.assign({}, echartInfoFs.value, chart)
+  console.log('查echartInfo', echartInfo.value)
   nextTick(() => { initEchart() })
 }
 // ^
@@ -94,31 +104,63 @@ function handleEchartInfo() {
 function initEchart() {
   let lineOption = proxy.$getLineEchartOption(settingStore, echartInfo, 'exclude', ['series']) || {}
   let addOption = {
-    title: { text: '折线图' },
     xAxis: [{ axisLabel: { formatter: (value) => { const time = value ? proxy.$dayjs(value).format('MM-DD HH:mm') : '?'; return time } }, }],
-    yAxis: [{ name: '气温 ( ℃ )', },],
+    yAxis: [{ name: '气温 ( ℃ )', }, { name: '降水 ( mm )', ...lineOption.yAxis[0] }],
     dataset: echartInfo.value.datasetObj,
     series: echartInfo.value.sData,
   }
   let option = proxy.$merge({}, lineOption, addOption)
-  proxy.$initEchart(echartInfo, 'test-echart', option)
+  proxy.$initEchart(echartInfo, option)
+}
+function initEchartFs() {
+  let lineOption = proxy.$getLineEchartOption(settingStore, echartInfo, 'exclude', ['series']) || {}
+  let dataZoomOption = proxy.$getDataZoomEchartOption(settingStore, echartInfo, 'exclude', ['series']) || {}
+  let addOption = {
+    grid: { top: 90 },
+    xAxis: [{ axisLabel: { formatter: (value) => { const time = value ? proxy.$dayjs(value).format('MM-DD HH:mm') : '?'; return time } }, }],
+    yAxis: [{ name: '气温 ( ℃ )', }, { name: '降水 ( mm )', ...lineOption.yAxis[0] }],
+    dataset: echartInfoFs.value.datasetObj,
+    series: echartInfoFs.value.sData,
+  }
+  let option = proxy.$merge({}, lineOption, dataZoomOption, addOption)
+  proxy.$initEchart(echartInfoFs, option)
+}
+
+// ^
+// # 4、工具栏emit事件
+// # (1) 刷新
+function handleRefresh(type) {
+  if (type === 'fullscreen') {
+    nextTick(() => { initEchartFs() })
+  } else {
+    console.log('查123',)
+    nextTick(() => { initEchart() })
+  }
 }
 // ^
-// # 4、导出echart
-function handleExportEchart() {
-  let exportFileName = '折线图'
-  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+// # (2) 全屏
+function handleFullscreenIn() {
+  nextTick(() => { initEchartFs() })
 }
+// ^
+// # (3) 退出全屏
+function handleFullscreenOut() {
+  proxy.$destroyEchart(echartInfoFs)
+}
+// ^
 // ^
 // ^
 
 // # 三、生命周期
-init()
+onMounted(() => {
+  init()
+})
 const timer = ref(null)
 timer.value = setInterval(() => { init() }, 60000)
 onBeforeUnmount(() => {
   clearInterval(timer.value)
   proxy.$destroyEchart(echartInfo)
+  proxy.$destroyEchart(echartInfoFs)
 })
 watch(() => settingStore.themeStyle, (nv, ov) => {
   nextTick(() => { initEchart() })

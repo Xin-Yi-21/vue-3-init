@@ -1,7 +1,9 @@
 <template>
-  <el-button class="c-button" :size="size" :type="type" :plain="plain" :round="round" :circle="circle" :loading="loading" :disabled="disabled" :icon="icon" :autofocus="autofocus" :native-type="nativeType" :style="`width:${width ? width + 'px' : 'auto'};height:${height ? height + 'px' : settingStore.theme?.cssV?.hc}`" @click="$emit('click')">
+  <el-button class="c-button" :size="size" :type="type" :plain="plain" :round="round" :circle="circle" :loading="loading" :disabled="disabled" :icon="icon" :autofocus="autofocus" :native-type="nativeType" :style="`width:${width ? width + 'px' : 'auto'};height:${height ? height + 'px' : settingStore.theme?.cssV?.hc}`">
     <svg-icon v-if="i" :icon-class="i" :style="`fontSize:${iSize ? iSize + 'px' : settingStore.theme?.cssV?.fs}`"></svg-icon>
-    <span class="button-text"><slot></slot></span>
+    <span class="button-text">
+      <slot></slot>
+    </span>
   </el-button>
 </template>
 
