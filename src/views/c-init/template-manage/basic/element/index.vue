@@ -23,7 +23,6 @@
         <div class="left">
           <c-button type="primary" class="query-button" i="c-search" @click="getTableData">查询</c-button>
           <c-button type="info" class="refresh-button" i="c-refresh" @click="setDefaultParams"></c-button>
-          <!-- <el-button type="info" icon="el-icon-refresh-right" class="refresh-button" @click="setDefaultParams"></el-button> -->
         </div>
         <div class="right"> </div>
       </div>
@@ -71,7 +70,6 @@
           </template>
         </el-table-column>
       </el-table>
-
       <c-pagination :currentPageNum.sync="form.currentPageNum" :currentPageSize.sync="form.currentPageSize" :total="tableTotal" @getTable="getTableData"></c-pagination>
     </div>
     <Operate v-if="operateDialog.visible" :operate="operateDialog.operate" :info="operateDialog.info" @close="operateDialog.visible = false" @refresh="getTableData"></Operate>
@@ -179,7 +177,6 @@ function handleView(rowInfo) {
     info: JSON.parse(JSON.stringify(rowInfo)),
   }
   operateDialog.value = newOperateDialog
-  console.log('查看', operateDialog.value)
 }
 // (3) 编辑
 function handleUpdate(rowInfo) {
@@ -188,20 +185,19 @@ function handleUpdate(rowInfo) {
     operate: 'update',
     info: JSON.parse(JSON.stringify(rowInfo)),
   }
-  console.log('编辑')
   operateDialog.value = newOperateDialog
 }
 // (4) 删除
 function handleDelete(rowInfo) {
-  // this.$confirm('确定删除吗？', '确认消息', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', customClass: 'c-message-confirm' }).then(() => {
-  //   // let params = { id: info.id }
-  //   let params = new FormData()
-  //   params.append('id', rowInfo.id)
-  //   // dispatchManageDelete(params).then(res => {
-  //   //   this.getTableData()
-  //   //   this.$message.success('删除人物成功！')
-  //   // })
-  // }).catch()
+  proxy.$confirm('确定删除吗？', '确认消息', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', customClass: 'c-message-confirm' }).then(() => {
+    // let params = { id: info.id }
+    let params = new FormData()
+    params.append('id', rowInfo.id)
+    // dispatchManageDelete(params).then(res => {
+    //   this.getTableData()
+    //   proxy.$message.success('删除人物成功！')
+    // })
+  }).catch()
 }
 // ^
 // ^

@@ -1,5 +1,4 @@
 <template>
-
   <el-dialog v-model="visible" class="c-dialog" :before-close="handleClose" width="600" align-center draggable :close-on-click-modal="false">
     <template #header="{ close }">
       <div class="c-d-header">
@@ -32,17 +31,18 @@
       </div>
     </template>
   </el-dialog>
-
-
 </template>
+
 <script setup>
 // # 一、综合
 import { numberVerify } from '@/utils/verify'
 import useEnumsStore from '@/store/project/enums'
+import { getCurrentInstance } from 'vue'
 const props = defineProps({
   operate: { type: String, default: 'add' },
   info: { type: Object, default: () => { } },
 })
+const { proxy } = getCurrentInstance()
 const emit = defineEmits()
 const visible = ref(true)
 const isConfirmLoading = ref(false)
@@ -101,7 +101,7 @@ function getEnums() {
 // ^
 // # 2、确认
 function handleConfirm() {
-  this.$refs.formRef.validate((valid) => {
+  proxy.$refs.formRef.validate((valid) => {
     if (!valid) return false
     let params = {
       personName: form.value.personName,
@@ -109,17 +109,17 @@ function handleConfirm() {
       age: form.value.age,
       role: form.value.role,
     }
-    switch (this.operate) {
+    switch (props.operate) {
       case 'add':
-        dispatchManageAdd(params).then(res => {
-          this.$message.success('新增人物成功！')
+        xxxAdd(params).then(res => {
+          proxy.$message.success('新增人物成功！')
           emit('refresh')
           emit('close')
         })
         break
       case 'update':
         params.personId = this.form.personId
-        dispatchManageUpdate(params).then(res => {
+        xxxUpdate(params).then(res => {
           this.$message.success('更新人物成功！')
           emit('refresh')
           emit('close')
@@ -130,7 +130,6 @@ function handleConfirm() {
 }
 // ^
 // # 3、关闭
-
 function handleClose(done) {
   emit('close')
 }
@@ -140,6 +139,7 @@ function handleClose(done) {
 init()
 // ^
 </script>
+
 <style lang="scss" scoped>
 .c-dialog {
   .c-d-c {

@@ -608,28 +608,39 @@
 }
 // 确认消息框
 .c-message-confirm {
+  padding: 0;
   z-index: 999;
   .el-message-box__header {
     display: flex;
     align-items: center;
-    padding: 0;
+    justify-content: space-between;
     height: 40px;
+    padding: 0;
     .el-message-box__title {
       margin-left: 10px;
       font-weight: 700;
     }
     border-bottom: 1px solid var(--bcs);
     .el-message-box__headerbtn {
-      top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      top: 0;
+      .el-icon:hover {
+        color: var(--tc);
+      }
     }
   }
   .el-message-box__content {
+    overflow: hidden;
     .el-message-box__container {
       display: flex;
       align-items: center;
       min-height: 30px;
       line-height: 30px;
-      .el-icon-warning {
+      margin: 10px;
+      .el-message-box-icon--warning {
         color: #ff6100;
       }
     }
@@ -644,10 +655,13 @@
   }
   .el-message-box__btns {
     padding: 0 15px;
+    margin-bottom: 10px;
     .el-button {
+      height: 32px;
       &:last-child {
         background: var(--tc);
         border-color: var(--tc);
+        margin-left: 15px;
         &:hover {
           border-color: var(--tca6);
           background-color: var(--tca6);
