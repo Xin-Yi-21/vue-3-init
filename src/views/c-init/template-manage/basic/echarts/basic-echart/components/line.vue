@@ -1,6 +1,5 @@
 <template>
   <div class="line-echart-vue">
-    <c-icon class="echart-export" i="c-download" tip="导出图片" size="20" cursor="pointer" :color="settingStore?.themeColor" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportEchart()"></c-icon>
     <div id="line-echart"> </div>
   </div>
 </template>
@@ -45,7 +44,7 @@ function init() {
 // ^
 // # 1、获取echart数据
 const apiData = ref({})
-const echartInfo = ref({})
+const echartInfo = ref({ id: 'line-echart', exportFileName: '折线' })
 async function getEchartInfo() {
   const res = await echartDataGet()
   apiData.value = res.data || {}
@@ -101,13 +100,7 @@ function initEchart() {
     series: echartInfo.value.sData,
   }
   let option = proxy.$merge({}, lineOption, addOption)
-  proxy.$initEchart(echartInfo, 'line-echart', option)
-}
-// ^
-// # 4、导出echart
-function handleExportEchart() {
-  let exportFileName = '折线图'
-  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+  proxy.$initEchart(echartInfo, option)
 }
 // ^
 // ^
@@ -133,14 +126,6 @@ watch(() => settingStore.themeStyle, (nv, ov) => {
   height: 100%;
   background-color: var(--bg-card);
   color: var(--fcp);
-
-  .echart-export {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    font-weight: 700;
-    z-index: 9;
-  }
 
   #line-echart {
     width: 100%;

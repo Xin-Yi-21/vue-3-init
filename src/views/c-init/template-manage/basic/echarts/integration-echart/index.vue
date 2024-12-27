@@ -1,7 +1,7 @@
 <template>
   <div class="integration-echart-vue">
     <div class="normal-view" v-show="!isShowTable.normal">
-      <div id="integration-echart"> </div>
+      <div :id="echartInfo.id"> </div>
       <div class="echart-tool">
         <c-icon i="c-change-view" tip="切换视图" size="16" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleChangeView('normal')"></c-icon>
         <c-icon i="c-copy-text" tip="复制数据" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleCopyData()"></c-icon>
@@ -17,13 +17,13 @@
         <c-button type="primary" height="30" @click="handleCloseTableAndRefresh('normal')">关闭并刷新</c-button>
       </div>
       <el-table :data="echartInfo.tableData" border class="c-table">
-        <el-table-column :label="item.label" :prop="item.field" align="center" v-for="(item, index) in echartInfo.tableHeader" :key="index"></el-table-column>
+        <el-table-column :label="item.label" :prop="item.field" align="center" v-for="(item, index) in echartInfo.tableHeader" :key="index" :width="item.label.includes('时间') ? '200x' : 'auto'"></el-table-column>
       </el-table>
     </div>
 
     <el-dialog class="echart-fullscreen-view c-dialog" v-model="isShowFullscreen" :modal-append-to-body="false" align-center :close-on-click-modal="false" :before-close="handleFullscreenOut">
       <div class="normal-view-fs" v-show="!isShowTable.fullscreen">
-        <div id="integration-echart-fs"> </div>
+        <div :id="echartInfoFs.id"> </div>
         <div class="echart-tool-fs">
           <c-icon i="c-change-view" tip="切换视图" size="16" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleChangeView('fullscreen')"></c-icon>
           <c-icon i="c-copy-text" tip="复制数据" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleCopyData()"></c-icon>
@@ -38,7 +38,7 @@
           <c-button type="primary" height="30" @click="handleCloseTableAndRefresh('fullscreen')">关闭并刷新</c-button>
         </div>
         <el-table :data="echartInfo.tableData" border class="c-table">
-          <el-table-column :label="item.label" :prop="item.field" align="center" v-for="(item, index) in echartInfo.tableHeader" :key="index"></el-table-column>
+          <el-table-column :label="item.label" :prop="item.field" align="center" v-for="(item, index) in echartInfo.tableHeader" :key="index" :width="item.label.includes('时间') ? '200x' : 'auto'"></el-table-column>
         </el-table>
       </div>
     </el-dialog>
@@ -86,8 +86,8 @@ function init() {
 // ^
 // # 1、获取echart数据
 const apiData = ref({})
-const echartInfo = ref({})
-const echartInfoFs = ref({})
+const echartInfo = ref({ id: 'integration-echart', exportFileName: '折线-柱状' })
+const echartInfoFs = ref({ id: 'integration-echart-fs', exportFileName: '折线-柱状' })
 async function getEchartInfo() {
   const res = await echartDataGet()
   apiData.value = res.data || {}
@@ -152,7 +152,7 @@ function initEchart() {
     series: echartInfo.value.sData,
   }
   let option = proxy.$merge({}, lineOption, addOption)
-  proxy.$initEchart(echartInfo, 'integration-echart', option)
+  proxy.$initEchart(echartInfo, option)
 }
 function initEchartFs() {
   let lineOption = proxy.$getLineEchartOption(settingStore, echartInfo, 'exclude', ['series']) || {}
@@ -166,14 +166,14 @@ function initEchartFs() {
     series: echartInfoFs.value.sData,
   }
   let option = proxy.$merge({}, lineOption, dataZoomOption, addOption)
-  proxy.$initEchart(echartInfoFs, 'integration-echart-fs', option)
+  proxy.$initEchart(echartInfoFs, option)
 }
 // ^
 // # 4、工具栏操作
 // # (1) 切换视图
 const isShowTable = ref({ normal: false, fullscreen: false })
 function handleChangeView(type) {
-  if (type === 'noraml') {
+  if (type === 'normal') {
     isShowTable.value.normal = !isShowTable.value.normal
   }
   if (type === 'fullscreen') {
@@ -181,7 +181,7 @@ function handleChangeView(type) {
   }
 }
 function handleCloseTable(type) {
-  if (type === 'noraml') {
+  if (type === 'normal') {
     isShowTable.value.normal = false
   }
   if (type === 'fullscreen') {
@@ -189,7 +189,7 @@ function handleCloseTable(type) {
   }
 }
 function handleCloseTableAndRefresh(type) {
-  if (type === 'noraml') {
+  if (type === 'normal') {
     isShowTable.value.normal = false
     proxy.$destroyEchart(echartInfo)
     nextTick(() => initEchart())
@@ -283,7 +283,7 @@ function handleCopyData() {
 // ^
 // # (3) 导出图片
 function handleExportImage() {
-  let exportFileName = '折线-柱状图'
+  let exportFileName = (echartInfo.value.exportFileName || '') + '图'
   proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
 }
 // ^
@@ -325,12 +325,13 @@ function handleExportExcel() {
   })
 
   // 导出文件
+  let exportFileName = (echartInfo.value.exportFileName || '') + '表'
   workbook.xlsx.writeBuffer().then(buffer => {
     const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const url = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = '导出表格.xlsx'
+    link.download = exportFileName + '.xlsx'
     link.click()
     window.URL.revokeObjectURL(url)
   })

@@ -1,13 +1,13 @@
 <template>
   <div class="basic-echart-vue y-scroll">
     <div class="echart-card line">
-      <!-- <line-echart></line-echart> -->
+      <line-echart></line-echart>
     </div>
     <div class="echart-card bar">
-      <!-- <bar-echart></bar-echart> -->
+      <bar-echart></bar-echart>
     </div>
     <div class="echart-card line-bar">
-      <!-- <line-bar-echart></line-bar-echart> -->
+      <line-bar-echart></line-bar-echart>
     </div>
     <div class="echart-card test">
       <test-echart></test-echart>
