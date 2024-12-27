@@ -38,7 +38,7 @@ setConfig().then(async (cEnv) => {
 
     // 全局方法
     const dayjs = (await import('dayjs')).default
-    const { $getEnumsLabel, $getEnumsLabelList, $exportDomTable, $uniqueArray, $sortArray, $accurate } = await import("@/utils/common.js")
+    const { $getEnumsLabel, $getEnumsLabelList, $uniqueArray, $sortArray, $accurate } = await import("@/utils/common.js")
     const { throttle, debounce, deepClone, merge } = await import("lodash")
     const { $completeEchartTableData, $transformEchartDataset, $newResizeObserver, $initEchart, $destroyEchart, $completeEchartXY, $exportEchartImage, $getSeriesEchartColor, $getLineEchartOption, $getBarEchartOption, $getDataZoomEchartOption } = await import("@/utils/echart.js")
     // 基础公共方法
@@ -67,7 +67,6 @@ setConfig().then(async (cEnv) => {
     app.config.globalProperties.$completeEchartXY = $completeEchartXY // 待弃用
     // 待定
     // app.config.globalProperties.$bus = new Vue()
-    // app.config.globalProperties.$exportDomTable = $exportDomTable
     // app.config.globalProperties.$downloadFile = $downloadFile
     // app.config.globalProperties.$previewFile = $previewFile
     // app.config.globalProperties.$loadingStart = $loadingStart

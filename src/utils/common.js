@@ -89,16 +89,16 @@ export function $deepClone(source) {
 // export function $loadingEnd() {
 //   loading.close()
 // }
-// 导出表格
-export function $getTableHeaderLRVByGlobal() {
-  this.tableHeaderLRV = {}
-  this.$refs.table.$children.forEach(item => {
-    if (item.label != undefined && item.prop != undefined) {
-      let columnChild = { [item.label]: item.prop }
-      Object.assign(this.tableHeaderLRV, columnChild)
-    }
-  })
-}
+// // 导出表格
+// export function $getTableHeaderLRVByGlobal() {
+//   this.tableHeaderLRV = {}
+//   this.$refs.table.$children.forEach(item => {
+//     if (item.label != undefined && item.prop != undefined) {
+//       let columnChild = { [item.label]: item.prop }
+//       Object.assign(this.tableHeaderLRV, columnChild)
+//     }
+//   })
+// }
 // // tableData：要导出的查询表格数据
 // // tableHeaderLRV：表头的label和prop对应关系，建议设置el-table的ref属性和el-table-column的prop属性来动态获取
 // // fileName：导出的文件名
@@ -130,26 +130,25 @@ export function $getTableHeaderLRVByGlobal() {
 //   })
 // }
 
-import FileSaver from "file-saver"
-// import XLSX from "xlsx"
-import * as XLSX from "xlsx"
-export function $exportDomTable(domId, fileName, deleteIndexArr) {
-  let xlsxParam = { raw: true }
-  let wb = XLSX.utils.table_to_book(document.querySelector('#' + domId), xlsxParam)
-  if (deleteIndexArr && deleteIndexArr.length > 0) {
-    deleteIndexArr.forEach((item, index) => {
-      wb.Sheets.Sheet1['!cols'][item] = { hidden: true }
-    })
-  }
-  let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
-  try {
-    FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName + '.xlsx')
-  } catch (e) {
-    if (typeof console !== 'undefined') console.log(e, wbout)
-  }
-  this.isDownloading = false
-  return wbout
-}
+// import FileSaver from "file-saver"
+// import * as XLSX from "xlsx"
+// export function $exportDomTable(domId, fileName, deleteIndexArr) {
+//   let xlsxParam = { raw: true }
+//   let wb = XLSX.utils.table_to_book(document.querySelector('#' + domId), xlsxParam)
+//   if (deleteIndexArr && deleteIndexArr.length > 0) {
+//     deleteIndexArr.forEach((item, index) => {
+//       wb.Sheets.Sheet1['!cols'][item] = { hidden: true }
+//     })
+//   }
+//   let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+//   try {
+//     FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName + '.xlsx')
+//   } catch (e) {
+//     if (typeof console !== 'undefined') console.log(e, wbout)
+//   }
+//   this.isDownloading = false
+//   return wbout
+// }
 
 
 
