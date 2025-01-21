@@ -1,5 +1,5 @@
 <template>
-  <i :class="{ 'c-icon': true, 'is-disabled': disabled }" :style="`color:${color};font-size:${size}px;cursor:${cursor};--hoverColor:${hoverColor || color};`" @click="handleIconClick">
+  <i :class="{ 'c-icon': true, 'is-disabled': disabled }" :style="`color:${color};font-size:${size}px;cursor:${cursor};--hoverColor:${hoverColor || color};`">
     <el-tooltip trigger="hover" :offset="5" placement="top" effect="light" popper-class="c-icon-tooltip" v-if="tip && showType == 'el'" :hide-after="0">
       <svg-icon :icon-class="i"></svg-icon>
       <template #content> <span :style="`color:${hoverColor || color};`">{{ tip }}</span></template>
@@ -32,13 +32,6 @@ const props = defineProps({
   // 悬浮效果
   cursor: { type: String, default: 'auto', },
 })
-const emit = defineEmits()
-const handleIconClick = (e) => {
-  e.stopImmediatePropagation()
-  if (!props.disabled) {
-    emit('click')
-  }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -58,7 +51,7 @@ const handleIconClick = (e) => {
 
   &[class*="is-disabled"] {
     cursor: not-allowed !important;
-    // pointer-events: none; 禁止元素接收鼠标事件
+    pointer-events: none;
     opacity: 0.6;
   }
 

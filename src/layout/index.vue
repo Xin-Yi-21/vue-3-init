@@ -78,6 +78,7 @@ async function init() {
   width: 100%;
   height: 100%;
   background-color: var(--bg-layout);
+  overflow: hidden;
 
   .top-header-vue {
     height: var(--top-header-height);

@@ -1,6 +1,6 @@
 <template>
-  <el-button class="c-button" :size="size" :type="type" :plain="plain" :round="round" :circle="circle" :loading="loading" :disabled="disabled" :icon="icon" :autofocus="autofocus" :native-type="nativeType" :style="`width:${width ? width + 'px' : 'auto'};height:${height ? height + 'px' : settingStore.theme?.cssV?.hc}`">
-    <svg-icon v-if="i" :icon-class="i" :style="`fontSize:${iSize ? iSize + 'px' : settingStore.theme?.cssV?.fs}`"></svg-icon>
+  <el-button class="c-button" :size="size" :type="type" :plain="plain" :round="round" :circle="circle" :color="color" :loading="loading" :disabled="disabled" :icon="icon" :autofocus="autofocus" :native-type="nativeType" :style="`width:${width ? width + 'px' : 'auto'};height:${height ? height + 'px' : settingStore.theme?.cssV?.hc}`">
+    <svg-icon v-if="i && !loading" :icon-class="i" :style="`fontSize:${iSize ? iSize + 'px' : settingStore.theme?.cssV?.fs}`"></svg-icon>
     <span class="button-text">
       <slot></slot>
     </span>
@@ -32,7 +32,7 @@ const props = defineProps({
   circle: { type: Boolean, default: false, },
   autofocus: { type: Boolean, default: false, },
   nativeType: { type: String, default: 'button' },
-
+  color: { type: String, default: '' },
 })
 import useSettingStore from '@/store/system/setting'
 const settingStore = useSettingStore()

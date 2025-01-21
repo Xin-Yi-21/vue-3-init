@@ -4,6 +4,9 @@
       <c-card-title v-if="title" :title="title" :icon="icon"></c-card-title>
       <slot name="left"></slot>
     </div>
+    <div class="center">
+      <slot name="center"></slot>
+    </div>
     <div class="right">
       <slot name="right"></slot>
     </div>
@@ -27,6 +30,7 @@ const props = defineProps({
   align-items: center;
   flex-shrink: 0;
   overflow: hidden;
+  position: relative;
   width: 100%;
   height: 50px;
   padding: 0 10px;
@@ -36,6 +40,13 @@ const props = defineProps({
     align-items: center;
     height: 100%;
     margin-right: auto;
+  }
+
+  .center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .right {

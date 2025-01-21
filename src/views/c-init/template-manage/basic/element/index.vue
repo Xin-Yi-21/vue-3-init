@@ -11,6 +11,11 @@
           <el-form-item label="姓名" prop="name">
             <el-input v-model="form.name" placeholder="请输入"></el-input>
           </el-form-item>
+          <el-form-item label="角色" prop="role">
+            <el-select v-model="form.role" multiple class="c-multiple-select" placeholder="请选择角色" style="width:200px;height:36px;" @change="handleChangeCondition('gender')">
+              <el-option v-for="(item, index) in enums.role" :key="index" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="起始时间">
             <el-date-picker v-model="form.startTime" type="datetime" :disabled-date="pickerOptions.start" placeholder="请选择开始时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :clearable="false"></el-date-picker>
           </el-form-item>
@@ -21,30 +26,28 @@
       </div>
       <div class="c-search-operate">
         <div class="left">
-          <c-button type="primary" class="query-button" i="c-search" @click="getTableData">查询</c-button>
+          <c-button type="primary" class="query-button" i="c-search" @click="getTableData" :loading="isLoading">查询</c-button>
           <c-button type="info" class="refresh-button" i="c-refresh" @click="setDefaultParams"></c-button>
         </div>
         <div class="right"> </div>
       </div>
     </div>
-    <div class="c-result">
+    <div class="c-result" v-loading-c="{ isLoading: isLoading, onCancel: () => isLoading = false }">
       <!-- <div class="c-result-header"></div>
       <div class="c-result-content"></div> -->
-      <c-card-header>
+      <c-card-header title="" icon="">
         <template #left>
           <c-card-title title="人物管理" icon="circle"></c-card-title>
-          <c-tab :tabList="tabList" :currentTab="currentTab" @change="handleChangeTab"></c-tab>
+        </template>
+        <template #center>
+          <c-tab :tabList="tabList" :currentTab="currentTab" height="32" @change="handleChangeTab"></c-tab>
         </template>
         <template #right>
           <c-button type="primary" i="c-add" @click="handleAdd">新增</c-button>
         </template>
       </c-card-header>
 
-      <c-card-header title="人物管理" icon="circle">
-        <template #right> <c-button type="primary" i="c-add" @click="handleAdd">新增</c-button></template>
-      </c-card-header>
-
-      <el-table :data="tableData" border class="c-table" stripe>
+      <el-table :data="tableData" border class="c-table" stripe v-animation="{ class: 'c-a-fade-in', isRefresh: !isLoading, timeout: 1000 }">
         <el-table-column label="人物" prop="" align="center">
           <template #default="scope"> {{ scope.row.personName }} </template>
         </el-table-column>
@@ -54,8 +57,10 @@
         <el-table-column label="年龄" prop="" align="center">
           <template #default="scope"> {{ scope.row.age }} </template>
         </el-table-column>
-        <el-table-column label="角色" prop="" align="center" :show-overflow-tooltip="true">
-          <template #default="scope"> {{ scope.row.role }} </template>
+        <el-table-column label="角色" prop="" align="center">
+          <template #default="scope">
+            <c-tooltip :content="scope.row.role">{{ scope.row.role }}</c-tooltip>
+          </template>
         </el-table-column>
         <el-table-column label="操作" prop="" align="center">
           <template #default="scope">
@@ -98,6 +103,7 @@ async function getEnums() {
   // console.log('查allEnums', allEnums)
   let newEnums = {
     gender: allEnums.gender,
+    role: allEnums.role
   }
   enums.value = Object.assign({}, enums.value, newEnums)
   // console.log('查 enums.value', enums.value)
@@ -119,12 +125,15 @@ function setDefaultParams() {
 import { personGet } from '@/api/project/project.js'
 const tableData = ref([])
 const tableTotal = ref(1000)
+const isLoading = ref(false)
 async function getTableData() {
+  isLoading.value = true
   let params = {
     gender: form.value.gender,
     name: form.value.name,
   }
   const res = await personGet(params)
+  setTimeout(() => { isLoading.value = false }, 200)
   let newTableData = res.data || []
   newTableData.map(item => {
     item.role = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
@@ -145,7 +154,8 @@ function handleChangeTab(tabItem) {
 // # 3、改变查询条件
 function handleChangeCondition(type) {
   switch (type) {
-    case '':
+    case 'name':
+      proxy.$debounce(e => { getTableData() }, 500)()
       break
     case '':
     case '':

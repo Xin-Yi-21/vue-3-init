@@ -38,7 +38,7 @@ setConfig().then(async (cEnv) => {
 
     // 全局方法
     const dayjs = (await import('dayjs')).default
-    const { $getEnumsLabel, $getEnumsLabelList, $uniqueArray, $sortArray, $accurate } = await import("@/utils/common.js")
+    const { $getEnumsLabel, $getEnumsLabelList, $uniqueArray, $sortArray, $accurate, $hasValue } = await import("@/utils/common.js")
     const { throttle, debounce, deepClone, merge } = await import("lodash")
     const { $completeEchartTableData, $transformEchartDataset, $newResizeObserver, $initEchart, $destroyEchart, $completeEchartXY, $exportEchartImage, $getSeriesEchartColor, $getLineEchartOption, $getBarEchartOption, $getDataZoomEchartOption } = await import("@/utils/echart.js")
     // 基础公共方法
@@ -48,6 +48,7 @@ setConfig().then(async (cEnv) => {
     app.config.globalProperties.$uniqueArray = $uniqueArray
     app.config.globalProperties.$sortArray = $sortArray
     app.config.globalProperties.$accurate = $accurate
+    app.config.globalProperties.$hasValue = $hasValue
     // loadsh 公共方法
     app.config.globalProperties.$throttle = throttle
     app.config.globalProperties.$debounce = debounce
@@ -83,8 +84,10 @@ setConfig().then(async (cEnv) => {
     const cCardRectangle = (await import('@/components/project/custom-card-rectangle')).default
     const cCardTitle = (await import('@/components/project/custom-card-title')).default
     const cCardHeader = (await import('@/components/project/custom-card-header')).default
+    const cCardTip = (await import('@/components/project/custom-card-tip')).defaul
     const cTab = (await import('@/components/project/custom-tab')).default
     const cEchart = (await import('@/components/project/custom-echart')).default
+    const cDataWithUnit = (await import('@/components/project/custom-data-with-unit')).default
 
     app.component('cTooltip', cTooltip)
     app.component('cPagination', cPagination)
@@ -96,8 +99,10 @@ setConfig().then(async (cEnv) => {
     app.component('cCardRectangle', cCardRectangle)
     app.component('cCardTitle', cCardTitle)
     app.component('cCardHeader', cCardHeader)
+    app.component('cCardTip', cCardTip)
     app.component('cTab', cTab)
     app.component('cEchart', cEchart)
+    app.component('cDataWithUnit', cDataWithUnit)
 
     app.mount('#app')
   } catch (error) {

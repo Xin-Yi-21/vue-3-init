@@ -48,29 +48,52 @@ function handleChangePageNum(pageNum) {
   margin: 10px 20px;
   padding: 0;
   text-align: right;
+  // background-color: red;
 
   * {
     font-size: 13px;
   }
 
 
-  .btn-prev,
-  .btn-next {
-    padding: 0 5px !important;
+  :deep(.btn-prev),
+  :deep(.btn-next) {
+    height: 100%;
+    padding: 0 10px !important;
   }
 
-  .el-pager {
+  :deep(.el-pager) {
+    height: 100%;
+
+    li {
+      height: 100%;
+    }
+
     .active {
       background-color: var(--tc) !important;
     }
   }
 
-  .el-pagination__sizes {
+  :deep(.el-pagination__sizes) {
+    height: 32px;
     margin: 0 5px;
+
+    .el-select {
+      height: 100%;
+
+      .el-select__wrapper {
+        height: 100%;
+        min-height: 100%;
+      }
+    }
   }
 
-  .el-pagination__jump {
+  :deep(.el-pagination__jump) {
+    height: 32px;
     margin-left: 5px;
+
+    .el-input {
+      height: 100%;
+    }
   }
 }
 </style>

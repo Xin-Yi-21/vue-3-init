@@ -1,84 +1,114 @@
 <template>
-  <el-tooltip ref="tooltipRef" popper-class="c-tooltip" :effect="effect" :content="content" :placement="placement" :disabled="disabled" :open-delay="openDelay" :append-to-body="true">
-    <slot></slot>
-  </el-tooltip>
+  <div class="c-tooltip">
+    <el-tooltip popper-class="c-el-tooltip" :trigger="trigger" :disabled="isDisabled" effect="light" :placement="placement" :show-after="showAfter" :hide-after="hideAfter">
+      <template #content>
+        <div class="c-tooltip-content">{{ content }}</div>
+      </template>
+      <div class="normal-content" ref="slotRef">
+        <slot></slot>
+      </div>
+    </el-tooltip>
+  </div>
 </template>
 
-<script>
-export default {
-  props: {
-    effect: {
-      type: String,
-      default: 'dark'
-    },
-    content: {
-      type: String,
-      default: ''
-    },
-    placement: {
-      type: String,
-      default: 'top'
-    },
-    containerDomName: {
-      type: String,
-      default: '',
-    },
-    openDelay: {
-      type: Number,
-      default: 500,
-    },
+<script setup>
+const props = defineProps({
+  content: {
+    type: String,
+    default: ''
   },
-  data() {
-    return {
-      disabled: true,
-    }
+  placement: {
+    type: String,
+    default: 'top'
   },
-  mounted() {
-    // this.$refs.here.appendChild(
-    //   this.$refs.tooltipRef.popperVM.$el
-    // )
+  trigger: {
+    type: String,
+    default: 'hover'
   },
-  watch: {
-    content: {
-      handler(newValue) {
-        if (newValue) {
-          this.judgeDisabled()
-        }
-      },
-      deep: true,
-      immediate: true
-    }
+  targetClass: {
+    type: String,
+    default: '',
   },
+  showAfter: {
+    type: Number,
+    default: 0,
+  },
+  hideAfter: {
+    type: Number,
+    default: 200,
+  },
+})
 
-  methods: {
-    judgeDisabled() {
-      this.$nextTick(() => {
-        let containerOffsetWidth = document.querySelector(this.containerDomName).offsetWidth
-        let containerScrollWidth = document.querySelector(this.containerDomName).scrollWidth
-        if (containerScrollWidth > containerOffsetWidth) {
-          this.disabled = false
-        } else {
-          this.disabled = true
-        }
-      })
+const isDisabled = ref(true)
+const slotRef = ref(null)
+
+// 检查内容是否超出
+const checkOverflow = () => {
+  let targetElement = null
+  if (slotRef.value) {
+    targetElement = slotRef.value
+    if (props.targetClass) {
+      targetElement = slotRef.value.querySelector('.' + props.targetClass)
     }
-  },
+  }
+  if (targetElement) {
+    const { scrollWidth, clientWidth } = targetElement
+    //   console.log('查scrollWidth', scrollWidth)
+    //   console.log('查clientWidth', clientWidth)
+    isDisabled.value = !(scrollWidth > clientWidth)
+  }
 }
+// 组件挂载后检查
+onMounted(() => {
+  nextTick(checkOverflow)
+})
+onUpdated(() => {
+  nextTick(checkOverflow)
+})
+// 监听 content 属性的变化
+watch(() => props.content, () => {
+  nextTick(checkOverflow)
+})
 </script>
 
 <style lang="scss">
 .c-tooltip {
-  background: #f4f4f5 !important;
-  border-radius: 2px;
+  width: 100%;
+
+  .el-tooltip__trigger {
+    display: block;
+    width: 100% !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.c-el-tooltip {
+  padding: 5px 10px !important;
+  border: 1px solid var(--bcp) !important;
+  border-radius: 4px !important;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
+  // background: var(--bg-card) !important;
   opacity: 1;
-  border: 1px solid #333 !important;
-  color: #333 !important;
+  color: var(--fcp) !important;
+  background: linear-gradient(90deg, rgb(159, 229, 151), rgb(204, 229, 129)) !important;
 
-  .popper__arrow {
-    border-top-color: #333 !important;
+  .c-tooltip-content {
+    max-width: 800px;
+    line-height: 20px;
+    font-size: 14px;
+    color: var(--fcp);
+  }
 
+  .el-popper__arrow {
+    position: absolute;
+
+    &::before,
     &::after {
-      border-top-color: #f4f4f5 !important;
+      // background-color: var(--bg-card) !important;
+      background: linear-gradient(45deg, #b2e68d, #bce689) !important;
+      border-color: var(--bcp) !important;
     }
   }
 }

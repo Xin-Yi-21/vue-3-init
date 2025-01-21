@@ -32,8 +32,8 @@ export function handleThemeSize(themeSize) {
     'normal': { themeSizeComponentHeight: '30px', fontSize: '13px' },
     'small': { themeSizeComponentHeight: '24px', fontSize: '12px' },
   }
-  document.documentElement.style.setProperty(`--hc`, tsLRV[themeSize]?.themeSizeComponentHeight)
-  document.documentElement.style.setProperty(`--fs`, tsLRV[themeSize]?.fontSize)
+  document.documentElement.style.setProperty(`--ch`, tsLRV[themeSize]?.themeSizeComponentHeight)
+  document.documentElement.style.setProperty(`--cfs`, tsLRV[themeSize]?.fontSize)
   document.documentElement.style.setProperty(`--fsnu`, 14)
 }
 // hex颜色转rgb颜色

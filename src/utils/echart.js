@@ -149,7 +149,7 @@ export function $completeEchartXY(chart) {
 
 // echart series颜色配置
 export function $getSeriesEchartColor(settingStore, echartInfo, showType, operateList) {
-  let res = ['#549BDD', '#59D7D7', '#5ABCAA', '#93E42B', '#2ADE26', '#2981D2', '#C274E7']
+  let res = ['#467FD3 ', '#6C3FD3', '#2BC6D1', '#38D95B', '#089F00', '#D2D218', '#E98726', '#D64633', '#B02F7D']
   return res
 }
 // 折线图配置 echart-line-option
@@ -221,7 +221,7 @@ export function $getLineEchartOption(settingStore, echartInfo, showType, operate
     ],
     series: [
       {
-        smooth: true, showAllSymbol: true, symbol: 'circle', symbolSize: 4, connectNulls: false,
+        smooth: true, showAllSymbol: true, symbol: 'circle', symbolSize: 0, connectNulls: false,
         itemStyle: { color: '#fff', borderWidth: '2', },
       }
     ],

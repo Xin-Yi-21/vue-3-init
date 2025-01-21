@@ -1,0 +1,53 @@
+// 淡入
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.c-a-fade-in {
+  animation: fadeIn 1s ease-in;
+}
+// 左侧滑入
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+.c-a-slide-in-left {
+  animation: slideInLeft 1s ease-out;
+}
+// 右侧滑入
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+.c-a-slide-in-right {
+  animation: slideInRight 1s ease-out;
+}
+
+// 按钮悬停弹跳
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.c-a-bounce-hover:hover {
+  animation: bounce 0.5s ease-in-out;
+}

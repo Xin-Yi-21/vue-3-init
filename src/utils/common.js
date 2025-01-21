@@ -227,3 +227,8 @@ export function $accurate(num, precision = 0, isAllPrecision = false) {
   const res = Math.round(parsedNum * pow) / pow
   return isAllPrecision ? res.toFixed(precision) : res
 }
+
+// 判断是否有值
+export function $hasValue(value) {
+  return (value !== undefined && value !== null && value !== '')
+}

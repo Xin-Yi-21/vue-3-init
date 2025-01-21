@@ -11,10 +11,10 @@ export default {
   themeLightColor: '#55c79166',
   // 显示布局
   showSettings: true,
-  // 头部
+  // 顶部页头
   topHeader: {
     isShow: true,
-    isBreadcrumb: true,
+    isBreadcrumbShow: true,
   },
   // 左侧导航
   leftNav: {

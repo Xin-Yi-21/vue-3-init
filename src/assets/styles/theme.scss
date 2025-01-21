@@ -11,6 +11,7 @@
     // --bg-inner-hover: #f5f7fa; // 组件悬浮背景色
     --bg-inner-hover: var(--bg-hover); // 表格悬浮行背景色
     --bg-inner-modal: #fff; // 动框背景色
+    --bg-mask: rgba(255, 255, 255, 0.8); // 遮罩背景色
 
     --fcp: #333; // font-color-primary : app-main主要字体色。用于app-main内容字体色。
     --fcpl: #333; // font-color-primary-layout : layout主要字体色。用于layout布局字体色。区分是为考虑主题风格app-main保持不变的情况。
@@ -52,6 +53,7 @@
     // --bg-inner-hover: #666; // 组件悬浮背景色
     --bg-inner-hover: var(--bg-hover); // 表格悬浮行背景色
     --bg-inner-modal: #1a1a1a; // 组件弹窗背景色
+    --bg-mask: rgba(255, 255, 255, 0.8); // 遮罩背景色
 
     --fcp: #fff; // font-color-primary : app-main主要字体色。用于app-main内容字体色。
     --fcpl: #fff; // font-color-primary : app-main主要字体色。用于app-main内容字体色。
@@ -78,6 +80,16 @@
     --bg-tableEvenRow: #ccc; // 表格偶数行背景色
     --bg-tableBody: #333;
   }
+
+  // &[theme-size='large'] {
+  //   --ch: 40px;
+  // }
+  // &[theme-size='normal'] {
+  //   --ch: 36px;
+  // }
+  // &[theme-size='large'] {
+  //   --ch: 28px;
+  // }
 }
 
 // 二、element主题风格样式
@@ -346,104 +358,132 @@
       }
     }
   }
-
-  // el-table
-  .el-table {
-    margin: 10px;
-    width: calc(100% - 20px);
-    background-color: var(--bg-inner-primary);
-    &::before {
-      display: none;
-    }
-
-    .el-table__header-wrapper {
-      .el-table__header {
-        border-left: 0;
-        .el-table__cell {
-          background-color: var(--bg-tableHeader);
-          border-bottom-color: var(--bcs);
-          padding: 12px 0 12px;
-          .cell {
-            color: var(--fcp);
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 25px;
-          }
-        }
-      }
-    }
-    .el-table__body-wrapper {
-      background-color: var(--bg-tableBody);
-      .el-table__body {
-        border-left: 0;
-        .el-table__row {
-          td {
-            border-bottom: 1px solid var(--bcs);
-            background: transparent;
-          }
-          &:hover {
-            td {
-              background-color: var(--bg-tableHoverRow);
-            }
-          }
-          &:nth-child(2n + 1) {
-            background-color: var(--bg-tableOddRow);
-          }
-
-          &:nth-child(2n) {
-            background-color: var(--bg-tableOddRow);
-          }
-
-          .el-table__cell {
-            padding: 8px 0 8px;
-            box-sizing: content-box;
-            .cell {
-              color: #333;
-              font-size: 14px;
-              font-weight: 400;
-              line-height: 23px;
-              min-height: 20px;
-            }
-          }
-        }
-      }
-    }
-
-    // 斑马纹
-    &.el-table--striped {
-      .el-table__body-wrapper {
-        .el-table__body {
-          .el-table__row {
-            &:nth-child(2n) {
-              background-color: var(--bg-tableEvenRow);
-            }
-          }
-        }
-      }
-    }
-
-    // 边框
-    &.el-table--border {
-      border: 1px solid var(--bcs);
-      &::before,
-      &::after {
+  &[theme-style='light'],
+  &[theme-style='dark'] {
+    // el-table
+    .el-table {
+      margin: 10px;
+      width: calc(100% - 20px);
+      background-color: var(--bg-inner-primary);
+      &::before {
         display: none;
       }
+
       .el-table__header-wrapper {
         .el-table__header {
-          th {
-            border-right-color: var(--bcs);
+          border-left: 0;
+          .el-table__cell {
+            background-color: var(--bg-tableHeader);
+            border-bottom-color: var(--bcs);
+            padding: 12px 0 12px;
+            .cell {
+              color: var(--fcp);
+              font-size: 14px;
+              font-weight: 700;
+              line-height: 25px;
+            }
           }
         }
       }
       .el-table__body-wrapper {
+        background-color: var(--bg-tableBody);
         .el-table__body {
+          border-left: 0;
           .el-table__row {
             td {
+              border-bottom: 1px solid var(--bcs);
+              background: transparent;
+            }
+            &:hover {
+              td {
+                background-color: var(--bg-tableHoverRow);
+              }
+            }
+            &:nth-child(2n + 1) {
+              background-color: var(--bg-tableOddRow);
+            }
+
+            &:nth-child(2n) {
+              background-color: var(--bg-tableOddRow);
+            }
+
+            .el-table__cell {
+              padding: 8px 0 8px;
+              box-sizing: content-box;
+              .cell {
+                color: #333;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 23px;
+                min-height: 20px;
+              }
+            }
+          }
+        }
+      }
+
+      // 斑马纹
+      &.el-table--striped {
+        .el-table__body-wrapper {
+          .el-table__body {
+            .el-table__row {
+              &:nth-child(2n) {
+                background-color: var(--bg-tableEvenRow);
+              }
+            }
+          }
+        }
+      }
+
+      // 边框
+      &.el-table--border {
+        border: 1px solid var(--bcs);
+        &::before,
+        &::after {
+          display: none;
+        }
+        .el-table__header-wrapper {
+          .el-table__header {
+            th {
               border-right-color: var(--bcs);
             }
           }
         }
+        .el-table__body-wrapper {
+          .el-table__body {
+            .el-table__row {
+              td {
+                border-right-color: var(--bcs);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // el-calendar
+    .el-calendar {
+      background-color: var(--bg-inner-primary);
+    }
+  }
+
+  &[theme-size='large'],
+  &[theme-size='normal'],
+  &[theme-size='small'] {
+    .el-form-item {
+      .el-form-item__label {
+        height: var(--ch);
+        line-height: var(--ch);
+      }
+      .el-form-item__content {
+        line-height: var(--ch);
+      }
+    }
+    .el-select {
+      height: var(--ch) !important;
+      .el-select__wrapper {
+        height: var(--ch);
+        min-height: var(--ch);
       }
     }
   }

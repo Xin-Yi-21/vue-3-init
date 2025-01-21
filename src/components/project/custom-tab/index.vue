@@ -1,5 +1,5 @@
 <template>
-  <div class="c-tab">
+  <div class="c-tab" :style="`--tabHeight:${height}px`">
     <div :class="['tab-item', currentTab == item.value ? 'is-active' : '']" v-for="(item, index) in tabList" :key="index" @click="handleChangeTab(item)">{{ item.label }}</div>
   </div>
 </template>
@@ -10,6 +10,8 @@ const props = defineProps({
   tabList: { type: Array, default: () => [] },
   // 当前tab页
   currentTab: { type: String, default: '' },
+  // 高度
+  height: { type: [String, Number], default: 36 },
 })
 const emit = defineEmits(['change'])
 function handleChangeTab(tabItem) {
@@ -22,10 +24,11 @@ function handleChangeTab(tabItem) {
 .c-tab {
   display: inline-flex;
   width: auto;
-  height: var(--hc);
+  height: var(--tabHeight);
   overflow: hidden;
   border-radius: 18px;
-  font-size:var(--fs);
+  font-size: var(--fs);
+
   .tab-item {
     min-width: 120px;
     height: 100%;
@@ -33,7 +36,7 @@ function handleChangeTab(tabItem) {
     border: 1px solid var(--bcs);
     border-right: 0;
     color: var(--fcp);
-    line-height: var(--hc);
+    line-height: var(--tabHeight);
     text-align: center;
     cursor: pointer;
 
