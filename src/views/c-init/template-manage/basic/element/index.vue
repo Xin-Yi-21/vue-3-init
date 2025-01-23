@@ -12,7 +12,7 @@
             <el-input v-model="form.name" placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item label="角色" prop="role">
-            <el-select v-model="form.role" multiple class="c-multiple-select" placeholder="请选择角色" style="width:200px;height:36px;" @change="handleChangeCondition('gender')">
+            <el-select v-model="form.role" multiple class="c-multiple-select" placeholder="请选择角色" style="width:200px;" @change="handleChangeCondition('gender')">
               <el-option v-for="(item, index) in enums.role" :key="index" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>

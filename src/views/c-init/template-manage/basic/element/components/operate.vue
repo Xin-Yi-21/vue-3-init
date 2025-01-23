@@ -8,9 +8,9 @@
     </template>
     <div class="c-d-c">
       <el-form :model="form" :rules="formRules" ref="formRef" class="c-form">
-        <div class="c-row">
+        <!-- <div class="c-row">
           <div class="c-label">说明：</div>
-        </div>
+        </div> -->
         <el-form-item label="姓名" prop="personName">
           <el-input v-model="form.personName" placeholder="请输入姓名"></el-input>
         </el-form-item>
