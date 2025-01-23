@@ -46,7 +46,7 @@ const props = defineProps({
     height: 100%;
     line-height: 20px;
     color: var(--tc);
-    font-size: 14px;
+    font-size: var(--cfs);
     font-weight: 700;
   }
 
@@ -56,7 +56,7 @@ const props = defineProps({
     flex-shrink: 0;
     height: 100%;
     padding-left: 5px;
-    font-size: 14px;
+    font-size: var(--cfs);
   }
 
   .no-data {

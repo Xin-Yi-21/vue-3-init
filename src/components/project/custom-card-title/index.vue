@@ -25,13 +25,13 @@ const props = defineProps({
 
   .card-title-icon-svg {
     flex-shrink: 0;
-    font-size: calc(var(--fs) + 4px);
+    font-size: calc(var(--cfs) + 4px);
   }
 
   .card-title {
     color: var(--fcp);
     font-weight: 700;
-    font-size: calc(var(--fs) + 2px);
+    font-size: calc(var(--cfs) + 2px);
     white-space: nowrap;
   }
 }

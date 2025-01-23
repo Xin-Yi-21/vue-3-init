@@ -1,7 +1,7 @@
 <template>
-  <el-button class="c-button" :size="size" :type="type" :plain="plain" :round="round" :circle="circle" :color="color" :loading="loading" :disabled="disabled" :icon="icon" :autofocus="autofocus" :native-type="nativeType" :style="`width:${width ? width + 'px' : 'auto'};height:${height ? height + 'px' : settingStore.theme?.cssV?.hc}`">
-    <svg-icon v-if="i && !loading" :icon-class="i" :style="`fontSize:${iSize ? iSize + 'px' : settingStore.theme?.cssV?.fs}`"></svg-icon>
-    <span class="button-text">
+  <el-button class="c-button" :size="size" :type="type" :plain="plain" :round="round" :circle="circle" :color="color" :loading="loading" :disabled="disabled" :icon="icon" :autofocus="autofocus" :native-type="nativeType" :style="`width:${width ? width + 'px' : 'auto'};${height ? 'height:' + height + 'px' : ''}`">
+    <svg-icon v-if="i && !loading" :icon-class="i" :style="`${iSize ? 'fontSize:' + iSize + 'px' : ''}`"></svg-icon>
+    <span class="button-text" :style="`${fSize ? 'fontSize:' + fSize + 'px' : ''}`">
       <slot></slot>
     </span>
   </el-button>
@@ -15,6 +15,8 @@ const props = defineProps({
   icon: { type: String, default: '' },
   // 按钮图标大小
   iSize: { type: [Number, String], default: '' },
+  // 按钮字体大小
+  fSize: { type: [Number, String], default: '' },
   // 按钮宽度
   width: { type: [Number, String], default: '' },
   // 按钮高度
@@ -44,7 +46,7 @@ const settingStore = useSettingStore()
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  // height: var(--hc);
+  height: var(--ch);
   margin: 0 10px;
   padding: 0 15px;
 
@@ -65,11 +67,12 @@ const settingStore = useSettingStore()
 
     .svg-icon {
       flex-shrink: 0;
-      font-size: 14px;
+      font-size: var(--cfs);
     }
 
     .button-text {
       text-indent: 5px;
+      font-size: var(--cfs);
     }
   }
 }

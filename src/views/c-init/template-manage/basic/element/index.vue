@@ -40,7 +40,7 @@
           <c-card-title title="人物管理" icon="circle"></c-card-title>
         </template>
         <template #center>
-          <c-tab :tabList="tabList" :currentTab="currentTab" height="32" @change="handleChangeTab"></c-tab>
+          <c-tab :tabList="tabList" :currentTab="currentTab" @change="handleChangeTab"></c-tab>
         </template>
         <template #right>
           <c-button type="primary" i="c-add" @click="handleAdd">新增</c-button>

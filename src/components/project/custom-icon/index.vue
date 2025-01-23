@@ -20,7 +20,7 @@ const props = defineProps({
   // 图标悬浮颜色
   hoverColor: { type: String, default: '', },
   // 图标大小
-  size: { type: [Number, String], default: '16', },
+  size: { type: [Number, String], default: '', },
   // 图标提示
   tip: { type: String, default: '', },
   // 禁用
@@ -38,9 +38,10 @@ const props = defineProps({
 .c-icon {
   position: relative;
   display: inline-flex;
+  margin: 0 5px;
+  font-size: calc(var(--cfs) + 2px);
   font-style: normal;
   font-weight: 400;
-  margin: 0 5px;
   // color: var(--color);
 
   &:hover {

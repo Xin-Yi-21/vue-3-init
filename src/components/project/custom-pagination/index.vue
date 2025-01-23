@@ -51,7 +51,7 @@ function handleChangePageNum(pageNum) {
   // background-color: red;
 
   * {
-    font-size: 13px;
+    font-size: var(--cfs);
   }
 
 
