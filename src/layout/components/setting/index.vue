@@ -71,7 +71,7 @@
     </div>
     <div class="setting-footer">
       <el-button type="primary" @click="handleSaveSetting">保存配置</el-button>
-      <el-button @click="handleResetSetting">重置配置</el-button>
+      <c-button @click="handleResetSetting">重置配置</c-button>
     </div>
   </el-drawer>
 </template>
@@ -174,7 +174,7 @@ function handleResetSetting() {
       .setting-label {
         width: 100px;
         margin-right: 10px;
-        font-size: var(--fs);
+        font-size: var(--cfs);
       }
 
       .el-radio-group {

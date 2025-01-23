@@ -380,7 +380,6 @@
             padding: 12px 0 12px;
             .cell {
               color: var(--fcp);
-              font-size: 14px;
               font-weight: 700;
               line-height: 25px;
             }
@@ -414,7 +413,6 @@
               box-sizing: content-box;
               .cell {
                 color: #333;
-                font-size: 14px;
                 font-weight: 400;
                 line-height: 23px;
                 min-height: 20px;
@@ -515,6 +513,21 @@
             }
           }
         }
+      }
+    }
+    .el-radio {
+      height: var(--ch);
+      --el-radio-input-height: var(--cfs);
+      --el-radio-input-width: var(--cfs);
+      --el-radio-font-size: var(--cfs);
+    }
+    .el-button {
+      height: var(--ch);
+      font-size: var(--cfs);
+    }
+    .el-table {
+      .cell {
+        font-size: var(--cfs);
       }
     }
   }
