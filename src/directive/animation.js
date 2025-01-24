@@ -46,7 +46,5 @@ export default {
     delete el.__animationClass;
     delete el.__throttleFlag;
     delete el.__throttleDelay;
-
-    console.log('unmounted: 清理完成');
   },
 };

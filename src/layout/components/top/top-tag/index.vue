@@ -243,7 +243,7 @@ function isLastView() {
 
 <style lang='scss' scoped>
 .top-tag-vue {
-  height: 34px;
+  height: 30px;
   width: 100%;
   background: var(--bg-topTag);
   border-bottom: 1px solid #d8dce5;
@@ -251,18 +251,32 @@ function isLastView() {
 
   .tags-view-wrapper {
     .tags-view-item {
-      display: inline-block;
+      // display: inline-block;
+      // position: relative;
+      // cursor: pointer;
+      // height: 26px;
+      // line-height: 26px;
+      // border: 1px solid #d8dce5;
+      // color: #495060;
+      // background: #fff;
+      // padding: 0 8px;
+      // font-size: 12px;
+      // margin-left: 5px;
+      // margin-top: 4px;
       position: relative;
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      margin-top: 3px;
+      margin-left: 10px;
+      padding: 0 30px;
       cursor: pointer;
-      height: 26px;
-      line-height: 26px;
-      border: 1px solid #d8dce5;
-      color: #495060;
-      background: #fff;
-      padding: 0 8px;
+      border-radius: 3px;
+      background-color: var(--bg-topTag);
+      border: 1px solid var(--bcs);
+      color: var(--fcpl);
       font-size: 12px;
-      margin-left: 5px;
-      margin-top: 4px;
+      text-decoration: none;
 
       &:first-of-type {
         margin-left: 15px;
@@ -273,19 +287,31 @@ function isLastView() {
       }
 
       &.active {
-        background-color: #42b983;
+        background-color: var(--tc);
+        border-color: var(--tc);
         color: #fff;
-        border-color: #42b983;
 
-        &::before {
-          content: "";
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 5px;
+        // &::before {
+        //   content: "";
+        //   background: #fff;
+        //   display: inline-block;
+        //   width: 8px;
+        //   height: 8px;
+        //   border-radius: 50%;
+        //   position: relative;
+        //   margin-right: 5px;
+        // }
+      }
+
+      span {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 12px;
+
+        svg {
+          vertical-align: baseline !important;
         }
       }
     }
@@ -337,8 +363,8 @@ function isLastView() {
       }
 
       &:hover {
-        background-color: #b4bccc;
-        color: #fff;
+        // background-color: #b4bccc;
+        scale: 1.1;
         width: 12px !important;
         height: 12px !important;
       }
