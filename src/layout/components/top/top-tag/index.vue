@@ -1,36 +1,43 @@
 <template>
   <div class="top-tag-vue">
     <scroll-pane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleCloseContextMenu">
-      <router-link v-for="(tag, index) in visitedViews" :key="index" :class="['tags-view-item', isActive(tag) ? 'active' : '']" :style="activeStyle(tag)"
-        :dataPath="tag.path"
+      <router-link v-for="(tag, index) in visitedViews"
+        :key="index"
+        :class="['tags-view-item', isActive(tag) ? 'active' : '']"
+        :style="activeStyle(tag)"
+        :data-path="tag.path"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         @click.middle="handleMiddleClickTag(tag)"
         @contextmenu.prevent="handleOpenContextMenu(tag, $event)">
-        {{ tag.title }}
-        <span v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)">
-          <close class="el-icon-close" style="width: 1em; height: 1em;vertical-align: middle;" />
-        </span>
+        <span class="tag-title"> {{ tag.title }}</span>
+        <close class="tag-close" v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
 
     <ul v-show="isContextMenuVisible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">
-        <refresh-right style="width: 1em; height: 1em;" /> 刷新页面
+        <refresh-right style="width: 1em; height: 1em;" />
+        <span class="operate-text">刷新页面</span>
       </li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
-        <close style="width: 1em; height: 1em;" /> 关闭当前
+        <close style="width: 1em; height: 1em;" />
+        <span class="operate-text">关闭当前</span>
       </li>
       <li @click="closeOthersTags">
-        <circle-close style="width: 1em; height: 1em;" /> 关闭其他
+        <circle-close style="width: 1em; height: 1em;" />
+        <span class="operate-text">关闭其他</span>
       </li>
       <li v-if="!isFirstView()" @click="closeLeftTags">
-        <back style="width: 1em; height: 1em;" /> 关闭左侧
+        <back style="width: 1em; height: 1em;" />
+        <span class="operate-text">关闭左侧</span>
       </li>
       <li v-if="!isLastView()" @click="closeRightTags">
-        <right style="width: 1em; height: 1em;" /> 关闭右侧
+        <right style="width: 1em; height: 1em;" />
+        <span class="operate-text">关闭右侧</span>
       </li>
       <li @click="closeAllTags(selectedTag)">
-        <circle-close style="width: 1em; height: 1em;" /> 全部关闭
+        <circle-close style="width: 1em; height: 1em;" />
+        <span class="operate-text">全部关闭</span>
       </li>
     </ul>
   </div>
@@ -250,93 +257,108 @@ function isLastView() {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
 
   .tags-view-wrapper {
-    .tags-view-item {
-      // display: inline-block;
-      // position: relative;
-      // cursor: pointer;
-      // height: 26px;
-      // line-height: 26px;
-      // border: 1px solid #d8dce5;
-      // color: #495060;
-      // background: #fff;
-      // padding: 0 8px;
-      // font-size: 12px;
-      // margin-left: 5px;
-      // margin-top: 4px;
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      height: 24px;
-      margin-top: 3px;
-      margin-left: 10px;
-      padding: 0 30px;
-      cursor: pointer;
-      border-radius: 3px;
-      background-color: var(--bg-topTag);
-      border: 1px solid var(--bcs);
-      color: var(--fcpl);
-      font-size: 12px;
-      text-decoration: none;
+    height: 100%;
 
-      &:first-of-type {
-        margin-left: 15px;
-      }
+    :deep(.el-scrollbar__wrap) {
+      height: 100%;
 
-      &:last-of-type {
-        margin-right: 15px;
-      }
+      .el-scrollbar__view {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
 
-      &.active {
-        background-color: var(--tc);
-        border-color: var(--tc);
-        color: #fff;
+        .tags-view-item {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          height: 24px;
+          margin-left: 10px;
+          padding: 0 30px;
+          cursor: pointer;
+          border-radius: 3px;
+          background-color: var(--bg-topTag);
+          border: 1px solid var(--bcs);
+          color: var(--fcpl);
+          font-size: 12px;
+          text-decoration: none;
 
-        // &::before {
-        //   content: "";
-        //   background: #fff;
-        //   display: inline-block;
-        //   width: 8px;
-        //   height: 8px;
-        //   border-radius: 50%;
-        //   position: relative;
-        //   margin-right: 5px;
-        // }
-      }
+          &:first-of-type {
+            margin-left: 15px;
+          }
 
-      span {
-        position: absolute;
-        right: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-        height: 12px;
+          &:last-of-type {
+            margin-right: 15px;
+          }
 
-        svg {
-          vertical-align: baseline !important;
+          &.active {
+            background-color: var(--tc);
+            border-color: var(--tc);
+            color: #fff;
+
+            .tag-close {
+              color: #fff;
+            }
+          }
+
+          &:has(.tag-close) {
+            padding: 0 30px 0 20px;
+          }
+
+          .tag-title {
+            font-size: 12px;
+          }
+
+          .tag-close {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1em;
+            height: 1em;
+            color: var(--fcs);
+
+            &:hover {
+              scale: 1.1;
+            }
+          }
         }
       }
     }
   }
 
   .contextmenu {
-    margin: 0;
-    background: #fff;
-    z-index: 3000;
     position: absolute;
-    list-style-type: none;
+    margin: 0;
     padding: 5px 0;
+    background: var(--bg-inner-primary);
+    z-index: 3000;
+    list-style-type: none;
     border-radius: 4px;
+    color: var(--fcs);
     font-size: 12px;
     font-weight: 400;
-    color: #333;
     box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
 
     li {
+      display: flex;
+      align-items: center;
+      height: 30px;
       margin: 0;
-      padding: 7px 16px;
+      padding: 0 15px;
+      font-size: 12px;
       cursor: pointer;
 
+      .operate-text {
+        font-size: 12px;
+      }
+
+      svg {
+        margin-right: 5px;
+      }
+
       &:hover {
-        background: #eee;
+        background: var(--bg-hover);
       }
     }
   }
