@@ -1,5 +1,6 @@
 <template>
   <div class="basic-echart-vue y-scroll">
+    <!-- 折线图，柱状图，折线柱状图，扇形图，雷达图，风向玫瑰图，扇形进度图（），仪表图，水球图 -->
     <div class="echart-card line">
       <line-echart></line-echart>
     </div>
@@ -9,23 +10,20 @@
     <div class="echart-card line-bar">
       <line-bar-echart></line-bar-echart>
     </div>
-    <div class="echart-card test">
-      <test-echart></test-echart>
-    </div>
     <div class="echart-card pie">
-      <!-- <pie-echart></pie-echart> -->
+      <pie-echart></pie-echart>
     </div>
     <div class="echart-card radar">
-      <!-- <radar-echart></radar-echart> -->
-    </div>
-    <div class="echart-card rose">
-      <!-- <wind-rose-echart></wind-rose-echart> -->
+      <radar-echart></radar-echart>
     </div>
     <div class="echart-card liquid">
       <!-- <liquid-echart></liquid-echart> -->
     </div>
     <div class="echart-card gauge">
       <!-- <dashbord-echart></dashbord-echart> -->
+    </div>
+    <div class="echart-card rose">
+      <!-- <wind-rose-echart></wind-rose-echart> -->
     </div>
   </div>
 </template>
@@ -34,7 +32,6 @@
 import LineEchart from './components/line'
 import BarEchart from './components/bar'
 import LineBarEchart from './components/line-bar'
-import TestEchart from './components/test'
 import PieEchart from './components/pie'
 import RadarEchart from './components/radar'
 import LiquidEchart from './components/liquid'

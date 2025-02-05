@@ -60,17 +60,33 @@ function echartDataGet() {
     try {
       const data = {
         '济南': [
-          { time: '2024-01-01 12:00:00', temperature: 1, rain: 10, windDirection: 350, windSpeed: 4, humidity: 70, pressure: 1030, },
-          { time: '2024-04-01 12:00:00', temperature: 10, rain: 30, windDirection: 220, windSpeed: 3, humidity: 50, pressure: 1015, },
-          { time: '2024-07-01 12:00:00', temperature: 25, rain: 120, windDirection: 150, windSpeed: 2, humidity: 80, pressure: 1010, },
-          { time: '2024-10-01 12:00:00', temperature: 15, rain: 40, windDirection: 300, windSpeed: 4, humidity: 60, pressure: 1025, },
+          { time: '2024-01-01 12:00:00', temperature: -2, rain: 5, windDirection: 350, windSpeed: 4, humidity: 60, pressure: 1030, },
+          { time: '2024-02-01 12:00:00', temperature: 1, rain: 10, windDirection: 350, windSpeed: 4, humidity: 65, pressure: 1030, },
+          { time: '2024-03-01 12:00:00', temperature: 8, rain: 20, windDirection: 350, windSpeed: 4, humidity: 70, pressure: 1025, },
+          { time: '2024-04-01 12:00:00', temperature: 15, rain: 30, windDirection: 220, windSpeed: 3, humidity: 60, pressure: 1015, },
+          { time: '2024-05-01 12:00:00', temperature: 22, rain: 40, windDirection: 220, windSpeed: 3, humidity: 55, pressure: 1010, },
+          { time: '2024-06-01 12:00:00', temperature: 28, rain: 80, windDirection: 220, windSpeed: 3, humidity: 65, pressure: 1005, },
+          { time: '2024-07-01 12:00:00', temperature: 30, rain: 150, windDirection: 150, windSpeed: 2, humidity: 75, pressure: 1000, },
+          { time: '2024-08-01 12:00:00', temperature: 29, rain: 140, windDirection: 150, windSpeed: 2, humidity: 80, pressure: 1005, },
+          { time: '2024-09-01 12:00:00', temperature: 25, rain: 60, windDirection: 150, windSpeed: 2, humidity: 70, pressure: 1010, },
+          { time: '2024-10-01 12:00:00', temperature: 18, rain: 30, windDirection: 300, windSpeed: 4, humidity: 65, pressure: 1015, },
+          { time: '2024-11-01 12:00:00', temperature: 10, rain: 20, windDirection: 300, windSpeed: 4, humidity: 60, pressure: 1020, },
+          { time: '2024-12-01 12:00:00', temperature: 2, rain: 10, windDirection: 300, windSpeed: 4, humidity: 55, pressure: 1025, },
         ],
         '青岛': [
-          { time: '2024-01-01 12:00:00', temperature: 5, rain: 20, windDirection: 320, windSpeed: 5, humidity: 70, pressure: 1020, },
-          { time: '2024-04-01 12:00:00', temperature: 15, rain: 40, windDirection: 210, windSpeed: 4, humidity: 75, pressure: 1015, },
-          { time: '2024-07-01 12:00:00', temperature: 22, rain: 180, windDirection: 180, windSpeed: 3, humidity: 85, pressure: 1010, },
-          { time: '2024-10-01 12:00:00', temperature: 16, rain: 50, windDirection: 310, windSpeed: 4, humidity: 70, pressure: 1020, },
-        ],
+          { time: '2024-01-01 12:00:00', temperature: 2, rain: 10, windDirection: 320, windSpeed: 5, humidity: 65, pressure: 1020, },
+          { time: '2024-02-01 12:00:00', temperature: 4, rain: 15, windDirection: 320, windSpeed: 5, humidity: 70, pressure: 1020, },
+          { time: '2024-03-01 12:00:00', temperature: 8, rain: 25, windDirection: 320, windSpeed: 5, humidity: 75, pressure: 1015, },
+          { time: '2024-04-01 12:00:00', temperature: 13, rain: 40, windDirection: 210, windSpeed: 4, humidity: 80, pressure: 1015, },
+          { time: '2024-05-01 12:00:00', temperature: 18, rain: 50, windDirection: 210, windSpeed: 4, humidity: 80, pressure: 1010, },
+          { time: '2024-06-01 12:00:00', temperature: 22, rain: 80, windDirection: 210, windSpeed: 4, humidity: 85, pressure: 1005, },
+          { time: '2024-07-01 12:00:00', temperature: 25, rain: 150, windDirection: 180, windSpeed: 3, humidity: 90, pressure: 1000, },
+          { time: '2024-08-01 12:00:00', temperature: 26, rain: 140, windDirection: 180, windSpeed: 3, humidity: 90, pressure: 1005, },
+          { time: '2024-09-01 12:00:00', temperature: 23, rain: 70, windDirection: 180, windSpeed: 3, humidity: 85, pressure: 1010, },
+          { time: '2024-10-01 12:00:00', temperature: 18, rain: 40, windDirection: 310, windSpeed: 4, humidity: 80, pressure: 1015, },
+          { time: '2024-11-01 12:00:00', temperature: 12, rain: 30, windDirection: 310, windSpeed: 4, humidity: 75, pressure: 1020, },
+          { time: '2024-12-01 12:00:00', temperature: 5, rain: 20, windDirection: 310, windSpeed: 4, humidity: 70, pressure: 1020, },
+        ]
       }
       resolve({ code: 200, data: data, msg: '请求成功！' })
     } catch {

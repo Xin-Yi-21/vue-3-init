@@ -1,12 +1,13 @@
 <template>
-  <div class="line-bar-echart-vue">
-    <div id="line-bar-echart"> </div>
+  <div class="test-echart-vue">
+    <c-echart :eId="echartInfo.id" :eInfo="echartInfo" :eInfoFs="echartInfoFs" @refresh="nextTick(() => { initEchart() })"></c-echart>
   </div>
 </template>
 
 <script setup>
 // # 一、综合
 import useSettingStore from '@/store/system/setting'
+import { nextTick, onMounted } from 'vue'
 const settingStore = useSettingStore()
 const { proxy } = getCurrentInstance()
 // ^
@@ -44,7 +45,8 @@ function init() {
 // ^
 // # 1、获取echart数据
 const apiData = ref({})
-const echartInfo = ref({ id: 'line-bar-echart', exportFileName: '折线-柱状' })
+const echartInfo = ref({ id: 'custom-echart', exportFileName: '折线-柱状' })
+const echartInfoFs = ref({ id: 'custom-echart-fs', exportFileName: '折线-柱状' })
 async function getEchartInfo() {
   const res = await echartDataGet()
   apiData.value = res.data || {}
@@ -69,12 +71,15 @@ function handleEchartInfo() {
     }
   })
   // 处理表格数据
-  let ltField = 'time'
+  let ltField = '时间'
+  let fieldList = [ltField, ...chart.lData]
   chart.tableData = proxy.$completeEchartTableData(newApiData, (rowItem, matchData, k) => {
     factor.forEach(item => { rowItem[k + (item.name && '-' + item.name)] = matchData[item.field] })
   }, 'time', ltField)
+  chart.tableHeader = fieldList.map(item => { return item = { label: item, field: item } })
+
   // 处理dataset数据
-  chart.datasetObj = { dimensions: [ltField, ...chart.lData], source: JSON.parse(JSON.stringify(chart.tableData)) }
+  chart.datasetObj = { dimensions: fieldList, source: JSON.parse(JSON.stringify(chart.tableData)) }
   chart.datasetArr = { source: proxy.$transformEchartDataset(chart.datasetObj.source) }
   // 定制系列样式
   let lineSeriesOption = proxy.$getLineEchartOption(settingStore, echartInfo, 'include', ['series'])?.series[0] || {}
@@ -90,7 +95,7 @@ function handleEchartInfo() {
   })
   // 全局赋值
   echartInfo.value = Object.assign({}, echartInfo.value, chart)
-  // console.log('查echartInfo', echartInfo.value)
+  echartInfoFs.value = Object.assign({}, echartInfoFs.value, chart)
   nextTick(() => { initEchart() })
 }
 // ^
@@ -105,24 +110,23 @@ function initEchart() {
     series: echartInfo.value.sData,
   }
   let option = proxy.$merge({}, lineOption, addOption)
+
+  echartInfoFs.value.option = proxy.$merge({}, option)
   proxy.$initEchart(echartInfo, option)
-}
-// ^
-// # 4、导出echart
-function handleExportEchart() {
-  let exportFileName = '折线-柱状图'
-  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
 }
 // ^
 // ^
 
 // # 三、生命周期
-init()
+onMounted(() => {
+  init()
+})
 const timer = ref(null)
 timer.value = setInterval(() => { init() }, 60000)
 onBeforeUnmount(() => {
   clearInterval(timer.value)
   proxy.$destroyEchart(echartInfo)
+  proxy.$destroyEchart(echartInfoFs)
 })
 watch(() => settingStore.themeStyle, (nv, ov) => {
   nextTick(() => { initEchart() })
@@ -131,14 +135,22 @@ watch(() => settingStore.themeStyle, (nv, ov) => {
 </script>
 
 <style lang="scss" scoped>
-.line-bar-echart-vue {
+.test-echart-vue {
   position: relative;
   width: 100%;
   height: 100%;
   background-color: var(--bg-card);
   color: var(--fcp);
 
-  #line-bar-echart {
+  .echart-export {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-weight: 700;
+    z-index: 9;
+  }
+
+  #test-echart {
     width: 100%;
     height: 100%;
   }
