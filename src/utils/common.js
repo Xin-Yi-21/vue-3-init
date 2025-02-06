@@ -7,6 +7,7 @@ export function $getEnumsLabel(enumsList, value, labelField, valueField,) {
   let label = matchItem ? (labelField ? matchItem[labelField] : matchItem.label) : ''
   return label
 }
+
 // 多个枚举匹配中文
 export function $getEnumsLabelList(enumsList, valueList, labelField, valueField,) {
   let labelList = JSON.parse(JSON.stringify(valueList))
@@ -15,6 +16,7 @@ export function $getEnumsLabelList(enumsList, valueList, labelField, valueField,
   })
   return labelList
 }
+
 // 防抖
 export function $debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result
@@ -46,6 +48,7 @@ export function $debounce(func, wait, immediate) {
     return result
   }
 }
+
 // 节流
 export function $throttle(func, wait, immediate) {
   let timeout
@@ -60,6 +63,7 @@ export function $throttle(func, wait, immediate) {
     }
   }
 }
+
 // 深拷贝
 export function $deepClone(source) {
   if (!source && typeof source !== 'object') {
@@ -75,6 +79,7 @@ export function $deepClone(source) {
   })
   return targetObj
 }
+
 // // 加载
 // let loading
 // export function $loadingStart(dom, text) {
@@ -89,68 +94,6 @@ export function $deepClone(source) {
 // export function $loadingEnd() {
 //   loading.close()
 // }
-// // 导出表格
-// export function $getTableHeaderLRVByGlobal() {
-//   this.tableHeaderLRV = {}
-//   this.$refs.table.$children.forEach(item => {
-//     if (item.label != undefined && item.prop != undefined) {
-//       let columnChild = { [item.label]: item.prop }
-//       Object.assign(this.tableHeaderLRV, columnChild)
-//     }
-//   })
-// }
-// // tableData：要导出的查询表格数据
-// // tableHeaderLRV：表头的label和prop对应关系，建议设置el-table的ref属性和el-table-column的prop属性来动态获取
-// // fileName：导出的文件名
-// // handleSpecialProp：特殊列的数据展示处理
-// export function $exportTable(tableData, tableHeaderLRV, fileName, handleSpecialProp) {
-//   // 表格数据
-//   let exportTableData = []
-//   tableData.forEach((item, index) => {
-//     let rowArr = []
-//     for (var label in tableHeaderLRV) {
-//       let prop = tableHeaderLRV[label]
-//       let rowcol = item[prop]
-//       if (handleSpecialProp) { rowcol = handleSpecialProp(prop, item, index) }
-//       rowArr.push(rowcol)
-//     }
-//     exportTableData.push(rowArr)
-//   })
-//   // 表头中文
-//   let tableHeaderCnList = []
-//   for (var k in this.tableHeaderLRV) { tableHeaderCnList.push(k) }
-//   import('@/utils/exportExcel').then(excel => {
-//     excel.export_json_to_excel({
-//       header: tableHeaderCnList,
-//       data: exportTableData,
-//       filename: fileName,
-//       autoWidth: true,
-//       bookType: 'xlsx'
-//     })
-//   })
-// }
-
-// import FileSaver from "file-saver"
-// import * as XLSX from "xlsx"
-// export function $exportDomTable(domId, fileName, deleteIndexArr) {
-//   let xlsxParam = { raw: true }
-//   let wb = XLSX.utils.table_to_book(document.querySelector('#' + domId), xlsxParam)
-//   if (deleteIndexArr && deleteIndexArr.length > 0) {
-//     deleteIndexArr.forEach((item, index) => {
-//       wb.Sheets.Sheet1['!cols'][item] = { hidden: true }
-//     })
-//   }
-//   let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
-//   try {
-//     FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName + '.xlsx')
-//   } catch (e) {
-//     if (typeof console !== 'undefined') console.log(e, wbout)
-//   }
-//   this.isDownloading = false
-//   return wbout
-// }
-
-
 
 // 数组去重
 export function $uniqueArray(arr, key) {
@@ -231,4 +174,29 @@ export function $accurate(num, precision = 0, isAllPrecision = false) {
 // 判断是否有值
 export function $hasValue(value) {
   return (value !== undefined && value !== null && value !== '')
+}
+
+// 导出dom为图片
+export function exportDomToImage(domElement, config = {}) {
+  // 设置默认配置
+  const options = Object.assign({
+    filename: 'image.png', // 默认导出名称
+    imageFormat: 'png'     // 默认导出为 PNG 格式
+  }, config);
+
+  // 使用 html2canvas 将 DOM 元素渲染为 Canvas
+  html2canvas(domElement).then(function (canvas) {
+    // 将 Canvas 转换为指定格式的图片数据
+    const imgData = canvas.toDataURL(`image/${options.imageFormat}`);
+
+    // 创建一个下载链接
+    const link = document.createElement('a');
+    link.href = imgData;
+    link.download = options.filename; // 使用提供的文件名
+
+    // 触发下载
+    link.click();
+  }).catch(function (error) {
+    console.error('Error while rendering the DOM element to image:', error);
+  });
 }

@@ -16,15 +16,19 @@
     <div class="echart-card radar">
       <radar-echart></radar-echart>
     </div>
+    <div class="echart-card rose">
+      <wind-rose-echart></wind-rose-echart>
+    </div>
     <div class="echart-card liquid">
-      <!-- <liquid-echart></liquid-echart> -->
+      <liquid-echart></liquid-echart>
     </div>
     <div class="echart-card gauge">
-      <!-- <dashbord-echart></dashbord-echart> -->
+      <dashbord-echart></dashbord-echart>
     </div>
-    <div class="echart-card rose">
-      <!-- <wind-rose-echart></wind-rose-echart> -->
+    <div class="echart-card progress">
+      <progress-echart></progress-echart>
     </div>
+
   </div>
 </template>
 
@@ -34,9 +38,11 @@ import BarEchart from './components/bar'
 import LineBarEchart from './components/line-bar'
 import PieEchart from './components/pie'
 import RadarEchart from './components/radar'
+import WindRoseEchart from './components/wind-rose'
 import LiquidEchart from './components/liquid'
 import DashbordEchart from './components/dashbord'
-import WindRoseEchart from './components/wind-rose'
+import ProgressEchart from './components/progress'
+
 </script>
 
 <style lang="scss" scoped>

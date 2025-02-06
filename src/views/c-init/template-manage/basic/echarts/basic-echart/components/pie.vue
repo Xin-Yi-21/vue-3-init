@@ -1,7 +1,7 @@
 <template>
   <div class="pie-vue">
     <c-icon class="echart-export" i="c-download" tip="导出图片" size="20" cursor="pointer" :color="settingStore.themeColor" :hoverColor="settingStore.themeColor" showType="el" @click="handleExportEchart()"></c-icon>
-    <div id="pie-echart"> </div>
+    <div :id="echartInfo.id"> </div>
     <div class="part-title-container">
       <span class="part-title" v-for="(item, index) in echartInfo.lData">{{ item }}今日天气</span>
     </div>
@@ -15,8 +15,6 @@ import useSettingStore from '@/store/system/setting'
 const settingStore = useSettingStore()
 const { proxy } = getCurrentInstance()
 // ^
-
-
 // # 二、模块功能
 // # 模拟api
 function echartDataGet() {
@@ -134,7 +132,7 @@ function initEchart() {
 // ^
 // # 4、导出echart
 function handleExportEchart() {
-  let exportFileName = '雷达图'
+  let exportFileName = '扇形图'
   proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
 }
 // ^

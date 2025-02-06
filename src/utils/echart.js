@@ -29,7 +29,6 @@ export function $transformEchartDataset(data) {
   return [header, ...dataRows]
 }
 
-
 // 容器大小变化监听
 export function $newResizeObserver(fn = () => { }, isFirstResize = true) {
   return new ResizeObserver(() => {
@@ -82,7 +81,6 @@ export function $exportEchartImage(chartObject, options) {
   URL.revokeObjectURL(a.href)
   document.body.removeChild(a)
 }
-
 
 // echart数据补全（xyData版本，考虑弃用）
 export function $completeEchartXY(chart) {
@@ -152,6 +150,7 @@ export function $getSeriesEchartColor(settingStore, echartInfo, showType, operat
   let res = ['#467FD3 ', '#6C3FD3', '#2BC6D1', '#38D95B', '#089F00', '#D2D218', '#E98726', '#D64633', '#B02F7D']
   return res
 }
+
 // 折线图配置 echart-line-option
 export function $getLineEchartOption(settingStore, echartInfo, showType, operateList) {
   let option = {
@@ -229,6 +228,7 @@ export function $getLineEchartOption(settingStore, echartInfo, showType, operate
   let res = filterOption(option, showType, operateList)
   return res
 }
+
 // 柱状图配置 echart-bar-option
 export function $getBarEchartOption(settingStore, echartInfo, showType, operateList) {
   let option = {
@@ -306,6 +306,8 @@ export function $getBarEchartOption(settingStore, echartInfo, showType, operateL
   let res = filterOption(option, showType, operateList)
   return res
 }
+
+// 缩放配置 echart-dataZoom-option
 export function $getDataZoomEchartOption(settingStore, echartInfo, showType, operateList) {
   let option = {
     grid: { bottom: 40, },
@@ -329,6 +331,7 @@ export function $getDataZoomEchartOption(settingStore, echartInfo, showType, ope
   let res = filterOption(option, showType, operateList)
   return res
 }
+
 // 筛选option
 export function filterOption(option, showType, operateList) {
   if (!showType) { return option }

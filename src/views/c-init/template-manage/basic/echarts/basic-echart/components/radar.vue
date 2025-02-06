@@ -1,7 +1,7 @@
 <template>
   <div class="radar-vue">
     <c-icon class="echart-export" i="c-download" tip="导出图片" size="20" cursor="pointer" :color="settingStore.themeColor" :hoverColor="settingStore.themeColor" showType="el" @click="handleExportEchart()"></c-icon>
-    <div id="radar-echart"> </div>
+    <div :id="echartInfo.id"> </div>
   </div>
 </template>
 
