@@ -1,5 +1,5 @@
 <template>
-  <el-pagination class="c-pagination" @size-change="handleChangePageSize" @current-change="handleChangePageNum" :current-page.sync="pageNum" :page-size.sync="pageSize" :page-sizes="pageSizeList" :layout="layout" :total="total" background prev-text="上一页" next-text="下一页">
+  <el-pagination class="c-pagination" @size-change="handleChangePageSize" @current-change="handleChangePageNum" v-model:current-page="pageNum" v-model:page-size="pageSize" :page-sizes="pageSizeList" :layout="layout" :total="total" background prev-text="上一页" next-text="下一页">
   </el-pagination>
 </template>
 
@@ -48,6 +48,7 @@ function handleChangePageNum(pageNum) {
   margin: 10px 20px;
   padding: 0;
   text-align: right;
+  margin-left: auto;
   // background-color: red;
 
   * {

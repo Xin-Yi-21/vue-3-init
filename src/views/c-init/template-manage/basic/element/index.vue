@@ -48,6 +48,16 @@
       </c-card-header>
 
       <el-table :data="tableData" border class="c-table" stripe v-animation="{ class: 'c-a-fade-in', isRefresh: !isLoading, timeout: 1000 }">
+        <el-table-column label="" align="center" width="150">
+          <template #header>
+            <c-icon i="c-select-page" tip="全选本页" showType="el" cursor="pointer" style="margin:0 7px;" @click="handleSelectPage"></c-icon>
+            <c-icon i="c-select-all" tip="全选全部" showType="el" cursor="pointer" style="margin:0 7px;" @click="handleSelectAll"></c-icon>
+            <c-icon i="c-select-clear" tip="取消选择" showType="el" cursor="pointer" style="margin:0 7px;" @click="handleSelectClear"></c-icon>
+          </template>
+          <template #default="scope">
+            <el-checkbox v-model="scope.row.isChecked" @change="handleSelectChange(scope.row)"></el-checkbox>
+          </template>
+        </el-table-column>
         <el-table-column label="人物" prop="" align="center">
           <template #default="scope"> {{ scope.row.personName }} </template>
         </el-table-column>
@@ -60,6 +70,11 @@
         <el-table-column label="角色" prop="" align="center">
           <template #default="scope">
             <c-tooltip :content="scope.row.role">{{ scope.row.role }}</c-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column label="人物介绍" prop="" align="center">
+          <template #default="scope">
+            <c-tooltip :content="scope.row.introduction">{{ scope.row.introduction }}</c-tooltip>
           </template>
         </el-table-column>
         <el-table-column label="操作" prop="" align="center">
@@ -75,7 +90,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <c-pagination :currentPageNum.sync="form.currentPageNum" :currentPageSize.sync="form.currentPageSize" :total="tableTotal" @getTable="getTableData"></c-pagination>
+      <div class="c-bottom-tool">
+        <c-button type="primary" height="30">已选择数据： {{ selectedRows.length }}</c-button>
+        <c-button type="primary" height="30">批量确认</c-button>
+        <c-pagination v-model:currentPageNum="form.currentPageNum" v-model:currentPageSize="form.currentPageSize" :total="tableTotal" @getTable="getTableData('byPagination')"></c-pagination>
+      </div>
     </div>
     <Operate v-if="operateDialog.visible" :operate="operateDialog.operate" :info="operateDialog.info" @close="operateDialog.visible = false" @refresh="getTableData"></Operate>
   </div>
@@ -85,6 +104,9 @@
 // # 一、综合
 import Operate from './components/operate.vue'
 import useEnumsStore from '@/store/project/enums'
+import useSettingStore from '@/store/system/setting'
+const settingStore = useSettingStore()
+
 const props = defineProps({
   currentNav: { type: String, default: '' }
 })
@@ -124,23 +146,34 @@ function setDefaultParams() {
 // # (3) 获取表格数据 
 import { personGet } from '@/api/project/project.js'
 const tableData = ref([])
-const tableTotal = ref(1000)
+const tableAllData = ref([])
+const tableTotal = ref(0)
 const isLoading = ref(false)
-async function getTableData() {
+const recentParams = ref(null)
+async function getTableData(type) {
   isLoading.value = true
   let params = {
     gender: form.value.gender,
     name: form.value.name,
+    currentPageNum: form.value.currentPageNum,
+    currentPageSize: form.value.currentPageSize,
   }
   const res = await personGet(params)
+  recentParams.value = params
+  tableTotal.value = res.total
   setTimeout(() => { isLoading.value = false }, 200)
   let newTableData = res.data || []
   newTableData.map(item => {
-    item.role = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
     item.genderName = proxy.$getEnumsLabel(useEnumsStore().allEnums.gender, item.gender)
   })
-  for (var i = 0; i < 3; i++) { newTableData.push(...newTableData) }
-  tableData.value = newTableData || []
+  tableData.value = newTableData
+
+  // 以下代码为批量选择相关
+  if (type != 'byPagination') {
+    getTableAllData()
+    selectedRows.value = []
+  }
+  renderCheckbox()
 }
 // ^
 // ^
@@ -208,6 +241,66 @@ function handleDelete(rowInfo) {
     //   proxy.$message.success('删除人物成功！')
     // })
   }).catch()
+}
+// ^
+// ^
+// # 6、选择
+const selectedRows = ref([])
+const rowKey = 'personId'
+// # (1) 获取全部数据
+async function getTableAllData() {
+  let params = Object.assign({}, recentParams.value, { currentPageNum: 1, currentPageSize: 999999999 })
+  const res = await personGet(params)
+  let newTableAllData = res.data || []
+  tableAllData.value = newTableAllData
+}
+// ^
+// # (2) 跨页数据选择回显
+function renderCheckbox() {
+  tableData.value.forEach(item1 => {
+    let matchItem = selectedRows.value.filter(item2 => item1[rowKey] === item2[rowKey])
+    if (matchItem.length > 0) {
+      item1.isChecked = true
+      // this.$set(item1, 'isChecked', true)
+    } else {
+      item1.isChecked = false
+      // this.$set(item1, 'isChecked', false)
+    }
+  })
+}
+// ^
+// # (3) 选择变换
+function handleSelectChange(row) {
+  if (!row.isChecked) {
+    selectedRows.value = selectedRows.value.filter(item => item[rowKey] !== row[rowKey])
+  } else {
+    selectedRows.value.push(row)
+  }
+  console.log('查选择变换 selectedRows.value', selectedRows.value)
+}
+// ^
+// # (4) 全选本页
+function handleSelectPage() {
+  const ids = selectedRows.value.map(item => item[rowKey])
+  tableData.value.forEach(item1 => {
+    if (!ids.includes(item1[rowKey])) {
+      selectedRows.value.push(item1)
+    }
+  })
+  renderCheckbox()
+}
+// ^
+// # (5) 全选全部
+function handleSelectAll() {
+  // this.$set(this, 'selectedRows', this.tableAllData)
+  selectedRows.value = tableAllData.value
+  renderCheckbox()
+}
+// ^
+// # (6) 清除选择
+function handleSelectClear() {
+  selectedRows.value = []
+  renderCheckbox()
 }
 // ^
 // ^
