@@ -1,10 +1,42 @@
 import request from '@/utils/request'
 
 export function roleGet(params) {
-  return request({
-    url: '/',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    try {
+      const data = [
+        { label: '管理员', value: 'admin' },
+        { label: '编辑者', value: 'editor' },
+        { label: '普通用户', value: 'user' },
+        { label: '访客', value: 'guest' },
+      ]
+      resolve({ code: 200, data: data, msg: '请求成功！' })
+    } catch {
+      reject({ code: 500, data: [], msg: '请求失败！' })
+    }
+  })
+}
+
+export function monthGet(params) {
+  return new Promise((resolve, reject) => {
+    try {
+      const data = [
+        { label: '1', value: '01' },
+        { label: '2', value: '02' },
+        { label: '3', value: '03' },
+        { label: '4', value: '04' },
+        { label: '5', value: '05' },
+        { label: '6', value: '06' },
+        { label: '7', value: '07' },
+        { label: '8', value: '08' },
+        { label: '9', value: '09' },
+        { label: '10', value: '10' },
+        { label: '11', value: '11' },
+        { label: '12', value: '12' },
+      ]
+      resolve({ code: 200, data: data, msg: '请求成功！' })
+    } catch {
+      reject({ code: 500, data: [], msg: '请求失败！' })
+    }
   })
 }
 
