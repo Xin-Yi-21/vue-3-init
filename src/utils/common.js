@@ -200,3 +200,67 @@ export function exportDomToImage(domElement, config = {}) {
     console.error('Error while rendering the DOM element to image:', error);
   });
 }
+
+// 导出表格
+import ExcelJS from 'exceljs'
+import { ElMessage, } from 'element-plus'
+export async function $exportExcel(tableData, { tableName = '表格', tableHeader = {}, isDownLoading, isTip = true } = {}) {
+  try {
+    if (isDownLoading) { isDownLoading.value = true }
+    // 无数据
+    if (!tableData || tableData.length === 0) return ElMessage.warning('暂无数据可供导出！')
+    // 表头配置
+    tableHeader.columnList = tableHeader.columnList || Object.keys(tableData[0]).map(field => ({ 'name': field, 'field': field })) || []
+    tableHeader.matchField = tableHeader.matchField || { nameField: 'name', fieldField: 'field' }
+    const { columnList: thColumnList, matchField: thMatchField } = tableHeader
+    // 创建一个工作簿和工作表
+    const workbook = new ExcelJS.Workbook()
+    const worksheet = workbook.addWorksheet('Sheet1')
+    // 设置表头
+    worksheet.columns = thColumnList.map(header => ({
+      header: header[thMatchField.nameField],
+      key: header[thMatchField.fieldField],
+      width: 15  // 默认宽度，可以稍后根据内容进行调整
+    }))
+    // 添加数据行
+    tableData.forEach(row => { worksheet.addRow(row) })
+    // 调整列宽，确保每列宽度足够容纳最长的数据内容
+    worksheet.columns.forEach((column, index) => {
+      let maxLength = 0
+      // 计算每列的最大长度
+      tableData.forEach(row => {
+        const cellValue = row[thColumnList[index][thMatchField.fieldField]]
+        maxLength = Math.max(maxLength, (cellValue ? String(cellValue).length : 0))
+      })
+      const headerLength = thColumnList[index][thMatchField.nameField].length
+      maxLength = Math.max(maxLength, headerLength)
+      // 设置列宽，+10 为了留白， 默认 10，避免过窄
+      column.width = Math.max(maxLength + 10, 10)
+    })
+    // 设置单元格对齐方式（居中）
+    worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+      row.eachCell({ includeEmpty: false }, (cell, colNumber) => {
+        cell.alignment = { horizontal: 'center', vertical: 'middle' }
+        cell.alignment.wrapText = true
+      })
+    })
+    // // 延时测试
+    // function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)) }
+    // await delay(1000)
+    // 导出文件
+    const buffer = await workbook.xlsx.writeBuffer()
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = tableName + '.xlsx'
+    link.click()
+    window.URL.revokeObjectURL(url)
+    if (isDownLoading) { isDownLoading.value = false }
+    if (isTip) { ElMessage.success('文件导出成功！') }
+  } catch (error) {
+    if (isDownLoading) { isDownLoading.value = false }
+    if (isTip) { ElMessage.error('文件导出失败！') }
+    console.log('文件导出失败error：', error)
+  }
+}

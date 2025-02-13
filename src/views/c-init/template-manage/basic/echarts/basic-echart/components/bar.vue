@@ -54,24 +54,19 @@ async function getEchartInfo() {
 // # 2、处理echart数据
 function handleEchartInfo() {
   let newApiData = JSON.parse(JSON.stringify(apiData.value || {}))
-  let chart = { lData: [], sData: [], tableData: [], color: proxy.$getSeriesEchartColor() }
-  let factor = [{ name: '', field: 'temperature', unit: '℃', type: 'bar', yAxisIndex: 0 },]
+  let chart = { lData: [], sData: [], tableData: [], tableHeader: {}, color: proxy.$getSeriesEchartColor() }
   // 获取系列
-  factor.forEach((item, index) => {
-    for (var k in newApiData) {
-      let name = k
-      let sItem = Object.assign({}, item, { name })
-      chart.lData.push(name)
-      chart.sData.push(sItem)
-    }
-  })
+  let factor = [{ name: '降水', field: 'rain', unit: 'mm', type: 'bar', yAxisIndex: 0 },]
+  let kind = [{ name: '济南', field: 'jn' }, { name: '青岛', field: 'qd' }]
+  let xHeader = { nameC: '时间', nameT: '时间', fieldT: 'time', fieldN: 'time', unit: '', }  // nameC-图表例常规名，nameT-表格列常规名，fieldT-api数据的目标字段，filedN-handle数据的新字段，unit-数据单位
+  chart.tableHeader.columnList = [xHeader]
+  proxy.$getChartsSeries(chart, newApiData, { factor, kind, sortType: 'fk' })
   // 处理表格数据
-  let ltField = 'time'
-  chart.tableData = proxy.$completeEchartTableData(newApiData, (rowItem, matchData, k) => {
-    factor.forEach(item => { rowItem[k + (item.name && '-' + item.name)] = matchData[item.field] })
-  }, 'time', ltField)
+  chart.tableData = proxy.$completeEchartTableData(newApiData, (rowItem, matchData, kindItem) => {
+    chart.tableHeader.columnList.forEach(item => { if (item.kind == kindItem) { rowItem[item.fieldN] = matchData[item.fieldT] } })
+  }, xHeader.fieldT, xHeader.filedN)
   // 处理dataset数据
-  chart.datasetObj = { dimensions: [ltField, ...chart.lData], source: JSON.parse(JSON.stringify(chart.tableData)) }
+  chart.datasetObj = { dimensions: chart.tableHeader.columnList.map(item => item.fieldN), source: JSON.parse(JSON.stringify(chart.tableData)) }
   chart.datasetArr = { source: proxy.$transformEchartDataset(chart.datasetObj.source) }
   // 定制系列样式
   let seriesOption = proxy.$getBarEchartOption(settingStore, echartInfo, 'include', ['series'])?.series[0] || {}

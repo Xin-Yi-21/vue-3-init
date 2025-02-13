@@ -9,7 +9,6 @@ export function $completeEchartTableData(data, callback = null, xFieldT = 'time'
   xData = this.$uniqueArray(xData)
   let isTimeField = xData.some(item => this.$dayjs(item).isValid())
   this.$sortArray(xData, isTimeField ? 'time' : '')
-
   xData.forEach((item1, index1) => {
     res[index1] = { [xFieldN]: item1 }
     for (var k in apiData) {
@@ -20,6 +19,51 @@ export function $completeEchartTableData(data, callback = null, xFieldT = 'time'
     }
   })
   return res || []
+}
+
+// echart 获取系列
+import { $getEnumsLabel } from './common'
+export function $getChartsSeries(chart, apiData, { factor = [], kind = [], sortType = 'fk', isTHUnit = true } = {}) {
+  if (sortType === 'fk') {
+    factor.forEach(factorItem => {
+      for (var kindItem in apiData) {
+        let kindName = $getEnumsLabel(kind, kindItem, 'name', 'name')
+        let kindField = $getEnumsLabel(kind, kindItem, 'field', 'name')
+        let thItem = {
+          nameC: factorItem.name + (kindName ? `-${kindName}` : ''),                                                // 图表例常规名
+          nameT: factorItem.name + (kindName ? `-${kindName}` : '') + (isTHUnit ? ` (${factorItem.unit})` : ''),    // 表格列常规名
+          fieldT: `${factorItem.field}`,                                                                            // api数据的目标字段
+          fieldN: factorItem.field + (kindField ? `-${kindField}` : ''),                                            // handle数据的新字段
+          unit: `${factorItem.unit}`,                                                                               // 数据单位
+          factor: factorItem,                                                                                       // 要素性质
+          kind: kindItem,                                                                                           // 种类性质
+        }
+        chart.lData.push(thItem.nameC)
+        chart.sData.push(Object.assign({}, factorItem, { name: thItem.nameC, field: thItem.fieldN }))
+        chart.tableHeader.columnList.push(thItem)
+      }
+    })
+  } else if (sortType === 'kf') {
+    for (var kindItem in apiData) {
+      let kindName = $getEnumsLabel(kind, kindItem, 'name', 'name')
+      let kindField = $getEnumsLabel(kind, kindItem, 'field', 'name')
+      factor.forEach(factorItem => {
+        let thItem = {
+          nameC: (kindName ? `${kindName}-` : '') + factorItem.name,                                                // 图表例常规名
+          nameT: (kindName ? `${kindName}-` : '') + factorItem.name + (isTHUnit ? ` (${factorItem.unit})` : ''),    // 表格列常规名
+          fieldT: `${factorItem.field}`,                                                                            // api数据的目标字段
+          fieldN: (kindField ? `${kindField}-` : '') + factorItem.field,                                            // handle数据的新字段
+          unit: `${factorItem.unit}`,                                                                               // 数据单位
+          factor: factorItem,                                                                                       // 要素性质
+          kind: kindItem,                                                                                           // 种类性质
+        }
+        chart.lData.push(thItem.nameC)
+        chart.sData.push(Object.assign({}, factorItem, { name: thItem.nameC, field: thItem.fieldN }))
+        chart.tableHeader.columnList.push(thItem)
+      })
+    }
+  }
+  chart.tableHeader.matchField = { nameField: 'nameT', fieldField: 'fieldN' }
 }
 
 // echart 数据集转换
@@ -161,6 +205,8 @@ export function $getLineEchartOption(settingStore, echartInfo, showType, operate
       trigger: 'axis',
       backgroundColor: 'rgba(255,255,255,0.55)',
       padding: [0, 0],
+      // confine: true,
+      appendTo: 'html',
       formatter: params => {
         let start = `<div class="c-echart-tooltip">
                            <div class="tooltip-title">${params[0].name}</div>
@@ -169,11 +215,12 @@ export function $getLineEchartOption(settingStore, echartInfo, showType, operate
         let content = ''
         params.forEach(item => {
           let unit = ' ' + echartInfo.value.sData?.[item.seriesIndex]?.unit
+          let field = echartInfo.value?.sData?.[item.seriesIndex]?.field || (echartInfo.value?.tableHeader?.find(tableHeaderItem => tableHeaderItem.nameN == item.seriesName))?.fieldN
           let itemData = ''
           if (Array.isArray(item.data)) {
             itemData = item.data?.[item.seriesIndex + 1] != undefined ? item.data?.[item.seriesIndex + 1] + unit : '暂无数据'
           } else {
-            itemData = item.data?.[item.seriesName] != undefined ? item.data?.[item.seriesName] + unit : '暂无数据'
+            itemData = item.data?.[field] != undefined ? item.data?.[field] + unit : '暂无数据'
           }
           let text = `<div class="content-item">
                             <div class="item-cycle" style="background: ${item.borderColor}"></div>
@@ -239,6 +286,8 @@ export function $getBarEchartOption(settingStore, echartInfo, showType, operateL
       trigger: 'axis',
       backgroundColor: 'rgba(255,255,255,0.55)',
       padding: [0, 0],
+      // confine: true,
+      appendTo: 'html',
       formatter: params => {
         let start = `<div class="c-echart-tooltip">
                            <div class="tooltip-title">${params[0].name}</div>
@@ -247,11 +296,12 @@ export function $getBarEchartOption(settingStore, echartInfo, showType, operateL
         let content = ''
         params.forEach(item => {
           let unit = ' ' + echartInfo.value.sData?.[item.seriesIndex]?.unit
+          let field = echartInfo.value?.sData?.[item.seriesIndex]?.field || (echartInfo.value?.tableHeader?.find(tableHeaderItem => tableHeaderItem.nameN == item.seriesName))?.fieldN
           let itemData = ''
           if (Array.isArray(item.data)) {
             itemData = item.data?.[item.seriesIndex + 1] != undefined ? item.data?.[item.seriesIndex + 1] + unit : '暂无数据'
           } else {
-            itemData = item.data?.[item.seriesName] != undefined ? item.data?.[item.seriesName] + unit : '暂无数据'
+            itemData = item.data?.[field] != undefined ? item.data?.[field] + unit : '暂无数据'
           }
           let text = `<div class="content-item">
                             <div class="item-cycle" style="background: ${item.borderColor}"></div>

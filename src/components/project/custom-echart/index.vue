@@ -6,7 +6,7 @@
         <c-icon v-if="tool.includes('changeView')" i="c-change-view" tip="切换视图" size="16" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleChangeView('normal')"></c-icon>
         <c-icon v-if="tool.includes('copyData')" i="c-copy-text" tip="复制数据" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleCopyData()"></c-icon>
         <c-icon v-if="tool.includes('exportImage')" i="c-export-image" tip="导出图片" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportImage()"></c-icon>
-        <c-icon v-if="tool.includes('exportExcel')" i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportExcel()"></c-icon>
+        <c-icon v-if="tool.includes('exportExcel')" i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportExcel(props.eInfo.tableData, { tableName: (props.eInfo.exportFileName || '') + '表', tableHeader: props.eInfo.tableHeader })"></c-icon>
         <c-icon v-if="tool.includes('fullScreen')" i="c-fullscreen-in" tip="开启全屏" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleFullscreenIn()"></c-icon>
       </div>
     </div>
@@ -17,10 +17,9 @@
         <c-button type="primary" height="30" @click="handleCloseTableAndRefresh('normal')">关闭并刷新</c-button>
       </div>
       <el-table :data="eInfo.tableData" border class="c-table">
-        <el-table-column :label="item.label" :prop="item.field" align="center" v-for="(item, index) in eInfo.tableHeader" :key="index" :width="item.label.includes('时间') ? '180px' : 'auto'"></el-table-column>
+        <el-table-column :label="item[props.eInfo.tableHeader?.matchField?.nameField]" :prop="item[props.eInfo.tableHeader?.matchField?.fieldField]" align="center" v-for="(item, index) in eInfo.tableHeader?.columnList" :key="index" :width="item[props.eInfo.tableHeader?.matchField?.nameField]?.includes('时间') ? '180px' : 'auto'"></el-table-column>
       </el-table>
     </div>
-
     <el-dialog class="echart-fullscreen-view c-dialog" v-model="isShowFullscreen" :modal-append-to-body="false" align-center :close-on-click-modal="false" :before-close="handleFullscreenOut">
       <div class="normal-view-fs" v-show="!isShowTable.fullscreen">
         <div :id="eId + '-fs'" class="echart-area-fs"> </div>
@@ -28,7 +27,7 @@
           <c-icon v-if="tool.includes('changeView')" i="c-change-view" tip="切换视图" size="16" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleChangeView('fullscreen')"></c-icon>
           <c-icon v-if="tool.includes('copyData')" i="c-copy-text" tip="复制数据" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleCopyData()"></c-icon>
           <c-icon v-if="tool.includes('exportImage')" i="c-export-image" tip="导出图片" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportImage()"></c-icon>
-          <c-icon v-if="tool.includes('exportExcel')" i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportExcel()"></c-icon>
+          <c-icon v-if="tool.includes('exportExcel')" i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportExcel(props.eInfo.tableData, { tableName: (props.eInfo.exportFileName || '') + '表', tableHeader: props.eInfo.tableHeader })"></c-icon>
           <c-icon v-if="tool.includes('fullScreen')" i="c-fullscreen-out" tip="退出全屏" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleFullscreenOut()"></c-icon>
         </div>
       </div>
@@ -38,7 +37,7 @@
           <c-button type="primary" height="30" @click="handleCloseTableAndRefresh('fullscreen')">关闭并刷新</c-button>
         </div>
         <el-table :data="eInfoFs.tableData" border class="c-table">
-          <el-table-column :label="item.label" :prop="item.field" align="center" v-for="(item, index) in eInfoFs.tableHeader" :key="index" :width="item.label.includes('时间') ? '200x' : 'auto'"></el-table-column>
+          <el-table-column :label="item[props.eInfoFs.tableHeader?.matchField?.nameField]" :prop="item[props.eInfoFs.tableHeader?.matchField?.fieldField]" align="center" v-for="(item, index) in eInfoFs.tableHeader?.columnList" :key="index" :width="item[props.eInfoFs.tableHeader?.matchField?.nameField]?.includes('时间') ? '200x' : 'auto'"></el-table-column>
         </el-table>
       </div>
     </el-dialog>
@@ -110,12 +109,12 @@ function handleCopyData() {
     return length
   }
   // 获取表头的字段
-  const headers = tableHeader.map(header => header.label)
-  const fields = tableHeader.map(header => header.field)
+  const headers = tableHeader.columnList.map(header => header[tableHeader.matchField.nameField] || header.nameT)
+  const fields = tableHeader.columnList.map(header => header[tableHeader.matchField.fieldField] || header.fieldN)
   // 计算每列的最大宽度（字符数）
-  const columnWidths = tableHeader.map((header, index) => {
+  const columnWidths = tableHeader.columnList.map((header, index) => {
     // 先计算表头的宽度
-    let maxLength = getCharLength(header.label)
+    let maxLength = getCharLength(header.nameT)
     // 然后计算数据行中的最大宽度
     tableData.forEach(row => {
       const field = fields[index]
@@ -157,48 +156,8 @@ function handleExportImage() {
 // # (4) 导出表格
 import ExcelJS from 'exceljs'
 import { nextTick } from 'vue'
-function handleExportExcel() {
-  const tableHeader = props.eInfo.tableHeader
-  const tableData = props.eInfo.tableData
-  // 创建一个工作簿和工作表
-  const workbook = new ExcelJS.Workbook()
-  const worksheet = workbook.addWorksheet('Sheet1')
-  // 设置表头
-  worksheet.columns = tableHeader.map(header => ({
-    header: header.label,
-    key: header.field,
-    width: 15  // 默认宽度，可以稍后根据内容进行调整
-  }))
-  // 添加数据行
-  tableData.forEach(row => { worksheet.addRow(row) })
-  // 调整列宽，确保每列宽度足够容纳最长的数据内容
-  worksheet.columns.forEach((column, index) => {
-    let maxLength = 0
-    // 计算每列的最大长度
-    tableData.forEach(row => {
-      const cellValue = row[tableHeader[index].field]
-      maxLength = Math.max(maxLength, (cellValue ? String(cellValue).length : 0))
-    })
-    // 设置列宽，考虑至少为 10，避免过窄
-    column.width = Math.max(maxLength + 2, 10) // 加上 2 是为了留白
-  })
-  // 设置单元格对齐方式（居中）
-  worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-    row.eachCell({ includeEmpty: false }, (cell, colNumber) => {
-      cell.alignment = { horizontal: 'center', vertical: 'middle' }
-    })
-  })
-  let newExportFileName = (props.eInfo.exportFileName || '') + '表'
-  // 导出文件
-  workbook.xlsx.writeBuffer().then(buffer => {
-    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const url = window.URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = newExportFileName + '.xlsx'
-    link.click()
-    window.URL.revokeObjectURL(url)
-  })
+function handleExportExcel(tableData, tableOption) {
+  proxy.$exportExcel(tableData, tableOption)
 }
 // ^
 // # (5) 开启全屏

@@ -39,9 +39,9 @@ setConfig().then(async (cEnv) => {
 
     // 全局方法
     const dayjs = (await import('dayjs')).default
-    const { $getEnumsLabel, $getEnumsLabelList, $uniqueArray, $sortArray, $accurate, $hasValue } = await import("@/utils/common.js")
+    const { $getEnumsLabel, $getEnumsLabelList, $uniqueArray, $sortArray, $accurate, $hasValue, $exportExcel } = await import("@/utils/common.js")
     const { throttle, debounce, deepClone, merge } = await import("lodash")
-    const { $completeEchartTableData, $transformEchartDataset, $newResizeObserver, $initEchart, $destroyEchart, $completeEchartXY, $exportEchartImage, $getSeriesEchartColor, $getLineEchartOption, $getBarEchartOption, $getDataZoomEchartOption } = await import("@/utils/echart.js")
+    const { $completeEchartTableData, $getChartsSeries, $transformEchartDataset, $newResizeObserver, $initEchart, $destroyEchart, $completeEchartXY, $exportEchartImage, $getSeriesEchartColor, $getLineEchartOption, $getBarEchartOption, $getDataZoomEchartOption } = await import("@/utils/echart.js")
     // 基础公共方法
     app.config.globalProperties.$dayjs = dayjs
     app.config.globalProperties.$getEnumsLabel = $getEnumsLabel
@@ -50,6 +50,7 @@ setConfig().then(async (cEnv) => {
     app.config.globalProperties.$sortArray = $sortArray
     app.config.globalProperties.$accurate = $accurate
     app.config.globalProperties.$hasValue = $hasValue
+    app.config.globalProperties.$exportExcel = $exportExcel
     // loadsh 公共方法
     app.config.globalProperties.$throttle = throttle
     app.config.globalProperties.$debounce = debounce
@@ -57,6 +58,7 @@ setConfig().then(async (cEnv) => {
     app.config.globalProperties.$merge = merge
     // echart 公共方法
     app.config.globalProperties.$completeEchartTableData = $completeEchartTableData
+    app.config.globalProperties.$getChartsSeries = $getChartsSeries
     app.config.globalProperties.$transformEchartDataset = $transformEchartDataset
     app.config.globalProperties.$newResizeObserver = $newResizeObserver
     app.config.globalProperties.$initEchart = $initEchart

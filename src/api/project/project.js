@@ -45,7 +45,7 @@ export const personGet = (params) => {
   return new Promise((resolve, reject) => {
     try {
       const data = [
-        { personName: '工藤新一', personId: 1, gender: 'male', age: 17, role: '侦探', introduction: '工藤新一是一名天才高中侦探，凭借其出色的推理能力，成功解决了大量案件。在一次案件调查过程中，他被毒药“APTX 4869”毒死，身体缩小成小孩，化名为柯南，继续以小学生身份解决犯罪案件，寻找恢复原状的方法。' },
+        { personName: '工藤新一', personId: 1, gender: 'male', age: 17, role: '侦探', introduction: '工藤新一是一名天才高中侦探，凭借其出色的推理能力，成功解决了大量案件。在一次案件调查过程中，他被使用了毒药“APTX 4869”，身体缩小成小孩，化名为柯南，继续以小学生身份解决犯罪案件，寻找恢复原状的方法。' },
         { personName: '毛利兰', personId: 2, gender: 'female', age: 17, role: '高中生', introduction: '毛利兰是工藤新一的青梅竹马，武术高手。她是新一的亲密伙伴，常常帮助柯南解决案件。尽管她不知道新一的真正身份，但她深信新一依然活着，并时刻为他着急。' },
         { personName: '怪盗基德', personId: 3, gender: 'male', age: 17, role: '怪盗', introduction: '怪盗基德是传说中的怪盗，他的目标是盗取世界上最珍贵的宝物。他巧妙的计划和高超的技艺使得他几乎不被抓住，然而，他与侦探工藤新一之间形成了奇妙的对手关系，两人一直在博弈。' },
         { personName: '中森青子', personId: 4, gender: 'female', age: 17, role: '高中生', introduction: '中森青子是一个独立的高中生，同时也是警察局局长的女儿。她对柯南有着好感，并且在柯南解决案件时提供了很多帮助。青子的人物性格坚强果敢，她多次协助警方破解案件。' },

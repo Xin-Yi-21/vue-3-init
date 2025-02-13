@@ -253,67 +253,17 @@ function handleDelete(rowInfo) {
 const isDownLoading = ref(false)
 function handleExport() {
   if (selectedRows.value.length === 0) return proxy.$modal.msgWarning('请选择数据进行导出！')
-  let tableHeader = [
-    { label: '人物', field: 'personName' },
-    { label: '性别', field: 'genderName' },
-    { label: '年龄', field: 'age' },
-    { label: '角色', field: 'role' },
-    { label: '人物介绍', field: 'introduction' },
-  ]
-  console.log('查selectedRows', selectedRows)
-  handleExportExcel(selectedRows.value, '表格', tableHeader)
-
-  isDownLoading.value = true
-  setTimeout(() => { isDownLoading.value = false }, 200)
-}
-
-import ExcelJS from 'exceljs'
-function handleExportExcel(tableData, tableName = '表格', tableHeader) {
-  if (!tableHeader || tableHeader.length === 0) {
-    tableHeader = Object.keys(tableData[0]).map(field => ({
-      label: field,
-      field: field
-    }))
+  let tableHeader = {
+    columnList: [
+      { name: '人物', field: 'personName' },
+      { name: '性别', field: 'genderName' },
+      { name: '年龄', field: 'age' },
+      { name: '角色', field: 'role' },
+      { name: '人物介绍', field: 'introduction' },
+    ],
+    matchFiled: { nameField: 'name', fieldField: 'field' }
   }
-  // 创建一个工作簿和工作表
-  const workbook = new ExcelJS.Workbook()
-  const worksheet = workbook.addWorksheet('Sheet1')
-  // 设置表头
-  worksheet.columns = tableHeader.map(header => ({
-    header: header.label,
-    key: header.field,
-    width: 15  // 默认宽度，可以稍后根据内容进行调整
-  }))
-  // 添加数据行
-  tableData.forEach(row => { worksheet.addRow(row) })
-  // 调整列宽，确保每列宽度足够容纳最长的数据内容
-  worksheet.columns.forEach((column, index) => {
-    let maxLength = 0
-    // 计算每列的最大长度
-    tableData.forEach(row => {
-      const cellValue = row[tableHeader[index].field]
-      maxLength = Math.max(maxLength, (cellValue ? String(cellValue).length : 0))
-    })
-    // 设置列宽，考虑至少为 10，避免过窄
-    column.width = Math.max(maxLength + 2, 10) // 加上 2 是为了留白
-  })
-  // 设置单元格对齐方式（居中）
-  worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-    row.eachCell({ includeEmpty: false }, (cell, colNumber) => {
-      cell.alignment = { horizontal: 'center', vertical: 'middle' }
-      cell.alignment.wrapText = true
-    })
-  })
-  // 导出文件
-  workbook.xlsx.writeBuffer().then(buffer => {
-    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const url = window.URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = tableName + '.xlsx'
-    link.click()
-    window.URL.revokeObjectURL(url)
-  })
+  proxy.$exportExcel(selectedRows.value, { tableName: '表格', tableHeader, isDownLoading, })
 }
 // ^
 // # 7、选择
