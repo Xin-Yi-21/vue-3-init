@@ -45,6 +45,23 @@ const settingRef = ref(null)
 function setLayout() {
   settingRef.value.openSetting()
 }
+// ctrl+shift+l 按下，打开布局
+const handleKeyDown = (event) => {
+  if (event.ctrlKey && event.shiftKey && event.key === 'L') {
+    event.preventDefault()
+    setLayout()
+  }
+}
+watch(() => settingStore.topHeader.isShow, (nv) => {
+  if (!nv) {
+    document.addEventListener('keydown', handleKeyDown)
+  } else {
+    document.removeEventListener('keydown', handleKeyDown)
+  }
+}, { immediate: true })
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeyDown)
+})
 // ^
 // # 3、初始布局设置
 async function setSetting() {
@@ -79,6 +96,12 @@ async function init() {
   height: 100%;
   background-color: var(--bg-layout);
   overflow: hidden;
+
+  &:not(:has(> .top-header-vue)) {
+    .main-container {
+      height: 100%;
+    }
+  }
 
   .top-header-vue {
     height: var(--top-header-height);
@@ -138,6 +161,13 @@ async function init() {
         }
       }
     }
+  }
+
+  .layout-setting-icon {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 999999;
   }
 }
 </style>

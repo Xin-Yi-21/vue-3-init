@@ -69,7 +69,6 @@ const useSettingStore = defineStore('setting', {
     },
     // 设置主题信息集合
     setTheme() {
-
       // (1) 获取定义在root中的css变量
       function getRootCSSVariables() {
         const cssVariables = {}
