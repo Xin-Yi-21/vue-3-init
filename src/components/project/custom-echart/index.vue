@@ -162,8 +162,8 @@ function handleExportExcel(tableData, tableOption) {
 // ^
 // # (5) 开启全屏
 function initEchartFs() {
-  let lineOption = proxy.$getLineEchartOption(settingStore, props.eInfoFs, 'exclude', ['series']) || {}
-  let dataZoomOption = proxy.$getDataZoomEchartOption(settingStore, props.eInfoFs, 'exclude', ['series']) || {}
+  let lineOption = proxy.$getLineEchartOption({ echartInfo: props.eInfoFs, settingStore, getType: 'exclude', optionList: ['series'] }) || {}
+  let dataZoomOption = proxy.$getDataZoomEchartOption({ echartInfo: props.eInfoFs, settingStore, getType: 'exclude', optionList: ['series'] }) || {}
   let addOption = { grid: { top: 90 }, }
   let option = proxy.$merge({}, lineOption, props.eInfoFs.option, dataZoomOption, addOption)
   proxy.$initEchart(ref(props.eInfoFs), option)

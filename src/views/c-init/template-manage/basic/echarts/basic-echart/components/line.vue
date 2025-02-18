@@ -54,22 +54,20 @@ async function getEchartInfo() {
 // # 2、处理echart数据
 function handleEchartInfo() {
   let newApiData = JSON.parse(JSON.stringify(apiData.value || {}))
-  let chart = { lData: [], sData: [], tableData: [], tableHeader: {}, color: proxy.$getSeriesEchartColor() }
-  // 获取系列
+  let chart = { lData: [], sData: [], tableData: [], tableHeader: {}, color: proxy.$getEchartSeriesColor(), dataRender: 'datasetObj', }
+  // 创建系列头
   let factor = [{ name: '气温', field: 'temperature', unit: '℃', type: 'line', yAxisIndex: 0 },]
   let kind = [{ name: '济南', field: 'jn' }, { name: '青岛', field: 'qd' }]
   let xHeader = { nameC: '时间', nameT: '时间', fieldT: 'time', fieldN: 'time', unit: '', }  // nameC-图表例常规名，nameT-表格列常规名，fieldT-api数据的目标字段，filedN-handle数据的新字段，unit-数据单位
-  chart.tableHeader.columnList = [xHeader]
-  proxy.$getChartsSeries(chart, newApiData, { factor, kind, sortType: 'fk' })
-  // 处理表格数据
-  chart.tableData = proxy.$completeEchartTableData(newApiData, (rowItem, matchData, kindItem) => {
+  proxy.$makeChartSeries(chart, newApiData, { factor, kind, xHeader, sortType: 'fk' })
+
+  // 完善数据
+  proxy.$completeChartData(chart, newApiData, (rowItem, matchData, kindItem) => {
     chart.tableHeader.columnList.forEach(item => { if (item.kind == kindItem) { rowItem[item.fieldN] = matchData[item.fieldT] } })
-  }, xHeader.fieldT, xHeader.filedN)
-  // 处理dataset数据
-  chart.datasetObj = { dimensions: chart.tableHeader.columnList.map(item => item.fieldN), source: JSON.parse(JSON.stringify(chart.tableData)) }
-  chart.datasetArr = { source: proxy.$transformEchartDataset(chart.datasetObj.source) }
-  // 定制系列样式
-  let seriesOption = proxy.$getLineEchartOption(settingStore, echartInfo, 'include', ['series'])?.series[0] || {}
+  },)
+
+  // 配置系列体
+  let seriesOption = proxy.$getLineEchartOption({ echartInfo, settingStore, getType: 'include', optionList: ['series'] })?.series[0] || {}
   chart.sData.forEach((item, index) => {
     let color = chart.color[index]
     let addOption = {
@@ -78,6 +76,7 @@ function handleEchartInfo() {
     }
     chart.sData[index] = proxy.$merge({}, seriesOption, addOption, item)
   })
+
   // 全局赋值
   echartInfo.value = Object.assign({}, echartInfo.value, chart)
   // console.log('折线图', echartInfo.value)
@@ -86,7 +85,7 @@ function handleEchartInfo() {
 // ^
 // # 3、渲染echart
 function initEchart() {
-  let lineOption = proxy.$getLineEchartOption(settingStore, echartInfo, 'exclude', ['series']) || {}
+  let lineOption = proxy.$getLineEchartOption({ echartInfo, settingStore, getType: 'exclude', optionList: ['series'] }) || {}
   let addOption = {
     title: { text: '折线图' },
     xAxis: [{ axisLabel: { formatter: (value) => { const time = value ? proxy.$dayjs(value).format('MM-DD HH:mm') : '?'; return time } }, }],

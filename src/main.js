@@ -41,7 +41,7 @@ setConfig().then(async (cEnv) => {
     const dayjs = (await import('dayjs')).default
     const { $getEnumsLabel, $getEnumsLabelList, $uniqueArray, $sortArray, $accurate, $hasValue, $exportExcel } = await import("@/utils/common.js")
     const { throttle, debounce, deepClone, merge } = await import("lodash")
-    const { $completeEchartTableData, $getChartsSeries, $transformEchartDataset, $newResizeObserver, $initEchart, $destroyEchart, $completeEchartXY, $exportEchartImage, $getSeriesEchartColor, $getLineEchartOption, $getBarEchartOption, $getDataZoomEchartOption } = await import("@/utils/echart.js")
+    const { $makeChartSeries, $completeChartData, $transformEchartDataset, $newResizeObserver, $initEchart, $destroyEchart, $completeEchartXY, $exportEchartImage, $getEchartSeriesColor, $getLineEchartOption, $getBarEchartOption, $getDataZoomEchartOption } = await import("@/utils/echart.js")
     // 基础公共方法
     app.config.globalProperties.$dayjs = dayjs
     app.config.globalProperties.$getEnumsLabel = $getEnumsLabel
@@ -57,14 +57,14 @@ setConfig().then(async (cEnv) => {
     app.config.globalProperties.$deepClone = deepClone
     app.config.globalProperties.$merge = merge
     // echart 公共方法
-    app.config.globalProperties.$completeEchartTableData = $completeEchartTableData
-    app.config.globalProperties.$getChartsSeries = $getChartsSeries
+    app.config.globalProperties.$makeChartSeries = $makeChartSeries
+    app.config.globalProperties.$completeChartData = $completeChartData
     app.config.globalProperties.$transformEchartDataset = $transformEchartDataset
     app.config.globalProperties.$newResizeObserver = $newResizeObserver
     app.config.globalProperties.$initEchart = $initEchart
     app.config.globalProperties.$destroyEchart = $destroyEchart
     app.config.globalProperties.$exportEchartImage = $exportEchartImage
-    app.config.globalProperties.$getSeriesEchartColor = $getSeriesEchartColor
+    app.config.globalProperties.$getEchartSeriesColor = $getEchartSeriesColor
     app.config.globalProperties.$getLineEchartOption = $getLineEchartOption
     app.config.globalProperties.$getBarEchartOption = $getBarEchartOption
     app.config.globalProperties.$getDataZoomEchartOption = $getDataZoomEchartOption

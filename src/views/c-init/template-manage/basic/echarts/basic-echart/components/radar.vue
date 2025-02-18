@@ -44,7 +44,7 @@ async function getEchartInfo() {
 // ^
 // # 2、处理echart数据
 function handleEchartInfo() {
-  let chart = { lData: [], xyData: [], sData: [], radarInfo: {}, color: proxy.$getSeriesEchartColor() }
+  let chart = { lData: [], xyData: [], sData: [], radarInfo: {}, color: proxy.$getEchartSeriesColor() }
   let newApiData = JSON.parse(JSON.stringify(apiData.value || {}))
   chart.indicator = [
     { name: '气温准确率', unit: '%', max: 100, field: 'temperature' },

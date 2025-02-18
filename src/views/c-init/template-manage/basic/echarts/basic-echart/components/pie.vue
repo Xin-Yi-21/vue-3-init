@@ -48,7 +48,7 @@ async function getEchartInfo() {
 // ^
 // # 2、处理echart数据
 function handleEchartInfo() {
-  let chart = { lData: [], xyData: {}, sData: [], color: proxy.$getSeriesEchartColor() }
+  let chart = { lData: [], xyData: {}, sData: [], color: proxy.$getEchartSeriesColor() }
   let newApiData = JSON.parse(JSON.stringify(apiData.value || {}))
   for (var k in newApiData) {
     chart.lData.push(k)

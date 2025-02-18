@@ -6,8 +6,8 @@
     <div class="v-content">
       <basic-echart v-if="currentTab == 'basic'"></basic-echart>
       <integration-echart v-if="currentTab == 'integration'"></integration-echart>
-      <!-- <interaction-echart v-if="currentTab == 'interaction'"></interaction-echart>
-      <map-echart v-if="currentTab == 'map'"></map-echart> -->
+      <interaction-echart v-if="currentTab == 'interaction'"></interaction-echart>
+      <!-- <map-echart v-if="currentTab == 'map'"></map-echart> -->
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@
 <script setup>
 import BasicEchart from './basic-echart/index.vue'
 import IntegrationEchart from './integration-echart/index.vue'
-// import InteractionEchart from './interaction-echart/index.vue'
+import InteractionEchart from './interaction-echart/index.vue'
 // import MapEchart from './map-echart/index.vue'
 
 const tabList = ref(
@@ -24,7 +24,7 @@ const tabList = ref(
   { label: '图表交互echarts', value: 'interaction' },
   { label: '地图echarts', value: 'map' },]
 )
-const currentTab = ref('basic')
+const currentTab = ref('interaction')
 
 function handleChangeTab(newCurrentTab) {
   currentTab.value = newCurrentTab.value
