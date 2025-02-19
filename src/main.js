@@ -40,7 +40,7 @@ setConfig().then(async (cEnv) => {
     // 全局方法
     const dayjs = (await import('dayjs')).default
     const { $getEnumsLabel, $getEnumsLabelList, $uniqueArray, $sortArray, $accurate, $hasValue, $exportExcel } = await import("@/utils/common.js")
-    const { throttle, debounce, deepClone, merge } = await import("lodash")
+    const { throttle, debounce, cloneDeep, merge } = await import("lodash")
     const { $makeChartSeries, $completeChartData, $transformEchartDataset, $newResizeObserver, $initEchart, $destroyEchart, $completeEchartXY, $exportEchartImage, $getEchartSeriesColor, $getLineEchartOption, $getBarEchartOption, $getDataZoomEchartOption } = await import("@/utils/echart.js")
     // 基础公共方法
     app.config.globalProperties.$dayjs = dayjs
@@ -54,7 +54,7 @@ setConfig().then(async (cEnv) => {
     // loadsh 公共方法
     app.config.globalProperties.$throttle = throttle
     app.config.globalProperties.$debounce = debounce
-    app.config.globalProperties.$deepClone = deepClone
+    app.config.globalProperties.$deepClone = cloneDeep
     app.config.globalProperties.$merge = merge
     // echart 公共方法
     app.config.globalProperties.$makeChartSeries = $makeChartSeries

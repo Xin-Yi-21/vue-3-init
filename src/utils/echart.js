@@ -89,6 +89,7 @@ export function $completeChartData(chart, data, callback = null,) {
 }
 
 // 初始化echart
+import { shallowRef } from 'vue'
 import * as echarts from 'echarts'
 export function $initEchart(echartInfo, option) {
   echartInfo.value?.instance?.clear()
@@ -98,8 +99,9 @@ export function $initEchart(echartInfo, option) {
   if (!chartDom) return
   chartDom && chartDom.removeAttribute('_echarts_instance_')
   let myChart = echarts.getInstanceByDom(chartDom) || echarts.init(chartDom)
+  echartInfo.value.instance = shallowRef(myChart)    // 浅响应式引用
+
   option && myChart.setOption(option, true)
-  echartInfo.value.instance = myChart
   echartInfo.value.resizer = this.$newResizeObserver(() => myChart.resize(), true)
   echartInfo.value.resizer.observe(chartDom)
 }
@@ -157,7 +159,6 @@ export function $getEchartSeriesColor() {
 
 // 折线图配置 echart-line-option
 export function $getLineEchartOption({ echartInfo, settingStore, getType, optionList }) {
-  console.log('查settingStore', settingStore)
   let option = {
     title: { text: '', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
     grid: { top: 80, left: 50, right: 50, bottom: 10, containLabel: true, },

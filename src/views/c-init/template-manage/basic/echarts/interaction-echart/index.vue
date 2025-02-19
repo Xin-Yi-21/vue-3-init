@@ -14,7 +14,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="调整数值" prop="updateValue" v-if="form.updateWay === 'value'">
-            <el-input-number v-model="form.updateValue" controls-position="right" @focus="(e) => handleRangeValue(e, 'focus')" @change="(e) => handleRangeValue(e, 'change')"></el-input-number><span class="unit">MW</span>
+            <el-input-number v-model="form.updateValue" controls-position="right"></el-input-number><span class="unit">mm</span>
           </el-form-item>
           <el-form-item label="调整比例" prop="updateRatio" v-if="form.updateWay == 'percentage'">
             <el-input-number v-model="form.updateRatio" controls-position="right"></el-input-number> <span class="unit">%</span>
@@ -64,11 +64,8 @@ import useSettingStore from '@/store/system/setting'
 import { onMounted } from 'vue'
 const settingStore = useSettingStore()
 const { proxy } = getCurrentInstance()
-const selectedData = ref([])
-const selectedPoints = ref([])
-const selectedAreas = ref([])
-console.log('查settingStore', settingStore)
 // ^
+
 // # 二、模块功能
 // # 模拟api
 function echartDataGet() {
@@ -95,6 +92,7 @@ function echartDataGet() {
   })
 }
 // ^
+
 // # 0、初始化总调用
 function init() {
   getEnums()
@@ -102,7 +100,8 @@ function init() {
   getData()
 }
 // ^
-// 1、获取枚举
+
+// # 1、获取枚举
 const enums = ref({})
 function getEnums() {
   let adjustWay = [{ label: '选点调整', value: 'point' }, { label: '选区调整', value: 'area' },]
@@ -110,7 +109,9 @@ function getEnums() {
   enums.value.adjustWay = adjustWay
   enums.value.updateWay = updateWay
 }
-// 2、设置默认参数
+// ^
+
+// # 2、设置默认参数
 const form = ref({})
 const formRules = ref({ rain: [{ validator: nonNegativeNumberVerify, trigger: 'blur' },], },)
 const currentEchartOperate = ref('')
@@ -119,24 +120,25 @@ function setDefaultParams() {
   form.value.updateWay = enums.value.updateWay[0].value
   currentEchartOperate.value = 'mySingle'
 }
-// 3、获取数据
+// ^
+
+// # 3、获取数据
 const apiData = ref({})
-const mData = ref([])
+const initData = ref([])
 async function getData() {
   const res = await echartDataGet()
   apiData.value = res.data || {}
-  handleData(apiData.value || [], 'api')
-  // handleEchartInfo(mData)
-  // handleTableData(mData)
+  handleData(apiData.value || [],)
 }
+// ^
 
-// 4、处理数据
+// # 4、处理数据
 const echartInfo = ref({ id: 'v-echart', exportFileName: '交互' })
 function handleData(data) {
   let newApiData = JSON.parse(JSON.stringify(data || {}))
   let chart = { lData: [], sData: [], tableData: [], tableHeader: {}, color: proxy.$getEchartSeriesColor(), dataRender: 'xyData', }
   // 创建系列头
-  let factor = [{ name: '降水', field: 'rain', unit: 'mm', type: 'line', yAxisIndex: 0 },]
+  let factor = [{ name: '降水', field: 'rain', unit: 'mm', type: 'line', },]
   let kind = [{ name: '济南', field: 'jn' }, { name: '青岛', field: 'qd' }]
   let xHeader = { nameC: '时间', nameT: '时间', fieldT: 'time', fieldN: 'time', unit: '', }  // nameC-图表例常规名，nameT-表格列常规名，fieldT-api数据的目标字段，filedN-handle数据的新字段，unit-数据单位
   proxy.$makeChartSeries(chart, newApiData, { factor, kind, xHeader, sortType: 'fk' })
@@ -160,30 +162,35 @@ function handleData(data) {
   })
 
   // 全局赋值
+
   echartInfo.value = Object.assign({}, echartInfo.value, chart)
-  console.log('交互图', echartInfo.value)
+  initData.value = proxy.$deepClone(echartInfo.value)
   nextTick(() => { initEchart() })
 }
 function handleToEchart() {
-  console.log('查echartInfo.value.tableData', echartInfo.value.tableData)
-  // 处理dataset数据
-  echartInfo.value.datasetObj = { dimensions: echartInfo.value.tableHeader.columnList.map(item => item.fieldN), source: JSON.parse(JSON.stringify(echartInfo.value.tableData)) }
-  echartInfo.value.datasetArr = { source: proxy.$transformEchartDataset(echartInfo.value.datasetObj.source) }
+  echartInfo.value.tableData.forEach((item1, index1) => {
+    for (var k in echartInfo.value.xyData) {
+      echartInfo.value.xyData[k][index1].value[1] = item1[k]
+    }
+  })
+  for (var k in echartInfo.value.xyData) {
+    echartInfo.value.sData.forEach(item1 => { if (item1.id === k) { item1.data = echartInfo.value.xyData[k] } })
+  }
   initEchart()
 }
 function handleToTable() {
-  let datasetObj = {
-    dimensions: ['time', 'rain-jn', 'rain-qd'],
-    source: [
-      { time: '2024-01-01 12:00:00', 'rain-jn': 10, 'rain-qd': 20 },
-      { time: '2024-04-01 12:00:00', 'rain-jn': 30, 'rain-qd': 40 },
-      { time: '2024-07-01 12:00:00', 'rain-jn': 120, 'rain-qd': 180 },
-      { time: '2024-10-01 12:00:00', 'rain-jn': 40, 'rain-qd': 50 },
-    ]
-  }
+  echartInfo.value.tableData.forEach((item1, index1) => {
+    for (var k in echartInfo.value.xyData) {
+      item1[k] = echartInfo.value.xyData[k]?.[index1]?.value?.[1] || ''
+    }
+  })
 }
-// # 5、渲染echart
+// ^
 
+// # 5、渲染echart
+const fxPoints = ref([])
+const selectedAreas = ref([])   // 选取调整：选中的区域
+const selectedData = ref([])    // 选中的数据
 // # (1) 渲染echart
 function initEchart() {
   let lineOption = proxy.$getLineEchartOption({ echartInfo, settingStore, getType: 'exclude', optionList: ['series'] }) || {}
@@ -235,8 +242,8 @@ function initEchart() {
           show: form.value.adjustWay === 'point',
           title: '单点拖拽',
           icon: 'path://M446.27027 710.227027v-132.843243H79.567568v-130.767568h366.702702V314.118919H260.843243L512 0l251.156757 314.118919h-185.081081v132.497297H944.432432v130.767568H578.075676v132.843243h185.081081L512 1024l-251.156757-313.772973z m65.72973 286.097297l215.178378-269.145946h-166.4v-167.091892H927.135135v-96.172972H560.778378V296.821622h166.4L512 27.675676 296.821622 296.821622h166.745946v167.091892H96.864865v96.172972h366.702703v167.091892H296.821622z',
-          // iconStyle: handleEchartIconStyle('mySingleDrag'),
-          // emphasis: { iconStyle: handleEchartIconStyle('emphasis'), },
+          iconStyle: handleEchartIconStyle('mySingleDrag'),
+          emphasis: { iconStyle: handleEchartIconStyle('emphasis'), },
           onclick: (e) => { handleEchartPointToolboxClick(e, 'mySingleDrag') }
         },
         // 清除
@@ -244,21 +251,20 @@ function initEchart() {
           show: form.value.adjustWay === 'point',
           title: '清除选择',
           icon: 'path://M512 104.489796c230.838857 0 417.959184 187.120327 417.959184 417.959184s-187.120327 417.959184-417.959184 417.959183S94.040816 753.287837 94.040816 522.44898 281.161143 104.489796 512 104.489796z m0 83.591837C327.324735 188.081633 177.632653 337.773714 177.632653 522.44898s149.692082 334.367347 334.367347 334.367347 334.367347-149.692082 334.367347-334.367347S696.675265 188.081633 512 188.081633z m-103.444898 171.82302l103.444898 103.444898 103.444898-103.444898a20.897959 20.897959 0 0 1 29.549714 0l29.549715 29.549714a20.897959 20.897959 0 0 1 0 29.549715L571.141224 522.44898l103.444898 103.444898a20.897959 20.897959 0 0 1 0 29.549714l-29.570612 29.549714a20.897959 20.897959 0 0 1-29.549714 0L512 581.548408l-103.444898 103.444898a20.897959 20.897959 0 0 1-29.549714 0l-29.549715-29.549714a20.897959 20.897959 0 0 1 0-29.549714l103.444898-103.444898-103.444898-103.444898a20.897959 20.897959 0 0 1 0-29.549715l29.549715-29.549714a20.897959 20.897959 0 0 1 29.549714 0z',
-          // iconStyle: handleEchartIconStyle('myClear'),
-          // emphasis: { iconStyle: handleEchartIconStyle('emphasis'), },
+          iconStyle: handleEchartIconStyle('myClear'),
+          emphasis: { iconStyle: handleEchartIconStyle('emphasis'), },
           onclick: (e) => { handleEchartPointToolboxClick(e, 'myClear') }
         },
       }
     },
     xAxis: [{ axisLabel: { formatter: (value) => { const time = value ? proxy.$dayjs(value).format('MM-DD HH:mm') : '?'; return time } }, }],
     yAxis: [{ name: '气温 ( ℃ )', },],
-    dataset: echartInfo.value.datasetObj,
     series: echartInfo.value.sData,
   }
   let option = proxy.$merge({}, lineOption, addOption)
   if (form.value.adjustWay === 'point') {
     proxy.$initEchart(echartInfo, option)
-    handleEchartPointClick(echartInfo.value.instance)
+    handleEchartPointClick()
   } else if (form.value.adjustWay === 'area') {
     option.brush = {
       toolbox: ['rect', 'lineX', 'lineY', 'clear'],
@@ -268,22 +274,16 @@ function initEchart() {
       throttleDelay: 1000,
     }
     proxy.$initEchart(echartInfo, option)
-    handleEchartBrush(myChart, this.echartInfo.xyData)
+    handleEchartBrush()
   }
 }
 // ^
 // # (2) echart 选点调整
 // # A. echart 选点工具栏 点击
 function handleEchartPointToolboxClick(e, type) {
-  console.log('查selectedPoints', selectedPoints.value)
-  if (type == 'myClear') {
-    selectedPoints.value = []
-    handleSelectedData(echartInfo.value.instance, { selectedPoints: selectedPoints.value })
-  } else {
+  if (type !== 'myClear') {
     currentEchartOperate.value = type
-    const option = echartInfo.value.instance.getOption()
-    const toolbox = option.toolbox[0].feature
-    console.log('查toolbox', toolbox)
+    const toolbox = echartInfo.value.instance.getOption()?.toolbox[0].feature
     // 工具栏高亮
     for (const k in toolbox) {
       if (toolbox.hasOwnProperty(k)) {
@@ -295,71 +295,72 @@ function handleEchartPointToolboxClick(e, type) {
       }
     }
     initEchart()
-    // nextTick(() => {
-    //   console.log('查    echartInfo.value.instance2', echartInfo.value.instance)
-    //   echartInfo.value.instance.setOption({ toolbox: { feature: toolbox, }, }, true, true)
-    // })
+  }
 
-    // 数据初始化
-    switch (type) {
-      case 'mySingle':
-        selectedPoints.value = []
-        break
-      case 'myMultiple':
-        selectedPoints.value = []
-        break
-      case 'mySelectAll':
-        // let selectedPoints = []
-        // for (var k in this.echartInfo.xyData) {
-        //   this.echartInfo.xyData[k].forEach(item => {
-        //     selectedPoints.push({ value: item.value, series: k })
-        //   })
-        // }
-        // selectedPoints.value = []
-        // handleSelectedData(echartInfo.value.instance, { selectedPoints })
-        break
-      case 'mySelectInvert':
-        selectedPoints.value = []
-        break
-      case 'mySingleDrag':
-        selectedPoints.value = []
-        handleEchartDrag(echartInfo.value.instance)
-        break
-    }
+  // 工具栏点击
+  switch (type) {
+    case 'mySingle':
+      selectedData.value = []
+      handleEchartHighlight()
+      break
+    case 'myMultiple':
+      selectedData.value = []
+      handleEchartHighlight()
+      break
+    case 'mySelectAll':
+      selectedData.value = []
+      for (var k in echartInfo.value.xyData) {
+        echartInfo.value.xyData[k].forEach(item => {
+          selectedData.value.push({ value: item.value, seriesId: k })
+        })
+      }
+      handleSelectedData()
+      break
+    case 'mySelectInvert':
+      selectedData.value = []
+      handleEchartHighlight()
+      break
+    case 'mySingleDrag':
+      selectedData.value = []
+      handleEchartDrag(echartInfo.value.instance)
+      break
+    case 'myClear':
+      selectedData.value = []
+      handleEchartHighlight()
+      break
   }
 }
 // ^
 // # B. echart 选点 点击
-function handleEchartPointClick(myChart) {
+function handleEchartPointClick() {
+  const myChart = echartInfo.value.instance
   myChart.on('click', e => {
-    let clickedPoint = { value: [e.value.time, e.value[e.seriesId]], seriesId: e.seriesId, seriesName: e.seriesName }
-    console.log('选点点击', e)
+    let clickedPoint = { value: e.value, seriesId: e.seriesId, }
     switch (currentEchartOperate.value) {
       case 'mySingle':
-        if (JSON.stringify([clickedPoint]) == JSON.stringify(selectedPoints.value)) { clickedPoint = null }
-        selectedPoints.value = clickedPoint ? [clickedPoint] : []
-        handleSelectedData(myChart, { selectedPoints: selectedPoints.value, isClick: true }, form.value.adjustWay)
+        if (JSON.stringify([clickedPoint]) == JSON.stringify(selectedData.value)) { clickedPoint = null }
+        selectedData.value = clickedPoint ? [clickedPoint] : []
+        handleSelectedData()
         break
       case 'myMultiple':
-        var index = selectedPoints.value.findIndex(item => JSON.stringify(clickedPoint) == JSON.stringify(item))
+        var index = selectedData.value.findIndex(item => JSON.stringify(clickedPoint) == JSON.stringify(item))
         if (index != -1) {
-          selectedPoints.value.splice(index, 1)
+          selectedData.value.splice(index, 1)
         } else {
-          selectedPoints.value.push(clickedPoint)
+          selectedData.value.push(clickedPoint)
         }
-        handleSelectedData(myChart, { selectedPoints: selectedPoints.value, isClick: true }, form.value.adjustWay)
+        handleSelectedData()
         break
       case 'mySelectInvert':
-        var index = selectedPoints.value.findIndex(item => JSON.stringify(clickedPoint) == JSON.stringify(item))
+        var index = fxPoints.value.findIndex(item => JSON.stringify(clickedPoint) == JSON.stringify(item))
         if (index != -1) {
-          selectedPoints.value.splice(index, 1)
+          fxPoints.value.splice(index, 1)
         } else {
-          selectedPoints.value.push(clickedPoint)
+          fxPoints.value.push(clickedPoint)
         }
-        handleSelectedData(myChart, { selectedPoints: selectedPoints.value, isClick: true }, form.value.adjustWay)
+        handleSelectedData()
         break
     }
-    console.log('查selectedPoints', selectedPoints.value)
   })
 }
 // ^
@@ -372,53 +373,57 @@ function handleEchartIconStyle(iconName) {
   }
 }
 // ^
+// ^
 // # (3) echart 选区调整
-function handleEchartBrush(myChart) {
-  let isBrushed = false
+const isBrushed = ref(false)
+function handleEchartBrush() {
+  let newIsBrushed = false
+  const myChart = echartInfo.value.instance
   myChart.on('brushSelected', e => {
-    this.$set(this, 'selectedData', [])
-    let selectedAreas = []
+    selectedAreas.value = []
+    selectedData.value = []
     e.batch.forEach(batchItem => {
-      batchItem.areas.forEach(areaItem => {
-        console.log('查areaItem.brushType', areaItem.brushType)
-        let rangeItem = {}
-        switch (areaItem.brushType) {
-          case 'rect':
-            // areaItem.coordRange : [ [ x最小索引 , x最小索引 ] , [ y最小值 , y最小值 ] ],
-            // areaItem.range : [ [ x最小像素 , x最小像素 ] , [ y最小像素 , y最大像素 ] ] 
-            handleSelectedXIndex(areaItem.coordRange[0], areaItem.range[0])
-            var xMin = areaItem.coordRange[0][0]
-            var xMax = areaItem.coordRange[0][1]
-            var yMin = areaItem.coordRange[1][0]
-            var yMax = areaItem.coordRange[1][1]
-            rangeItem = { xMin, xMax, yMin, yMax }
-            // brushedInfo = { brushType: 'rect', xMin, xMax, yMin, yMax, yMinPX: areaItem.range[1][1], yMaxPX: areaItem.range[1][0] }
-            break
-          case 'lineX':
-            handleSelectedXIndex(areaItem.coordRange, areaItem.range)
-            var xMin = areaItem.coordRange[0]
-            var xMax = areaItem.coordRange[1]
-            var yMin = -Infinity
-            var yMax = Infinity
-            rangeItem = { xMin, xMax, yMin, yMax }
-            // brushedInfo = { brushType: 'lineX', xMin, xMax, yMin, yMax }
-            break
-          case 'lineY':
-            var xMin = -Infinity
-            var xMax = Infinity
-            var yMin = areaItem.coordRange[0]
-            var yMax = areaItem.coordRange[1]
-            rangeItem = { xMin, xMax, yMin, yMax }
-            // brushedInfo = { brushType: 'lineY', xMin, xMax, yMin, yMax, yMinPX: areaItem.range[1][1], yMaxPX: areaItem.range[1][0] }
-            break
-        }
-        selectedAreas.push(rangeItem)
-        console.log('查selectedAreas', selectedAreas)
-        this.$set(this, 'selectedAreas', selectedAreas)
-      })
+      if (batchItem.areas.length === 0) {
+        handleEchartHighlight()
+      } else {
+        batchItem.areas.forEach(areaItem => {
+          // console.log('查areaItem.brushType', areaItem.brushType)
+          let rangeItem = {}
+          switch (areaItem.brushType) {
+            case 'rect':
+              // areaItem.coordRange : [ [ x最小索引 , x最小索引 ] , [ y最小值 , y最小值 ] ],
+              // areaItem.range : [ [ x最小像素 , x最小像素 ] , [ y最小像素 , y最大像素 ] ] 
+              handleSelectedXIndex(areaItem?.coordRange[0], areaItem?.range[0])
+              var xMin = areaItem?.coordRange[0][0]
+              var xMax = areaItem?.coordRange[0][1]
+              var yMin = areaItem?.coordRange[1][0]
+              var yMax = areaItem?.coordRange[1][1]
+              rangeItem = { xMin, xMax, yMin, yMax }
+              // brushedInfo = { brushType: 'rect', xMin, xMax, yMin, yMax, yMinPX: areaItem.range[1][1], yMaxPX: areaItem.range[1][0] }
+              break
+            case 'lineX':
+              handleSelectedXIndex(areaItem?.coordRange, areaItem?.range)
+              var xMin = areaItem?.coordRange[0]
+              var xMax = areaItem?.coordRange[1]
+              var yMin = -Infinity
+              var yMax = Infinity
+              rangeItem = { xMin, xMax, yMin, yMax }
+              // brushedInfo = { brushType: 'lineX', xMin, xMax, yMin, yMax }
+              break
+            case 'lineY':
+              var xMin = -Infinity
+              var xMax = Infinity
+              var yMin = areaItem?.coordRange[0]
+              var yMax = areaItem?.coordRange[1]
+              rangeItem = { xMin, xMax, yMin, yMax }
+              // brushedInfo = { brushType: 'lineY', xMin, xMax, yMin, yMax, yMinPX: areaItem.range[1][1], yMaxPX: areaItem.range[1][0] }
+              break
+          }
+          selectedAreas.value.push(rangeItem)
+        })
+      }
     })
-    // this.$set(this, 'brushedInfoList', selectedAreas)
-    this.handleSelectedData(myChart, { selectedAreas },)
+    handleSelectedData()
 
     // 处理x轴选中范围
     function handleSelectedXIndex(coordRange, range, xAxisIndex = 0) {
@@ -434,150 +439,123 @@ function handleEchartBrush(myChart) {
       }
       // 如选中区域无点，则 最大索引 < 最小索引，
     }
-
-    isBrushed = e.batch[0].areas.length > 0
-    this.isBrushed = isBrushed
+    newIsBrushed = e.batch[0]?.areas.length > 0
+    isBrushed.value = newIsBrushed
   })
 
   // 监听 dataZoom 事件 
   myChart.on('dataZoom', _.debounce(e => {
-    if (isBrushed) {
+    if (isBrushed.value) {
       myChart.dispatchAction({ type: 'brush', areas: [] })
-      this.$message.warning('监测到缩放，请重新选择折线图数据进行修正！');
+      proxy.$message.warning('监测到缩放，请重新选择折线图数据进行修正！');
     }
   }, 500))
 }
 // ^
 // # (4) echart 选中数据
-function handleSelectedData(myChart, data) {
-  let selectedData = []
-  // let xyData = JSON.parse(JSON.stringify(this.echartInfo.xyData))
+function handleSelectedData() {
+  let newSelectedData = []
+  let xyData = JSON.parse(JSON.stringify(echartInfo.value.xyData))
   switch (form.value.adjustWay) {
+    // 选点调整
     case 'point':
-      let newSelectedPoints = JSON.parse(JSON.stringify(data.selectedPoints))
-      if (currentEchartOperate.value !== 'mySelectInvert') {
-        // if (data.isClick) {
-        //   for (var k in xyData) {
-        //     let filteredData = xyData[k].filter((item1, index1) => {
-        //       return selectedPoints.some(item2 => item1.value[0] == item2.value[0] && item1.value[1] === item2.value[1])
-        //     })
-        //     filteredData.forEach(item => item.series = k)
-        //     selectedData = selectedData.concat(filteredData)
-        //   }
-        // } else {
-        // for (var k in xyData) {
-        //   let filteredData = xyData[k].filter((item1, index1) => {
-        //     return selectedPoints.some(item2 => item1.value[0] == item2.value[0] && k === item2.series)
-        //   })
-        //   filteredData.forEach(item => item.series = k)
-        //   selectedData = selectedData.concat(filteredData)
-        // }
-        // }'
-        selectedData.value = newSelectedPoints
-
-        // this.$set(this, 'selectedData', selectedData)
-        // this.$set(this, 'selectedPoints', selectedData)
-
-        handleEchartHighlight(myChart)
-      } else {
+      if (currentEchartOperate.value == 'mySelectInvert') {      // 反选
         for (var k in xyData) {
           let filteredData = xyData[k].filter((item1, index1) => {
-            return !selectedPoints.some(item2 => item1.value[0] == item2.value[0] && k === item2.series)
+            return !fxPoints.value.some(item2 => item1.value[0] == item2.value[0] && k === item2.seriesId)
           })
-          filteredData.forEach(item => item.series = k)
-          selectedData = selectedData.concat(filteredData)
+          filteredData.forEach(item => item.seriesId = k)
+          newSelectedData = newSelectedData.concat(filteredData)
         }
-        this.$set(this, 'selectedData', selectedData)
-        this.handleEchartHighlight(myChart)
+        selectedData.value = newSelectedData
+      } else {
+        // selectedData.value = selectedData.value
       }
+      handleEchartHighlight()
       break
     case 'area':
-      let selectedAreas = data.selectedAreas
+      let newSelectedAreas = selectedAreas.value
       for (var k in xyData) {
         let filteredData = xyData[k].filter((item1, index1) => {
-          return selectedAreas.some(item2 => {
+          return newSelectedAreas.some(item2 => {
             return index1 >= item2.xMin && index1 <= item2.xMax && item1.value[1] >= item2.yMin && item1.value[1] <= item2.yMax
           })
         })
-        filteredData.forEach(item => item.series = k)
-        selectedData = selectedData.concat(filteredData)
+        filteredData.forEach(item => item.seriesId = k)
+        newSelectedData = newSelectedData.concat(filteredData)
       }
-      this.$set(this, 'selectedData', selectedData)
-      this.handleEchartHighlight(myChart)
+      selectedData.value = newSelectedData
+      handleEchartHighlight(echartInfo.value.instance)
       break
   }
-  // return selectedData
 }
 // ^
 // # (5) echart 选中高亮
 function handleEchartHighlight(myChart) {
-  // var sData = myChart.getOption().series
-  console.log('查sData', sData)
-  // sData.forEach(item1 => {
-  //   item1.data.forEach(item2 => {
-  //     delete item2.itemStyle
-  //     selectedData.value.forEach(item3 => {
-  //       // if (item2.value[0] == item3.value[0] && item2.value[1] == item3.value[1]) {
-  //       //   item2.itemStyle = { color: 'red', borderColor: 'red' }
-  //       // }
-  //     })
-  //   })
-  // })
-  sData.forEach(item1 => {
-    function itemStyle(params) {
-
-      return {}
-    }
-    item1.itemStyle = itemStyle
-  })
-
-  myChart.setOption({ series: sData })
+  // 修改xyData
+  var xyData = echartInfo.value.xyData
+  for (var k in xyData) {
+    xyData[k].forEach(item1 => {
+      delete item1.itemStyle
+      selectedData.value.forEach(item2 => {
+        if (item2.seriesId === k && item1.value[0] == item2.value[0] && item1.value[1] == item2.value[1]) {
+          item1.itemStyle = { color: 'red', borderColor: 'red' }
+        }
+      })
+    })
+  }
+  // 同步修改sData
+  var sData = echartInfo.value.sData
+  for (var k in xyData) {
+    sData.forEach(item1 => { if (item1.id === k) { item1.data = xyData[k] } })
+  }
+  echartInfo.value.instance.setOption({ series: sData })
 }
 // ^
 // # (6) echart 运算
 function handleOperation(type) {
-  let xyData = this.echartInfo.xyData
-  if (!this.form.updateValue) { this.form.updateValue = 0 }
-  if (!this.form.updateRatio) { this.form.updateRatio = 0 }
+  if (selectedData.value.length === 0) {
+    return proxy.$message.warning('检测到当前并无选中数据，请选择某数据进行修改！')
+  }
+  let xyData = echartInfo.value.xyData
+  if (!form.value.updateValue) { form.value.updateValue = 0 }
+  if (!form.value.updateRatio) { form.value.updateRatio = 0 }
   for (var k in xyData) {
     xyData[k].forEach((item1, index) => {
-      this.selectedData.forEach(item2 => {
-        if (item2.series === k && item1.value[0] == item2.value[0] && item1.value[1] == item2.value[1]) {
+      selectedData.value.forEach(item2 => {
+        if (item2.seriesId === k && item1.value[0] == item2.value[0] && item1.value[1] == item2.value[1]) {
           // 数值调整
           // 提升
-          if (type === 'increase' && this.form.updateWay === 'value') {
-            item1.value[1] = this.$accurate(item1.value[1] + this.form.updateValue, 3, false)
+          if (type === 'increase' && form.value.updateWay === 'value') {
+            item2.value[1] = item1.value[1] = proxy.$accurate(item1.value[1] + form.value.updateValue, 3, false)
           }
           // 降低
-          if (type === 'decrease' && this.form.updateWay === 'value') {
-            item1.value[1] = this.$accurate(item1.value[1] - this.form.updateValue, 3, false)
+          if (type === 'decrease' && form.value.updateWay === 'value') {
+            item2.value[1] = item1.value[1] = proxy.$accurate(item1.value[1] - form.value.updateValue, 3, false)
           }
           // 赋值
-          if (type === 'assign' && this.form.updateWay === 'value') {
-            item1.value[1] = this.$accurate(this.form.updateValue, 3, false)
+          if (type === 'assign' && form.value.updateWay === 'value') {
+            item2.value[1] = item1.value[1] = proxy.$accurate(form.value.updateValue, 3, false)
           }
           // 比例调整
           // 提升
-          if (type === 'increase' && this.form.updateWay === 'percentage') {
-            item1.value[1] = this.$accurate(item1.value[1] * (1 + this.form.updateRatio / 100), 3, false)
+          if (type === 'increase' && form.value.updateWay === 'percentage') {
+            item2.value[1] = item1.value[1] = proxy.$accurate(item1.value[1] * (1 + form.value.updateRatio / 100), 3, false)
           }
           // 降低
-          if (type === 'decrease' && this.form.updateWay === 'percentage') {
-            item1.value[1] = this.$accurate(item1.value[1] * (1 - this.form.updateRatio / 100), 3, false)
+          if (type === 'decrease' && form.value.updateWay === 'percentage') {
+            item2.value[1] = item1.value[1] = proxy.$accurate(item1.value[1] * (1 - form.value.updateRatio / 100), 3, false)
           }
           // 赋值
-          if (type === 'assign' && this.form.updateWay === 'percentage') {
-            item1.value[1] = this.$accurate(item1.value[1] * (this.form.updateRatio / 100), 3, false)
+          if (type === 'assign' && form.value.updateWay === 'percentage') {
+            item2.value[1] = item1.value[1] = proxy.$accurate(item1.value[1] * (form.value.updateRatio / 100), 3, false)
           }
         }
       })
     })
   }
-  this.echartInfo.instance.setOption({ series: this.echartInfo.sData }, false, true)
-  this.form.adjustWay === 'area' && this.handleSelectedData(this.echartInfo.instance, { selectedAreas: this.selectedAreas },)
-  this.form.adjustWay === 'point' && this.handleSelectedData(this.echartInfo.instance, { selectedPoints: this.selectedPoints },)
-  this.handleMData(this.echartInfo.xyData, 'echart')
-  this.handleTableData(this.mData)
+  handleSelectedData()
+  handleToTable()
 }
 // ^
 // # (7) echart 拖拽
@@ -675,20 +653,18 @@ function handleEchartDrag(myChart) {
   })
 }
 // ^
-// #
+// ^
 
-// ^
-// ^
-// ^
 // # 6、操作相关
-// # (1) 修改
-function handleChangeAdjustWay(updateType) {
-  if (updateType === 'point') { this.$set(this, 'currentEchartOperate', 'mySingle') }
-  this.initEchart()
+// # (1) 修改调整方式
+function handleChangeAdjustWay() {
+  if (form.value.adjustWay === 'point') { currentEchartOperate.value = 'mySingle' }
+  selectedAreas.value = []
+  selectedData.value = []
+  initEchart()
 }
 // ^
-
-// # (1) 表格修改功率
+// # (2) 表格修改功率
 function handleChangeTableValue(value, rowItem, columnIndex, rowIndex) {
   nextTick(() => {
     const columnRef = proxy.$refs[`columnRef-${columnIndex}-${rowIndex}`]
@@ -699,46 +675,40 @@ function handleChangeTableValue(value, rowItem, columnIndex, rowIndex) {
   })
 }
 // ^
-// # 
-// # (2) 保存
+// # (3) 保存
 function handleSave() {
   proxy.$confirm('确定保存已修改的数据吗？', '确认消息', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', customClass: 'c-message-confirm' }).then(() => {
     let changedData = []
-    this.initData.forEach((item1) => {
-      this.mData.forEach((item2) => {
-        this.echartInfo.lData(item3 => {
-          if (item1.time === item2.time && item1[item3] != item2[item3]) {
-            changedData.push(item2)
-          }
-        })
-      })
+    initData.value.tableData.forEach((item1, index1) => {
+      const item2 = echartInfo.value.tableData[index1]
+      if (item2 && Object.keys(item1).some(key => item1[key] != item2[key])) {
+        changedData.push(item2)
+      }
     })
-    if (changedData.length === 0) { return this.$message.warning('检测到当前无数据更改！') }
+    if (changedData.length === 0) { return proxy.$message.warning('检测到当前无数据更改！') }
     // dataCorrect(params).then(res => {
     //   if (res.code === 200) {
     //     this.$message.success('数据修改成功！')
     //     this.getData()
     //   }
     // })
-  }).catch(() => { this.$message.warning('已取消修改！') })
+  }).catch((error) => { proxy.$message.warning('保存出现问题，请稍后再试！') })
 }
-// # (3) 取消
+// # (4) 取消
 function handleCancel() {
-  this.$confirm('确定取消已修改的数据吗？', '确认消息', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', customClass: 'c-message-confirm' }).then(() => {
-    this.init()
+  proxy.$confirm('确定取消已修改的数据吗？', '确认消息', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', customClass: 'c-message-confirm' }).then(() => {
+    init()
   }).catch(() => { this.$message.warning('已取消还原！') })
 }
 // ^
 // ^
 // ^
-
 // ^
 
 // # 三、生命周期
 onMounted(() => {
   init()
 })
-
 onBeforeUnmount(() => {
   proxy.$destroyEchart(echartInfo)
 })
@@ -811,6 +781,11 @@ watch(() => settingStore.themeStyle, (nv, ov) => {
 
         .el-input-number {
           width: 120px;
+
+          .el-input-number__increase,
+          .el-input-number__decrease {
+            height: 50%;
+          }
         }
       }
 

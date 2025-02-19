@@ -85,7 +85,7 @@
 
 <script>
 import { accountVerify, mobileVerify, emailVerify, passwordVerify, } from '@/utils/verify.js'
-import { imageCodeGet, phoneCodeGet, emailCodeGet } from '@/api/system/login'
+// import { imageCodeGet, phoneCodeGet, emailCodeGet } from '@/api/system/login'
 import Cookies from 'js-cookie'
 import { encrypt, decrypt } from '@/utils/jsencrypt'
 import { regular } from '@/utils/regular'
