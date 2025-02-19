@@ -19,6 +19,7 @@ import 'virtual:svg-icons-register'
 import SvgIcon from '@/components/system/svg-icon'
 import elementIcons from '@/components/system/svg-icon/svgicon'
 import '@/assets/iconfont/iconfont.css'
+import 'default-passive-events' // 解决wheel控制台警告信息
 app.component('svg-icon', SvgIcon)
 app.use(elementIcons)
 // ⭐ 常用样式
