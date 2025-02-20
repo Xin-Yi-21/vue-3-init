@@ -13,9 +13,9 @@
 import NavItem from './components/nav-item'
 import userMenuStore from '@/store/system/menu'
 
-const routerStore = userMenuStore()
+const menuStore = userMenuStore()
 const route = useRoute()
-const topNavRoutes = computed(() => routerStore.topNavRoutes)
+const topNavRoutes = computed(() => menuStore.topNavRoutes)
 const activeMenu = computed(() => {
   const { meta, path } = route
   if (meta.activeMenu) {

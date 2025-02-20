@@ -16,10 +16,10 @@ import useSettingStore from '@/store/system/setting'
 import useMenuStore from '@/store/system/menu'
 
 const settingStore = useSettingStore()
-const routerStore = useMenuStore()
+const menuStore = useMenuStore()
 const route = useRoute()
 const isCollapse = computed(() => settingStore.leftNav.isCollapse)
-const leftNavRoutes = computed(() => routerStore.leftNavRoutes)
+const leftNavRoutes = computed(() => menuStore.leftNavRoutes)
 const activeMenu = computed(() => {
   const { meta, path } = route
   if (meta.activeMenu) {
