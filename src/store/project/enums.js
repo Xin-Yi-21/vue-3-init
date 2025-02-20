@@ -1,4 +1,4 @@
-import { roleGet, monthGet } from '@/api/project/project'
+import { roleGet, monthGet } from '@/api/system/project'
 import { ElMessage } from 'element-plus'
 const useEnumsStore = defineStore('enums', () => {
   // 前端枚举
