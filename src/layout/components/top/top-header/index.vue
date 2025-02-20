@@ -144,13 +144,13 @@ function logout() {
 
     .breadcrumb-container {
       margin-left: 10px;
-      font-size: 16px;
+      font-size: 14px;
 
       &::before {
         // content: '>';
         margin-right: 10px;
         color: var(--fcs);
-        font-size: 16px;
+        font-size: 14px;
       }
 
       .el-breadcrumb__inner {
