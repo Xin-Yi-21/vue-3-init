@@ -1,6 +1,5 @@
 import defaultSetting from '@/setting'
 import { handleThemeStyle, handleThemeColor, handleThemeSize } from '@/utils/theme'
-import { objectEntries } from '@vueuse/core'
 const { isDynamicTitle, themeStyle, themeColor, themeSize, topHeader, leftNav, topNav, topBar, topTag, isFullScreen } = defaultSetting
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 const useSettingStore = defineStore('setting', {
