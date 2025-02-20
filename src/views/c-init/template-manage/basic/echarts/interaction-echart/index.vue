@@ -237,15 +237,15 @@ function initEchart() {
           emphasis: { iconStyle: handleEchartIconStyle('emphasis'), },
           onclick: (e) => { handleEchartPointToolboxClick(e, 'mySelectInvert') }
         },
-        // 单点拖拽
-        mySingleDrag: {
-          show: form.value.adjustWay === 'point',
-          title: '单点拖拽',
-          icon: 'path://M446.27027 710.227027v-132.843243H79.567568v-130.767568h366.702702V314.118919H260.843243L512 0l251.156757 314.118919h-185.081081v132.497297H944.432432v130.767568H578.075676v132.843243h185.081081L512 1024l-251.156757-313.772973z m65.72973 286.097297l215.178378-269.145946h-166.4v-167.091892H927.135135v-96.172972H560.778378V296.821622h166.4L512 27.675676 296.821622 296.821622h166.745946v167.091892H96.864865v96.172972h366.702703v167.091892H296.821622z',
-          iconStyle: handleEchartIconStyle('mySingleDrag'),
-          emphasis: { iconStyle: handleEchartIconStyle('emphasis'), },
-          onclick: (e) => { handleEchartPointToolboxClick(e, 'mySingleDrag') }
-        },
+        // // 单点拖拽
+        // mySingleDrag: {
+        //   show: form.value.adjustWay === 'point',
+        //   title: '单点拖拽',
+        //   icon: 'path://M446.27027 710.227027v-132.843243H79.567568v-130.767568h366.702702V314.118919H260.843243L512 0l251.156757 314.118919h-185.081081v132.497297H944.432432v130.767568H578.075676v132.843243h185.081081L512 1024l-251.156757-313.772973z m65.72973 286.097297l215.178378-269.145946h-166.4v-167.091892H927.135135v-96.172972H560.778378V296.821622h166.4L512 27.675676 296.821622 296.821622h166.745946v167.091892H96.864865v96.172972h366.702703v167.091892H296.821622z',
+        //   iconStyle: handleEchartIconStyle('mySingleDrag'),
+        //   emphasis: { iconStyle: handleEchartIconStyle('emphasis'), },
+        //   onclick: (e) => { handleEchartPointToolboxClick(e, 'mySingleDrag') }
+        // },
         // 清除
         myClear: {
           show: form.value.adjustWay === 'point',
