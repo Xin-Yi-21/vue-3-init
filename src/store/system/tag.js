@@ -6,7 +6,6 @@ const useTagStore = defineStore('tag', {
   }),
   actions: {
     addView(view) {
-      // console.log('查view', view)
       this.addVisitedView(view)
       this.addCachedView(view)
     },
@@ -17,7 +16,6 @@ const useTagStore = defineStore('tag', {
     addCachedView(view) {
       if (this.cachedViews.includes(view.name)) return
       if (!view.meta.noCache) { this.cachedViews.push(view.name) }
-      // console.log('cachedViews', this.cachedViews)
     },
     addIframeView(view) {
       if (this.iframeViews.some(v => v.path === view.path)) return
