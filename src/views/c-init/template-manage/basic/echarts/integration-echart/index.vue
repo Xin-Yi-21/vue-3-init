@@ -17,7 +17,7 @@
         <c-button type="primary" height="30" @click="handleCloseTableAndRefresh('normal')">关闭并刷新</c-button>
       </div>
       <el-table :data="echartInfo.tableData" border class="c-table">
-        <el-table-column :label="item[echartInfo.tableHeader?.matchField?.nameField]" :prop="item[echartInfo.tableHeader?.matchField?.fieldField]" align="center" v-for="(item, index) in echartInfo.tableHeader.columnList" :key="index" :width="item[echartInfo.tableHeader?.matchField?.nameField]?.includes('时间') ? '200x' : 'auto'"></el-table-column>
+        <el-table-column :label="item[echartInfo?.tableHeader?.matchField?.nameField]" :prop="item[echartInfo?.tableHeader?.matchField?.fieldField]" align="center" v-for="(item, index) in echartInfo?.tableHeader?.columnList" :key="index" :width="item[echartInfo?.tableHeader?.matchField?.nameField]?.includes('时间') ? '200x' : 'auto'"></el-table-column>
       </el-table>
     </div>
 
@@ -38,7 +38,7 @@
           <c-button type="primary" height="30" @click="handleCloseTableAndRefresh('fullscreen')">关闭并刷新</c-button>
         </div>
         <el-table :data="echartInfo.tableData" border class="c-table">
-          <el-table-column :label="item[echartInfoFs.tableHeader?.matchField?.nameField]" :prop="item.field" align="center" v-for="(item, index) in echartInfo.tableHeader.columnList" :key="index" :width="item[echartInfoFs.tableHeader?.matchField?.nameField]?.includes('时间') ? '200x' : 'auto'"></el-table-column>
+          <el-table-column :label="item[echartInfoFs.tableHeader?.matchField?.nameField]" :prop="item.field" align="center" v-for="(item, index) in echartInfoFs?.tableHeader?.columnList" :key="index" :width="item[echartInfoFs.tableHeader?.matchField?.nameField]?.includes('时间') ? '200x' : 'auto'"></el-table-column>
         </el-table>
       </div>
     </el-dialog>
