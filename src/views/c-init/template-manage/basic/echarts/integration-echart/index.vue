@@ -6,7 +6,7 @@
         <c-icon i="c-change-view" tip="切换视图" size="16" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleChangeView('normal')"></c-icon>
         <c-icon i="c-copy-text" tip="复制数据" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleCopyData()"></c-icon>
         <c-icon i="c-export-image" tip="导出图片" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportImage()"></c-icon>
-        <c-icon i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportExcel()"></c-icon>
+        <c-icon i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportExcel(echartInfo.tableData, { tableName: (echartInfo.exportFileName || '') + '表', tableHeader: echartInfo.tableHeader })"></c-icon>
         <c-icon i="c-fullscreen-in" tip="开启全屏" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleFullscreenIn()"></c-icon>
       </div>
     </div>
@@ -17,7 +17,7 @@
         <c-button type="primary" height="30" @click="handleCloseTableAndRefresh('normal')">关闭并刷新</c-button>
       </div>
       <el-table :data="echartInfo.tableData" border class="c-table">
-        <el-table-column :label="item.label" :prop="item.field" align="center" v-for="(item, index) in echartInfo.tableHeader" :key="index" :width="item.label.includes('时间') ? '200x' : 'auto'"></el-table-column>
+        <el-table-column :label="item[echartInfo.tableHeader?.matchField?.nameField]" :prop="item[echartInfo.tableHeader?.matchField?.fieldField]" align="center" v-for="(item, index) in echartInfo.tableHeader.columnList" :key="index" :width="item[echartInfo.tableHeader?.matchField?.nameField]?.includes('时间') ? '200x' : 'auto'"></el-table-column>
       </el-table>
     </div>
 
@@ -28,7 +28,7 @@
           <c-icon i="c-change-view" tip="切换视图" size="16" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleChangeView('fullscreen')"></c-icon>
           <c-icon i="c-copy-text" tip="复制数据" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleCopyData()"></c-icon>
           <c-icon i="c-export-image" tip="导出图片" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportImage()"></c-icon>
-          <c-icon i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportExcel()"></c-icon>
+          <c-icon i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportExcel(echartInfo.tableData, { tableName: (echartInfo.exportFileName || '') + '表', tableHeader: echartInfo.tableHeader })"></c-icon>
           <c-icon i="c-fullscreen-out" tip="退出全屏" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleFullscreenOut()"></c-icon>
         </div>
       </div>
@@ -38,7 +38,7 @@
           <c-button type="primary" height="30" @click="handleCloseTableAndRefresh('fullscreen')">关闭并刷新</c-button>
         </div>
         <el-table :data="echartInfo.tableData" border class="c-table">
-          <el-table-column :label="item.label" :prop="item.field" align="center" v-for="(item, index) in echartInfo.tableHeader" :key="index" :width="item.label.includes('时间') ? '200x' : 'auto'"></el-table-column>
+          <el-table-column :label="item[echartInfoFs.tableHeader?.matchField?.nameField]" :prop="item.field" align="center" v-for="(item, index) in echartInfo.tableHeader.columnList" :key="index" :width="item[echartInfoFs.tableHeader?.matchField?.nameField]?.includes('时间') ? '200x' : 'auto'"></el-table-column>
         </el-table>
       </div>
     </el-dialog>
@@ -113,21 +113,20 @@ async function getEchartInfo() {
 // # 2、处理echart数据
 function handleEchartInfo() {
   let newApiData = JSON.parse(JSON.stringify(apiData.value || {}))
-  let chart = { lData: [], sData: [], tableHeader: { columnList: [], matchField: {} }, tableData: [], color: proxy.$getEchartSeriesColor(), dataRender: 'xyData', }
+  let chart = { dataRender: 'xyData', }
   // 创建系列头
   let factor = [
-    { name: '气温', field: 'temperature', unit: '℃', type: 'line', yAxisIndex: 0 },
-    { name: '降水', field: 'rain', unit: 'mm', type: 'bar', yAxisIndex: 1 }
+    { name: '气温', fieldT: 'temperature', fieldN: 'temperature', unit: '℃', type: 'line', yAxisIndex: 0 },
+    { name: '降水', fieldT: 'rain', fieldN: 'rain', unit: 'mm', type: 'bar', yAxisIndex: 1 }
   ]
-  let kind = [{ name: '济南', field: 'jn' }, { name: '青岛', field: 'qd' }]
+  let kind = [{ name: '济南', fieldT: '济南', fieldN: 'jn' }, { name: '青岛', fieldT: '青岛', fieldN: 'qd' }]
   let xHeader = { nameC: '时间', nameT: '时间', fieldT: 'time', fieldN: 'time', unit: '', }  // nameC-图表例常规名，nameT-表格列常规名，fieldT-api数据的目标字段，filedN-handle数据的新字段，unit-数据单位
   proxy.$makeChartSeries(chart, newApiData, { factor, kind, xHeader, sortType: 'fk' })
 
   // 完善数据
-  proxy.$completeChartData(chart, newApiData, (rowItem, matchData, kindItem) => {
-    chart.tableHeader.columnList.forEach(item => { if (item.kind == kindItem) { rowItem[item.fieldN] = matchData[item.fieldT] } })
+  proxy.$completeChartData(chart, newApiData, (rowItem, matchData, k) => {
+    chart.tableHeader.columnList.forEach(item => { if (item?.kind?.fieldT == k) { rowItem[item.fieldN] = matchData[item.fieldT] } })
   },)
-
 
   // 配置系列体
   let lineSeriesOption = proxy.$getLineEchartOption({ echartInfo, settingStore, getType: 'include', optionList: ['series'] })?.series[0] || {}
@@ -144,7 +143,7 @@ function handleEchartInfo() {
   // 全局赋值
   echartInfo.value = Object.assign({}, echartInfo.value, chart)
   echartInfoFs.value = Object.assign({}, echartInfoFs.value, chart)
-  console.log('集成图', echartInfo.value)
+  // console.log('集成图', echartInfo.value)
   nextTick(() => { initEchart() })
 }
 // ^
@@ -209,29 +208,6 @@ function handleCloseTableAndRefresh(type) {
 }
 // ^
 // # (2) 复制数据
-// echartInfo.value.tableHeader = [
-//   { label: '时间', field: '时间' },
-//   { label: '济南-气温', field: '济南-气温' },
-//   { label: '济南-降水', field: '济南-降水' },
-//   { label: '青岛-气温', field: '青岛-气温' },
-//   { label: '青岛-降水', field: '青岛-降水' },
-// ]
-// echartInfo.value.tableData = [
-//   { '时间': '2024-01-01 12:00:00', '济南-气温': 1, '济南-降水': 10, '青岛-气温': 5, '青岛-降水': 20 },
-//   { '时间': '2024-04-01 12:00:00', '济南-气温': 10, '济南-降水': 30, '青岛-气温': 15, '青岛-降水': 40 },
-//   { '时间': '2024-07-01 12:00:00', '济南-气温': 25, '济南-降水': 120, '青岛-气温': 22, '青岛-降水': 180 },
-//   { '时间': '2024-10-01 12:00:00', '济南-气温': 15, '济南-降水': 40, '青岛-气温': 16, '青岛-降水': 50 },
-// ]
-// 写一个js复制table表格数据文字的函数
-// 1、表头从tableHeader的label取，
-// 2、表格内容从tableData取，其中字段利用tableHeader的field
-// 3、生成表格形式的文本,复制到粘贴板,
-// 4、粘贴后保证一定的数据排列，如表头的每一列和表格内容对应的每一列是左对齐的
-
-// 对于内容的长度判定对齐规则，采取以下规则
-// 1个空格或者英文符号为最低长度。
-// 1个汉字或者中文符号为3倍长度。
-// 1个数字或者英文字母为2倍长度。对上述代码进行修改
 function handleCopyData() {
   const tableHeader = echartInfo.value.tableHeader
   const tableData = echartInfo.value.tableData
@@ -250,12 +226,12 @@ function handleCopyData() {
     return length
   }
   // 获取表头的字段
-  const headers = tableHeader.map(header => header.label)
-  const fields = tableHeader.map(header => header.field)
+  const headers = tableHeader.columnList.map(header => header[tableHeader.matchField.nameField] || header.nameT)
+  const fields = tableHeader.columnList.map(header => header[tableHeader.matchField.fieldField] || header.fieldN)
   // 计算每列的最大宽度（字符数）
-  const columnWidths = tableHeader.map((header, index) => {
+  const columnWidths = tableHeader.columnList.map((header, index) => {
     // 先计算表头的宽度
-    let maxLength = getCharLength(header.label)
+    let maxLength = getCharLength(header.nameT)
     // 然后计算数据行中的最大宽度
     tableData.forEach(row => {
       const field = fields[index]
@@ -286,7 +262,6 @@ function handleCopyData() {
     .then(() => { proxy.$message.success('数据已复制到粘贴板！') })
     .catch(err => { proxy.$message.error('数据复制失败！') })
 }
-
 // ^
 // # (3) 导出图片
 function handleExportImage() {
@@ -295,53 +270,8 @@ function handleExportImage() {
 }
 // ^
 // # (4) 导出表格
-import ExcelJS from 'exceljs'
-function handleExportExcel() {
-  const tableHeader = echartInfo.value.tableHeader
-  const tableData = echartInfo.value.tableData
-  // 创建一个工作簿和工作表
-  const workbook = new ExcelJS.Workbook()
-  const worksheet = workbook.addWorksheet('Sheet1')
-  // 设置表头
-  worksheet.columns = tableHeader.map(header => ({
-    header: header.label,
-    key: header.field,
-    width: 15  // 默认宽度，可以稍后根据内容进行调整
-  }))
-
-  // 添加数据行
-  tableData.forEach(row => { worksheet.addRow(row) })
-
-  // 调整列宽，确保每列宽度足够容纳最长的数据内容
-  worksheet.columns.forEach((column, index) => {
-    let maxLength = 0
-    // 计算每列的最大长度
-    tableData.forEach(row => {
-      const cellValue = row[tableHeader[index].field]
-      maxLength = Math.max(maxLength, (cellValue ? String(cellValue).length : 0))
-    })
-    // 设置列宽，考虑至少为 10，避免过窄
-    column.width = Math.max(maxLength + 2, 10); // 加上 2 是为了留白
-  })
-
-  // 设置单元格对齐方式（居中）
-  worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-    row.eachCell({ includeEmpty: false }, (cell, colNumber) => {
-      cell.alignment = { horizontal: 'center', vertical: 'middle' };
-    })
-  })
-
-  // 导出文件
-  let exportFileName = (echartInfo.value.exportFileName || '') + '表'
-  workbook.xlsx.writeBuffer().then(buffer => {
-    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const url = window.URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = exportFileName + '.xlsx'
-    link.click()
-    window.URL.revokeObjectURL(url)
-  })
+function handleExportExcel(tableData, tableOption) {
+  proxy.$exportExcel(tableData, tableOption)
 }
 // ^
 // # (5) 开启全屏

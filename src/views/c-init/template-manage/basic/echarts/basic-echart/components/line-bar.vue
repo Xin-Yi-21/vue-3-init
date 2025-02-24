@@ -59,17 +59,21 @@ function handleEchartInfo() {
   let chart = { lData: [], sData: [], tableData: [], tableHeader: { columnList: [], matchField: {} }, color: proxy.$getEchartSeriesColor(), dataRender: 'datasetObj' }
   // 创建系列头
   let factor = [
-    { name: '气温', field: 'temperature', unit: '℃', type: 'line', yAxisIndex: 0 },
-    { name: '降水', field: 'rain', unit: 'mm', type: 'bar', yAxisIndex: 1 }
+    { name: '气温', fieldT: 'temperature', fieldN: 'temperature', unit: '℃', type: 'line', yAxisIndex: 0 },
+    { name: '降水', fieldT: 'rain', fieldN: 'rain', unit: 'mm', type: 'bar', yAxisIndex: 1 },
   ]
-  let kind = [{ name: '济南', field: 'jn' }, { name: '青岛', field: 'qd' }]
-  let xHeader = { nameC: '时间', nameT: '时间', fieldT: 'time', fieldN: 'time', unit: '', }  // nameC-图表例常规名，nameT-表格列常规名，fieldT-api数据的目标字段，filedN-handle数据的新字段，unit-数据单位
+  let kind = [{ name: '济南', fieldT: '济南', fieldN: 'jn' }, { name: '青岛', fieldT: '青岛', fieldN: 'qd' }]
+  let xHeader = { nameC: '时间', nameT: '时间', fieldT: 'time', fieldN: 'time', unit: '', }
+
+  // nameC-图表例常规名，nameT-表格列常规名，fieldT-api数据的目标字段，filedN-handle数据的新字段，unit-数据单位
   proxy.$makeChartSeries(chart, newApiData, { factor, kind, xHeader, sortType: 'fk' })
 
   // 完善数据
-  proxy.$completeChartData(chart, newApiData, (rowItem, matchData, kindItem) => {
-    chart.tableHeader.columnList.forEach(item => { if (item.kind == kindItem) { rowItem[item.fieldN] = matchData[item.fieldT] } })
-  },)
+  proxy.$completeChartData(chart, newApiData,
+    // (rowItem, matchData, k) => {
+    //   chart.tableHeader.columnList.forEach(item => { if (item?.kind?.fieldT == k) { rowItem[item.fieldN] = matchData[item.fieldT] } })
+    // },
+  )
 
   // 配置系列体
   let lineSeriesOption = proxy.$getLineEchartOption({ echartInfo, settingStore, getType: 'include', optionList: ['series'] })?.series[0] || {}

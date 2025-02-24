@@ -1,59 +1,73 @@
 // echart 创建系列
 import { $getEnumsLabel } from './common'
-export function $makeChartSeries(chart, apiData, { factor = [], kind = [], xHeader = {}, sortType = 'fk', isTHUnit = true } = {}) {
-  chart.tableHeader.columnList = [xHeader]
+export function $makeChartSeries(chart, apiData, { factor = [], kind = [], xHeader, sortType = 'fk', isTHUnit = true } = {}) {
+  // 初始化
+  chart.lData = []
+  chart.sData = []
+  if (!chart.tableHeader) { chart.tableHeader = {} }
+  if (!chart.tableHeader.columnList || JSON.stringify(chart.tableHeader.columnList) == '[]') { chart.tableHeader.columnList = xHeader ? [xHeader] : [{ nameC: '时间', nameT: '时间', fieldT: 'dataTime', fieldN: 'time' }] }
+  if (!chart.tableHeader.matchField || JSON.stringify(chart.tableHeader.matchField) == '{}') { chart.tableHeader.matchField = { nameField: 'nameT', fieldField: 'fieldN' } }
+  if (!chart.color) { chart.color = $getEchartSeriesColor() }
+
+  // factor-kind 排序
   if (sortType === 'fk') {
     factor.forEach(factorItem => {
-      for (var kindItem in apiData) {
-        let kindName = $getEnumsLabel(kind, kindItem, 'name', 'name')
-        let kindField = $getEnumsLabel(kind, kindItem, 'field', 'name')
+      // 特殊配置：A代表适应接口改装
+      for (var k in apiData) {
+        let kindItem = {
+          name: $getEnumsLabel(kind, k, 'name', 'fieldT') || (k === 'A' ? '' : k),
+          fieldT: $getEnumsLabel(kind, k, 'fieldT', 'fieldT') || (k === 'A' ? '' : k),
+          fieldN: $getEnumsLabel(kind, k, 'fieldN', 'fieldT') || (k === 'A' ? '' : k)
+        }
         let thItem = {
-          nameC: factorItem.name + (kindName ? `-${kindName}` : ''),                                                // 图表例常规名
-          nameT: factorItem.name + (kindName ? `-${kindName}` : '') + (isTHUnit ? ` (${factorItem.unit})` : ''),    // 表格列常规名
-          fieldT: `${factorItem.field}`,                                                                            // api数据的目标字段
-          fieldN: factorItem.field + (kindField ? `-${kindField}` : ''),                                            // handle数据的新字段
+          nameC: factorItem.name + (kindItem.name ? `-${kindItem.name}` : ''),                                                // 图表例常规名
+          nameT: factorItem.name + (kindItem.name ? `-${kindItem.name}` : '') + (isTHUnit ? ` (${factorItem.unit})` : ''),    // 表格列常规名
+          fieldT: `${factorItem.fieldT}`,                                                                           // api数据的目标字段
+          fieldN: factorItem.fieldN + (kindItem.fieldN ? `-${kindItem.fieldN}` : ''),                                         // handle数据的新字段
           unit: `${factorItem.unit}`,                                                                               // 数据单位
           factor: factorItem,                                                                                       // 要素性质
           kind: kindItem,                                                                                           // 种类性质
         }
         chart.lData.push(thItem.nameC)
-        chart.sData.push(Object.assign({}, factorItem, { name: thItem.nameC, field: thItem.fieldN, id: thItem.fieldN }))
+        chart.sData.push(Object.assign({}, factorItem, { name: thItem.nameC, id: thItem.fieldN }))
         chart.tableHeader.columnList.push(thItem)
       }
     })
-  } else if (sortType === 'kf') {
-    for (var kindItem in apiData) {
-      let kindName = $getEnumsLabel(kind, kindItem, 'name', 'name')
-      let kindField = $getEnumsLabel(kind, kindItem, 'field', 'name')
+  }
+  // kind-factor 排序
+  else if (sortType === 'kf') {
+    for (var k in apiData) {
+      let kindItem = {
+        name: $getEnumsLabel(kind, k, 'name', 'fieldT') || (k === 'A' ? '' : k),
+        fieldT: $getEnumsLabel(kind, k, 'fieldT', 'fieldT') || (k === 'A' ? '' : k),
+        fieldN: $getEnumsLabel(kind, k, 'fieldN', 'fieldT') || (k === 'A' ? '' : k)
+      }
       factor.forEach(factorItem => {
         let thItem = {
-          nameC: (kindName ? `${kindName}-` : '') + factorItem.name,                                                // 图表例常规名
-          nameT: (kindName ? `${kindName}-` : '') + factorItem.name + (isTHUnit ? ` (${factorItem.unit})` : ''),    // 表格列常规名
-          fieldT: `${factorItem.field}`,                                                                            // api数据的目标字段
-          fieldN: (kindField ? `${kindField}-` : '') + factorItem.field,                                            // handle数据的新字段
+          nameC: (kindItem.name ? `${kindItem.name}-` : '') + factorItem.name,                                                // 图表例常规名
+          nameT: (kindItem.name ? `${kindItem.name}-` : '') + factorItem.name + (isTHUnit ? ` (${factorItem.unit})` : ''),    // 表格列常规名
+          fieldT: `${factorItem.fieldT}`,                                                                            // api数据的目标字段
+          fieldN: (kindItem.fieldN ? `${kindItem.fieldN}-` : '') + factorItem.fieldN,                                            // handle数据的新字段
           unit: `${factorItem.unit}`,                                                                               // 数据单位
           factor: factorItem,                                                                                       // 要素性质
           kind: kindItem,                                                                                           // 种类性质
         }
         chart.lData.push(thItem.nameC)
-        chart.sData.push(Object.assign({}, factorItem, { name: thItem.nameC, field: thItem.fieldN }))
+        chart.sData.push(Object.assign({}, factorItem, { name: thItem.nameC, id: thItem.fieldN }))
         chart.tableHeader.columnList.push(thItem)
       })
     }
   }
-  chart.tableHeader.matchField = { nameField: 'nameT', fieldField: 'fieldN' }
 }
 
 // echart 补全数据
-export function $completeChartData(chart, data, callback = null,) {
-  let apiData = JSON.parse(JSON.stringify(data))
+export function $completeChartData(chart, apiData, callback = null, getOption) {
   chart.xData = []
-  chart.xyData = {}
-  chart.tabelData = []
+  chart.tableData = []
+
   let xFieldT = chart.tableHeader?.columnList[0]?.fieldT
   let xFieldN = chart.tableHeader?.columnList[0]?.fieldN
-  let fieldField = chart.tableHeader?.matchField?.fieldField
-  let nameField = chart.tableHeader?.matchField?.nameField
+
   // 处理x轴
   for (var k in apiData) {
     apiData[k].forEach(item => { chart.xData.push(item[xFieldT]) })
@@ -61,30 +75,42 @@ export function $completeChartData(chart, data, callback = null,) {
   chart.xData = this.$uniqueArray(chart.xData)
   let isTimeField = chart.xData.some(item => this.$dayjs(item).isValid())
   this.$sortArray(chart.xData, isTimeField ? 'time' : '')
-
   // 处理表格
-  chart.xData.forEach((item1, index1) => {
-    chart.tableData[index1] = { [xFieldN]: item1 }
+  chart.xData.forEach((xDataItem, xDataIndex) => {
+    chart.tableData[xDataIndex] = { [xFieldN]: xDataItem }
     for (var k in apiData) {
-      let matchItem = apiData[k].find(item2 => item1 === item2[xFieldT]) || {}
+      let matchData = apiData[k].find(apiDataItem => xDataItem === apiDataItem[xFieldT]) || {}
       if (callback && typeof callback === 'function') {
-        callback(chart.tableData[index1], matchItem, k)
+        callback(chart.tableData[xDataIndex], matchData, k)
+      } else {
+        chart.tableHeader.columnList.forEach(thcItem => {
+          if (thcItem?.kind?.fieldT == k) {
+            chart.tableData[xDataIndex][thcItem.fieldN] = matchData[thcItem.fieldT]
+          }
+        })
       }
     }
   })
 
-  // 处理dataset数据
-  chart.datasetObj = { dimensions: chart.tableHeader.columnList.map(item => item[fieldField]), source: JSON.parse(JSON.stringify(chart.tableData)) }
-  chart.datasetArr = { source: this.$transformEchartDataset(chart.datasetObj.source) }
-
+  // 处理datasetObj数据
+  if (!getOption || getOption.includes('datasetObj')) {
+    chart.datasetObj = { dimensions: chart.tableHeader.columnList.map(item => item.fieldN), source: JSON.parse(JSON.stringify(chart.tableData)) }
+  }
+  // 处理datasetArr数据
+  if (!getOption || getOption.includes('datasetArr')) {
+    if (!chart.datasetObj) { chart.datasetObj = { dimensions: chart.tableHeader.columnList.map(item => item.fieldN), source: JSON.parse(JSON.stringify(chart.tableData)) } }
+    chart.datasetArr = { source: this.$transformEchartDataset(chart.datasetObj.source) }
+  }
   // 处理xyData
-  chart.tableHeader.columnList.slice(1).forEach(item1 => {
-    chart.xyData[item1[fieldField]] = []
-    chart.tableData.forEach(item2 => {
-      chart.xyData[item1[fieldField]].push({ value: [item2[xFieldT], item2[item1[fieldField]]] })
+  if (!getOption || getOption.includes('xyData')) {
+    chart.xyData = {}
+    chart.tableHeader.columnList.slice(1).forEach(item1 => {
+      chart.xyData[item1.fieldN] = []
+      chart.tableData.forEach(item2 => {
+        chart.xyData[item1.fieldN].push({ value: [item2[xFieldT], item2[item1.fieldN]] })
+      })
     })
-  })
-
+  }
   return chart
 }
 
@@ -158,7 +184,10 @@ export function $getEchartSeriesColor() {
 }
 
 // 折线图配置 echart-line-option
+import useSettingStore from '@/store/system/setting'
+const $settingStore = useSettingStore()
 export function $getLineEchartOption({ echartInfo, settingStore, getType, optionList }) {
+  !settingStore && (settingStore = $settingStore)
   let option = {
     title: { text: '', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
     grid: { top: 80, left: 50, right: 50, bottom: 10, containLabel: true, },
@@ -176,8 +205,8 @@ export function $getLineEchartOption({ echartInfo, settingStore, getType, option
         let end = ` </div></div>`
         let content = ''
         params.forEach(item => {
-          let unit = ' ' + echartInfo.value.sData?.[item.seriesIndex]?.unit
-          let field = echartInfo.value?.sData?.[item.seriesIndex]?.id || (echartInfo.value?.tableHeader?.find(tableHeaderItem => tableHeaderItem.nameN == item.seriesName))?.fieldN
+          let unit = ' ' + echartInfo.value?.sData?.[item.seriesIndex]?.unit
+          let field = echartInfo.value?.sData?.[item.seriesIndex]?.id || (echartInfo.value?.tableHeader?.columnList?.find(thcItem => thcItem.nameC == item.seriesName))?.fieldN
           let itemData = ''
           if (echartInfo.value.dataRender === 'xyData') {
             itemData = item.data?.value?.[1] != undefined ? item.data?.value?.[1] + unit : '暂无数据'
@@ -242,6 +271,7 @@ export function $getLineEchartOption({ echartInfo, settingStore, getType, option
 
 // 柱状图配置 echart-bar-option
 export function $getBarEchartOption({ echartInfo, settingStore, getType, optionList }) {
+  !settingStore && (settingStore = $settingStore)
   let option = {
     title: { text: '', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
     grid: { top: 70, left: 50, right: 50, bottom: 10, containLabel: true, },
@@ -259,8 +289,8 @@ export function $getBarEchartOption({ echartInfo, settingStore, getType, optionL
         let end = ` </div></div>`
         let content = ''
         params.forEach(item => {
-          let unit = ' ' + echartInfo.value.sData?.[item.seriesIndex]?.unit
-          let field = echartInfo.value?.sData?.[item.seriesIndex]?.field || (echartInfo.value?.tableHeader?.find(tableHeaderItem => tableHeaderItem.nameN == item.seriesName))?.fieldN
+          let unit = ' ' + echartInfo.value?.sData?.[item.seriesIndex]?.unit
+          let field = echartInfo.value?.sData?.[item.seriesIndex]?.id || (echartInfo.value?.tableHeader?.columnList?.find(thcItem => thcItem.nameC == item.seriesName))?.fieldN
           let itemData = ''
           if (echartInfo.value.dataRender === 'xyData') {
             itemData = item.data?.value?.[1] != undefined ? item.data?.value?.[1] + unit : '暂无数据'
@@ -325,6 +355,7 @@ export function $getBarEchartOption({ echartInfo, settingStore, getType, optionL
 
 // 缩放配置 echart-dataZoom-option
 export function $getDataZoomEchartOption({ echartInfo, settingStore, getType, optionList }) {
+  !settingStore && (settingStore = $settingStore)
   let option = {
     grid: { bottom: 40, },
     dataZoom: [{
