@@ -84,7 +84,7 @@ export function $completeChartData(chart, apiData, callback = null, getOption) {
         callback(chart.tableData[xDataIndex], matchData, k)
       } else {
         chart.tableHeader.columnList.forEach(thcItem => {
-          if (thcItem?.kind?.fieldT == k) {
+          if (thcItem?.kind?.fieldT == k || 'A') {
             chart.tableData[xDataIndex][thcItem.fieldN] = matchData[thcItem.fieldT]
           }
         })
