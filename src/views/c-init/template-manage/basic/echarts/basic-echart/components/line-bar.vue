@@ -90,7 +90,7 @@ function handleEchartInfo() {
   // 全局赋值
   echartInfo.value = Object.assign({}, echartInfo.value, chart)
   echartInfoFs.value = Object.assign({}, echartInfoFs.value, chart)
-  console.log('折线柱状图', echartInfo.value)
+  // console.log('折线柱状图', echartInfo.value)
   nextTick(() => { initEchart() })
 }
 // ^
