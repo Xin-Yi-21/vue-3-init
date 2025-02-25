@@ -23,6 +23,7 @@ function echartDataGet() {
           { time: '2024-04-01 12:00:00', temperature: 10, rain: 30, windDirection: 220, windSpeed: 3, humidity: 50, pressure: 1015, },
           { time: '2024-07-01 12:00:00', temperature: 25, rain: 120, windDirection: 150, windSpeed: 2, humidity: 80, pressure: 1010, },
           { time: '2024-10-01 12:00:00', temperature: 15, rain: 40, windDirection: 300, windSpeed: 4, humidity: 60, pressure: 1025, },
+          { time: '2024-12-01 12:00:00', temperature: 15, rain: 40, windDirection: 300, windSpeed: 4, humidity: 60, pressure: 1025, },
         ],
         '青岛': [
           { time: '2024-01-01 12:00:00', temperature: 5, rain: 20, windDirection: 320, windSpeed: 5, humidity: 70, pressure: 1020, },
@@ -56,16 +57,14 @@ async function getEchartInfo() {
 // # 2、处理echart数据
 function handleEchartInfo() {
   let newApiData = JSON.parse(JSON.stringify(apiData.value || {}))
-  let chart = { lData: [], sData: [], tableData: [], tableHeader: { columnList: [], matchField: {} }, color: proxy.$getEchartSeriesColor(), dataRender: 'datasetObj' }
-  // 创建系列头
+  let chart = { dataRender: 'datasetObj' }
+  // 创建系列头 
   let factor = [
     { name: '气温', fieldT: 'temperature', fieldN: 'temperature', unit: '℃', type: 'line', yAxisIndex: 0 },
     { name: '降水', fieldT: 'rain', fieldN: 'rain', unit: 'mm', type: 'bar', yAxisIndex: 1 },
   ]
   let kind = [{ name: '济南', fieldT: '济南', fieldN: 'jn' }, { name: '青岛', fieldT: '青岛', fieldN: 'qd' }]
   let xHeader = { nameC: '时间', nameT: '时间', fieldT: 'time', fieldN: 'time', unit: '', }
-
-  // nameC-图表例常规名，nameT-表格列常规名，fieldT-api数据的目标字段，filedN-handle数据的新字段，unit-数据单位
   proxy.$makeChartSeries(chart, newApiData, { factor, kind, xHeader, sortType: 'fk' })
 
   // 完善数据
@@ -91,7 +90,7 @@ function handleEchartInfo() {
   // 全局赋值
   echartInfo.value = Object.assign({}, echartInfo.value, chart)
   echartInfoFs.value = Object.assign({}, echartInfoFs.value, chart)
-  // console.log('折线柱状图', echartInfo.value)
+  console.log('折线柱状图', echartInfo.value)
   nextTick(() => { initEchart() })
 }
 // ^
