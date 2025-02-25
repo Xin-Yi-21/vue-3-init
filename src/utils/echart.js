@@ -1,6 +1,6 @@
 // echart 创建系列
 import { $getEnumsLabel } from './common'
-export function $makeChartSeries(chart, apiData, { factor = [], kind = [], xHeader, sortType = 'fk', isTHUnit = true } = {}) {
+export function $makeChartSeries(chart, apiData, { factor = [], kind = [], xHeader, sortType = 'fk', isUnit = true } = {}) {
   // 初始化
   chart.lData = []
   chart.sData = []
@@ -21,7 +21,7 @@ export function $makeChartSeries(chart, apiData, { factor = [], kind = [], xHead
         }
         let thItem = {
           nameC: factorItem.name + (kindItem.name ? `-${kindItem.name}` : ''),                                                // 图表例常规名
-          nameT: factorItem.name + (kindItem.name ? `-${kindItem.name}` : '') + (isTHUnit ? ` (${factorItem.unit})` : ''),    // 表格列常规名
+          nameT: factorItem.name + (kindItem.name ? `-${kindItem.name}` : '') + (isUnit ? `${factorItem.unit ? `(${factorItem.unit})` : ''}` : ''),    // 表格列常规名
           fieldT: `${factorItem.fieldT}`,                                                                           // api数据的目标字段
           fieldN: factorItem.fieldN + (kindItem.fieldN ? `-${kindItem.fieldN}` : ''),                                         // handle数据的新字段
           unit: `${factorItem.unit}`,                                                                               // 数据单位
@@ -45,7 +45,7 @@ export function $makeChartSeries(chart, apiData, { factor = [], kind = [], xHead
       factor.forEach(factorItem => {
         let thItem = {
           nameC: (kindItem.name ? `${kindItem.name}-` : '') + factorItem.name,                                                    // 图表例常规名
-          nameT: (kindItem.name ? `${kindItem.name}-` : '') + factorItem.name + (isTHUnit ? ` (${factorItem.unit})` : ''),        // 表格列常规名
+          nameT: (kindItem.name ? `${kindItem.name}-` : '') + factorItem.name + (isUnit ? `${factorItem.unit ? `(${factorItem.unit})` : ''}` : ''),        // 表格列常规名
           fieldT: `${factorItem.fieldT}`,                                                                                         // api数据的目标字段
           fieldN: (kindItem.fieldN ? `${kindItem.fieldN}-` : '') + factorItem.fieldN,                                             // handle数据的新字段
           unit: `${factorItem.unit}`,                                                                                             // 数据单位
@@ -85,7 +85,7 @@ export function $completeChartData(chart, apiData, callback = null, getOption) {
         callback(chart.tableData[xDataIndex], matchData, k)
       } else {
         chart.tableHeader.columnList.forEach(thcItem => {
-          if (thcItem?.kind?.fieldT == k || thcItem?.kind?.fieldT == 'A') {
+          if (thcItem?.kind?.fieldT == k || k === 'A') {
             chart.tableData[xDataIndex][thcItem.fieldN] = matchData[thcItem.fieldT]
           }
         })
