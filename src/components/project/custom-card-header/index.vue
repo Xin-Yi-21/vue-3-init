@@ -1,5 +1,5 @@
 <template>
-  <div class="c-card-header" :style="border ? `border-bottom:1px solid var(--bcp)` : ''">
+  <div class="c-card-header" :style="border ? `border-bottom:1px solid var(--bcs)` : ''">
     <div class="left">
       <c-card-title v-if="title" :title="title" :icon="icon"></c-card-title>
       <slot name="left"></slot>
@@ -40,6 +40,10 @@ const props = defineProps({
     align-items: center;
     height: 100%;
     margin-right: auto;
+
+    :deep(.c-card-title) {
+      padding: 0 10px 0 0;
+    }
   }
 
   .center {

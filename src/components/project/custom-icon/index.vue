@@ -1,37 +1,120 @@
 <template>
-  <i :class="{ 'c-icon': true, 'is-disabled': disabled }" :style="`color:${color};font-size:${size}px;cursor:${cursor};--hoverColor:${hoverColor || color};`">
-    <el-tooltip trigger="hover" :offset="5" placement="top" effect="light" popper-class="c-icon-tooltip" v-if="tip && showType == 'el'" :hide-after="0">
-      <svg-icon :icon-class="i"></svg-icon>
-      <template #content> <span :style="`color:${hoverColor || color};`">{{ tip }}</span></template>
+  <i ref="cIconRef" :class="['c-icon', i, button ? 'is-button' : '', disabled ? 'is-disabled' : '', loading ? 'is-loading' : '',]" :style="`color:${color};font-size:${size}px;--cursor:${cursor};--hoverColor:${hoverColor || color};`">
+    <el-tooltip v-if="tip && showType == 'el'" :popper-class="['c-icon-tooltip', tipClass]" v-bind="$attrs" :placement="placement" :offset="offset" :hide-after="1">
+      <template #default>
+        <svg-icon :icon-class="i"></svg-icon>
+      </template>
+      <template #content>
+        <span :style="`color:${hoverColor || color};`">{{ tip }}</span>
+      </template>
     </el-tooltip>
-    <template v-else>
+
+    <template v-if="showType == 'c'">
       <svg-icon :icon-class="i"> </svg-icon>
-      <span class="icon-tip" :style="`top:${topTipPx}px`" v-if="tip">{{ tip }}</span>
+      <span class="icon-tip" :style="`transform:translate(-50%,-${offset}px)`" v-if="tip">{{ tip }}</span>
     </template>
+
+    <el-popover v-if="showType == 'ep'" trigger="click" :popper-class="['c-icon-popover', tipClass]" v-bind="$attrs" :placement="placement">
+      <template #default>
+        <slot name="tip"></slot>
+      </template>
+      <template #reference>
+        <svg-icon :icon-class="i"> </svg-icon>
+      </template>
+    </el-popover>
   </i>
 </template>
 
 <script setup>
+// # 一、综合
+// props
 const props = defineProps({
   // 引用svg文件名称
   i: { type: String, default: '', },
   // 图标颜色
   color: { type: String, default: 'inherit', },
-  // 图标悬浮颜色
+  // 图标悬浮色
   hoverColor: { type: String, default: '', },
   // 图标大小
   size: { type: [Number, String], default: '', },
   // 图标提示
   tip: { type: String, default: '', },
+  // 按钮
+  button: { type: Boolean, default: false, },
   // 禁用
   disabled: { type: Boolean, default: false, },
-  // 间距
-  topTipPx: { type: [Number, String], default: -1, },
-  // 显示类型
-  showType: { type: String, default: 'custom', },
-  // 悬浮效果
+  // 加载
+  loading: { type: Boolean, default: false, },
+  // 鼠标效果
   cursor: { type: String, default: 'auto', },
+  // 显示类型
+  showType: { type: String, default: 'c', },
+  // 显示类名
+  tipClass: { type: String, default: '' },
+  // 显示位置
+  placement: { type: String, default: 'top' },
+  // 显示距离
+  offset: { type: [String, Number], default: 5 }
 })
+// ^
+// # 二、模块功能
+const EVENTS = [
+  'click', 'dblclick',
+  'mousedown', 'mouseup', 'mouseenter', 'mouseleave', 'mousemove',
+  'contextmenu',
+  'touchstart', 'touchmove', 'touchend', 'touchcancel',
+  'keydown', 'keyup', 'keypress'
+]
+const cIconRef = ref(null)
+// # 1、遮罩的创建和移除
+function createMask(el, className) {
+  let maskEl = el.querySelector(`.${className}`)
+  if (!maskEl) {
+    maskEl = document.createElement('div')
+    maskEl.className = className
+    if (!el.style.position || el.style.position === 'static') {
+      el.style.position = 'relative'
+    }
+    EVENTS.forEach(eventName => {
+      maskEl.addEventListener(eventName, e => {
+        e.preventDefault()
+        e.stopPropagation()
+      }, { passive: false })
+    })
+    el.appendChild(maskEl)
+  }
+}
+function removeMask(el, className) {
+  const maskEl = el.querySelector(`.${className}`)
+  if (maskEl) {
+    maskEl.remove()
+  }
+}
+// ^
+// ^
+
+// # 三、机制
+onMounted(() => {
+  nextTick(() => {
+    if (props.disabled && cIconRef.value) {
+      createMask(cIconRef.value, 'c-icon-disabled-mask')
+    }
+    if (props.loading && cIconRef.value) {
+      createMask(cIconRef.value, 'c-icon-loading-mask')
+    }
+  })
+})
+watch(() => props.disabled, (disabled) => {
+  if (!cIconRef.value) return
+  disabled ? createMask(cIconRef.value, 'c-icon-disabled-mask') : removeMask(cIconRef.value, 'c-icon-disabled-mask')
+})
+
+watch(() => props.loading, (loading) => {
+  if (!cIconRef.value) return
+  loading ? createMask(cIconRef.value, 'c-icon-loading-mask') : removeMask(cIconRef.value, 'c-icon-loading-mask')
+})
+// ^
+
 </script>
 
 <style lang="scss" scoped>
@@ -42,22 +125,11 @@ const props = defineProps({
   font-size: calc(var(--cfs) + 2px);
   font-style: normal;
   font-weight: 400;
-  // color: var(--color);
-
-  &:hover {
-    * {
-      color: var(--hoverColor);
-    }
-  }
-
-  &[class*="is-disabled"] {
-    cursor: not-allowed !important;
-    pointer-events: none;
-    opacity: 0.6;
-  }
+  cursor: var(--cursor);
 
   .svg-icon {
     font-size: inherit;
+    outline: none;
   }
 
   .svg-icon:hover~.icon-tip {
@@ -67,13 +139,118 @@ const props = defineProps({
   .icon-tip {
     position: absolute;
     display: none;
-    top: -1px;
+    top: -12px;
     left: 50%;
-    transform: translate(-50%, calc(-100% - 2px));
     white-space: nowrap;
     font-size: 12px;
-    line-height: 12px;
+    line-height: 1 !important;
     z-index: 9999;
+  }
+
+  &:not(.is-disabled):not(.is-loading):hover {
+    * {
+      color: var(--hoverColor);
+    }
+  }
+
+  &.is-button {
+    &:not(.is-disabled):not(.is-loading) {
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.05); // 轻微放大
+      }
+    }
+  }
+
+  &.is-disabled {
+    opacity: 0.6;
+
+    :deep(.c-icon-disabled-mask) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      cursor: not-allowed;
+      z-index: 9999;
+    }
+  }
+
+  &.is-loading {
+    animation: breathAnim 1.6s ease-in-out infinite;
+
+    :deep(.c-icon-loading-mask) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      cursor: wait;
+      z-index: 9999;
+    }
+
+    // 呼吸动画
+    @keyframes breathAnim {
+      0% {
+        transform: scale(1);
+        opacity: 0.6;
+      }
+
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 0.6;
+      }
+    }
+
+
+  }
+}
+</style>
+<style lang="scss">
+// 全局样式
+.c-icon-tooltip {
+  padding: 0;
+  border: 0 !important;
+  background-color: transparent !important;
+  line-height: 1 !important;
+  color: var(--fcp);
+
+  .el-popper__arrow {
+    display: none;
+  }
+}
+
+.c-icon-popover {
+  padding: 9px !important;
+  line-height: 20px !important;
+  border: 1px solid var(--tc) !important;
+  color: var(--fcs);
+
+  .el-popper__arrow {
+    &::before {
+      border: 1px solid var(--tc) !important;
+    }
+  }
+
+  &.c-icon-info {
+    .info {
+      font-size: 14px;
+      color: #FF6100;
+
+      .info-item {
+        display: flex;
+        align-items: center;
+        height: 20px;
+        line-height: 20px;
+        font-size: 12px;
+      }
+    }
   }
 }
 </style>

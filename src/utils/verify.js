@@ -66,6 +66,59 @@ export function numberVerify(rule, value, callback) {
   else { callback() }
 }
 
+// 数字验证新
+export function numberVerifyNew(options = {}) {
+  const {
+    rowData = {},
+    isAllowEmpty = true,
+    decimalPlaces = 3,
+    min = 0,
+    max = null,
+
+    isAllowEmptyMessage = '不能为空',
+    decimalPlacesMessage,
+    minMessage,
+    maxMessage
+  } = options
+
+  return function (rule, value, callback) {
+    // 1、空值是否通过，默认通过
+    if (value === '' || value === null || value === undefined) {
+      return isAllowEmpty ? callback() : callback(new Error(isAllowEmptyMessage))
+    }
+    // 2、数字
+    const num = Number(value)
+    if (isNaN(num)) {
+      return callback(new Error('请输入数字'))
+    }
+    // 3、位数
+    if (decimalPlaces === 0) {
+      const integerRegex = /^-?\d+$/;
+      if (!integerRegex.test(value)) {
+        return callback(new Error(decimalPlacesMessage || '请输入整数'))
+      }
+    } else {
+      const decimalRegex = new RegExp(`^-?\\d+(\\.\\d{1,${decimalPlaces}})?$`)
+      if (!decimalRegex.test(value)) {
+        return callback(new Error(decimalPlacesMessage || `请输入最多${decimalPlaces}位小数的数字`))
+      }
+    }
+    // 4、下限
+    const actualMin = typeof min === 'function' ? min(rowData) : min
+    if (num < actualMin) {
+      return callback(new Error(minMessage || `请输入不小于${actualMin}的数字`))
+    }
+    // 5、上限
+    const actualMax = typeof max === 'function' ? max(rowData) : max
+    if (actualMax !== null && num > actualMax) {
+      return callback(new Error(maxMessage || `请输入不大于${actualMax}的数字`))
+    }
+    callback()
+  }
+}
+
+
+
 // 非负数
 export function nonNegativeNumberVerify(rule, value, callback) {
   let exp = /^[+-]?\d*(\.\d*)?(e[+-]?\d+)?$/

@@ -1,4 +1,4 @@
-import useTagStore from '@/store/system/tag'
+import useTagStore from '@/store/framework/tag'
 import router from '@/router'
 
 export default {

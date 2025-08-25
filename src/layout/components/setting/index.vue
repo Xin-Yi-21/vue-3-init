@@ -78,7 +78,7 @@
 
 <script setup>
 // 一、综合初始化
-import useSettingStore from '@/store/system/setting'
+import useSettingStore from '@/store/framework/setting'
 import { handleFixHeader, handleFullScreen } from '@/utils/setting'
 
 const { proxy } = getCurrentInstance()

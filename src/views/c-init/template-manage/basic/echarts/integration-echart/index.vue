@@ -47,7 +47,7 @@
 
 <script setup>
 // # 一、综合
-import useSettingStore from '@/store/system/setting'
+import useSettingStore from '@/store/framework/setting'
 import { nextTick } from 'vue'
 const settingStore = useSettingStore()
 const { proxy } = getCurrentInstance()

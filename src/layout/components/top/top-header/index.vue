@@ -41,8 +41,8 @@
 </template>
 <script setup>
 // 一、综合初始化
-import useUserStore from '@/store/system/user'
-import useSettingStore from '@/store/system/setting'
+import useUserStore from '@/store/project/user'
+import useSettingStore from '@/store/framework/setting'
 import Breadcrumb from '@/components/system/breadcrumb'
 
 const { proxy } = getCurrentInstance()

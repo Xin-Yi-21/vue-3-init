@@ -3,13 +3,19 @@
   box-sizing: border-box;
   // color: var(--fcp);
   // font-family: Microsoft YaHei;
-  // font-size: 14px;
+  font-family: Source Han Sans CN;
+  // line-height: 1;
+  &:not([class^='el-']):not([class*=' el-']) {
+    line-height: 1;
+  }
 }
 // body属性
 body {
   overflow: auto;
   height: 100%;
   margin: 0;
+  font-size: 14px;
+  // scrollbar-gutter: stable;
   // 滚动条大小
   &::-webkit-scrollbar {
     display: block;
@@ -67,7 +73,7 @@ body {
 
 // 竖向滚动
 .x-scroll {
-  overflow: auto hidden;
+  overflow: auto hidden !important;
 
   // 滚动条大小
   &::-webkit-scrollbar {

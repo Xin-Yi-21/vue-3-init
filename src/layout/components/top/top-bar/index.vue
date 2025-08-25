@@ -8,7 +8,7 @@
 <script setup>
 import Hamburger from '@/components/system/hamburger'
 import Breadcrumb from '@/components/system/breadcrumb'
-import useSettingStore from '@/store/system/setting'
+import useSettingStore from '@/store/framework/setting'
 const settingStore = useSettingStore()
 const handleLeftNav = () => {
   settingStore.leftNav.isCollapse = !settingStore.leftNav.isCollapse

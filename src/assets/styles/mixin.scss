@@ -1,0 +1,26 @@
+// 二、mixin
+@mixin acw($selector: '&', $amount: 1, $mode: 'repeat') {
+  @if $amount <= 0 {
+    #{$selector} {
+      @content;
+    }
+  } @else if $mode == 'repeat' {
+    // 增加选择器权重：+ 选择器权重 * amount
+    $result: null;
+    @for $i from 1 through $amount {
+      $result: if($i == 1, $selector, #{$result}#{$selector});
+    }
+    #{$result} {
+      @content;
+    }
+  } @else if $mode == 'nth' {
+    // 增加选择器权重：+ 10 * amount
+    $suffix: '';
+    @for $i from 1 through $amount {
+      $suffix: $suffix + ':nth-child(n)';
+    }
+    #{$selector}#{$suffix} {
+      @content;
+    }
+  }
+}

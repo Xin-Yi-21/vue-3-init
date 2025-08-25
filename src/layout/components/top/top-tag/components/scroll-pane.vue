@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import useTagStore from '@/store/system/tag'
+import useTagStore from '@/store/framework/tag'
 
 const tagAndTagSpacing = ref(4);
 const { proxy } = getCurrentInstance();

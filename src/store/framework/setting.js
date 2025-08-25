@@ -1,6 +1,6 @@
 import defaultSetting from '@/setting'
 import { handleThemeStyle, handleThemeColor, handleThemeSize } from '@/utils/theme'
-const { isDynamicTitle, themeStyle, themeColor, themeSize, topHeader, leftNav, topNav, topBar, topTag, isFullScreen } = defaultSetting
+const { isDynamicTitle, themeStyle, themeColor, themeSize, topHeader, leftNav, topNav, topBar, topTag, isTemplateManage, isFullScreen } = defaultSetting
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 const useSettingStore = defineStore('setting', {
   state: () => ({
@@ -27,6 +27,7 @@ const useSettingStore = defineStore('setting', {
     themeColor: storageSetting.themeColor === undefined ? themeColor : storageSetting.themeColor,
     themeSize: storageSetting.themeSize === undefined ? themeSize : storageSetting.themeSize,
     theme: {},
+    isTemplateManage: storageSetting.isTemplateManage === undefined ? isTemplateManage : storageSetting.isTemplateManage,
     isDynamicTitle: storageSetting.isDynamicTitle === undefined ? isDynamicTitle : storageSetting.isDynamicTitle,
     // isFullScreen: storageSetting.isFullScreen === undefined ? isFullScreen : storageSetting.isFullScreen,
   }),
@@ -56,7 +57,7 @@ const useSettingStore = defineStore('setting', {
     },
     // 设置主题风格
     setThemeStyle(value) {
-      handleThemeStyle(this.themeStyle)
+      handleThemeStyle(this.themeStyle, this.theme)
     },
     // 设置主题颜色
     setThemeColor(value) {
@@ -150,19 +151,21 @@ const useSettingStore = defineStore('setting', {
     // 设置网页标题
     setTitle(title) {
       this.routeTitle = title
-      let defaultTitle = window?.cEnv?.VITE_APP_TITLE || ''
-      if (this.isDynamicTitle) {
-        document.title = this.routeTitle + (defaultTitle ? ` - ${defaultTitle}` : '')
-      } else {
-        document.title = defaultTitle
-      }
+      // let stationName = useStationStore().currentStation?.stationName || ''
+
+      // let defaultTitle = window?.cEnv?.VITE_APP_TITLE || ''
+      // if (this.isDynamicTitle) {
+      //   document.title = (stationName ? `${stationName} - ` : '') + this.routeTitle + (defaultTitle ? ` - ${defaultTitle}` : '')
+      // } else {
+      //   document.title = defaultTitle
+      // }
     },
   },
   persist: {
     key: 'setting',                          // 默认store.$id
-    storage: localStorage,                 // 默认localStorage存储
-    pick: ['theme'],              // 指定要持久化的state
-    // omit: ['backendEnums.x'],           // 指定不持久化的state
+    storage: localStorage,                   // 默认localStorage存储
+    pick: ['theme'],                         // 指定要持久化的state
+    // omit: ['backendEnums.x'],             // 指定不持久化的state
   }
 })
 

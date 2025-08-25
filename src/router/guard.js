@@ -1,13 +1,17 @@
-import router from '@/router'
+import router from '@/router/index.js'
 import { ElMessage } from 'element-plus'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 import { isHttp } from '@/utils/validate'
 import { isRelogin } from '@/utils/request'
-import useUserStore from '@/store/system/user'
-import useSettingStore from '@/store/system/setting'
-import useMenuStore from '@/store/system/menu'
+
+// import useStore from '@/store'
+// const { menuStore } = useStore()
+
+import useUserStore from '@/store/project/user'
+import useSettingStore from '@/store/framework/setting'
+import useMenuStore from '@/store/framework/menu'
 
 NProgress.configure({ showSpinner: false })
 
@@ -18,7 +22,8 @@ router.beforeEach((to, from, next) => {
   NProgress.start()
   to.meta.title && useSettingStore().setTitle(to.meta.title)
   if (!isRoutesGenerated) {
-    useMenuStore().generateRoutes().then(accessRoutes => {
+    let userInfo = { permission: [], role: [] }
+    useMenuStore().generateRoutes(userInfo).then(accessRoutes => {
       // console.log('查accessRoutes', accessRoutes)
       accessRoutes.forEach(route => {
         if (!isHttp(route.path)) {
@@ -26,7 +31,7 @@ router.beforeEach((to, from, next) => {
         }
       })
       isRoutesGenerated = true
-      next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+      next({ ...to, replace: true })   // hack方法 确保addRoutes已完成
     })
   } else {
     next()

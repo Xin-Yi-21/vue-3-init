@@ -1,11 +1,12 @@
 <template>
-  <div class="custom-echart-vue">
+  <div class="c-echart">
     <div class="normal-view" v-show="!isShowTable.normal">
       <div :id="eId" class="echart-area"> </div>
+      <slot></slot>
       <div class="echart-tool" v-if="tool?.length > 0">
         <c-icon v-if="tool.includes('changeView')" i="c-change-view" tip="切换视图" size="16" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleChangeView('normal')"></c-icon>
         <c-icon v-if="tool.includes('copyData')" i="c-copy-text" tip="复制数据" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleCopyData()"></c-icon>
-        <c-icon v-if="tool.includes('exportImage')" i="c-export-image" tip="导出图片" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportImage()"></c-icon>
+        <c-icon v-if="tool.includes('exportImage')" i="c-export-image" tip="导出图片" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportImage('normal')"></c-icon>
         <c-icon v-if="tool.includes('exportExcel')" i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportExcel(props.eInfo.tableData, { tableName: (props.eInfo.exportFileName || '') + '表', tableHeader: props.eInfo.tableHeader })"></c-icon>
         <c-icon v-if="tool.includes('fullScreen')" i="c-fullscreen-in" tip="开启全屏" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleFullscreenIn()"></c-icon>
       </div>
@@ -16,17 +17,18 @@
         <c-button type="primary" height="30" @click="handleCloseTable('normal')">关闭表格</c-button>
         <c-button type="primary" height="30" @click="handleCloseTableAndRefresh('normal')">关闭并刷新</c-button>
       </div>
-      <el-table :data="eInfo.tableData" border class="c-table">
+      <el-table :data="eInfo.tableData" border class="c-table" :row-class-name="handleTableRowClassName" :cell-class-name="handleTableCellClassName" :header-cell-class-name="handleTableHeaderCellClassName">
         <el-table-column :label="item[props.eInfo.tableHeader?.matchField?.nameField]" :prop="item[props.eInfo.tableHeader?.matchField?.fieldField]" align="center" v-for="(item, index) in eInfo.tableHeader?.columnList" :key="index" :width="item[props.eInfo.tableHeader?.matchField?.nameField]?.includes('时间') ? '180px' : 'auto'"></el-table-column>
       </el-table>
     </div>
-    <el-dialog class="echart-fullscreen-view c-dialog" v-model="isShowFullscreen" :modal-append-to-body="false" align-center :close-on-click-modal="false" :before-close="handleFullscreenOut">
+    <el-dialog class="echart-fullscreen-view c-dialog el-overly" v-model="isShowFullscreen" :modal-append-to-body="false" align-center :close-on-click-modal="false" :before-close="handleFullscreenOut">
       <div class="normal-view-fs" v-show="!isShowTable.fullscreen">
         <div :id="eId + '-fs'" class="echart-area-fs"> </div>
+        <slot></slot>
         <div class="echart-tool-fs" v-if="tool?.length > 0">
           <c-icon v-if="tool.includes('changeView')" i="c-change-view" tip="切换视图" size="16" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleChangeView('fullscreen')"></c-icon>
           <c-icon v-if="tool.includes('copyData')" i="c-copy-text" tip="复制数据" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleCopyData()"></c-icon>
-          <c-icon v-if="tool.includes('exportImage')" i="c-export-image" tip="导出图片" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportImage()"></c-icon>
+          <c-icon v-if="tool.includes('exportImage')" i="c-export-image" tip="导出图片" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportImage('fullscreen')"></c-icon>
           <c-icon v-if="tool.includes('exportExcel')" i="c-export-excel" tip="导出表格" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleExportExcel(props.eInfo.tableData, { tableName: (props.eInfo.exportFileName || '') + '表', tableHeader: props.eInfo.tableHeader })"></c-icon>
           <c-icon v-if="tool.includes('fullScreen')" i="c-fullscreen-out" tip="退出全屏" size="18" cursor="pointer" color="#999" :hoverColor="settingStore?.themeColor" showType="el" @click="handleFullscreenOut()"></c-icon>
         </div>
@@ -36,7 +38,7 @@
           <c-button type="primary" height="30" @click="handleCloseTable('fullscreen')">关闭表格</c-button>
           <c-button type="primary" height="30" @click="handleCloseTableAndRefresh('fullscreen')">关闭并刷新</c-button>
         </div>
-        <el-table :data="eInfoFs.tableData" border class="c-table">
+        <el-table :data="eInfoFs.tableData" border class="c-table" :row-class-name="handleTableRowClassName" :cell-class-name="handleTableCellClassName" :header-cell-class-name="handleTableHeaderCellClassName">
           <el-table-column :label="item[props.eInfoFs.tableHeader?.matchField?.nameField]" :prop="item[props.eInfoFs.tableHeader?.matchField?.fieldField]" align="center" v-for="(item, index) in eInfoFs.tableHeader?.columnList" :key="index" :width="item[props.eInfoFs.tableHeader?.matchField?.nameField]?.includes('时间') ? '200x' : 'auto'"></el-table-column>
         </el-table>
       </div>
@@ -46,11 +48,14 @@
 
 <script setup>
 // # 一、综合
-import useSettingStore from '@/store/system/setting'
+import useSettingStore from '@/store/framework/setting'
 const props = defineProps({
   eId: { type: String, default: '' },
   eInfo: { type: Object, default: () => { } },
   eInfoFs: { type: Object, default: () => { } },
+  handleTableRowClassName: { type: Function, default: () => () => { } },
+  handleTableCellClassName: { type: Function, default: () => () => { } },
+  handleTableHeaderCellClassName: { type: Function, default: () => () => { } },
   tool: { type: Array, default: () => ['changeView', 'copyData', 'exportImage', 'exportExcel', 'fullScreen'] },
 })
 
@@ -94,6 +99,7 @@ function handleCloseTableAndRefresh(type) {
 function handleCopyData() {
   const tableHeader = props.eInfo.tableHeader
   const tableData = props.eInfo.tableData
+
   // 判断字符的长度
   function getCharLength(str) {
     let length = 0
@@ -125,32 +131,62 @@ function handleCopyData() {
   })
   // 定义右侧间隔（每列右侧添加10个空格）
   const rightSpacing = 10
+
   // 创建表头行
   const headerRow = headers.map((header, index) => {
     const padding = ' '.repeat(columnWidths[index] + rightSpacing - getCharLength(header))
-    return header + padding
-  }).join('')
+    return header + padding + '\t'
+  }).join('').replace(/\t$/, '')
+
   // 生成表格数据行
   const dataRows = tableData.map(row => {
     return fields.map((field, index) => {
       const value = row[field] !== undefined ? String(row[field]) : ''
       const padding = ' '.repeat(columnWidths[index] + rightSpacing - getCharLength(value))
-      return value + padding
-    }).join('')
+      return value + padding + '\t'
+    }).join('').replace(/\t$/, '')
   })
   // 合并表头和数据行
   const tableText = [headerRow, ...dataRows].join('\n')
+
   // 复制到剪贴板
-  navigator.clipboard.writeText(tableText)
-    .then(() => { proxy.$message.success('数据已复制到粘贴板！') })
-    .catch(err => { proxy.$message.error('数据复制失败！') })
+  //   navigator.clipboard.writeText(tableText)
+  //     .then(() => { proxy.$message.success('数据已复制到粘贴板！') })
+  //     .catch(err => { proxy.$message.error('数据复制失败！') })
+  fallbackCopy(tableText)
+  function fallbackCopy(text) {
+    const textarea = document.createElement('textarea')
+    textarea.value = text
+    textarea.style.position = 'fixed'
+    textarea.style.left = '-9999px'
+    document.body.appendChild(textarea)
+    textarea.select()
+    textarea.setSelectionRange(0, textarea.value.length)
+    try {
+      const successful = document.execCommand('copy')
+      if (successful) {
+        proxy.$message.success('数据已复制到粘贴板！')
+      } else {
+        proxy.$message.error('数据复制失败！')
+      }
+    } catch (err) {
+      proxy.$message.error('数据复制失败！')
+    }
+    document.body.removeChild(textarea)
+  }
 }
 
 // ^
 // # (3) 导出图片
-function handleExportImage() {
-  let newExportFileName = (props.eInfo.exportFileName || '') + '图'
-  proxy.$exportEchartImage(props.eInfo.instance, { name: newExportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+function handleExportImage(type) {
+  if (type === 'normal') {
+    let newExportFileName = (props.eInfo.exportFileName || '') + '图'
+    proxy.$exportEchartImage(props.eInfo.instance, { name: newExportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+  }
+  if (type === 'fullscreen') {
+    let newExportFileName = (props.eInfoFs.exportFileName || '') + '图'
+    proxy.$exportEchartImage(props.eInfoFs.instance, { name: newExportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+  }
 }
 // ^
 // # (4) 导出表格
@@ -172,6 +208,7 @@ const isShowFullscreen = ref(false)
 function handleFullscreenIn() {
   isShowFullscreen.value = true
   nextTick(() => { initEchartFs() })
+  emit('fullscreenIn')
 }
 function handleFullscreenOut() {
   isShowFullscreen.value = false
@@ -192,7 +229,7 @@ watch(() => settingStore.themeStyle, (nv, ov) => {
 </script>
 
 <style lang="scss" scoped>
-.custom-echart-vue {
+.c-echart {
   position: relative;
   width: 100%;
   height: 100%;

@@ -8,7 +8,7 @@
           <div class="top-container">
             <top-nav v-if="settingStore.topNav.isShow"></top-nav>
             <top-bar v-if="settingStore.topBar.isShow"></top-bar>
-            <top-tag v-if="settingStore.topTag.isShow"></top-tag>
+            <!-- <top-tag v-if="settingStore.topTag.isShow"></top-tag> -->
           </div>
           <app-main />
         </div>
@@ -29,7 +29,7 @@ import LeftNav from '@/layout/components/left-nav/index.vue'
 import AppMain from '@/layout/components/app-main/index.vue'
 import Setting from '@/layout/components/setting/index.vue'
 import useEnumsStore from '@/store/project/enums'
-import useSettingStore from '@/store/system/setting'
+import useSettingStore from '@/store/framework/setting'
 const settingStore = useSettingStore()
 // ^
 

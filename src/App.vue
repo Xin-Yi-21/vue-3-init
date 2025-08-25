@@ -6,7 +6,7 @@
 import { scaleFit, scaleAdapt } from '@/utils/screen-adaptation/scale'
 import { setRem } from '@/utils/screen-adaptation/rem'
 // 一、综合初始化
-import useSettingStore from '@/store/system/setting'
+import useSettingStore from '@/store/framework/setting'
 const settingStore = useSettingStore()
 // 二、模块功能
 async function setSetting() {

@@ -5,7 +5,7 @@ import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from '@/utils/ruoyi'
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
-import useUserStore from '@/store/system/user'
+import useUserStore from '@/store/project/user'
 
 let downloadLoadingInstance;
 // 是否显示重新登录
@@ -16,11 +16,17 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 const service = axios.create({
   baseURL: window.cEnv.VITE_APP_BASE_API,   // baseURL: import.meta.env.VITE_APP_BASE_API,
   // 超时
-  timeout: 10000
+  timeout: 60000
 })
 
 // request拦截器
 service.interceptors.request.use(config => {
+  if (config.headers.base === 'mock') {
+    config.baseURL = ''
+  }
+  if (config.headers.base === 'node') {
+    config.baseURL = 'http://localhost:3000'
+  }
   // 是否需要设置 token
   const isToken = (config.headers || {}).isToken === false
   // 是否需要防止数据重复提交
@@ -78,7 +84,7 @@ service.interceptors.response.use(res => {
   const msg = errorCode[code] || res.data.msg || errorCode['default']
   // 二进制数据则直接返回
   if (res.request.responseType === 'blob' || res.request.responseType === 'arraybuffer') {
-    return res.data
+    return res
   }
   if (code === 401) {
     // if (!isRelogin.show) {
@@ -93,8 +99,8 @@ service.interceptors.response.use(res => {
     //   });
     // }
     // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
-  } else if (code === 500) {
-    ElMessage({ message: msg, type: 'error' })
+  } else if (code === 500 || code === 1001) {
+    ElMessage({ message: res.data.message, type: 'error' })
     return Promise.reject(new Error(msg))
   } else if (code === 601) {
     ElMessage({ message: msg, type: 'warning' })

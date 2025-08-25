@@ -1,0 +1,336 @@
+// 一、element变量配置
+// 1、直接变量配置
+:root {
+  --el-fill-color: var(--bg-inner-primary); // 分页页码卡片色等
+  --el-fill-color-blank: var(--bg-inner-primary); // 表单输入背景色等
+  --el-bg-color: var(--bg-inner-primary); // 组件背景色等
+  --el-bg-color-overlay: var(--bg-inner-primary); // 弹框背景色等
+
+  // 字
+  --el-font-family: 'Source Han Sans CN';
+  --el-text-color-primary: var(--fcp); //字体激活色等
+  --el-text-color-regular: var(--fcs); // 字体常规色等
+  --el-text-color-secondary: var(--fct); // 暂无数据提示等
+  --el-color-danger: red;
+  --el-color-error: red;
+
+  // 边框
+  --el-border-width: 1px;
+  --el-border-style: solid;
+  --el-border-color: var(--bcs);
+  --el-border: var(--el-border-width) var(--el-border-style) var(--el-border-color);
+  --el-dialog-box-shadow: var(--el-box-shadow);
+
+  // 禁用样式
+  --el-disabled-bg-color: var(--el-fill-color-light);
+  --el-disabled-text-color: var(--el-text-color-placeholder);
+  --el-disabled-border-color: var(--el-border-color-light);
+
+  // 浅色主题变量
+  &[theme-style='light'] {
+  }
+  // 深色主题变量
+  &[theme-style='dark'] {
+    --el-box-shadow: 0 0 10px var(--tc), 0 0 10px var(--tc), 0 0 10px var(--tc);
+    --el-fill-color-light: #333; // 下拉框悬浮色等
+    --el-border-color-light: #999; // 下拉框边框色、禁用色等
+    --el-text-color-placeholder: #999; // placeholder、图标等颜色
+    --el-border-color-hover: #999; // 悬浮边框色
+  }
+}
+// 2、主题特殊配置（.el-table .el-calendar .el-description)
+// (1) 主题颜色
+:root {
+  &[theme-style='light'] {
+    --bg-tableHeader: var(--tca01); // 表格头部背景色
+    --bg-tableHoverRow: var(--tca005); // 表格悬浮行背景色
+    --bg-tableCurrentRow: var(--tca02); // 表格选中行背景色
+    --bg-tableOddRow: #ffffff; // 表格奇数行背景色
+    --bg-tableEvenRow: #ffffff; // 表格偶数行背景色
+    --bg-tableBody: #ffffff;
+  }
+
+  &[theme-style='dark'] {
+    --bg-tableHeader: #a1a1a1; // 表格头部背景色
+    --bg-tableHoverRow: var(--tca005); // 表格悬浮行背景色
+    --bg-tableCurrentRow: var(--tca02); // 表格选中行背景色
+    --bg-tableOddRow: #333; // 表格奇数行背景色
+    --bg-tableEvenRow: #333; // 表格偶数行背景色
+    --bg-tableBody: #333;
+  }
+
+  &[theme-style='light'],
+  &[theme-style='dark'] {
+    // el-table
+    .el-table {
+      background-color: var(--bg-inner-primary);
+      --el-table-border-color: var(--bcs);
+      .el-table__header-wrapper {
+        .el-table__header {
+          .el-table__cell {
+            background-color: var(--bg-tableHeader);
+            .cell {
+              color: #333;
+              font-weight: 400;
+              font-size: 14px;
+            }
+          }
+        }
+      }
+      .el-table__body-wrapper {
+        background-color: var(--bg-tableBody);
+        .el-table__body {
+          .el-table__row {
+            td {
+              background: transparent;
+            }
+            &:hover {
+              td {
+                background-color: var(--bg-tableHoverRow);
+              }
+            }
+            &.current-row {
+              td {
+                background-color: var(--bg-tableCurrentRow);
+              }
+            }
+            &:nth-child(2n + 1) {
+              background-color: var(--bg-tableOddRow);
+            }
+
+            &:nth-child(2n) {
+              background-color: var(--bg-tableOddRow);
+            }
+            .el-table__cell {
+              .cell {
+                color: var(--fcs);
+                font-size: 14px;
+                font-weight: 400;
+              }
+            }
+          }
+        }
+
+        .el-scrollbar__view {
+          background-color: var(--bg-tableEvenRow) !important;
+        }
+        .el-scrollbar {
+          --el-scrollbar-opacity: 1;
+          --el-scrollbar-bg-color: var(--tc);
+          --el-scrollbar-hover-opacity: 1;
+          --el-scrollbar-hover-bg-color: var(--tc);
+        }
+      }
+
+      // 斑马纹
+      &.el-table--striped {
+        .el-table__body-wrapper {
+          .el-table__body {
+            .el-table__row {
+              &:nth-child(2n) {
+                background-color: var(--bg-tableEvenRow);
+              }
+            }
+          }
+        }
+      }
+    }
+    // el-calendar
+    .el-calendar {
+      // background-color: var(--bg-inner-primary);
+      --el-calendar-border: 1px solid var(--bct);
+    }
+    // el-descriptions
+    .el-descriptions {
+      --el-descriptions-table-border: 1px var(--bcs) solid;
+      .el-descriptions__label {
+        background-color: var(--bg-tableHeader);
+        color: #333;
+        font-weight: 400;
+        font-size: 14px;
+      }
+      .el-descriptions__content {
+        color: var(--fcs);
+        font-weight: 400;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+// (2) 主题大小
+:root {
+  &[theme-size='large'],
+  &[theme-size='normal'],
+  &[theme-size='small'] {
+    .el-form {
+      --el-form-label-font-size: var(--cfs);
+      .el-form-item {
+        --font-size: var(--cfs);
+        .el-form-item__label {
+          height: var(--ch);
+          line-height: var(--ch);
+        }
+        .el-form-item__content {
+          line-height: var(--ch);
+        }
+      }
+    }
+    .el-input {
+      --el-input-height: var(--ch);
+      font-size: var(--cfs);
+      .el-input__wrapper {
+        padding: 0 11px;
+        .el-input__inner {
+          height: var(--ch);
+        }
+      }
+    }
+    .el-select {
+      --el-select-input-font-size: var(--cfs);
+      height: var(--ch);
+      .el-select__wrapper {
+        font-size: var(--cfs);
+        min-height: calc(var(--ch));
+        line-height: calc(var(--ch) - 8px);
+        .el-select__selection {
+          height: calc(var(--ch) - 8px);
+          .el-select__selected-item {
+            height: 100%;
+            font-size: var(--cfs);
+            input {
+              height: 100%;
+            }
+            .el-tag {
+              height: 100%;
+            }
+          }
+        }
+      }
+    }
+    .el-radio {
+      height: var(--ch);
+      --el-radio-input-height: var(--cfs);
+      --el-radio-input-width: var(--cfs);
+      --el-radio-font-size: var(--cfs);
+    }
+    .el-checkbox {
+      --el-checkbox-font-size: var(--cfs);
+    }
+    .el-button {
+      height: var(--ch);
+      font-size: var(--cfs);
+    }
+    .el-table {
+      .cell {
+        font-size: var(--cfs);
+      }
+    }
+  }
+  &[theme-size='large'] {
+    .el-tag {
+      --el-tag-font-size: 14px;
+      height: 30px;
+    }
+  }
+  &[theme-size='normal'] {
+    .el-tag {
+      --el-tag-font-size: 12px;
+      height: 26px;
+    }
+  }
+  &[theme-size='small'] {
+    .el-tag {
+      --el-tag-font-size: 12px;
+      height: 22px;
+    }
+  }
+}
+
+// 二、element样式直改（.el-select .el-table .el-tooltip)
+// .el-select
+.el-select {
+  &[is-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  > .el-select__wrapper.is-disabled.is-hovering {
+    box-shadow: 0 0 0 1px var(--el-border-color) inset;
+  }
+
+  // 忽略兼容必要性
+  &:has(> .is-disabled) {
+    cursor: not-allowed;
+  }
+}
+
+// el-table
+.el-table {
+  width: calc(100% - 20px);
+  margin: 10px;
+  &:not(.el-table--border) {
+    .el-table__header-wrapper {
+      &::before {
+        content: '';
+        position: absolute;
+        background-color: var(--el-table-border-color);
+        width: 100%;
+        height: 1px;
+        left: 0;
+        top: 0;
+        z-index: calc(var(--el-table-index) + 2);
+      }
+    }
+  }
+  .el-table__header-wrapper {
+    .el-table__header {
+      .el-table__cell {
+        padding: 12px 0 12px;
+        .cell {
+          font-weight: 700;
+          line-height: 25px;
+        }
+      }
+    }
+  }
+  .el-table__body-wrapper {
+    position: relative;
+    .el-table__body {
+      .el-table__row {
+        line-height: 1;
+        .el-table__cell {
+          padding: 9.5px 0 9.5px;
+          box-sizing: content-box;
+
+          .cell {
+            font-weight: 400;
+            min-height: 20px;
+            line-height: 20px;
+            * {
+              line-height: 20px;
+            }
+
+            .el-button {
+              height: 20px;
+            }
+          }
+        }
+      }
+    }
+
+    .el-scrollbar__view {
+      width: 100% !important;
+    }
+  }
+}
+
+// el-tooltip
+.el-tooltip__popper {
+  max-width: 600px;
+  line-height: 24px;
+  white-space: wrap;
+  &.is-dark {
+    background-color: #1a1a1a;
+    color: #fff;
+  }
+}

@@ -9,7 +9,7 @@
 
 <script setup>
 import InnerLink from "../inner-link/index";
-import useTagStore from "@/store/system/tag";
+import useTagStore from "@/store/framework/tag";
 
 const route = useRoute();
 const tagsViewStore = useTagStore();

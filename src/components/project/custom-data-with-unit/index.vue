@@ -1,9 +1,8 @@
 <template>
   <div class="c-data-with-unit">
     <template v-if="data != undefined && data !== ''">
-      <template v-if="isShowTip">
-        <!-- <c-tooltip :content="data + ''" targetClass="data"> <span class="data">{{ data }}</span></c-tooltip> -->
-        <c-tooltip :content="data + ''" class="data"> {{ data }}</c-tooltip>
+      <template v-if="showTip">
+        <c-tooltip :content="data + ''" ref="tooltipRef" triggerClass="data" v-bind="$attrs"> {{ data }}</c-tooltip>
         <span class="unit">{{ unit }}</span>
       </template>
       <template v-else>
@@ -11,18 +10,25 @@
         <span class="unit">{{ unit }}</span>
       </template>
     </template>
-    <span v-else class="no-data">暂无数据</span>
+    <span v-else class="no-data">{{ noDataText }}</span>
   </div>
 </template>
 
 <script setup>
 const props = defineProps({
+  // 数据
   data: { default: '', },
+  // 单位
   unit: { type: String, default: '', },
-  isShowTip: { type: Boolean, default: false },
-  placement: { type: String, default: 'top' },
-  effect: { type: String, default: 'light' },
+  // 是否显示提示
+  showTip: { type: Boolean, default: false },
+  // 无数据显示文字
+  noDataText: { type: String, default: '暂无数据' },
 })
+// const tooltipRef = ref(null)
+// onUpdated(() => {
+//   nextTick(() => { tooltipRef.value && tooltipRef?.value?.checkOverflow() })
+// })
 </script>
 
 <style lang="scss" scoped>
@@ -33,18 +39,13 @@ const props = defineProps({
   flex-shrink: 0;
   overflow: hidden;
 
-  .c-tooltip {
-    display: block;
-    overflow: hidden;
-  }
-
-  .data {
-    display: block;
+  :deep(.c-tooltip-trigger) {
+    width: auto;
+    display: inline-block;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     height: 100%;
-    line-height: 20px;
     color: var(--tc);
     font-size: var(--cfs);
     font-weight: 700;
@@ -60,7 +61,7 @@ const props = defineProps({
   }
 
   .no-data {
-    color: var(--tct);
+    color: var(--fct);
     font-size: inherit;
     overflow: hidden;
     white-space: nowrap;

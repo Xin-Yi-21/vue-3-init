@@ -14,7 +14,7 @@
 
 <script setup>
 import iframeToggle from "@/components/system/iframe-toggle/index"
-import useTagStore from '@/store/system/tag'
+import useTagStore from '@/store/framework/tag'
 const tagStore = useTagStore()
 
 </script>

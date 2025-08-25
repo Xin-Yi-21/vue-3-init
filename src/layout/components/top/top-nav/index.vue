@@ -11,7 +11,7 @@
 <script setup>
 // 一、综合初始化
 import NavItem from './components/nav-item'
-import userMenuStore from '@/store/system/menu'
+import userMenuStore from '@/store/framework/menu'
 
 const menuStore = userMenuStore()
 const route = useRoute()

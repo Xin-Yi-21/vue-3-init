@@ -106,7 +106,7 @@
 // # 一、综合
 import Operate from './components/operate.vue'
 import useEnumsStore from '@/store/project/enums'
-import useSettingStore from '@/store/system/setting'
+import useSettingStore from '@/store/framework/setting'
 const settingStore = useSettingStore()
 
 const props = defineProps({
