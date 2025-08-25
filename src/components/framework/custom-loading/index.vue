@@ -29,7 +29,7 @@
 
 <script setup>
 // # 一、综合
-import SvgIcon from '@/components/system/svg-icon'
+import SvgIcon from '@/components/framework/f-svg-icon'
 import { ElPopover } from 'element-plus'
 const props = defineProps({
   // 目标元素

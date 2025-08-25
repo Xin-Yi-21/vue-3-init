@@ -43,7 +43,7 @@
 // 一、综合初始化
 import useUserStore from '@/store/project/user'
 import useSettingStore from '@/store/framework/setting'
-import Breadcrumb from '@/components/system/breadcrumb'
+import Breadcrumb from '@/components/framework/f-breadcrumb'
 
 const { proxy } = getCurrentInstance()
 const userStore = useUserStore()

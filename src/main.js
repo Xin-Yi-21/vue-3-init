@@ -13,8 +13,8 @@ app.use(ElementPlus, { locale: locale, size: 'default' })
 
 // ⭐ svg图标 相关文件 
 import 'virtual:svg-icons-register'
-import SvgIcon from '@/components/system/svg-icon'
-import elementIcons from '@/components/system/svg-icon/svgicon'
+import SvgIcon from '@/components/framework/f-svg-icon'
+import elementIcons from '@/components/framework/f-svg-icon/svgicon'
 import '@/assets/iconfont/iconfont.css'
 // import 'default-passive-events' // 解决wheel控制台警告信息
 app.component('svg-icon', SvgIcon)
@@ -27,12 +27,12 @@ setConfig().then(async (cEnv) => {
     document.title = cEnv.VITE_APP_TITLE
     await import('./utils/request')                                                            // import('./utils/request')
     await import('./router/guard.js')                                                            // import('./permission')
-    const directive = (await import('./directive')).default                                    // import directive from './directive'
+    const directives = (await import('./directives')).default                                    // import directive from './directive'
     const plugins = (await import('./plugins')).default                                        // import plugins from './plugins'
     const { store } = (await import('./store'))                                                // import store from './store'
     const router = (await import('./router')).default                                          // import router from './router'
 
-    directive(app)
+    directives(app)
     app.use(plugins)
     app.use(store)
     app.use(router)
@@ -96,27 +96,27 @@ setConfig().then(async (cEnv) => {
     // app.config.globalProperties.$loadingEnd = $loadingEnd
 
     // 全局组件
-    const cTooltip = (await import('@/components/project/custom-tooltip')).default
-    const cPagination = (await import('@/components/project/custom-pagination')).default
-    const cButton = (await import('@/components/project/custom-button')).default
-    const cIcon = (await import('@/components/project/custom-icon')).default
-    const cTag = (await import('@/components/project/custom-tag')).default
-    const cText = (await import('@/components/project/custom-text')).default
-    // // const cPreview = (await import('@/components/project/custom-preview')).default
-    // const cFileList = (await import('@/components/project/custom-file-list')).default
-    const cCardCircle = (await import('@/components/project/custom-card-circle')).default
-    const cCardRectangle = (await import('@/components/project/custom-card-rectangle')).default
-    const cCardTitle = (await import('@/components/project/custom-card-title')).default
-    const cCardHeader = (await import('@/components/project/custom-card-header')).default
-    const cCardTip = (await import('@/components/project/custom-card-tip')).default
-    const cTab = (await import('@/components/project/custom-tab')).default
-    const cEchart = (await import('@/components/project/custom-echart')).default
-    const cDataWithUnit = (await import('@/components/project/custom-data-with-unit')).default
-    const cScroll = (await import('@/components/project/custom-scroll')).default
-    const cConfirm = (await import('@/components/project/custom-confirm')).default
-    const cSelection = (await import('@/components/project/custom-selection')).default
-    const cSelectionTree = (await import('@/components/project/custom-selection-tree')).default
-    const cAudit = (await import('@/components/project/custom-audit')).default
+    const cTooltip = (await import('@/components/framework/custom-tooltip')).default
+    const cPagination = (await import('@/components/framework/custom-pagination')).default
+    const cButton = (await import('@/components/framework/custom-button')).default
+    const cIcon = (await import('@/components/framework/custom-icon')).default
+    const cTag = (await import('@/components/framework/custom-tag')).default
+    const cText = (await import('@/components/framework/custom-text')).default
+    // // const cPreview = (await import('@/components/framework/custom-preview')).default
+    // const cFileList = (await import('@/components/framework/custom-file-list')).default
+    const cCardCircle = (await import('@/components/framework/custom-card-circle')).default
+    const cCardRectangle = (await import('@/components/framework/custom-card-rectangle')).default
+    const cCardTitle = (await import('@/components/framework/custom-card-title')).default
+    const cCardHeader = (await import('@/components/framework/custom-card-header')).default
+    const cCardTip = (await import('@/components/framework/custom-card-tip')).default
+    const cTab = (await import('@/components/framework/custom-tab')).default
+    const cEchart = (await import('@/components/framework/custom-echart')).default
+    const cDataWithUnit = (await import('@/components/framework/custom-data-with-unit')).default
+    const cScroll = (await import('@/components/framework/custom-scroll')).default
+    const cConfirm = (await import('@/components/framework/custom-confirm')).default
+    const cSelection = (await import('@/components/framework/custom-selection')).default
+    const cSelectionTree = (await import('@/components/framework/custom-selection-tree')).default
+    const cAudit = (await import('@/components/framework/custom-audit')).default
     app.component('cTooltip', cTooltip)
     app.component('cPagination', cPagination)
     app.component('cButton', cButton)

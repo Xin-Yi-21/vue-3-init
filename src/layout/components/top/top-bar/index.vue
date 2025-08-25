@@ -6,8 +6,8 @@
 </template>
 
 <script setup>
-import Hamburger from '@/components/system/hamburger'
-import Breadcrumb from '@/components/system/breadcrumb'
+import Hamburger from '@/components/framework/f-hamburger'
+import Breadcrumb from '@/components/framework/f-breadcrumb'
 import useSettingStore from '@/store/framework/setting'
 const settingStore = useSettingStore()
 const handleLeftNav = () => {

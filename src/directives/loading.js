@@ -1,5 +1,5 @@
 import { createVNode, render, } from 'vue'
-import Loading from '@/components/project/custom-loading'
+import Loading from '@/components/framework/custom-loading'
 
 export default {
   mounted(el, binding) {
