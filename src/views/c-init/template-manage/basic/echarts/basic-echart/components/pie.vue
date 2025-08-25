@@ -11,7 +11,7 @@
 <script setup>
 
 // # 一、综合
-import useSettingStore from '@/store/framework/setting'
+import useSettingStore from '@/store/setting'
 const settingStore = useSettingStore()
 const { proxy } = getCurrentInstance()
 // ^

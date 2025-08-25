@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/framework/login'
+import { login, logout, getInfo } from '@/api/common/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import defaultAvatar from '@/assets/icons/svg/c-profile.svg'
 

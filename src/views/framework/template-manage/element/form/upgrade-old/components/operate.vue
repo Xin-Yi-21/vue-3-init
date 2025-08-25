@@ -46,7 +46,7 @@ const props = defineProps({
   info: { type: Object, default: () => { } },
 })
 // pinia
-import useEnumsStore from '@/store/project/enums'
+import useEnumsStore from '@/store/enums'
 // 声明
 const { proxy } = getCurrentInstance()
 const emit = defineEmits()

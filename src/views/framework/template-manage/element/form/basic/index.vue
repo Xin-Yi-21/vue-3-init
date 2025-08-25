@@ -74,7 +74,7 @@
 // 组件
 import Operate from './components/operate.vue'
 // 接口
-import { cPersonGet } from '@/api/framework/project'
+import { cPersonGet } from '@/api/framework/template-manage/element'
 // pinia
 import useStore from '@/store'
 // 声明

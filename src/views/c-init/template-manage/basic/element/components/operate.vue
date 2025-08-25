@@ -39,7 +39,7 @@
 <script setup>
 // # 一、综合
 import { numberVerify } from '@/utils/verify'
-import useEnumsStore from '@/store/project/enums'
+import useEnumsStore from '@/store/enums'
 import { getCurrentInstance } from 'vue'
 const props = defineProps({
   operate: { type: String, default: 'add' },

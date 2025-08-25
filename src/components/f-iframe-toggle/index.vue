@@ -8,8 +8,8 @@
 </template>
 
 <script setup>
-import InnerLink from "@/components/framework/f-inner-link/index";
-import useTagStore from "@/store/framework/tag";
+import InnerLink from "@/components/f-inner-link/index";
+import useTagStore from "@/store/tag";
 
 const route = useRoute();
 const tagsViewStore = useTagStore();

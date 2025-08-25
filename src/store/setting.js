@@ -1,4 +1,4 @@
-import defaultSetting from '@/setting'
+import defaultSetting from '@/layout/setting'
 import { handleThemeStyle, handleThemeColor, handleThemeSize } from '@/utils/theme'
 const { isDynamicTitle, themeStyle, themeColor, themeSize, topHeader, leftNav, topNav, topBar, topTag, isTemplateManage, isFullScreen } = defaultSetting
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''

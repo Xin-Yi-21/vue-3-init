@@ -6,7 +6,7 @@
 
 <script setup>
 // # 一、综合
-import useSettingStore from '@/store/framework/setting'
+import useSettingStore from '@/store/setting'
 import { nextTick, onMounted } from 'vue'
 const settingStore = useSettingStore()
 const { proxy } = getCurrentInstance()

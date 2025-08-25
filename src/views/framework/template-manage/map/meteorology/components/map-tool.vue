@@ -22,7 +22,7 @@
 // # 一、综合
 import { defineProps } from 'vue'
 import { storeToRefs } from 'pinia'
-import useMapStore from "@/store/project/map.js";
+import useMapStore from "@/store/map.js";
 const { map, tianDiToken, baseLayer } = storeToRefs(useMapStore())
 const { toolsList } = defineProps({
   toolsList: {

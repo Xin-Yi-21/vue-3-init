@@ -41,9 +41,9 @@
 </template>
 <script setup>
 // 一、综合初始化
-import useUserStore from '@/store/project/user'
-import useSettingStore from '@/store/framework/setting'
-import Breadcrumb from '@/components/framework/f-breadcrumb'
+import useUserStore from '@/store/user'
+import useSettingStore from '@/store/setting'
+import Breadcrumb from '@/components/f-breadcrumb'
 
 const { proxy } = getCurrentInstance()
 const userStore = useUserStore()

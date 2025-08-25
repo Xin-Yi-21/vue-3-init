@@ -3,13 +3,13 @@
     <div class="card-header">
       <div class="header-title">
         <c-icon i="file-tree-header" class="mr-2"></c-icon>
-        <span class="mr-5" style="color:#666;">{{this.currentLevel==='projectGroup'?'项目集目录':this.currentLevel==='project'?'项目目录':this.currentLevel==='projectStage'?'项目阶段目录':''}}</span>
+        <span class="mr-5" style="color:#666;">{{ this.currentLevel === 'projectGroup' ? '项目集目录' : this.currentLevel === 'project' ? '项目目录' : this.currentLevel === 'projectStage' ? '项目阶段目录' : '' }}</span>
       </div>
       <div class="header-operate">
         <c-button type="primary" i="down-next" iSize="14" @click="handleNextCatalogue" :disabled="nextDisabled">下级目录</c-button>
         <c-button type="primary" i="up-previous" iSize="18" @click="handlePrevCatalogue" :disabled="prevDisabled">上级目录</c-button>
-        <c-button type="primary" i="upload" iSize="18" @click="handleUploadFile" :disabled="JSON.stringify(currentActiveNode)=='{}' || treeTopInfo.isFileShare || noAuth">上传文件</c-button>
-        <c-button type="primary" i="download" iSize="18" @click="handleDownloadFile" :disabled="fileTreeData.length==0 ||  treeTopInfo.isFileShare" v-preventReClick="2000">下载文件</c-button>
+        <c-button type="primary" i="upload" iSize="18" @click="handleUploadFile" :disabled="JSON.stringify(currentActiveNode) == '{}' || treeTopInfo.isFileShare || noAuth">上传文件</c-button>
+        <c-button type="primary" i="download" iSize="18" @click="handleDownloadFile" :disabled="fileTreeData.length == 0 || treeTopInfo.isFileShare" v-preventReClick="2000">下载文件</c-button>
       </div>
     </div>
     <div class="card-content">
@@ -17,39 +17,39 @@
         <el-tree ref="tree" node-key="id" :data="fileTreeData" :props="defaultProps" :default-expand-all="true" @node-click="handleNodeClick" @node-contextmenu="handleNodeContextMenu">
           <template slot-scope="{data,node}">
             <!-- <Tooltip :content="data.name" placement="top" :containerDomName="`.el-tree-node__content .tree-row .dom${data.id}`"> -->
-            <div :class="['tree-row', currentActiveNode.id===data.id?'active':'']">
-              <svg-icon icon-class="file-open" class-name="left-tree-icon file-open-svg" v-if="node.expanded && (data.children && data.children.length>0)"></svg-icon>
-              <svg-icon icon-class="file-close" class-name="left-tree-icon file-close-svg" v-if="!node.expanded || (data.children && data.children.length===0)"></svg-icon>
-              <span ref="create" class="create-part" v-if="showCreateCatalogue && (data.id==='CC')">
+            <div :class="['tree-row', currentActiveNode.id === data.id ? 'active' : '']">
+              <svg-icon icon-class="file-open" class-name="left-tree-icon file-open-svg" v-if="node.expanded && (data.children && data.children.length > 0)"></svg-icon>
+              <svg-icon icon-class="file-close" class-name="left-tree-icon file-close-svg" v-if="!node.expanded || (data.children && data.children.length === 0)"></svg-icon>
+              <span ref="create" class="create-part" v-if="showCreateCatalogue && (data.id === 'CC')">
                 <el-input ref="createCatalogueInput" v-model="createCatalogueName" :minlength="1" @blur="handleCreateCatalogueBlur"></el-input>
               </span>
-              <span ref="rename" class="rename-part" v-else-if="showRename && currentActiveNode && currentActiveNode.id===data.id">
+              <span ref="rename" class="rename-part" v-else-if="showRename && currentActiveNode && currentActiveNode.id === data.id">
                 <el-input ref="renameInput" v-model="reName" :minlength="1" @blur="handleRenameBlur"></el-input>
               </span>
-              <span :class="[`real-name dom${data.id}`]" v-else> {{data.name}} </span>
+              <span :class="[`real-name dom${data.id}`]" v-else> {{ data.name }} </span>
             </div>
             <!-- </Tooltip> -->
           </template>
         </el-tree>
-        <ContextMenu v-if="showContextMenu && !noAuth" :currentRightNode="currentActiveNode" :style="{top:contextMenuPosition.top+'px',left:contextMenuPosition.left+'px',}" @operate="handleContextMenuOperate" @close="showContextMenu=false"></ContextMenu>
+        <ContextMenu v-if="showContextMenu && !noAuth" :currentRightNode="currentActiveNode" :style="{ top: contextMenuPosition.top + 'px', left: contextMenuPosition.left + 'px', }" @operate="handleContextMenuOperate" @close="showContextMenu = false"></ContextMenu>
       </div>
       <div class="right-table x-scroll">
         <div class="search">
-          <el-input v-model="fileBlurName" placeholder="请输入文件名" @keyup.enter.native="getFile(fileBlurName)" :disabled="JSON.stringify(currentActiveNode)=='{}'"></el-input>
-          <c-button type="primary" i="search" c="search-svg" @click="getFile(fileBlurName)" :disabled="JSON.stringify(currentActiveNode)=='{}'">搜索</c-button>
+          <el-input v-model="fileBlurName" placeholder="请输入文件名" @keyup.enter.native="getFile(fileBlurName)" :disabled="JSON.stringify(currentActiveNode) == '{}'"></el-input>
+          <c-button type="primary" i="search" c="search-svg" @click="getFile(fileBlurName)" :disabled="JSON.stringify(currentActiveNode) == '{}'">搜索</c-button>
         </div>
         <el-table :data="tableData" @selection-change="handleSelectionChange">
           <el-table-column type="selection" align="center" width="50" />
           <el-table-column label="文件名" prop="field" align="center" :show-overflow-tooltip="true">
             <template slot-scope="scope">
-              <span @click="handleFilePreview(scope.row)" class="file-preview-text"> {{scope.row.fileName}} </span>
+              <span @click="handleFilePreview(scope.row)" class="file-preview-text"> {{ scope.row.fileName }} </span>
             </template>
           </el-table-column>
           <el-table-column label="文件大小" prop="" align="center" width="120">
-            <template slot-scope="scope"> {{scope.row.fileSize?scope.row.fileSize+' mb':''}} </template>
+            <template slot-scope="scope"> {{ scope.row.fileSize ? scope.row.fileSize + ' mb' : '' }} </template>
           </el-table-column>
           <el-table-column label="上传时间" prop="" align="center" width="150">
-            <template slot-scope="scope"> {{scope.row.createTime}} </template>
+            <template slot-scope="scope"> {{ scope.row.createTime }} </template>
           </el-table-column>
           <el-table-column label="操作" prop="" align="center" width="100">
             <template slot-scope="scope">
@@ -59,7 +59,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <FileUpload v-if="fileUploadDialog.visible" :currentActiveNode="currentActiveNode" @success="handleUploadSuccess" @close="fileUploadDialog.visible=false"></FileUpload>
+      <FileUpload v-if="fileUploadDialog.visible" :currentActiveNode="currentActiveNode" @success="handleUploadSuccess" @close="fileUploadDialog.visible = false"></FileUpload>
     </div>
   </div>
 </template>
@@ -67,7 +67,7 @@
 <script>
 import ContextMenu from './components/contextmenu.vue'
 import FileUpload from '@/views/components/file-upload/index.vue'
-import { fileDirGet, fileDirAdd, fileDirRename, fileDirDelete, fileGet, fileRename, fileDelete, singleFileDownload, multipleFileDownload } from '@/api/file/index.js'
+import { fileDirGet, fileDirAdd, fileDirRename, fileDirDelete, fileGet, fileRename, fileDelete, singleFileDownload, multipleFileDownload } from '@/api/framework/template-manage/file'
 export default {
   components: { ContextMenu, FileUpload, },
   props: {
@@ -497,6 +497,7 @@ export default {
   width: 100%;
   height: 100%;
   background-color: #efefef;
+
   .card-header {
     width: 100%;
     height: 60px;
@@ -505,6 +506,7 @@ export default {
     display: flex;
     align-items: center;
     padding: 0 20px;
+
     .header-title {
       overflow: hidden;
       width: 0;
@@ -517,6 +519,7 @@ export default {
       display: flex;
       align-items: center;
     }
+
     .header-operate {
       display: flex;
       align-items: center;
@@ -524,15 +527,18 @@ export default {
       height: 100%;
     }
   }
+
   .card-content {
     width: 100%;
     height: calc(100% - 60px);
     display: flex;
+
     .left-tree {
       width: 250px;
       height: 100%;
       flex-shrink: 0;
     }
+
     ::v-deep .el-tree {
       height: calc(100% - 0px) !important;
       padding: 10px;
@@ -541,41 +547,50 @@ export default {
       overflow-y: auto;
       background-color: #efefef;
       border-right: 1px solid #c9c9c9;
+
       // 滚动条大小
       &::-webkit-scrollbar {
         display: block !important;
         width: 4px !important;
         height: 4px !important;
       }
+
       // 滚动条轨道
       &::-webkit-scrollbar-track {
         border-radius: 10px;
         background-color: #efefef;
       }
+
       // 滚动条滑块
       &::-webkit-scrollbar-thumb {
         border-radius: 10px;
         background-color: var(--themeColor);
       }
+
       // 滚动条右下角
       &::-webkit-scrollbar-corner {
         background: transparent;
       }
+
       .el-tree-node {
         padding: 2px 0;
+
         .el-tree-node__content {
           &:hover {
             background-color: #eefaf4;
           }
+
           &:has(> .tree-row[class*="active"]) {
             border: 1px solid var(--themeColor);
           }
         }
-        &:focus > .el-tree-node__content {
+
+        &:focus>.el-tree-node__content {
           background-color: #eefaf4;
         }
+
         &[class*="is-current"] {
-          & > .el-tree-node__content {
+          &>.el-tree-node__content {
             background-color: var(--themeColor);
             color: #fff;
             font-weight: 700;
@@ -590,6 +605,7 @@ export default {
         height: 20px;
         padding-right: 10px;
       }
+
       .real-name {
         flex: 1;
         width: 100%;
@@ -600,14 +616,17 @@ export default {
         white-space: nowrap;
         text-overflow: ellipsis;
       }
+
       .is-expanded,
       .is-current,
       .is-focusable {
         background-color: transparent;
       }
+
       .el-icon-caret-right {
         display: none;
       }
+
       .left-tree-icon {
         width: 16px;
         display: inline-block;
@@ -615,13 +634,17 @@ export default {
         margin-left: 5px;
         margin-right: 5px;
       }
+
       .file-close-svg {
         font-size: 16px;
       }
+
       .create-part {
         height: 24px;
+
         .el-input {
           height: 100% !important;
+
           .el-input__inner {
             height: 100% !important;
             font-size: 14px;
@@ -629,10 +652,13 @@ export default {
           }
         }
       }
+
       .rename-part {
         height: 24px;
+
         .el-input {
           height: 100% !important;
+
           .el-input__inner {
             height: 100% !important;
             font-size: 14px;
@@ -642,11 +668,13 @@ export default {
         }
       }
     }
+
     .right-table {
       flex: 1;
       flex-shrink: 0;
       height: 100%;
       padding: 10px 20px;
+
       .search {
         height: 50px;
         display: flex;
@@ -655,23 +683,29 @@ export default {
         flex-shrink: 0;
         margin-bottom: 10px;
         min-width: 400px;
+
         .el-input {
           min-width: 200px;
           max-width: 400px;
           flex: 1;
           flex-shrink: 0;
         }
+
         ::v-deep .el-button {
           flex-shrink: 0;
+
           .search-svg {
             font-size: 16px;
           }
         }
       }
+
       ::v-deep .el-table {
         min-width: 400px;
+
         .file-preview-text {
           cursor: pointer;
+
           &:hover {
             color: #0097e3;
             text-decoration: underline;

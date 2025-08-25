@@ -1,4 +1,4 @@
-import useUserStore from '@/store/project/user'
+import useUserStore from '@/store/user'
 
 function authPermission(permission) {
   const all_permission = "*:*:*";

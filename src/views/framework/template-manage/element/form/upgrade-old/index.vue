@@ -113,8 +113,8 @@ const props = defineProps({
   currentNav: { type: String, default: '' }
 })
 // pinia
-import useEnumsStore from '@/store/project/enums'
-import useSettingStore from '@/store/framework/setting'
+import useEnumsStore from '@/store/enums'
+import useSettingStore from '@/store/setting'
 // 声明
 const settingStore = useSettingStore()
 const { proxy } = getCurrentInstance()
@@ -160,7 +160,7 @@ function setDefaultParams() {
 }
 // ^
 // # (3) 获取表格数据 
-import { cPersonGet } from '@/api/framework/project'
+import { cPersonGet } from '@/api/framework/template-manage/element'
 const tableData = ref([])
 const tableAllData = ref([])
 const tableTotal = ref(0)

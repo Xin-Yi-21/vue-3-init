@@ -132,7 +132,7 @@
 // 组件
 import Operate from './components/operate.vue'
 // 接口
-import { cPersonGet, cFileDownload } from '@/api/framework/project'
+import { cPersonGet, cFileDownload } from '@/api/framework/template-manage/element'
 // props
 const props = defineProps({
   currentNav: { type: String, default: '' }

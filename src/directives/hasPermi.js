@@ -3,7 +3,7 @@
 * Copyright (c) 2019 ruoyi
 */
 
-import useUserStore from '@/store/project/user'
+import useUserStore from '@/store/user'
 
 export default {
   mounted(el, binding, vnode) {

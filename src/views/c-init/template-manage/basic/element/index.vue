@@ -105,8 +105,8 @@
 <script setup>
 // # 一、综合
 import Operate from './components/operate.vue'
-import useEnumsStore from '@/store/project/enums'
-import useSettingStore from '@/store/framework/setting'
+import useEnumsStore from '@/store/enums'
+import useSettingStore from '@/store/setting'
 const settingStore = useSettingStore()
 
 const props = defineProps({
@@ -146,7 +146,7 @@ function setDefaultParams() {
 }
 // ^
 // # (3) 获取表格数据 
-import { personGet } from '@/api/framework/project'
+import { personGet } from '@/api/framework/template-manage/element'
 const tableData = ref([])
 const tableAllData = ref([])
 const tableTotal = ref(0)

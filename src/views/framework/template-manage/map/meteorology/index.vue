@@ -15,7 +15,7 @@ import * as L from 'leaflet'
 import "leaflet/dist/leaflet.css";
 import MapTool from './components/map-tool.vue';
 import Atmosphere from './components/atmosphere.vue'
-import useMapStore from "@/store/project/map.js";
+import useMapStore from "@/store/map.js";
 import { toolsList, atmosphereTypeList, configInfo } from './hooks/enums'
 const { tianDiToken } = storeToRefs(useMapStore())
 const { obtainMap, obtainBaseLayer } = useMapStore()

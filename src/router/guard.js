@@ -4,14 +4,14 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 import { isHttp } from '@/utils/validate'
-import { isRelogin } from '@/utils/request'
+import { isRelogin } from '@/api/request'
 
 // import useStore from '@/store'
 // const { menuStore } = useStore()
 
-import useUserStore from '@/store/project/user'
-import useSettingStore from '@/store/framework/setting'
-import useMenuStore from '@/store/framework/menu'
+import useUserStore from '@/store/user'
+import useSettingStore from '@/store/setting'
+import useMenuStore from '@/store/menu'
 
 NProgress.configure({ showSpinner: false })
 

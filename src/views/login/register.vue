@@ -48,7 +48,7 @@
 
 <script>
 import { accountVerify, mobileVerify, emailVerify, passwordVerify, equalToPassword, } from '@/utils/verify.js'
-import { register, phoneCodeGet } from '@/api/framework/login'
+import { register, phoneCodeGet } from '@/api/common/login'
 
 export default {
   name: 'Register',

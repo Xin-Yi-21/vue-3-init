@@ -1,4 +1,4 @@
-import { cRoleGet, cMonthGet } from '@/api/framework/project'         // 框架自定义接口
+import { cRoleGet, cMonthGet } from '@/api/framework/template-manage/element'         // 框架自定义接口
 import { ElMessage } from 'element-plus'
 
 const useEnumsStore = defineStore('enums', () => {

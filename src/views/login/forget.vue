@@ -43,7 +43,7 @@
 </template>
 
 <script>
-// import { phoneCodeForgetGet, emailCodeForgetGet, userForgetVerify, } from '@/api/framework/login'
+// import { phoneCodeForgetGet, emailCodeForgetGet, userForgetVerify, } from '@/api/common/login'
 import { regular } from '@/utils/regular'
 const emailVerify = (rule, value, callback) => {
   if (!value) {

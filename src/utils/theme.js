@@ -1,4 +1,3 @@
-// import app from '@/app.js'
 // 处理主题风格
 export function handleThemeStyle(themeStyle) {
   document.documentElement.setAttribute('theme-style', themeStyle)

@@ -46,9 +46,9 @@
 <script setup>
 import ScrollPane from './components/scroll-pane'
 import { getNormalPath } from '@/utils/ruoyi'
-import useTagStore from '@/store/framework/tag'
-import useSettingStore from '@/store/framework/setting'
-import useMenuStore from '@/store/framework/menu'
+import useTagStore from '@/store/tag'
+import useSettingStore from '@/store/setting'
+import useMenuStore from '@/store/menu'
 
 const { proxy } = getCurrentInstance()
 const route = useRoute()

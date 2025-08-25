@@ -20,7 +20,6 @@
 
 <script setup>
 // # 一、综合初始化
-import app from '@/app.js'
 import TopHeader from '@/layout/components/top/top-header/index.vue'
 import TopBar from '@/layout/components/top/top-bar/index.vue'
 import TopTag from '@/layout/components/top/top-tag/index.vue'
@@ -28,8 +27,8 @@ import TopNav from '@/layout/components/top/top-nav/index.vue'
 import LeftNav from '@/layout/components/left-nav/index.vue'
 import AppMain from '@/layout/components/app-main/index.vue'
 import Setting from '@/layout/components/setting/index.vue'
-import useEnumsStore from '@/store/project/enums'
-import useSettingStore from '@/store/framework/setting'
+import useEnumsStore from '@/store/enums'
+import useSettingStore from '@/store/setting'
 const settingStore = useSettingStore()
 // ^
 

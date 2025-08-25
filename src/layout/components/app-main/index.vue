@@ -13,8 +13,8 @@
 </template>
 
 <script setup>
-import iframeToggle from "@/components/framework/f-iframe-toggle/index"
-import useTagStore from '@/store/framework/tag'
+import iframeToggle from "@/components/f-iframe-toggle/index"
+import useTagStore from '@/store/tag'
 const tagStore = useTagStore()
 
 </script>

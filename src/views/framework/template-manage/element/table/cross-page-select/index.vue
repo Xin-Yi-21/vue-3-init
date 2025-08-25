@@ -58,7 +58,7 @@
 <script setup>
 // # 一、综合
 // 接口
-import { cPersonGet } from '@/api/framework/project'
+import { cPersonGet } from '@/api/framework/template-manage/element'
 // props
 const props = defineProps({
   currentNav: { type: String, default: '' }

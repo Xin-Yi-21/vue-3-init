@@ -48,7 +48,7 @@
 
 <script setup>
 // # 一、综合
-import useSettingStore from '@/store/framework/setting'
+import useSettingStore from '@/store/setting'
 const props = defineProps({
   eId: { type: String, default: '' },
   eInfo: { type: Object, default: () => { } },

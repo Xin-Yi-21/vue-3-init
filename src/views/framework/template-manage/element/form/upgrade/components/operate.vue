@@ -186,14 +186,14 @@
 // 工具函数
 import { numberVerifyNew } from '@/utils/verify'
 // 接口
-import { cPersonGet } from '@/api/framework/project'
+import { cPersonGet } from '@/api/framework/template-manage/element'
 // props
 const props = defineProps({
   operate: { type: String, default: 'add' },
   info: { type: Object, default: () => { } },
 })
 // pinia
-import useEnumsStore from '@/store/project/enums'
+import useEnumsStore from '@/store/enums'
 
 // 声明
 const { proxy } = getCurrentInstance()

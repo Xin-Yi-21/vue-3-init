@@ -17,7 +17,7 @@ import { storeToRefs } from 'pinia'
 import 'leaflet-velocity/dist/leaflet-velocity.min.css'
 import 'leaflet-velocity/dist/leaflet-velocity.min.js'
 import { renderWindImage, tooltipLayer, renderOtherAtmosphereImage } from '../hooks/atmosphere-load.js'
-import useMapStore from "@/store/project/map.js";
+import useMapStore from "@/store/map.js";
 const { map } = storeToRefs(useMapStore())
 const { currentTime, apiData, atmosphereTypeList, configInfo } = defineProps({
   // 当前时间

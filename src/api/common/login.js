@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from '@/api/request'
 
 // 登录
 export function login(data) {
@@ -18,6 +18,7 @@ export function logout() {
     headers: { isUserSystem: true },
   })
 }
+
 // 获取图片验证码
 export function imageCodeGet() {
   return request({
@@ -28,7 +29,6 @@ export function imageCodeGet() {
   })
 }
 
-
 // 获取当前登录用户信息
 export function getInfo() {
   return request({
@@ -36,6 +36,7 @@ export function getInfo() {
     method: 'get'
   })
 }
+
 // 注册
 export function register() {
   return request({

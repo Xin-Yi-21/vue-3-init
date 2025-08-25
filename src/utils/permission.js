@@ -1,4 +1,4 @@
-import useUserStore from '@/store/project/user'
+import useUserStore from '@/store/user'
 
 /**
  * 字符权限校验

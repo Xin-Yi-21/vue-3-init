@@ -8,7 +8,7 @@
 <script setup>
 // stroke-linecap: butt round square
 // # 一、综合
-import useSettingStore from '@/store/framework/setting'
+import useSettingStore from '@/store/setting'
 const settingStore = useSettingStore()
 const { proxy } = getCurrentInstance()
 // ^

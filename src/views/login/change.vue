@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { passwordChange } from '@/api/framework/login'
+import { passwordChange } from '@/api/common/login'
 import { regular } from '@/utils/regular'
 const passwordVerify = (rule, value, callback) => {
   if (!value) {

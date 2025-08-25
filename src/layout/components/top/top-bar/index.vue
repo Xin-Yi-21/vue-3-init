@@ -6,9 +6,9 @@
 </template>
 
 <script setup>
-import Hamburger from '@/components/framework/f-hamburger'
-import Breadcrumb from '@/components/framework/f-breadcrumb'
-import useSettingStore from '@/store/framework/setting'
+import Hamburger from '@/components/f-hamburger'
+import Breadcrumb from '@/components/f-breadcrumb'
+import useSettingStore from '@/store/setting'
 const settingStore = useSettingStore()
 const handleLeftNav = () => {
   settingStore.leftNav.isCollapse = !settingStore.leftNav.isCollapse

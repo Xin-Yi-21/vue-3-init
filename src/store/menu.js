@@ -2,8 +2,8 @@ import auth from '@/plugins/auth'
 import router, { constantRoutes, dynamicRoutes } from '@/router'
 import { menuGet } from '@/router/menu.js'
 import Layout from '@/layout/index'
-import ParentView from '@/components/framework/f-parent-view'
-import InnerLink from '@/components/framework/f-inner-link'
+import ParentView from '@/components/f-parent-view'
+import InnerLink from '@/components/f-inner-link'
 
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')

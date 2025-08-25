@@ -12,8 +12,8 @@
 <script setup>
 // 一、综合初始化
 import NavItem from './components/nav-item'
-import useSettingStore from '@/store/framework/setting'
-import useMenuStore from '@/store/framework/menu'
+import useSettingStore from '@/store/setting'
+import useMenuStore from '@/store/menu'
 
 const settingStore = useSettingStore()
 const menuStore = useMenuStore()

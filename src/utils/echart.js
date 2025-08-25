@@ -357,7 +357,7 @@ export function $getEchartSeriesColor(page) {
 }
 
 // 折线图配置 echart-line-option
-import useSettingStore from '@/store/framework/setting'
+import useSettingStore from '@/store/setting'
 const $settingStore = useSettingStore()
 export function $getLineEchartOption({ echartInfo, settingStore, getType, optionList }) {
   !settingStore && (settingStore = $settingStore)

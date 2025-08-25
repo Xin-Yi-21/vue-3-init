@@ -1,9 +1,9 @@
 import { createPinia } from 'pinia'
-import useMenuStore from '@/store/framework/menu'
-import useSettingStore from '@/store/framework/setting'
-import useTagStore from '@/store/framework/tag'
-import useUserStore from '@/store/project/user'
-import useEnumsStore from '@/store/project/enums'
+import useMenuStore from '@/store/menu'
+import useSettingStore from '@/store/setting'
+import useTagStore from '@/store/tag'
+import useUserStore from '@/store/user'
+import useEnumsStore from '@/store/enums'
 import persist from 'pinia-plugin-persistedstate'
 const store = createPinia().use(persist)
 export default function useStore() {

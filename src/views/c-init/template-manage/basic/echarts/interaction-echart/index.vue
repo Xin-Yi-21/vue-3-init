@@ -60,7 +60,7 @@
 import * as echarts from 'echarts'
 import _ from 'lodash'
 import { nonNegativeNumberVerify } from '@/utils/verify.js'
-import useSettingStore from '@/store/framework/setting'
+import useSettingStore from '@/store/setting'
 import { onMounted } from 'vue'
 const settingStore = useSettingStore()
 const { proxy } = getCurrentInstance()

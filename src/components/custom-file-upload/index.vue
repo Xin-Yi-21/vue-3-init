@@ -24,7 +24,7 @@
   </el-dialog>
 </template>
 <script>
-import { fileUpload } from '@/api/file'
+import { fileUpload } from '@/api/framework/template-manage/file'
 export default {
   props: {
     currentActiveNode: {
@@ -96,30 +96,37 @@ export default {
 <style lang="scss" scoped>
 .file-upload-dialog {
   width: 600px;
+
   .c-d-content {
     padding: 40px 40px 20px;
+
     .c-d-c-inner {
       min-width: calc(600px - 85px);
+
       .upload-card {
         width: 500px;
         // max-height: 320px;
         background: #eef4f4;
         border-radius: 4px;
         border: 1px solid #dedede;
+
         .upload-operate {
           margin: 20px auto 15px;
           display: flex;
           align-items: center;
           justify-content: center;
+
           ::v-deep .c-icon {
             &:hover {
               color: var(--themeColor) !important;
             }
           }
+
           .upload-description {
             color: #999;
           }
         }
+
         .upload-content {
           margin: 0 auto 20px;
           width: 400px;
