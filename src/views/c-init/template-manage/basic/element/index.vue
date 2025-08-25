@@ -146,7 +146,7 @@ function setDefaultParams() {
 }
 // ^
 // # (3) 获取表格数据 
-import { personGet } from '@/api/system/project'
+import { personGet } from '@/api/framework/project'
 const tableData = ref([])
 const tableAllData = ref([])
 const tableTotal = ref(0)

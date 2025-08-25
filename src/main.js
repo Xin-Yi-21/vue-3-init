@@ -1,5 +1,5 @@
 window.vEnv = import.meta.env
-import { setConfig } from '@/api/system/config'
+import { setConfig } from '@/api/framework/config'
 import app from './app.js'
 // ⭐ element-plus 相关文件
 import ElementPlus from 'element-plus'
@@ -8,12 +8,6 @@ import 'element-plus/dist/index.css'
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 app.use(ElementPlus, { locale: locale, size: 'default' })
 // size: !storageSetting.themeSize ? 'large' : storageSetting.themeSize == 'normal' ? 'default' : storageSetting.themeSize 
-// ⭐ ant-design 相关文件
-// import Antd from 'ant-design-vue'
-// import 'ant-design-vue/dist/reset.css'
-// import { message } from 'ant-design-vue'
-// app.use(Antd)
-// app.config.globalProperties.$message = message
 // ⭐ svg图标 相关文件 
 import 'virtual:svg-icons-register'
 import SvgIcon from '@/components/system/svg-icon'
@@ -28,7 +22,7 @@ setConfig().then(async (cEnv) => {
   try {
     document.title = cEnv.VITE_APP_TITLE
     await import('./utils/request')                                                            // import('./utils/request')
-    await import('./permission.js')                                                            // import('./permission')
+    await import('./router/guard.js')                                                            // import('./permission')
     const directive = (await import('./directive')).default                                    // import directive from './directive'
     const plugins = (await import('./plugins')).default                                        // import plugins from './plugins'
     const store = (await import('./store')).default                                            // import store from './store'
