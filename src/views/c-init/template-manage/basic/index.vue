@@ -1,6 +1,6 @@
 <template>
   <div>
-    基础模板
+    基础模板1
     <router-view></router-view>
   </div>
 </template>
