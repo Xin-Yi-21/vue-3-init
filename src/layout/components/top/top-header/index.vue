@@ -3,13 +3,15 @@
     <div class="project">
       <c-icon i="c-logo" cursor="auto" size="24"></c-icon>
       <div class="title">项目初始化系统</div>
-      <Breadcrumb v-if="settingStore.topHeader.isBreadcrumbShow" separator=">" class="breadcrumb-container" />
+      <!-- <Breadcrumb v-if="settingStore.topHeader.isBreadcrumbShow" separator=">" class="breadcrumb-container" /> -->
     </div>
 
-    <div class="menu"> </div>
+    <div class="menu">
+      <top-nav v-if="settingStore.topNav.isShow"></top-nav>
+    </div>
 
     <div class="time" v-html="time"></div>
-    <!-- <div class="user-name"><c-icon i="c-account"></c-icon> <span>admin</span></div> -->
+
     <el-dropdown @command="handleCommand" class="setting" trigger="click" append-to-body="true">
       <div class="avatar">
         <img :src="userStore.avatar" />
@@ -40,36 +42,36 @@
   </div>
 </template>
 <script setup>
-// 一、综合初始化
-import useUserStore from '@/store/user'
-import useSettingStore from '@/store/setting'
-import Breadcrumb from '@/components/f-breadcrumb'
-
+// 一、综合
+// 插件
+import 'dayjs/locale/zh-cn'
+// 组件
+// import Breadcrumb from '@/components/f-breadcrumb'
+import TopNav from '@/layout/components/top/top-nav'
+// pinia
+import useStore from '@/store'
+// 声明
+const { userStore, settingStore } = useStore()
 const { proxy } = getCurrentInstance()
-const userStore = useUserStore()
-const settingStore = useSettingStore()
 const router = useRouter()
+
+// # 二、模块功能
+// # 1、初始化
 function init() {
   initTime()
 }
-onMounted(() => {
-  init()
-})
-onBeforeUnmount(() => {
-  clearInterval(timer)
-})
-// 二、模块功能
-// 1、运行时间
-const weekdayLRV = { Monday: '星期一', Tuesday: '星期二', Wednesday: '星期三', Thursday: '星期四', Friday: '星期五', Staturday: '星期六', Sunday: '星期日' }
+// ^
+// # 2、运行时间
+// const weekdayLRV1 = { Monday: '周一', Tuesday: '周二', Wednesday: '周三', Thursday: '星期四', Friday: '星期五', Saturday: '星期六', Sunday: '星期日' }
+const weekdayLRV = { '星期一': '周一', '星期二': '周二', '星期三': '周三', '星期四': '周四', '星期五': '周五', '星期六': '周六', '星期日': '周日' }
 const time = ref('')
 const timer = ref(null)
 function initTime() {
-  time.value = proxy.$dayjs().format('YYYY-MM-DD') + ' ' + weekdayLRV[proxy.$dayjs().format('dddd')] + ' ' + proxy.$dayjs().format('HH:mm:ss')
+  time.value = proxy.$dayjs().format('YYYY-MM-DD') + ' ' + (weekdayLRV[proxy.$dayjs().format('dddd')] || '') + ' ' + proxy.$dayjs().format('HH:mm:ss')
 }
 timer.vlaue = setInterval(() => { initTime() }, 1000)
-
-// 2、处理dropdown
-// (0) 综合
+// ^
+// # 3、处理dropdown
 const handleCommand = command => {
   switch (command) {
     case "profile":
@@ -104,14 +106,29 @@ function logout() {
     })
   }).catch(() => { })
 }
+// ^
+// ^
+
+// # 三、机制
+onMounted(() => {
+  init()
+})
+onBeforeUnmount(() => {
+  clearInterval(timer)
+})
+// ^
 </script>
 <style lang="scss" scoped>
+@font-face {
+  font-family: 'TitleFont';
+  src: url('@/assets/fonts/title.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .top-header-vue {
   display: flex;
   align-items: center;
-  // background-image: url(@/assets/images/bg-header.png);
-  // background-repeat: no-repeat;
-  // background-size: cover;
   background-color: var(--bg-topHeader);
   font-size: 14px;
 
@@ -126,9 +143,10 @@ function logout() {
   .project {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
+    padding: 0 10px;
 
     :deep(.svg-icon) {
-      margin: 0 10px;
       color: var(--fcpl);
       font-size: 24px !important;
     }
@@ -137,8 +155,10 @@ function logout() {
       display: flex;
       align-items: center;
       color: var(--fcpl);
-      font-weight: 700;
       font-size: 30px;
+      font-weight: 700;
+      font-family: 'TitleFont';
+      letter-spacing: 2px;
       text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.33);
     }
 
@@ -171,21 +191,24 @@ function logout() {
 
   .menu {
     flex: 1;
+    height: 100%;
+    overflow: hidden;
   }
 
 
   .time {
-    margin-right: 50px;
-    color: var(--fcs);
-    font-family: PingFang SC, PingFang SC;
+    flex-shrink: 0;
+    margin-right: 30px;
+    color: var(--tc);
     font-weight: 800;
     font-size: 20px;
     line-height: 28px;
-    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.33);
+
   }
 
   .user-name {
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     margin-right: 50px;
   }

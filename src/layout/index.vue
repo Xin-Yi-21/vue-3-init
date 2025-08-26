@@ -6,7 +6,7 @@
         <left-nav v-if="settingStore.leftNav.isShow"></left-nav>
         <div class="main-right-container">
           <div class="top-container">
-            <top-nav v-if="settingStore.topNav.isShow"></top-nav>
+            <!-- <top-nav v-if="settingStore.topNav.isShow"></top-nav> -->
             <top-bar v-if="settingStore.topBar.isShow"></top-bar>
             <!-- <top-tag v-if="settingStore.topTag.isShow"></top-tag> -->
           </div>

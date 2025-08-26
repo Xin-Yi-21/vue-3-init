@@ -1,0 +1,34 @@
+<template>
+  <div class="xxx-vue">
+    权限管理
+  </div>
+</template>
+
+<script setup>
+// # 一、综合
+
+// ^
+
+// # 二、模块功能
+// # 1、初始化
+// # (1) 初始化总调用
+function init() {
+
+}
+// ^
+// ^
+// ^
+
+// # 三、机制
+onMounted(() => {
+  init()
+})
+// ^
+</script>
+
+<style lang="scss" scoped>
+.xxx-vue {
+  width: 100%;
+  height: 100%;
+}
+</style>

@@ -33,6 +33,7 @@ export const constantRoutes = [
     component: () => import('@/components/f-error/401'),
     hidden: true
   },
+  // 这个可以访问
   {
     path: '',
     component: Layout,
@@ -46,6 +47,25 @@ export const constantRoutes = [
       }
     ]
   },
+  // 这个不可以访问，404
+  // {
+  //   name: 'Framework',
+  //   path: '/framework',
+  //   component: Layout,
+  //   hidden: false,
+  //   alwaysShow: true,
+  //   meta: { title: '基础框架', icon: 'c-framework', noCache: false, link: null, menu: ['top', 'left'], },
+  //   children: [
+  //     {
+  //       name: 'ElementTemplate',
+  //       path: 'element',
+  //       // component: 'framework/template-manage/element/index',
+  //       component: () => import('@/views/framework/template-manage/element/index'),
+  //       hidden: false,
+  //       meta: { title: 'element 模板', icon: 'c-element', noCache: false, link: null, }
+  //     },
+  //   ]
+  // },
 ]
 
 // 动态路由，基于用户权限动态去加载

@@ -1,96 +1,116 @@
 <template>
   <div class="menu-item-container" v-if="!navInfo.hidden">
-    <!-- [ 当前导航无子导航 , 当前导航有1个子导航 && 子导航无子项  && alwaysShow为true ] -->
-    <Link v-if="judgeChild(navInfo.children, navInfo) && (!onlyOne.children || onlyOne.noshowChildren) && !navInfo.alwaysShow && onlyOne.meta" :to="handlePath(onlyOne.path, onlyOne.query)">
-    <el-menu-item :index="handlePath(onlyOne.path)" :class="{ 'submenu-title-noDropdown': !isNest }" @click="handleGo(onlyOne)">
-      <svg-icon :icon-class="onlyOne.meta.icon || (navInfo.meta && navInfo.meta.icon)" />
-      <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta.title)">{{ onlyOne.meta.title }}</span></template>
+
+    <el-menu-item v-if="isNoChildShow() && !isJump" :index="onlyOne.path" :class="[...(onlyOne.meta?.class || [])]" @click="handleClickMenuItem(onlyOne,)">
+      <svg-icon v-if="(!isNest && isShowFirstIcon) || (isNest && isShowNestIcon)" :icon-class="onlyOne.meta?.icon || ''" class-name="menu-icon" />
+      <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta?.title)">{{ onlyOne.meta?.title }}</span></template>
+    </el-menu-item>
+
+    <Link v-else-if="isNoChildShow() && isJump" :to="handleLinkPath(onlyOne.path, onlyOne.query)">
+    <el-menu-item :index="onlyOne.path" :class="[...(onlyOne.meta?.class || [])]" @click="handleClickMenuItem(onlyOne,)">
+      <svg-icon v-if="(!isNest && isShowFirstIcon) || (isNest && isShowNestIcon)" :icon-class="onlyOne.meta?.icon || ''" class-name="menu-icon" />
+      <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta?.title)">{{ onlyOne.meta?.title }}</span></template>
     </el-menu-item>
     </Link>
-    <!-- -->
-    <el-sub-menu v-else ref="subMenu" :index="handlePath(navInfo.path)" :teleported="true" expand-close-icon="CaretBottom" expand-open-icon="CaretTop" collapse-close-icon="CaretRight" collapse-open-icon="CaretLeft" popper-class="top-nav-vertical-menu">
+
+    <el-sub-menu v-else ref="subMenu" :index="navInfo.meta?.fullPath" :class="[...(navInfo.meta?.class || [])]" teleported popper-class="top-nav-el-menu-vertical">
       <template v-if="navInfo.meta" #title>
-        <svg-icon :icon-class="navInfo.meta && navInfo.meta.icon" />
-        <span class="menu-title" :title="hasTitle(navInfo.meta.title)">{{ navInfo.meta.title }}</span>
+        <svg-icon v-if="(!isNest && isShowFirstIcon) || (isNest && isShowNestIcon)" :icon-class="navInfo.meta?.icon || ''" class-name="menu-icon" />
+        <span class="menu-title" :title="hasTitle(navInfo.meta?.title)">{{ navInfo.meta?.title }}</span>
       </template>
-      <nav-item v-for="(item, index) in navInfo.children" :key="index" :isNest="true" :navInfo="item" :basePath="handlePath(navInfo.path)" />
+      <nav-item v-for="(item, index) in navInfo.children" :key="index" :isJump="isJump" :isNest="true" :navInfo="item" />
     </el-sub-menu>
   </div>
 </template>
 
 <script setup>
-import { isExternal } from '@/utils/validate'
+// # 一、综合
+// 组件
 import Link from './link'
-// 一、综合初始化
+// 插件
+import { isExternal } from '@/utils/validate'
+// pinia
+import useStore from '@/store'
+// props
 const props = defineProps({
-  navInfo: {
-    type: Object,
-    required: true
-  },
-  isNest: {
-    type: Boolean,
-    default: false
-  },
-  basePath: {
-    type: String,
-    default: ''
-  },
-  isTopPath: {
-    type: Boolean,
-    default: false
-  },
+  navInfo: { type: Object, required: true },
+  isNest: { type: Boolean, default: false },
+  isJump: { type: Boolean, default: false },
 })
-const router = useRouter()
-// 二、模块功能
-// console.log('查navInfo', props.navInfo.meta?.title, props.navInfo)
-//  1、导航子项判断
+
+// 声明
+const { menuStore } = useStore()
+const emit = defineEmits()
+const { proxy } = getCurrentInstance()
+const isShowFirstIcon = ref(false)
+const isShowNestIcon = ref(false)
+// ^
+
+// # 二、模块功能
+// # 1、判断没有可供显示的子项
 const onlyOne = ref({})
-function judgeChild(children = [], parent) {
+function isNoChildShow() {
+  const self = props.navInfo
+  const children = props.navInfo?.children || []
   const showChildren = children?.filter(item => !item.hidden) || []
-  if (showChildren.length === 1) {
-    onlyOne.value = showChildren[0]
-    // console.log('查onlyOne.value ', onlyOne.value)
-    return true
-  }
+  // 可显示的children为0个
   if (showChildren.length === 0) {
-    onlyOne.value = { ...parent, noshowChildren: true }
+    onlyOne.value = { ...self, path: handleLinkPath(props.navInfo?.meta?.fullPath), }
     return true
   }
+  // 可显示的children为1个
+  if (showChildren.length === 1) {
+    if (!self.alwaysShow) {  // 作为menu-item覆盖
+      onlyOne.value = { ...showChildren[0], path: handleLinkPath(props.navInfo?.meta?.fullPath + '/' + showChildren[0].path) }
+      return true
+    } else {
+      return false
+    }
+  }
+
+  // if (self.meta.clickIn && self.name != props.currentIn) {
+  //   onlyOne.value = { ...self, path: handlePath(props.navInfo?.meta?.fullPath), noshowChildren: true }
+  //   return true
+  // }
   return false
 }
-// 2、处理index路径
-function handlePath(routePath, routeQuery) {
-  if (isExternal(routePath)) { return routePath }
-  if (isExternal(props.basePath)) { return props.basePath }
-  let path = getNormalPath(props.basePath + '/' + routePath)
-  if (routeQuery) {
-    return { path: path, query: JSON.parse(routeQuery) }
+// ^
+// # 2、处理路径
+// # (1) link路径信息
+function handleLinkPath(path, query,) {
+  if (isExternal(path)) { return path }
+  let newPath = getNormalPath(path)
+  if (query) {
+    return { path: newPath, query: JSON.parse(query) }
+  } else {
+    return newPath
   }
-  // console.log('查indexPath', getNormalPath(path))
-  return getNormalPath(path)
 }
-// 3、路径规范化处理
+// ^
+// # (2) 路径规范化处理
 function getNormalPath(p) {
-  if (p.length === 0 || !p || p == 'undefined') {
-    return p
-  }
+  // 异常判断
+  if (p?.length === 0 || !p || p == 'undefined') { return p }
+  // 双// 替换为 /
   let res = p.replace('//', '/')
-  if (res[res.length - 1] === '/') {
-    return res.slice(0, res.length - 1)
-  }
+  // 移除路径结尾的/
+  if (res[res.length - 1] === '/') { return res.slice(0, res.length - 1) }
   return res
 }
-// 4、标题处理
+// ^
+// ^
+// # 3、标题悬浮提示
 function hasTitle(title) {
-  return title.length > 5 ? title : ''
+  return title?.length > 5 ? title : ''
 }
-// 5、跳转
-function handleGo(navItem) {
-  let path = handlePath(navItem.path, navItem.query)
-  if (isExternal(path)) {
-    window.open(path, '_blank', 'noopener,noreferrer') // 出于安全考虑，防止新页面获取原页面的引用。
-  } else {
-    router.push(path)
-  }
+// ^
+// # 4、el-menu-item 事件
+// # (1) 单击
+function handleClickMenuItem(self) {
+  menuStore.setCurrentTopMenu(self)
 }
+// ^
+// ^
+// ^
+// ^
 </script>

@@ -41,51 +41,75 @@ export const menuGet = () => {
           component: 'Layout',
           hidden: false,
           alwaysShow: true,
-          redirect: 'noRedirect',
+          redirect: '/framework/template-manage/element',
           meta: { title: '基础框架', icon: 'c-framework', noCache: false, link: null, menu: ['top', 'left'], },
           children: [
             {
-              name: 'TemplateManage',
+              name: 'FrameworkTemplateManage',
               path: 'template-manage',
+              component: 'ParentView',
               hidden: false,
               alwaysShow: true,
               redirect: '/framework/template-manage/element',
               meta: { title: '模版管理', icon: 'c-template', noCache: false, link: null, menu: ['top', 'left'], },
               children: [
                 {
-                  name: 'ElementTemplate',
+                  name: 'FrameworkElementTemplate',
                   path: 'element',
                   component: 'framework/template-manage/element/index',
                   hidden: false,
                   meta: { title: 'element 模板', icon: 'c-element', noCache: false, link: null, menu: ['left'], }
                 },
                 {
-                  name: 'EchartsTemplate',
+                  name: 'FrameworkEchartsTemplate',
                   path: 'echarts',
                   component: 'framework/template-manage/echarts/index',
                   hidden: false,
                   meta: { title: 'echarts 模板', icon: 'c-echarts', noCache: false, link: null, menu: ['left'], }
                 },
                 {
-                  name: 'MapTemplate',
+                  name: 'FrameworkMapTemplate',
                   path: 'map',
                   component: 'framework/template-manage/map/index',
                   hidden: false,
                   meta: { title: 'map 模版', icon: 'c-map', noCache: false, link: null, menu: ['left'], }
                 },
+              ]
+            },
+            {
+              name: 'FrameworkSystemManage',
+              path: 'system-manage',
+              component: 'ParentView',
+              hidden: false,
+              alwaysShow: true,
+              redirect: '/framework/system-manage/user',
+              meta: { title: '系统管理', icon: 'c-template', noCache: false, link: null, menu: ['top', 'left'], },
+              children: [
                 {
-                  name: 'SystemTemplate',
-                  path: 'system',
-                  component: 'framework/template-manage/system/index',
+                  name: 'FrameworkUser',
+                  path: 'user',
+                  component: 'framework/system-manage/user/index',
                   hidden: false,
-                  meta: { title: 'system 模版', icon: 'c-system', noCache: false, link: null, menu: ['left'], }
+                  meta: { title: '用户管理', icon: 'c-user', noCache: false, link: null, menu: ['left'], }
+                },
+                {
+                  name: 'FrameworkRole',
+                  path: 'role',
+                  component: 'framework/system-manage/role/index',
+                  hidden: false,
+                  meta: { title: '角色管理', icon: 'c-role', noCache: false, link: null, menu: ['left'], }
+                },
+                {
+                  name: 'FrameworkPermission',
+                  path: 'permission',
+                  component: 'framework/system-manage/permission/index',
+                  hidden: false,
+                  meta: { title: '权限管理', icon: 'c-permission', noCache: false, link: null, menu: ['left'], }
                 },
               ]
             },
           ]
         },
-
-
       ]
       resolve({ code: 200, data: routes, msg: '请求成功！' })
     } catch {

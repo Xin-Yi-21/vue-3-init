@@ -6,7 +6,7 @@ import ParentView from '@/components/f-parent-view'
 import InnerLink from '@/components/f-inner-link'
 
 // 匹配views里面所有的.vue文件
-const modules = import.meta.glob('./../../views/**/*.vue')
+const modules = import.meta.glob('@/views/**/*.vue')
 
 const useMenuStore = defineStore('menu', {
   state: () => ({
@@ -68,14 +68,14 @@ const useMenuStore = defineStore('menu', {
           let navRoutes = allRoutes.filter(item => !item.hidden)
           this.setNavRoutes(navRoutes)
 
-          // console.log('dynamicRoutes（前端动态路由）', dynamicRoutes)
-          // console.log('dynamicFilterRoutes（前端权限过滤后的动态路由）', dynamicFilterRoutes)
-          // console.log('backendRoutes（后端接口路由）', backendRoutes)
-          // console.log('backendFilterRoutes（后端权限过滤后的接口路由）', backendFilterRoutes)
-          // console.log('addRoutes（新访问路由）', addRoutes)
-          // console.log('addFlattenRoutes（扁平化新访问路由）', addFlattenRoutes)
-          // console.log('allRoutes（全部路由）', allRoutes)
-          // console.log('navRoutes（导航路由）', navRoutes)
+          console.log('dynamicRoutes（前端动态路由）', dynamicRoutes)
+          console.log('dynamicFilterRoutes（前端权限过滤后的动态路由）', dynamicFilterRoutes)
+          console.log('backendRoutes（后端接口路由）', backendRoutes)
+          console.log('backendFilterRoutes（后端权限过滤后的接口路由）', backendFilterRoutes)
+          console.log('addRoutes（新访问路由）', addRoutes)
+          console.log('addFlattenRoutes（扁平化新访问路由）', addFlattenRoutes)
+          console.log('allRoutes（全部路由）', allRoutes)
+          console.log('navRoutes（导航路由）', navRoutes)
 
           resolve(addRoutes)
         })
