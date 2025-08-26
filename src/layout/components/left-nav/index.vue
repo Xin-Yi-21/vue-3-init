@@ -4,7 +4,7 @@
     <div class="left-nav-toggle">
       <c-hamburger :isCollapse="settingStore.leftNav.isCollapse" @toggleClick="handleLeftNav" />
     </div>
-    <!-- <station ref="stationRef"></station> -->
+    <station ref="stationRef"></station>
   </div>
 
 </template>
@@ -14,6 +14,7 @@
 // 组件
 import PMenu from './components/p-menu'
 import cHamburger from '@/components/custom-hamburger'
+import station from './components/station'
 // pinia
 import useStore from '@/store'
 // 声明

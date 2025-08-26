@@ -25,7 +25,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  background-image: url('@/assets/images/bg-home.png');
+  background-image: url('@/assets/images/c-bg-home.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
 

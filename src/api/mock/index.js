@@ -50,4 +50,56 @@ const cPersonGet = {
   }
 }
 
-export default [cPersonGet]
+
+// 获取场站
+const cStationGet = {
+  method: 'get',
+  url: '/mock/cStationGet',
+  response: (options) => {
+    let params = options.query
+    let data = options.data
+    const mockData = [{
+      "id": 1,
+      "parentId": null,
+      "name": "山东公司",
+      "children": [
+        {
+          "stationId": 1,
+          "stationName": "海上风电",
+          "stationType": "风电",
+          "stationDetailType": "陆上集中式风电",
+          "provinceName": "山东省",
+          "deptId": 1,
+          "deptName": "山东公司",
+          "capacity": 300,
+          "province": 370000,
+          "regionId": 1
+        },
+        {
+          "stationId": 2,
+          "stationName": "内陆光伏",
+          "stationType": "光伏",
+          "stationDetailType": "陆上集中式光伏",
+          "provinceName": "山东省",
+          "deptId": 1,
+          "deptName": "山东公司",
+          "capacity": 300,
+          "province": 370000,
+          "regionId": 1
+        },
+      ]
+    }]
+    try {
+      const { currentPageNum = 1, currentPageSize = 10 } = params || {}
+      const start = (Number(currentPageNum) - 1) * Number(currentPageSize)
+      const end = start + Number(currentPageSize)
+      const resData = mockData.slice(start, end)
+      return { code: 200, data: resData, msg: 'success', }
+    } catch (error) {
+      return { code: 500, data: [], msg: '请求失败！', }
+    }
+  }
+}
+
+
+export default [cPersonGet, cStationGet]

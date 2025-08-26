@@ -1,4 +1,5 @@
-import { cRoleGet, cMonthGet } from '@/api/framework/template-manage/element'         // 框架自定义接口
+import { cRoleGet } from '@/api/framework/system-manage'         // 框架自定义接口
+import { cStationGet } from '@/api/common'
 import { ElMessage } from 'element-plus'
 
 const useEnumsStore = defineStore('enums', () => {
@@ -18,6 +19,7 @@ const useEnumsStore = defineStore('enums', () => {
   // 获取后端枚举
   async function getEnums(refreshTypeList, params) {
     let enums = { ...backendEnums.value }
+
     // 获取角色
     try {
       if (!refreshTypeList || refreshTypeList?.includes('cRole')) {
@@ -25,13 +27,41 @@ const useEnumsStore = defineStore('enums', () => {
         enums.role = (res.data || []).map(item => ({ label: item.label, value: item.value, }))
       }
     } catch (error) { ElMessage.warning('角色枚举查询存在问题，请联系管理员！') }
-    // 获取月份，初始不查询。
+
+    // 获取场站
     try {
-      if (refreshTypeList?.includes('cMonth')) {
-        const res = await cMonthGet()
-        enums.month = (res.data || []).map(item => ({ label: item.label, value: item.value, }))
+      if (!refreshTypeList || refreshTypeList?.includes('cStation')) {
+        const res = await cStationGet()
+        // 获取场站树
+        let treeData = JSON.parse(JSON.stringify(res.data || []))
+        function deepTraverse(node) {
+          if (!node) return
+          node.treeId = node.stationId || node.name + '-' + node.id
+          node.treeName = node.stationName || node.name
+          // if (node.stationType && ['火电', '储能', '核电'].includes(node.stationType)) { node.isDisabled = true }
+          if (node.children && Array.isArray(node.children)) { node.children.forEach(child => deepTraverse(child)) }
+        }
+        treeData.forEach(item => deepTraverse(item))
+        enums.stationTree = treeData
+        // 获取场站列表
+        let listData = []
+        function getStations(dataTree) {
+          if (!dataTree) return
+          for (let i of dataTree) {
+            if (!i.children) {
+              i.label = i.stationName
+              i.value = i.stationId
+              // i.isDisabled = (i.stationType && ['火电', '储能', '核电'].includes(i.stationType)) ? true : false
+              i?.stationName ? listData.push(i) : ''
+            } else {
+              getStations(i.children)
+            }
+          }
+        }
+        getStations(treeData)
+        enums.stationList = listData
       }
-    } catch (error) { ElMessage.warning('月份枚举查询存在问题，请联系管理员！') }
+    } catch (error) { ElMessage.warning('场站枚举查询存在问题，请联系管理员！') }
 
     // 整合
     backendEnums.value = enums
@@ -39,4 +69,5 @@ const useEnumsStore = defineStore('enums', () => {
   }
   return { allEnums, frontendEnums, backendEnums, getEnums }
 })
+
 export default useEnumsStore
