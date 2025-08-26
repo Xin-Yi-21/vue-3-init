@@ -16,24 +16,21 @@ export default {
     isShow: true,
     isBreadcrumbShow: true,
   },
-  // 左侧导航
-  leftNav: {
-    isShow: true,
-    isCollapse: false,
-    withoutAnimation: false,
-  },
   // 顶部导航
   topNav: {
     isShow: true,
   },
-  // 面包栏
-  topBar: {
-    isShow: true,
-  },
-  // 标签
+  // 顶部标签
   topTag: {
     isShow: true,
   },
+  // 左侧边栏
+  leftSide: {
+    isShow: true,
+    isCollapse: false,
+    withoutAnimation: false,
+  },
+
   // 是否全屏
   isFullScreen: false,
   /**

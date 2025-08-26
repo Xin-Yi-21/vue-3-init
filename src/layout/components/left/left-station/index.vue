@@ -5,20 +5,6 @@
       <div class="part-header" @click="handleToggleStation">
         <c-icon i="p-station" size="16" class="station-icon"></c-icon>
         <span class="part-header-title">场站选择</span>
-        <!-- <div class="content">
-          <span class="content-label">场站选择：</span>
-          <span class="content-text">
-            <div class="header-station" v-if="stationStore?.currentStation?.stationId">
-              <c-icon i="p-solar-station" size="18" v-if="stationStore?.currentStation?.stationType?.includes('光伏')"></c-icon>
-              <c-icon i="p-wind-station" size="18" v-if="stationStore?.currentStation?.stationType?.includes('风电')"></c-icon>
-              <c-tooltip :content="stationStore?.currentStation?.treeName" targetClass="overflow-test" placement="top" effect="light" maxWidth="400">
-                <c-scroll direction="x" scrollType="smooth" :stepTime="1000" :stayTime="0" :scrollBar="false">
-                  <span class="overflow-test">{{ stationStore?.currentStation?.treeName }} </span>
-                </c-scroll>
-              </c-tooltip>
-            </div>
-          </span>
-        </div> -->
         <c-icon i="c-normal-down" size="18" :class="['toggle-icon', isStationCollapse ? 'is-rotate' : '']" cursor="pointer"></c-icon>
       </div>
 

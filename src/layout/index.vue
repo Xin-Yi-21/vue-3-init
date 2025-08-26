@@ -3,8 +3,7 @@
     <template v-if="isLayoutShow">
       <top-header @setLayout="setLayout" v-if="settingStore.topHeader.isShow"></top-header>
       <div class="main-container">
-        <!-- <left-nav ></left-nav> -->
-        <left-side v-if="settingStore.leftNav.isShow"></left-side>
+        <left-side v-if="settingStore.leftSide.isShow"></left-side>
         <div class="main-right-container">
           <div class="top-container">
             <!-- <top-tag v-if="settingStore.topTag.isShow"></top-tag> -->

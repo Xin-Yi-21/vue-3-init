@@ -1,6 +1,5 @@
 <template>
-  <div :class="['left-nav-menu', isMenuCollapse ? 'is-menu-collapse' : 'is-menu-expand']" id="left-nav-menu" ref="lnmRef">
-
+  <div :class="['left-nav-vue', isVerticalCollapse ? 'is-menu-collapse' : 'is-menu-expand']" id="left-nav-vue" ref="lnmRef">
     <div class="part-header">
       <c-icon i="p-back" v-if="currentShow.menuGroup?.meta?.clickIn && !isCollapse" :tip="`返回上级菜单：${currentShow.previousMenuGroup?.meta?.fullTitle || currentShow.fullTitle.split(' - ')[0] || ''}`" tipClass="c-tooltip" hoverColor="" showType="el" size="16" cursor="pointer" class="back-icon" @click="handlePreviousMenu"></c-icon>
       <c-icon i="p-menu" v-else size="16" class="menu-icon"></c-icon>
@@ -13,13 +12,13 @@
           </c-tooltip>
         </span>
       </div>
-      <c-icon i="c-normal-down" size="18" :class="['toggle-icon', isMenuCollapse ? 'is-rotate' : '']" cursor="pointer" v-if="!isCollapse" @click="handleToggleMenu"></c-icon>
+      <c-icon i="c-normal-down" size="18" :class="['toggle-icon', isVerticalCollapse ? 'is-rotate' : '']" cursor="pointer" v-if="!isCollapse" @click="handleToggleMenu"></c-icon>
     </div>
-    <el-menu :key="menuKey" mode="vertical" ref="menuRef" :collapse="isCollapse" :unique-opened="false" :collapse-transition="false" :default-active="activeMenu" :default-openeds="opendMenu" :class="['left-el-menu',]" @select="handleMenuSelect" @close="handleMenuClose" @open="handleMenuOpen">
+    <!-- <el-menu :key="menuKey" mode="vertical" ref="menuRef" :collapse="isCollapse" :unique-opened="false" :collapse-transition="false" :default-active="activeMenu" :default-openeds="opendMenu" :class="['left-el-menu',]" @select="handleMenuSelect" @close="handleMenuClose" @open="handleMenuOpen">
       <el-scrollbar ref="menuScrollbarRef" class="c-el-scrollbar menu-scrollbar">
         <nav-item v-for="(item, index) in currentShow.menu" :key="index" :navInfo="item" :currentIn="currentShow.menuGroup?.name" :isCollapse="isCollapse" :isNest="true" @refresh="handleNextMenu" @rightClick="handleRightClick" />
       </el-scrollbar>
-    </el-menu>
+    </el-menu> -->
 
     <ul v-show="contextMenu.visible" :style="{ left: contextMenu.left + 'px', top: contextMenu.top + 'px' }" class="contextmenu">
       <!-- <li @click="handleAddTag('page')">
@@ -38,8 +37,6 @@
 // # 一、综合
 // 组件
 import NavItem from './components/nav-item'
-// 插件
-import { useRoute } from 'vue-router'
 // pinia
 import useStore from '@/store'
 // hook
@@ -57,12 +54,10 @@ const leftNavSetting = {
 
 // # 二、模块功能
 // # 1、初始化
-// # (0) 初始化总调用
 function init() {
   setResizeObserver()
   initMenu()
 }
-// ^
 // # (1) 设置容器大小监听
 const lnmRef = ref(null)
 const menuScrollbarRef = ref(null)
@@ -73,6 +68,8 @@ function setResizeObserver() {
 }
 // ^
 // ^
+// ^
+
 // # 2、获取显示菜单
 const menuRef = ref(null)
 const menuKey = ref(0)
@@ -219,7 +216,7 @@ function handlePreviousMenu(e) {
 }
 // ^
 // # (3) 左侧折叠展开
-const isCollapse = computed(() => settingStore.leftNav.isCollapse)
+const isCollapse = computed(() => settingStore.leftSide.isCollapse)
 watch(() => isCollapse.value, (nv) => {
   // console.log('查nv', nv)
   if (nv) {
@@ -232,9 +229,9 @@ watch(() => isCollapse.value, (nv) => {
 })
 // ^
 // # (4) 菜单模块折叠展开
-const isMenuCollapse = ref(false)
+const isVerticalCollapse = ref(false)
 function handleToggleMenu() {
-  isMenuCollapse.value = !isMenuCollapse.value
+  isVerticalCollapse.value = !isVerticalCollapse.value
   // if (isStationCollapse.value) {
   //   let dom = document.getElementById('left-nav-station')
   //   dom.style.height = '50px'
@@ -332,13 +329,13 @@ const opendMenu = computed(() => {
   }
 })
 
-defineExpose({ isMenuCollapse })
+defineExpose({ isVerticalCollapse })
 // ^
 </script>
 
 <style lang="scss" scoped>
 .left-nav-vue.is-collapse {
-  .left-nav-menu {
+  .left-nav-vue {
     display: none;
   }
 
@@ -347,7 +344,7 @@ defineExpose({ isMenuCollapse })
   }
 }
 
-.left-nav-menu {
+.left-nav-vue {
   width: calc(100% - 16px);
   margin: 8px;
   flex-shrink: 0;
@@ -632,7 +629,7 @@ defineExpose({ isMenuCollapse })
 </style>
 
 <style lang="scss" scoped>
-#left-nav-menu {
+#left-nav-vue {
   :deep(.left-el-menu) {
 
     // --el-menu-base-level-padding: 5px;

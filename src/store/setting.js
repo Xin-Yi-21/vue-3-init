@@ -1,6 +1,6 @@
 import defaultSetting from '@/layout/setting'
 import { handleThemeStyle, handleThemeColor, handleThemeSize } from '@/utils/theme'
-const { isDynamicTitle, themeStyle, themeColor, themeSize, topHeader, leftNav, topNav, topBar, topTag, isTemplateManage, isFullScreen } = defaultSetting
+const { isDynamicTitle, themeStyle, themeColor, themeSize, topHeader, leftSide, topNav, topBar, topTag, isTemplateManage, isFullScreen } = defaultSetting
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 const useSettingStore = defineStore('setting', {
   state: () => ({
@@ -9,19 +9,16 @@ const useSettingStore = defineStore('setting', {
       isShow: storageSetting.topHeader?.isShow === undefined ? topHeader.isShow : storageSetting.topHeader.isShow,
       isBreadcrumbShow: storageSetting.topHeader?.isBreadcrumbShow === undefined ? topHeader.isBreadcrumbShow : storageSetting.topHeader.isBreadcrumbShow,
     },
-    leftNav: {
-      isShow: storageSetting.leftNav?.isShow === undefined ? leftNav.isShow : storageSetting.leftNav.isShow,
-      isCollapse: storageSetting.leftNav?.isCollapse === undefined ? leftNav.isCollapse : storageSetting.leftNav.isCollapse,
-      withoutAnimation: storageSetting.leftNav?.withoutAnimation === undefined ? leftNav.withoutAnimation : storageSetting.leftNav.withoutAnimation,
-    },
     topNav: {
       isShow: storageSetting.topNav?.isShow === undefined ? topNav.isShow : storageSetting.topNav.isShow,
     },
-    topBar: {
-      isShow: storageSetting.topBar?.isShow === undefined ? topBar.isShow : storageSetting.topBar.isShow,
-    },
     topTag: {
       isShow: storageSetting.topTag?.isShow === undefined ? topTag.isShow : storageSetting.topTag.isShow,
+    },
+    leftSide: {
+      isShow: storageSetting.leftSide?.isShow === undefined ? leftSide.isShow : storageSetting.leftSide.isShow,
+      isCollapse: storageSetting.leftSide?.isCollapse === undefined ? leftSide.isCollapse : storageSetting.leftSide.isCollapse,
+      withoutAnimation: storageSetting.leftSide?.withoutAnimation === undefined ? leftSide.withoutAnimation : storageSetting.leftSide.withoutAnimation,
     },
     themeStyle: storageSetting.themeStyle === undefined ? themeStyle : storageSetting.themeStyle,
     themeColor: storageSetting.themeColor === undefined ? themeColor : storageSetting.themeColor,
@@ -47,12 +44,12 @@ const useSettingStore = defineStore('setting', {
         document.documentElement.setAttribute('topHeaderStatus', 'hide')
       }
     },
-    // 设置左侧导航
-    setLeftNav(withoutAnimation) {
-      if (this.leftNav.isShow) {
-        document.documentElement.setAttribute('leftNavStatus', this.leftNav.isCollapse ? 'collapse' : 'expand')
+    // 设置左侧边栏
+    setLeftSide(withoutAnimation) {
+      if (this.leftSide.isShow) {
+        document.documentElement.setAttribute('leftSideStatus', this.leftSide.isCollapse ? 'collapse' : 'expand')
       } else {
-        document.documentElement.setAttribute('leftNavStatus', 'hide')
+        document.documentElement.setAttribute('leftSideStatus', 'hide')
       }
     },
     // 设置主题风格
@@ -166,7 +163,7 @@ const useSettingStore = defineStore('setting', {
       this.setThemeColor()
       this.setThemeSize()
       this.setTopHeader()
-      this.setLeftNav()
+      this.setLeftSide()
       this.setTheme()
     }
   },
