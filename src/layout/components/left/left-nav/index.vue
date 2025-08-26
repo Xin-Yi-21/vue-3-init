@@ -1,10 +1,11 @@
 <template>
-  <div :class="['left-nav-vue', isVerticalCollapse ? 'is-menu-collapse' : 'is-menu-expand']" id="left-nav-vue" ref="lnmRef">
-    <div class="part-header">
-      <c-icon i="p-back" v-if="currentShow.menuGroup?.meta?.clickIn && !isCollapse" :tip="`返回上级菜单：${currentShow.previousMenuGroup?.meta?.fullTitle || currentShow.fullTitle.split(' - ')[0] || ''}`" tipClass="c-tooltip" hoverColor="" showType="el" size="16" cursor="pointer" class="back-icon" @click="handlePreviousMenu"></c-icon>
-      <c-icon i="p-menu" v-else size="16" class="menu-icon"></c-icon>
-      <div class="content" :hasBack="currentShow.menuGroup?.meta?.clickIn" v-if="!isCollapse">
-        <span class="content-text">
+  <div :class="['left-nav-vue', isVerticalCollapse ? 'is-vertical-collapse' : 'is-vertical-expand', isHorizontalCollapse ? 'is-horizontal-collapse' : 'is-horizontal-expand', leftNavSetting.showType === 'all' ? 'style1' : 'style2']" id="left-nav-vue" ref="lnmRef">
+
+    <div class="part-header" v-if="leftNavSetting.isCustomHeader">
+      <c-icon i="c-back" v-if="currentShow.menuGroup?.meta?.clickIn && !isHorizontalCollapse" :tip="`返回上级菜单：${currentShow.previousMenuGroup?.meta?.fullTitle || currentShow.fullTitle.split(' - ')[0] || ''}`" tipClass="c-tooltip" hoverColor="" showType="el" size="16" cursor="pointer" class="back-icon" @click="handlePreviousMenu"></c-icon>
+      <c-icon i="c-menu" v-else size="16" class="menu-icon"></c-icon>
+      <div class="content" :hasBack="currentShow.menuGroup?.meta?.clickIn" v-if="!isHorizontalCollapse">
+        <span class="text">
           <c-tooltip :content="currentShow.fullTitle" targetClass="overflow-test" placement="top" effect="light" maxWidth="400">
             <c-scroll direction="x" scrollType="smooth" :stepTime="1000" :stayTime="0" :scrollBar="false">
               <span class="overflow-test"> {{ currentShow.menuGroup?.meta?.title || currentShow.menu?.[0]?.meta?.title }} </span>
@@ -12,19 +13,16 @@
           </c-tooltip>
         </span>
       </div>
-      <c-icon i="c-normal-down" size="18" :class="['toggle-icon', isVerticalCollapse ? 'is-rotate' : '']" cursor="pointer" v-if="!isCollapse" @click="handleToggleMenu"></c-icon>
+      <c-icon i="c-normal-down" size="18" :class="['toggle-icon', isVerticalCollapse ? 'is-rotate' : '']" cursor="pointer" v-if="!isHorizontalCollapse" @click="handleVerticalToggleMenu"></c-icon>
     </div>
-    <!-- <el-menu :key="menuKey" mode="vertical" ref="menuRef" :collapse="isCollapse" :unique-opened="false" :collapse-transition="false" :default-active="activeMenu" :default-openeds="opendMenu" :class="['left-el-menu',]" @select="handleMenuSelect" @close="handleMenuClose" @open="handleMenuOpen">
+
+    <el-menu :key="menuKey" mode="vertical" ref="menuRef" :collapse="isHorizontalCollapse" :unique-opened="false" :collapse-transition="false" :default-active="activeMenu" :default-openeds="opendMenu" :class="['left-el-menu',]" @select="handleMenuSelect" @close="handleMenuClose" @open="handleMenuOpen">
       <el-scrollbar ref="menuScrollbarRef" class="c-el-scrollbar menu-scrollbar">
-        <nav-item v-for="(item, index) in currentShow.menu" :key="index" :navInfo="item" :currentIn="currentShow.menuGroup?.name" :isCollapse="isCollapse" :isNest="true" @refresh="handleNextMenu" @rightClick="handleRightClick" />
+        <nav-item v-for="(item, index) in currentShow.menu" :key="index" :navInfo="item" :currentIn="currentShow.menuGroup?.name" :isCollapse="isHorizontalCollapse" :isNest="true" @refresh="handleNextMenu" @rightClick="handleRightClick" />
       </el-scrollbar>
-    </el-menu> -->
+    </el-menu>
 
     <ul v-show="contextMenu.visible" :style="{ left: contextMenu.left + 'px', top: contextMenu.top + 'px' }" class="contextmenu">
-      <!-- <li @click="handleAddTag('page')">
-        <c-icon i="c-add" cursor="pointer" size="14"></c-icon>
-        <span class="operate-text">新建页面标签页</span>
-      </li> -->
       <li @click="handleAddTag('browser')">
         <c-icon i="c-add" cursor="pointer" size="14"></c-icon>
         <span class="operate-text">新建标签页</span>
@@ -46,10 +44,7 @@ const { proxy } = getCurrentInstance()
 const route = useRoute()
 const router = useRouter()
 const { menuStore, settingStore, stationStore, tagStore } = useStore()
-const leftNavSetting = {
-  isClickIn: true,
-  isWithFather: false,
-}
+const leftNavSetting = { showType: 'set', isMenuWithParent: false, isCustomHeader: true, }
 // ^
 
 // # 二、模块功能
@@ -68,139 +63,74 @@ function setResizeObserver() {
 }
 // ^
 // ^
-// ^
-
 // # 2、获取显示菜单
 const menuRef = ref(null)
 const menuKey = ref(0)
 // # (1) 初始化菜单
 const allMenu = ref([])
 function initMenu() {
-  // allMenu.value = JSON.parse(JSON.stringify([{ name: '0', path: '', children: menuStore.navRoutes, }]))
   allMenu.value = JSON.parse(JSON.stringify(menuStore.navRoutes || []))
   let routeName = route.name
-  let menuGroup = locateMenuGroup(routeName)
+  let menuGroup = {}
+  if (leftNavSetting.showType === 'all') {
+    menuGroup = { children: allMenu.value }
+  } else {
+    menuGroup = locateMenuGroup(routeName)
+  }
   // console.log('查menuGroup', toRaw(menuGroup))
   setCurrentShow(menuGroup)
 }
 // ^
 // # (2) 定位菜单
-function locateMenuGroup(targetName,) {
+function locateMenuGroup(targetName) {
   let targetMenu = JSON.parse(JSON.stringify(allMenu.value))
-  console.log('查targetMenu', targetMenu)
   let path = null
-  // 递归查找目标节点，并返回从顶层到目标节点的路径数组
-  // function traverse(node, currentPath = []) {
-  //   currentPath.push(node)
-  //   if (node.name === targetName) return currentPath
-  //   if (node.children) {
-  //     for (let child of node.children) {
-  //       let res = traverse(child, currentPath)
-  //       if (res) return res
-  //     }
-  //   }
-  //   currentPath.pop()
-  //   return null
-  // }
-
   function findMenu(node) {
-    // 匹配，返回直接匹配路径
     if (node.name === targetName) { return [node] }
-    // 不匹配，子节点继续查找
     if (node.children) {
       for (let child of node.children) {
-        // 递归：如果子树里找到了，就得到一条子路径
         const subMenu = findMenu(child)
-        if (subMenu) {
-          // 在子路径前面加上当前节点，构成完整路径返回
-          return [node, ...subMenu]
-        }
+        if (subMenu) { return [node, ...subMenu] }
       }
     }
-    // 全部都没命中，返回 null
     return null
   }
-
-  // 遍历所有顶层节点
   for (let item of targetMenu) {
     path = findMenu(item)
     if (path) break
   }
   if (!path) return []
-  // 筛选左侧菜单
   path = path.filter(item => item.meta.menu?.includes('left'))
   // console.log('递归定位path', path)
-
-  // 筛选clickIn节点
   for (let i = path.length - 1; i >= 0; i--) {
     if (path[i].meta?.clickIn && targetName != path[i].name) {
       return path[i]
     }
   }
-
-  // 找不到clickIn节点，返回顶层节点的children
   return path[0]
 }
 // ^
 // # (3) 设置show值：页面初始化刷新， route变化刷新，点击顶部刷新，进入下级刷新，返回上级刷新
 const currentShow = ref({ fullTitle: '', menuGroup: {}, menu: [], })
-const expandShow = ref({})
 function setCurrentShow(menuGroup = {}) {
-  // console.log('查menuGroup', menuGroup)
   if (!menuGroup.name) { menuGroup.name = menuGroup?.children?.[0]?.name || '' }
   if (currentShow.value.menuGroup.name === menuGroup.name) return  // 解决路由重复刷新菜单bug
   let newCurrentShow = {
     fullTitle: route.meta?.fullTitle,
     menuGroup: menuGroup,
-    menu: menuGroup.children,              // 不带上级标签
-    // menu: [menuGroup],                  // 带上级标签
+    menu: (!leftNavSetting.isMenuWithParent || leftNavSetting.showType === 'all') ? menuGroup.children : [menuGroup],
     previousMenuGroup: locateMenuGroup(menuGroup.name),
   }
-  // 显示全部菜单场景
-  if (newCurrentShow.menuGroup.name === '0') {
-    newCurrentShow.menu = menuGroup.children
-  }
-
-  // newCurrentShow.menu = menuStore.navRoutes
   currentShow.value = newCurrentShow
-
-  console.log('查currentShow', toRaw(currentShow.value))
-  expandShow.value = JSON.parse(JSON.stringify(newCurrentShow))
+  if (leftNavSetting.isMenuWithParent) {
+    //  如带上级标签，解决el-submenu的click事件和el-menu的open和close事件冲突效果bug。
+    nextTick(() => { menuRef.value && currentShow.value.menuGroup?.meta?.fullPath && menuRef.value.open(currentShow.value.menuGroup.meta.fullPath) })
+  }
   // console.log('当前显示菜单currentShow', toRaw(newCurrentShow))
-  //  如不带上级标签，请注释下方代码防止报错。解决el-submenu的click事件和el-menu的open和close事件冲突效果bug。
-  // nextTick(() => { menuRef.value && currentShow.value.menuGroup?.meta?.fullPath && menuRef.value.open(currentShow.value.menuGroup.meta.fullPath) })
   menuKey.value++
 }
 // ^
-// # (4) 定位一级菜单
-function loacteFirstMenu(targetName) {
-  let targetMenu = allMenu.value
-  let path = null
-  // 递归查找目标节点，并返回从顶层到目标节点的路径数组
-  function traverse(node, currentPath = []) {
-    currentPath.push(node)
-    if (node.name === targetName) return currentPath
-    if (node.children) {
-      for (let child of node.children) {
-        let res = traverse(child, currentPath)
-        if (res) return res
-      }
-    }
-    currentPath.pop()
-    return null
-  }
-
-  // 遍历所有顶层节点
-  for (let item of targetMenu) {
-    path = traverse(item)
-    if (path) break
-  }
-  if (!path) return []
-  return path[0]
-}
 // ^
-// ^
-
 // # 3、菜单操作
 // # (1) 进入下级菜单
 function handleNextMenu(self) {
@@ -215,27 +145,13 @@ function handlePreviousMenu(e) {
   setCurrentShow(menuGroup)
 }
 // ^
-// # (3) 左侧折叠展开
-const isCollapse = computed(() => settingStore.leftSide.isCollapse)
-watch(() => isCollapse.value, (nv) => {
-  // console.log('查nv', nv)
-  if (nv) {
-    // currentShow.value.menu = loacteFirstMenu(route.name).children
-    // console.log('查currentShow.value 1', toRaw(currentShow.value))
-  } else {
-    // initMenu()
-    // console.log('查currentShow.value 2', toRaw(currentShow.value))
-  }
-})
+// # (3) 横向折叠展开
+const isHorizontalCollapse = computed(() => settingStore.leftSide.isCollapse)
 // ^
-// # (4) 菜单模块折叠展开
+// # (4) 竖向折叠展开
 const isVerticalCollapse = ref(false)
-function handleToggleMenu() {
+function handleVerticalToggleMenu() {
   isVerticalCollapse.value = !isVerticalCollapse.value
-  // if (isStationCollapse.value) {
-  //   let dom = document.getElementById('left-nav-station')
-  //   dom.style.height = '50px'
-  // }
 }
 // ^
 // # (5) 菜单项折叠展开
@@ -264,12 +180,6 @@ function handleRightClick(e, self,) {
   const l = e.clientX // 15: margin right
   // console.log('查宽度', e.clientX, offsetLeft, offsetWidth, l)
 
-  // if (l > maxLeft) {
-  //   contextMenu.value.left = maxLeft
-  // } else {
-  // contextMenu.value.left = l + 10
-
-  // }
   contextMenu.value.left = 190
   contextMenu.value.top = e.clientY - 90
   contextMenu.value.visible = true
@@ -283,7 +193,7 @@ watch(() => contextMenu.value.visible, (nv) => {
 })
 function handleAddTag(type) {
   if (type == 'page') {
-    tagStore.addTag(rightClickMenuItem.value, { station: stationStore.currentStation })
+    // tagStore.addTag(rightClickMenuItem.value, { station: stationStore.currentStation })
     // console.log('查rightClickMenuItem', rightClickMenuItem.value)
     router.push(rightClickMenuItem.value.meta.fullPath)
   } else {
@@ -310,6 +220,10 @@ watch(() => menuStore.currentTopMenu, (nv, ov) => {
   setCurrentShow(menuGroup)
 }, { deep: true })
 
+watchEffect(() => {
+
+})
+
 // 设置菜单高亮和默认状态
 const activeMenu = computed(() => {
   const { meta, path } = route
@@ -334,32 +248,32 @@ defineExpose({ isVerticalCollapse })
 </script>
 
 <style lang="scss" scoped>
-.left-nav-vue.is-collapse {
-  .left-nav-vue {
-    display: none;
-  }
-
-  .part-header {
-    justify-content: center;
-  }
-}
-
-.left-nav-vue {
-  width: calc(100% - 16px);
-  margin: 8px;
+// 样式2：set菜单
+.left-nav-vue.style2 {
+  width: 220px;
+  flex: 1;
+  margin: 10px;
   flex-shrink: 0;
   overflow: hidden;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.16);
   border-radius: 2px;
 
+  &.is-vertical-collapse {
+    flex: initial;
+    height: 40px;
+  }
+
+  &.is-horizontal-collapse {
+    display: none;
+  }
+
   .part-header {
     position: relative;
     display: flex;
     align-items: center;
-    margin-top: 4px;
     flex-shrink: 0;
     overflow: hidden;
-    height: 36px;
+    height: 40px;
     padding: 0 10px;
     color: var(--tc);
     font-size: 18px;
@@ -378,14 +292,7 @@ defineExpose({ isVerticalCollapse })
         width: calc(100% - 80px);
       }
 
-      .content-label {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        flex-shrink: 0;
-      }
-
-      .content-text {
+      .text {
         height: 100%;
         display: flex;
         align-items: center;
@@ -394,11 +301,6 @@ defineExpose({ isVerticalCollapse })
       }
     }
 
-    .back-tip {
-      // width: 20px;
-    }
-
-
     :deep(.c-icon) {
       color: var(--tc);
       font-size: 18px;
@@ -406,13 +308,6 @@ defineExpose({ isVerticalCollapse })
 
       &.menu-icon {
         transform: translateY(1px);
-      }
-
-      .back-icon {
-        // position: absolute;
-        // top: 50%;
-        // transform: translateY(-50%);
-        // right: 35px;
       }
 
       &.toggle-icon {
@@ -433,7 +328,7 @@ defineExpose({ isVerticalCollapse })
 
   :deep(.left-el-menu) {
     width: 100%;
-    height: calc(100% - 44px);
+    height: calc(100% - 40px);
     border-right: 0;
     background-color: transparent;
 
@@ -552,12 +447,7 @@ defineExpose({ isVerticalCollapse })
             color: #999;
 
             &:hover {
-              // background-color: var(--tc);
               background-color: var(--bg-hover);
-
-              // & * {
-              //   color: var(--fcpl);
-              // }
             }
 
             .el-sub-menu__icon-arrow {

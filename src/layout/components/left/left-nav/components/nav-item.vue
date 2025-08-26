@@ -106,7 +106,7 @@ function hasTitle(title) {
 // # 4、el-menu-item 事件
 // # (1) 单击
 function handleClickMenuItem(self) {
-  tagStore.updateTag(self, { station: stationStore.currentStation })
+  // tagStore.updateTag(self, { station: stationStore.currentStation })
 }
 // ^
 // # (2) 右击

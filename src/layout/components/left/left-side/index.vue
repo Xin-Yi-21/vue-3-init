@@ -1,8 +1,9 @@
 <template>
-  <div :class="['left-side-vue', isCollapse ? 'is-collapse' : 'is-expand', leftNavRef?.isVerticalCollapse ? 'has-is-menu-collapse' : 'has-is-menu-expand', leftStationRef?.isStationCollapse ? 'has-is-station-collapse' : 'has-is-station-expand',]">
+  <!-- <div :class="['left-side-vue', isCollapse ? 'is-collapse' : 'is-expand', leftNavRef?.isVerticalCollapse ? 'has-is-menu-collapse' : 'has-is-menu-expand', leftStationRef?.isStationCollapse ? 'has-is-station-collapse' : 'has-is-station-expand',]"> -->
+  <div :class="['left-side-vue', isCollapse ? 'is-collapse' : 'is-expand',]">
     <left-nav ref="leftNavRef"></left-nav>
     <!-- <left-station ref="leftStationRef"></left-station> -->
-    <c-hamburger :isCollapse="isCollapse" class="left-side-toggle" @toggleClick="handleLeftNav" />
+    <c-hamburger :isCollapse="isCollapse" class="left-side-toggle" @toggleClick="handleHorizonalToggleSide" />
   </div>
 </template>
 
@@ -21,9 +22,9 @@ const { settingStore } = useStore()
 // # 二、模块功能
 // 1、折叠展开左侧导航
 const isCollapse = computed(() => settingStore.leftSide.isCollapse)
-const handleLeftNav = () => {
+const handleHorizonalToggleSide = () => {
   settingStore.leftSide.isCollapse = !settingStore.leftSide.isCollapse
-  settingStore.setLeftNav()
+  settingStore.setLeftSide()
 }
 const leftNavRef = ref(null)
 const leftStationRef = ref(null)
@@ -124,7 +125,5 @@ const leftStationRef = ref(null)
       color: var(--tc) !important;
     }
   }
-
-
 }
 </style>

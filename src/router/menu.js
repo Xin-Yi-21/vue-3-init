@@ -51,7 +51,7 @@ export const menuGet = () => {
               hidden: false,
               alwaysShow: true,
               redirect: '/framework/template-manage/element',
-              meta: { title: '模版管理', icon: 'c-template', noCache: false, link: null, menu: ['top', 'left'], },
+              meta: { title: '模版管理', icon: 'c-template', noCache: false, link: null, menu: ['top', 'left'], clickIn: true },
               children: [
                 {
                   name: 'FrameworkElementTemplate',

@@ -12,7 +12,7 @@ import useSettingStore from '@/store/setting'
 const settingStore = useSettingStore()
 const handleLeftNav = () => {
   settingStore.leftNav.isCollapse = !settingStore.leftNav.isCollapse
-  settingStore.setLeftNav()
+  settingStore.setLeftSide()
 }
 </script>
 
