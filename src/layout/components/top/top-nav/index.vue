@@ -16,11 +16,10 @@ import NavItem from './components/nav-item'
 // pinia
 import useStore from '@/store'
 // 声明
-const { menuStore, settingStore } = useStore()
-const { proxy } = getCurrentInstance()
 const route = useRoute()
+const { menuStore, settingStore } = useStore()
 const navRoutes = computed(() => menuStore.navRoutes)
-const topMenuSetting = { isShowAll: true, isJump: true, }
+const topMenuSetting = { showType: 'all', isJump: true, } // showType:['all','set']
 // ^
 
 // # 二、模块功能
@@ -51,7 +50,7 @@ function getTopMenu() {
     newNavRoutes = newNavRoutes.filter(item => item.name != 'Template')
   }
   let newTopMenu = getMenu(newNavRoutes)
-  topMenu.value = topMenuSetting.isShowAll ? navRoutes.value : newTopMenu
+  topMenu.value = topMenuSetting.showType === 'all' ? navRoutes.value : newTopMenu
 }
 // ^
 // # 3、设置激活菜单

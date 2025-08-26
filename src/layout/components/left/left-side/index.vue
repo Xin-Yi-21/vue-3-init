@@ -1,20 +1,17 @@
 <template>
-  <div :class="['left-nav-vue', isCollapse ? 'is-collapse' : 'is-expand', menuRef?.isMenuCollapse ? 'has-is-menu-collapse' : 'has-is-menu-expand', stationRef?.isStationCollapse ? 'has-is-station-collapse' : 'has-is-station-expand',]">
-    <p-menu ref="menuRef"></p-menu>
-    <div class="left-nav-toggle">
-      <c-hamburger :isCollapse="settingStore.leftNav.isCollapse" @toggleClick="handleLeftNav" />
-    </div>
-    <station ref="stationRef"></station>
+  <div :class="['left-side-vue', isCollapse ? 'is-collapse' : 'is-expand', leftNavRef?.isMenuCollapse ? 'has-is-menu-collapse' : 'has-is-menu-expand', leftStationRef?.isStationCollapse ? 'has-is-station-collapse' : 'has-is-station-expand',]">
+    <left-nav ref="leftNavRef"></left-nav>
+    <left-station ref="leftStationRef"></left-station>
+    <c-hamburger :isCollapse="settingStore.leftNav.isCollapse" class="left-side-toggle" @toggleClick="handleLeftNav" />
   </div>
-
 </template>
 
 <script setup>
 // # 一、综合
 // 组件
-import PMenu from './components/p-menu'
+import LeftNav from '@/layout/components/left/left-nav'
+import LeftStation from '@/layout/components/left/left-station'
 import cHamburger from '@/components/custom-hamburger'
-import station from './components/station'
 // pinia
 import useStore from '@/store'
 // 声明
@@ -28,23 +25,21 @@ const handleLeftNav = () => {
   settingStore.leftNav.isCollapse = !settingStore.leftNav.isCollapse
   settingStore.setLeftNav()
 }
-const menuRef = ref(null)
-const stationRef = ref(null)
+const leftNavRef = ref(null)
+const leftStationRef = ref(null)
 // ^
 // ^
 </script>
 
 <style lang="scss" scoped>
-.left-nav-vue {
+.left-side-vue {
   position: relative;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   height: 100%;
-  // border-right: 1px solid var(--bcp);
   background-color: var(--bg-leftNav);
   box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.1);
-
 
   .is-menu-collapse {
     height: 44px;
@@ -110,12 +105,13 @@ const stationRef = ref(null)
     }
   }
 
-  .left-nav-toggle {
+  :deep(.left-side-toggle) {
     position: absolute;
     top: 50%;
     right: 0;
     width: 14px;
     height: 80px;
+    padding: 0;
     transform: translate(100%, -50%);
     box-shadow: 3px 0px 4px 0px rgba(0, 0, 0, 0.1);
     border-radius: 0px 6px 6px 0px;
@@ -123,14 +119,9 @@ const stationRef = ref(null)
     cursor: pointer;
     z-index: 999;
 
-    :deep(.hamburger) {
-      width: 100%;
-      padding: 0;
-
-      .c-icon {
-        margin: 0 !important;
-        color: var(--tc) !important;
-      }
+    .c-icon {
+      margin: 0 !important;
+      color: var(--tc) !important;
     }
   }
 

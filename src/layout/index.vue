@@ -3,11 +3,10 @@
     <template v-if="isLayoutShow">
       <top-header @setLayout="setLayout" v-if="settingStore.topHeader.isShow"></top-header>
       <div class="main-container">
-        <left-nav v-if="settingStore.leftNav.isShow"></left-nav>
+        <!-- <left-nav ></left-nav> -->
+        <left-side v-if="settingStore.leftNav.isShow"></left-side>
         <div class="main-right-container">
           <div class="top-container">
-            <!-- <top-nav v-if="settingStore.topNav.isShow"></top-nav> -->
-            <top-bar v-if="settingStore.topBar.isShow"></top-bar>
             <!-- <top-tag v-if="settingStore.topTag.isShow"></top-tag> -->
           </div>
           <app-main />
@@ -22,10 +21,8 @@
 // # 一、综合
 // 组件
 import TopHeader from '@/layout/components/top/top-header/index.vue'
-import TopBar from '@/layout/components/top/top-bar/index.vue'
+import LeftSide from '@/layout/components/left/left-side/index.vue'
 import TopTag from '@/layout/components/top/top-tag/index.vue'
-import TopNav from '@/layout/components/top/top-nav/index.vue'
-import LeftNav from '@/layout/components/left-nav/index.vue'
 import AppMain from '@/layout/components/app-main/index.vue'
 import Setting from '@/layout/components/setting/index.vue'
 // pinia

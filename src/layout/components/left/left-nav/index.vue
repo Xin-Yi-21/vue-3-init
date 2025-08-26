@@ -37,7 +37,7 @@
 <script setup>
 // # 一、综合
 // 组件
-import NavItem from './nav-item'
+import NavItem from './components/nav-item'
 // 插件
 import { useRoute } from 'vue-router'
 // pinia
