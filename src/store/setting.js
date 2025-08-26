@@ -160,6 +160,15 @@ const useSettingStore = defineStore('setting', {
       //   document.title = defaultTitle
       // }
     },
+    // 初始化
+    setInitSetting() {
+      this.setThemeStyle()
+      this.setThemeColor()
+      this.setThemeSize()
+      this.setTopHeader()
+      this.setLeftNav()
+      this.setTheme()
+    }
   },
   persist: {
     key: 'setting',                          // 默认store.$id

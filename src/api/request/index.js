@@ -5,13 +5,11 @@ import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from '@/utils/ruoyi'
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
-import useUserStore from '@/store/user'
 
 let downloadLoadingInstance;
 // 是否显示重新登录
 export let isRelogin = { show: false };
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
-
 // 创建axios实例
 const service = axios.create({
   baseURL: window.cEnv.VITE_APP_BASE_API,   // baseURL: import.meta.env.VITE_APP_BASE_API,

@@ -22,20 +22,24 @@ app.use(elementIcons)
 // ⭐ 常用样式
 import '@/assets/styles/index.scss' // 全局样式
 // import '@/mock/index.js'
+
 setConfig().then(async (cEnv) => {
   try {
     document.title = cEnv.VITE_APP_TITLE
-    await import('./api/request/index.js')                                                            // import('./utils/request')
+    // await import('./api/request/index.js')                                                            // import('./utils/request')
     await import('./router/guard.js')                                                            // import('./permission')
     const directives = (await import('./directives')).default                                    // import directive from './directive'
     const plugins = (await import('./plugins')).default                                        // import plugins from './plugins'
-    const { store } = (await import('./store'))                                                // import store from './store'
+    const { store, useStore } = (await import('./store'))                                                // import store from './store'
     const router = (await import('./router')).default                                          // import router from './router'
 
     directives(app)
     app.use(plugins)
     app.use(store)
     app.use(router)
+
+    const { settingStore } = useStore()
+    settingStore.setInitSetting()
 
     // 全局方法
     const dayjs = (await import('dayjs')).default
@@ -142,6 +146,11 @@ setConfig().then(async (cEnv) => {
     app.component('cSelection', cSelection)
     app.component('cSelectionTree', cSelectionTree)
     app.component('cAudit', cAudit)
+
+
+
+
+
     app.mount('#app')
   } catch (error) {
     console.log('查error', error)

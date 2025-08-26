@@ -7,29 +7,12 @@
 // 插件
 import { scaleFit, scaleAdapt } from '@/plugins/screen-adaptation/scale'
 import { setRem } from '@/plugins/screen-adaptation/rem'
-// pinia
-import useStore from '@/store'
-// 声明
-const { settingStore } = useStore()
 // ^
-
 // # 二、模块功能
 // # 1、初始化
 function init() {
   scaleFit()
   setRem()
-  setSetting()
-  // scaleAdapt(document.getElementById('app'))
-}
-// ^
-// # 2、设置
-async function setSetting() {
-  await settingStore.setThemeStyle()
-  await settingStore.setThemeColor()
-  await settingStore.setThemeSize()
-  await settingStore.setTopHeader()
-  await settingStore.setLeftNav()
-  await settingStore.setTheme()
 }
 // ^
 // ^
