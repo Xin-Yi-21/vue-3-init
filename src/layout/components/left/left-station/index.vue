@@ -1,13 +1,11 @@
 <template>
-  <div :class="['left-nav-station', isStationCollapse ? 'is-station-collapse' : 'is-station-expand']" v-if="!isCollapse">
+  <div :class="['left-station-vue', isVerticalCollapse ? 'is-vertical-collapse' : 'is-vertical-expand', isHorizontalCollapse ? 'is-horizontal-collapse' : 'is-horizontal-expand',]">
     <div :class="['select-station-part',]">
-
-      <div class="part-header" @click="handleToggleStation">
-        <c-icon i="p-station" size="16" class="station-icon"></c-icon>
+      <div class="part-header" @click="handleVerticalToggle">
+        <c-icon i="c-station" size="16" class="station-icon"></c-icon>
         <span class="part-header-title">场站选择</span>
-        <c-icon i="c-normal-down" size="18" :class="['toggle-icon', isStationCollapse ? 'is-rotate' : '']" cursor="pointer"></c-icon>
+        <c-icon i="c-normal-down" size="18" :class="['toggle-icon', isVerticalCollapse ? 'is-rotate' : '']" cursor="pointer"></c-icon>
       </div>
-
       <c-tab class="p-tab" height="28" fontSize="12" :tabList="tabList" :currentTab="currentTab" @change="handleChangeTab"></c-tab>
       <el-input v-model="stationName" class="search-input" placeholder="请输入场站名称" @input="handleSearchStation"></el-input>
       <div class="station-list-vue" v-if="currentTab === 'list'" ref="lnsRef">
@@ -16,11 +14,11 @@
             <template #default="{ node, data }">
               <div :class="['tree-row']" :style="getNodeStyle(node)">
                 <c-icon i="c-circle" size="18" v-if="!data.stationType"></c-icon>
-                <c-icon i="p-solar-station" size="16" v-if="data.stationType?.includes('光伏')"></c-icon>
-                <c-icon i="p-wind-station" size="16" v-if="data.stationType?.includes('风电')"></c-icon>
-                <c-icon i="p-fire-station" size="16" v-if="data.stationType?.includes('火电')"></c-icon>
-                <c-icon i="p-storage-station" size="16" v-if="data.stationType?.includes('储能')"></c-icon>
-                <c-icon i="p-nuclear-station" size="16" v-if="data.stationType?.includes('核电')"></c-icon>
+                <c-icon i="c-station-solar" size="16" v-if="data.stationType?.includes('光伏')"></c-icon>
+                <c-icon i="c-station-wind" size="16" v-if="data.stationType?.includes('风电')"></c-icon>
+                <c-icon i="c-station-fire" size="16" v-if="data.stationType?.includes('火电')"></c-icon>
+                <c-icon i="c-station-storage" size="16" v-if="data.stationType?.includes('储能')"></c-icon>
+                <c-icon i="c-station-nuclear" size="16" v-if="data.stationType?.includes('核电')"></c-icon>
                 <span>{{ data.treeName }}</span>
               </div>
             </template>
@@ -33,11 +31,11 @@
             <template #default="{ node, data }">
               <div :class="['tree-row']" :style="getNodeStyle(node)">
                 <c-icon i="c-circle" size="18" v-if="!data.stationType"></c-icon>
-                <c-icon i="p-solar-station" size="16" v-if="data.stationType?.includes('光伏')" class=""></c-icon>
-                <c-icon i="p-wind-station" size="16" v-if="data.stationType?.includes('风电')"></c-icon>
-                <c-icon i="p-fire-station" size="16" v-if="data.stationType?.includes('火电')"></c-icon>
-                <c-icon i="p-storage-station" size="16" v-if="data.stationType?.includes('储能')"></c-icon>
-                <c-icon i="p-nuclear-station" size="16" v-if="data.stationType?.includes('核电')"></c-icon>
+                <c-icon i="c-station-solar" size="16" v-if="data.stationType?.includes('光伏')" class=""></c-icon>
+                <c-icon i="c-station-wind" size="16" v-if="data.stationType?.includes('风电')"></c-icon>
+                <c-icon i="c-station-fire" size="16" v-if="data.stationType?.includes('火电')"></c-icon>
+                <c-icon i="c-station-storage" size="16" v-if="data.stationType?.includes('储能')"></c-icon>
+                <c-icon i="c-station-nuclear" size="16" v-if="data.stationType?.includes('核电')"></c-icon>
                 <span>{{ data.treeName }}</span>
               </div>
             </template>
@@ -72,7 +70,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup>
@@ -107,15 +104,6 @@ function setResizeObserver() {
 // ^
 // # (2) 设置广播监听
 function setBus() {
-  // proxy.$bus.on('refreshCurrentStation', (newCurrentStation) => {
-  //   newCurrentStation.changeBy = 'tag'
-  //   currentStation.value = newCurrentStation
-  //   currentStationId.value = currentStation.value.stationId
-  //   stationStore.setCurrentStation(toRaw(currentStation.value))
-  //   settingStore.setTitle(route.meta.title)
-  //   treeRef.value?.setCurrentKey(currentStationId.value)
-  // })
-
   proxy.$bus.on('refreshCurrentStation', (newCurrentStationId) => {
     currentStationId.value = newCurrentStationId
     currentStation.value = enumsStore.allEnums.stationList?.find(item => { return item.stationId === newCurrentStationId })
@@ -188,11 +176,15 @@ function handleNodeClick(data) {
 }
 // ^
 // # 5、场站折叠展开
-const isCollapse = computed(() => settingStore.leftNav.isCollapse)
-const isStationCollapse = ref(false)
-function handleToggleStation() {
-  isStationCollapse.value = !isStationCollapse.value
+// # (1) 横向折叠展开
+const isHorizontalCollapse = computed(() => settingStore.leftSide.isCollapse)
+// ^
+// # (2) 竖向折叠展开
+const isVerticalCollapse = ref(false)
+function handleVerticalToggle() {
+  isVerticalCollapse.value = !isVerticalCollapse.value
 }
+// ^
 // ^
 // # 6、根据 node.level 设置不同的 padding-left
 function getNodeStyle(node) {
@@ -200,13 +192,7 @@ function getNodeStyle(node) {
     paddingLeft: `${node.level * 15}px`, // 每一层递增 20px
   }
 }
-
-function getNodeClass(node) {
-  return [['火电', '储能', '核电'].includes(node?.data?.stationType) ? 'disabled-station' : '']
-}
 // ^
-
-
 // # 7、切换tab
 const tabList = ref([{ label: '列表视图', value: 'list' }, { label: '树状视图', value: 'tree' }])
 const currentTab = ref('list')
@@ -220,26 +206,35 @@ function handleChangeTab(newCurrentTab) {
 // ^
 // ^
 
-// # 三、生命周期
+// # 三、机制
 onMounted(() => {
   init()
 })
 onUnmounted(() => {
   proxy.$bus.off('refreshCurrentStation')
 })
-defineExpose({ isStationCollapse })
+defineExpose({ isVerticalCollapse })
 // ^
 </script>
 
 <style lang="scss" scoped>
-.left-nav-station {
-  width: calc(100% - 16px);
-  margin: 8px;
-  margin-top: 0;
+.left-station-vue {
+  width: calc(100% - 20px);
+  flex: 1;
+  margin: 0 10px 10px;
   flex-shrink: 0;
   overflow: hidden;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.16);
   border-radius: 2px;
+
+  &.is-vertical-collapse {
+    flex: initial;
+    height: 40px;
+  }
+
+  &.is-horizontal-collapse {
+    display: none;
+  }
 
   .select-station-part {
     height: 100%;
@@ -252,7 +247,6 @@ defineExpose({ isStationCollapse })
     position: relative;
     display: flex;
     align-items: center;
-    margin-top: 4px;
     flex-shrink: 0;
     overflow: hidden;
     height: 40px;
@@ -283,8 +277,6 @@ defineExpose({ isStationCollapse })
         transform: translateY(-50%) rotate(-180deg);
       }
     }
-
-
   }
 
   :deep(.c-tab) {

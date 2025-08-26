@@ -53,7 +53,7 @@ function handleTabClick(tabItem) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 120px;
+    // min-width: 120px;
     padding: 0 20px;
     border: 1px solid var(--bcs);
     border-right: 0;

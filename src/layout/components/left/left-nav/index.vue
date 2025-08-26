@@ -13,7 +13,7 @@
           </c-tooltip>
         </span>
       </div>
-      <c-icon i="c-normal-down" size="18" :class="['toggle-icon', isVerticalCollapse ? 'is-rotate' : '']" cursor="pointer" v-if="!isHorizontalCollapse" @click="handleVerticalToggleMenu"></c-icon>
+      <c-icon i="c-normal-down" size="18" :class="['toggle-icon', isVerticalCollapse ? 'is-rotate' : '']" cursor="pointer" v-if="!isHorizontalCollapse" @click="handleVerticalToggle"></c-icon>
     </div>
 
     <el-menu :key="menuKey" mode="vertical" ref="menuRef" :collapse="isHorizontalCollapse" :unique-opened="false" :collapse-transition="false" :default-active="activeMenu" :default-openeds="opendMenu" :class="['left-el-menu',]" @select="handleMenuSelect" @close="handleMenuClose" @open="handleMenuOpen">
@@ -150,7 +150,7 @@ const isHorizontalCollapse = computed(() => settingStore.leftSide.isCollapse)
 // ^
 // # (4) 竖向折叠展开
 const isVerticalCollapse = ref(false)
-function handleVerticalToggleMenu() {
+function handleVerticalToggle() {
   isVerticalCollapse.value = !isVerticalCollapse.value
 }
 // ^
@@ -250,7 +250,7 @@ defineExpose({ isVerticalCollapse })
 <style lang="scss" scoped>
 // 样式2：set菜单
 .left-nav-vue.style2 {
-  width: 220px;
+  width: calc(100% - 20px);
   flex: 1;
   margin: 10px;
   flex-shrink: 0;

@@ -1,8 +1,7 @@
 <template>
-  <!-- <div :class="['left-side-vue', isCollapse ? 'is-collapse' : 'is-expand', leftNavRef?.isVerticalCollapse ? 'has-is-menu-collapse' : 'has-is-menu-expand', leftStationRef?.isStationCollapse ? 'has-is-station-collapse' : 'has-is-station-expand',]"> -->
   <div :class="['left-side-vue', isCollapse ? 'is-collapse' : 'is-expand',]">
-    <left-nav ref="leftNavRef"></left-nav>
-    <!-- <left-station ref="leftStationRef"></left-station> -->
+    <left-nav></left-nav>
+    <left-station></left-station>
     <c-hamburger :isCollapse="isCollapse" class="left-side-toggle" @toggleClick="handleHorizonalToggleSide" />
   </div>
 </template>
@@ -26,14 +25,13 @@ const handleHorizonalToggleSide = () => {
   settingStore.leftSide.isCollapse = !settingStore.leftSide.isCollapse
   settingStore.setLeftSide()
 }
-const leftNavRef = ref(null)
-const leftStationRef = ref(null)
 // ^
 // ^
 </script>
 
 <style lang="scss" scoped>
 .left-side-vue {
+  width: 220px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -41,48 +39,14 @@ const leftStationRef = ref(null)
   height: 100%;
   background-color: var(--bg-leftNav);
   box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.1);
-
-  .is-menu-collapse {
-    height: 44px;
-  }
-
-  .is-station-collapse {
-    height: 44px;
-  }
-
-  &.has-is-menu-expand.has-is-station-expand {
-    .is-menu-expand {
-      // height: calc(50% - 12px);
-      height: calc(50% - 62px);
-      flex-shrink: 0;
-    }
-
-    .is-station-expand {
-      // height: calc(50% - 112px);
-      height: calc(50% - 62px);
-      flex-shrink: 0;
-    }
-  }
-
-  &.has-is-menu-expand.has-is-station-collapse {
-    .is-menu-expand {
-      // flex: 1;
-      height: calc(100% - 168px);
-    }
-  }
-
-  &.has-is-station-expand.has-is-menu-collapse {
-    .is-station-expand {
-      // flex: 1;
-      height: calc(100% - 168px);
-    }
-  }
+  padding-bottom: 100px;
 
   &.is-collapse {
+    width: 0;
 
+    // ToDo
     :deep(.left-nav-menu) {
       .menu-title {
-        // margin-left: 0;
         display: none;
       }
 
@@ -113,7 +77,7 @@ const leftStationRef = ref(null)
     width: 14px;
     height: 80px;
     padding: 0;
-    transform: translate(100%, -50%);
+    transform: translate(100%, calc(-50% - 50px));
     box-shadow: 3px 0px 4px 0px rgba(0, 0, 0, 0.1);
     border-radius: 0px 6px 6px 0px;
     background-color: var(--bg-leftNav);
