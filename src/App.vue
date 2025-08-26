@@ -3,12 +3,26 @@
 </template>
 
 <script setup>
-import { scaleFit, scaleAdapt } from '@/utils/screen-adaptation/scale'
-import { setRem } from '@/utils/screen-adaptation/rem'
-// 一、综合初始化
-import useSettingStore from '@/store/setting'
-const settingStore = useSettingStore()
-// 二、模块功能
+// 一、综合
+// 插件
+import { scaleFit, scaleAdapt } from '@/plugins/screen-adaptation/scale'
+import { setRem } from '@/plugins/screen-adaptation/rem'
+// pinia
+import useStore from '@/store'
+// 声明
+const { settingStore } = useStore()
+// ^
+
+// # 二、模块功能
+// # 1、初始化
+function init() {
+  scaleFit()
+  setRem()
+  setSetting()
+  // scaleAdapt(document.getElementById('app'))
+}
+// ^
+// # 2、设置
 async function setSetting() {
   await settingStore.setThemeStyle()
   await settingStore.setThemeColor()
@@ -17,15 +31,14 @@ async function setSetting() {
   await settingStore.setLeftNav()
   await settingStore.setTheme()
 }
+// ^
+// ^
+
 // 三、生命周期
 onMounted(() => {
-  scaleFit()
-  setRem()
-  setSetting()
-  // scaleAdapt(document.getElementById('app'))
+  init()
 })
-
-
+// ^
 </script>
 <style lang="scss" scoped>
 #app {

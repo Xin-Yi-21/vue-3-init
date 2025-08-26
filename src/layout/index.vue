@@ -1,6 +1,6 @@
 <template>
   <div class="layout-vue">
-    <template v-if="isDataInitDone">
+    <template v-if="isLayoutShow">
       <top-header @setLayout="setLayout" v-if="settingStore.topHeader.isShow"></top-header>
       <div class="main-container">
         <left-nav v-if="settingStore.leftNav.isShow"></left-nav>
@@ -19,7 +19,8 @@
 </template>
 
 <script setup>
-// # 一、综合初始化
+// # 一、综合
+// 组件
 import TopHeader from '@/layout/components/top/top-header/index.vue'
 import TopBar from '@/layout/components/top/top-bar/index.vue'
 import TopTag from '@/layout/components/top/top-tag/index.vue'
@@ -27,30 +28,46 @@ import TopNav from '@/layout/components/top/top-nav/index.vue'
 import LeftNav from '@/layout/components/left-nav/index.vue'
 import AppMain from '@/layout/components/app-main/index.vue'
 import Setting from '@/layout/components/setting/index.vue'
-import useEnumsStore from '@/store/enums'
-import useSettingStore from '@/store/setting'
-const settingStore = useSettingStore()
+// pinia
+import useStore from '@/store'
+// 声明
+const { settingStore, enumsStore } = useStore()
 // ^
 
 // # 二、模块功能
-// # 1、获取枚举
+// # 1、初始化
+const isLayoutShow = ref(false)
+async function init() {
+  await getEnums()
+  nextTick(() => {
+    isLayoutShow.value = true
+  })
+}
+// # (1) 获取枚举
 const isDataInitDone = ref(false)
 async function getEnums() {
-  try { await useEnumsStore().getEnums() } catch { }
+  try { await enumsStore.getEnums() } catch { }
 }
 // ^
-// # 2、打开布局抽屉
+// ^
+// # 2、布局抽屉
+// # (1) 打开
 const settingRef = ref(null)
 function setLayout() {
   settingRef.value.openSetting()
 }
-// ctrl+shift+l 按下，打开布局
+// ^
+// # (2) ctrl+shift+l 按下，打开布局
 const handleKeyDown = (event) => {
   if (event.ctrlKey && event.shiftKey && event.key === 'L') {
     event.preventDefault()
     setLayout()
   }
 }
+// ^
+// ^
+
+// # 三、机制
 watch(() => settingStore.topHeader.isShow, (nv) => {
   if (!nv) {
     document.addEventListener('keydown', handleKeyDown)
@@ -58,33 +75,11 @@ watch(() => settingStore.topHeader.isShow, (nv) => {
     document.removeEventListener('keydown', handleKeyDown)
   }
 }, { immediate: true })
+onMounted(() => { init() })
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeyDown)
 })
-// ^
-// # 3、初始布局设置
-async function setSetting() {
-  await settingStore.setThemeStyle()
-  await settingStore.setThemeColor()
-  await settingStore.setThemeSize()
-  await settingStore.setTopHeader()
-  await settingStore.setLeftNav()
-  await settingStore.setTheme()
-}
-// ^
-// ^
 
-// # 三、生命周期
-onMounted(() => { init() })
-async function init() {
-  await getEnums()
-  await setSetting()
-  await nextTick(() => {
-    isDataInitDone.value = true
-  })
-  // console.log('查zou2',)
-  // isDataInitDone.value = true
-}
 // ^
 
 </script>
@@ -96,12 +91,6 @@ async function init() {
   background-color: var(--bg-layout);
   overflow: hidden;
 
-  &:not(:has(> .top-header-vue)) {
-    .main-container {
-      height: 100%;
-    }
-  }
-
   .top-header-vue {
     height: var(--top-header-height);
   }
@@ -109,6 +98,10 @@ async function init() {
   .main-container {
     display: flex;
     height: calc(100% - var(--top-header-height));
+
+    &.n-t-h {
+      height: 100%;
+    }
 
     .left-nav-vue {
       width: var(--left-nav-width);
@@ -123,15 +116,26 @@ async function init() {
       height: 100%;
       overflow: hidden;
 
+      // margin-top: 5px;
+      .top-container {
+        margin-top: 10px;
+      }
+
       .app-main-vue {
         width: 100%;
         flex: 1;
         flex-shrink: 0;
         overflow: auto auto;
+        margin-top: 10px;
+        // margin-top: 5px;
 
         &>* {
           // border-top: 1px solid transparent;
-          height: 100%;
+          width: calc(100% - 20px);
+          height: calc(100% - 10px);
+          margin: 0 10px;
+          border-radius: 0 0 4px 4px;
+          background-color: var(--bg-card);
           overflow: hidden;
         }
 
@@ -160,13 +164,6 @@ async function init() {
         }
       }
     }
-  }
-
-  .layout-setting-icon {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    z-index: 999999;
   }
 }
 </style>
