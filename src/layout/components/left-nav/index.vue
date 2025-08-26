@@ -1,132 +1,88 @@
 <template>
-  <div :class="['left-nav-vue', isCollapse ? 'is-collapse' : 'is-expand']">
-    <el-scrollbar wrap-class="c-el-scrollbar">
-      <el-menu mode="vertical" :collapse="isCollapse" :unique-opened="true" :collapse-transition="false" :default-active="activeMenu" class="left-nav-menu">
-        <nav-item v-for="(item, index) in leftNavRoutes" :key="index" :navInfo="item" :isNest="true" :basePath="''" />
-      </el-menu>
-    </el-scrollbar>
+  <div :class="['left-nav-vue', isCollapse ? 'is-collapse' : 'is-expand', menuRef?.isMenuCollapse ? 'has-is-menu-collapse' : 'has-is-menu-expand', stationRef?.isStationCollapse ? 'has-is-station-collapse' : 'has-is-station-expand',]">
+    <p-menu ref="menuRef"></p-menu>
+    <div class="left-nav-toggle">
+      <c-hamburger :isCollapse="settingStore.leftNav.isCollapse" @toggleClick="handleLeftNav" />
+    </div>
+    <!-- <station ref="stationRef"></station> -->
   </div>
 
 </template>
 
 <script setup>
-// 一、综合初始化
-import NavItem from './components/nav-item'
-import useSettingStore from '@/store/setting'
-import useMenuStore from '@/store/menu'
+// # 一、综合
+// 组件
+import PMenu from './components/p-menu'
+import cHamburger from '@/components/custom-hamburger'
+// pinia
+import useStore from '@/store'
+// 声明
+const { settingStore } = useStore()
+// ^
 
-const settingStore = useSettingStore()
-const menuStore = useMenuStore()
-const route = useRoute()
+// # 二、模块功能
+// 1、折叠展开左侧导航
 const isCollapse = computed(() => settingStore.leftNav.isCollapse)
-const leftNavRoutes = computed(() => menuStore.leftNavRoutes)
-const activeMenu = computed(() => {
-  const { meta, path } = route
-  if (meta.activeMenu) {
-    return meta.activeMenu
-  }
-  return path
-})
-
+const handleLeftNav = () => {
+  settingStore.leftNav.isCollapse = !settingStore.leftNav.isCollapse
+  settingStore.setLeftNav()
+}
+const menuRef = ref(null)
+const stationRef = ref(null)
+// ^
+// ^
 </script>
+
 <style lang="scss" scoped>
 .left-nav-vue {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   height: 100%;
-  border-right: 1px solid var(--bcp);
+  // border-right: 1px solid var(--bcp);
   background-color: var(--bg-leftNav);
+  box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.1);
 
-  :deep(.left-nav-menu) {
-    width: 100%;
-    border-right: 0;
-    background-color: transparent;
 
-    .el-menu {
-      background-color: transparent;
+  .is-menu-collapse {
+    height: 44px;
+  }
+
+  .is-station-collapse {
+    height: 44px;
+  }
+
+  &.has-is-menu-expand.has-is-station-expand {
+    .is-menu-expand {
+      // height: calc(50% - 12px);
+      height: calc(50% - 62px);
+      flex-shrink: 0;
     }
 
-    .menu-item-container {
-      min-height: 60px;
+    .is-station-expand {
+      // height: calc(50% - 112px);
+      height: calc(50% - 62px);
+      flex-shrink: 0;
+    }
+  }
 
-      a {
-        text-decoration: none;
-      }
+  &.has-is-menu-expand.has-is-station-collapse {
+    .is-menu-expand {
+      // flex: 1;
+      height: calc(100% - 168px);
+    }
+  }
 
-      .svg-icon {
-        flex-shrink: 0;
-        font-size: 18px;
-        font-weight: 700;
-      }
-
-      li {
-        height: 100%;
-        background-color: var(--bg-leftNav);
-
-        .menu-title {
-          overflow: hidden;
-          flex: 1;
-          height: 60px;
-          margin: 0 20px 0 10px;
-          line-height: 60px;
-          color: inherit;
-          font-size: 14px;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        &.el-menu-item {
-          display: flex;
-          align-items: center;
-          min-width: 0;
-          height: 60px;
-          color: var(--fcpl);
-
-          &.is-active {
-            font-weight: 700;
-
-            & * {
-              color: var(--tc);
-            }
-          }
-
-          &:hover {
-            background-color: var(--tc);
-
-            & * {
-              color: var(--fcpl);
-            }
-
-          }
-        }
-
-        &.el-sub-menu {
-
-          &.is-active {
-            .el-sub-menu__title {
-              font-weight: 700;
-            }
-          }
-
-          .el-sub-menu__title {
-            display: flex;
-            align-items: center;
-            height: 60px;
-            color: var(--fcpl);
-
-            &:hover {
-              background-color: var(--tc);
-
-              & * {
-                color: var(--fcpl);
-              }
-            }
-          }
-        }
-      }
+  &.has-is-station-expand.has-is-menu-collapse {
+    .is-station-expand {
+      // flex: 1;
+      height: calc(100% - 168px);
     }
   }
 
   &.is-collapse {
+
     :deep(.left-nav-menu) {
       .menu-title {
         // margin-left: 0;
@@ -152,120 +108,31 @@ const activeMenu = computed(() => {
       }
     }
   }
-}
-</style>
-<style lang="scss">
-// 模块全局样式
-.left-nav-vertical-menu {
 
-  .el-menu--popup {
-    padding: 0;
+  .left-nav-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 14px;
+    height: 80px;
+    transform: translate(100%, -50%);
+    box-shadow: 3px 0px 4px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 0px 6px 6px 0px;
+    background-color: var(--bg-leftNav);
+    cursor: pointer;
+    z-index: 999;
 
-    .menu-item-container {
-      min-height: 50px;
-      border-bottom: 1px solid var(--bcp);
+    :deep(.hamburger) {
+      width: 100%;
+      padding: 0;
 
-      &:last-child {
-        border-bottom: 0;
-      }
-
-      a {
-        color: var(--fcpl);
-        text-decoration: none;
-      }
-
-      .svg-icon {
-        font-size: 16px;
-        font-weight: 700;
-      }
-
-      li {
-        &.is-active {
-          font-weight: 700;
-        }
-
-        &.el-menu-item {
-          display: flex;
-          align-items: center;
-          height: 100%;
-          background-color: var(--bg-primary);
-          color: var(--fcpl);
-
-          &.is-active {
-            font-weight: 700;
-
-            & * {
-              color: var(--tc);
-            }
-          }
-
-          &:hover {
-            background-color: var(--tc);
-
-            & * {
-              color: var(--fcpl);
-            }
-          }
-        }
-
-        &.el-sub-menu {
-          background-color: var(--bg-primary);
-
-          &.is-active {
-            .el-sub-menu__title {
-              font-weight: 700;
-
-              & * {
-                color: var(--tc);
-              }
-            }
-          }
-
-          .el-sub-menu__title {
-            display: flex;
-            align-items: center;
-            height: 50px;
-            background-color: var(--bg-primary);
-            color: var(--fcpl);
-
-            &:hover {
-              background-color: var(--tc);
-
-              & * {
-                color: var(--fcpl);
-              }
-            }
-
-            .el-sub-menu__icon-arrow {
-              width: auto;
-              right: 10px;
-
-              svg {
-                display: none;
-              }
-
-              &::before {
-                content: '\e677';
-                font-family: 'iconfont';
-                font-size: 18px;
-                font-style: normal;
-              }
-            }
-          }
-        }
-
-        .menu-title {
-          overflow: hidden;
-          height: 50px;
-          margin: 0 20px 0 10px;
-          line-height: 50px;
-          color: inherit;
-          font-size: 14px;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
+      .c-icon {
+        margin: 0 !important;
+        color: var(--tc) !important;
       }
     }
   }
+
+
 }
 </style>
