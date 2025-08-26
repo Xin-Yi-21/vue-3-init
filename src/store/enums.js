@@ -38,7 +38,7 @@ const useEnumsStore = defineStore('enums', () => {
           if (!node) return
           node.treeId = node.stationId || node.name + '-' + node.id
           node.treeName = node.stationName || node.name
-          // if (node.stationType && ['火电', '储能', '核电'].includes(node.stationType)) { node.isDisabled = true }
+          if (node.stationType && ['火电', '储能', '核电'].includes(node.stationType)) { node.isDisabled = true }
           if (node.children && Array.isArray(node.children)) { node.children.forEach(child => deepTraverse(child)) }
         }
         treeData.forEach(item => deepTraverse(item))
@@ -51,7 +51,7 @@ const useEnumsStore = defineStore('enums', () => {
             if (!i.children) {
               i.label = i.stationName
               i.value = i.stationId
-              // i.isDisabled = (i.stationType && ['火电', '储能', '核电'].includes(i.stationType)) ? true : false
+              i.isDisabled = (i.stationType && ['火电', '储能', '核电'].includes(i.stationType)) ? true : false
               i?.stationName ? listData.push(i) : ''
             } else {
               getStations(i.children)

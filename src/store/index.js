@@ -4,6 +4,7 @@ import useSettingStore from '@/store/setting'
 import useTagStore from '@/store/tag'
 import useUserStore from '@/store/user'
 import useEnumsStore from '@/store/enums'
+import useStationStore from '@/store/station'
 import persist from 'pinia-plugin-persistedstate'
 
 // 创建 Pinia 实例并使用持久化插件
@@ -17,6 +18,7 @@ export default function useStore() {
     tagStore: useTagStore(),
     userStore: useUserStore(),
     enumsStore: useEnumsStore(),
+    stationStore: useStationStore(),
   }
 }
 
