@@ -43,19 +43,19 @@ body {
   // &::-webkit-scrollbar-button:vertical:single-button:startz
   // &::-webkit-scrollbar-button:vertical:single-button:end
   &::-webkit-scrollbar-button:horizontal:decrement {
-    background-image: url('@/assets/images/c-scroll-left.svg');
+    background-image: url('@/assets/images/c-arrow-left-bold.svg');
   }
 
   &::-webkit-scrollbar-button:horizontal:increment {
-    background-image: url('@/assets/images/c-scroll-right.svg');
+    background-image: url('@/assets/images/c-arrow-right-bold.svg');
   }
 
   &::-webkit-scrollbar-button:vertical:decrement {
-    background-image: url('@/assets/images/c-scroll-up.svg');
+    background-image: url('@/assets/images/c-arrow-up-bold.svg');
   }
 
   &::-webkit-scrollbar-button:vertical:increment {
-    background-image: url('@/assets/images/c-scroll-down.svg');
+    background-image: url('@/assets/images/c-arrow-down-bold.svg');
   }
 
   &::-webkit-scrollbar-button {

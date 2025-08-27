@@ -45,29 +45,29 @@ const handleHorizonalToggleSide = () => {
     width: 0;
 
     // ToDo
-    :deep(.left-nav-menu) {
-      .menu-title {
-        display: none;
-      }
+    // :deep(.left-nav-menu) {
+    //   .menu-title {
+    //     display: none;
+    //   }
 
-      .el-sub-menu__icon-arrow {
-        display: none;
-      }
+    //   .el-sub-menu__icon-arrow {
+    //     display: none;
+    //   }
 
-      .el-menu-item {
-        padding: 0 !important;
+    //   .el-menu-item {
+    //     padding: 0 !important;
 
-        .el-tooltip {
-          padding: 0 !important;
-          text-align: center;
-        }
-      }
+    //     .el-tooltip {
+    //       padding: 0 !important;
+    //       text-align: center;
+    //     }
+    //   }
 
-      .el-submenu__title {
-        justify-content: center;
-        padding: 0 !important;
-      }
-    }
+    //   .el-submenu__title {
+    //     justify-content: center;
+    //     padding: 0 !important;
+    //   }
+    // }
   }
 
   :deep(.left-side-toggle) {

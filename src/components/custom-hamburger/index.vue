@@ -1,6 +1,6 @@
 <template>
   <div class="hamburger" @click="handleToggle">
-    <c-icon i="p-hamburger-collapse" :class="{ 'is-collapse': isCollapse }" cursor="pointer" size="12"></c-icon>
+    <c-icon i="c-operate-hamburger-side-collapse" :class="{ 'is-collapse': isCollapse }" cursor="pointer" size="12"></c-icon>
   </div>
 </template>
 

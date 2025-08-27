@@ -2,18 +2,18 @@
   <div class="menu-item-container" v-if="!navInfo.hidden">
     <Link v-if="isNoChildShow()" :to="handleLinkPath(onlyOne.path, onlyOne.query)">
     <el-menu-item :index="onlyOne.path" :class="[...(onlyOne.meta?.class || [])]" @click="handleClickMenuItem(onlyOne,)" @contextmenu.prevent="handleRightClickMenuItem($event, onlyOne)">
-      <!-- <svg-icon :icon-class="onlyOne.meta?.icon || navInfo.meta?.icon || ''" /> -->
+      <svg-icon :icon-class="onlyOne.meta?.icon || navInfo.meta?.icon || ''" />
       <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta?.title)">{{ onlyOne.meta?.title }}</span></template>
     </el-menu-item>
     </Link>
 
     <el-sub-menu v-else ref="subMenu" :index="navInfo.meta?.fullPath" :class="[...(navInfo.meta?.class || []), navInfo.meta?.clickIn && navInfo.name != currentIn && !isCollapse ? 'n-o-i' : '']" teleported popper-class="left-nav-el-vertical-menu" @click="handleClickSubMenu(navInfo, $event)">
       <template v-if="navInfo.meta" #title>
-        <!-- <svg-icon :icon-class="navInfo.meta?.icon || ''" /> -->
+        <svg-icon :icon-class="navInfo.meta?.icon || ''" />
         <span class="menu-title" :title="hasTitle(navInfo.meta?.title)">{{ navInfo.meta?.title }}</span>
-        <!-- <svg-icon icon-class="p-go-in" class="go-in" v-if="navInfo.meta?.clickIn && navInfo.name != currentIn && !isCollapse" /> -->
+        <svg-icon icon-class="c-go-in" class="go-in" v-if="navInfo.meta?.clickIn && navInfo.name != currentIn && !isCollapse" />
       </template>
-      <nav-item v-show="!navInfo.meta?.clickIn || navInfo.name == currentIn || isCollapse" v-for="(item, index) in navInfo.children" :currentIn="currentIn" :key="index" :isNest="true" :navInfo="item" @refresh="handleRefresh" @rightClick="handleRightClickMenuItem" />
+      <nav-item v-show="!navInfo.meta?.clickIn || navInfo.name == currentIn || isCollapse" v-for="(item, index) in navInfo.children" :currentIn="currentIn" :key="index" :level="(level + 1)" :isNest="true" :navInfo="item" @refresh="handleRefresh" @rightClick="handleRightClickMenuItem" :class="`level-${level + 1}`" />
     </el-sub-menu>
   </div>
 </template>
@@ -31,6 +31,7 @@ import useStore from '@/store'
 const props = defineProps({
   navInfo: { type: Object, required: true },
   isNest: { type: Boolean, default: false },
+  level: { type: Number, },
   basePath: { type: String, default: '' },
   isTopPath: { type: Boolean, default: false },
   currentIn: { type: String, default: '' },

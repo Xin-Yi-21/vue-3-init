@@ -2,23 +2,23 @@
   <div :class="['left-station-vue', isVerticalCollapse ? 'is-vertical-collapse' : 'is-vertical-expand', isHorizontalCollapse ? 'is-horizontal-collapse' : 'is-horizontal-expand',]">
     <div :class="['select-station-part',]">
       <div class="part-header" @click="handleVerticalToggle">
-        <c-icon i="c-station" size="16" class="station-icon"></c-icon>
+        <c-icon i="c-show-station" size="16" class="station-icon"></c-icon>
         <span class="part-header-title">场站选择</span>
-        <c-icon i="c-normal-down" size="18" :class="['toggle-icon', isVerticalCollapse ? 'is-rotate' : '']" cursor="pointer"></c-icon>
+        <c-icon i="c-arrow-down-thin" size="18" :class="['toggle-icon', isVerticalCollapse ? 'is-rotate' : '']" cursor="pointer"></c-icon>
       </div>
-      <c-tab class="p-tab" height="28" fontSize="12" :tabList="tabList" :currentTab="currentTab" @change="handleChangeTab"></c-tab>
+      <c-tab height="30" fontSize="12" :tabList="tabList" :currentTab="currentTab" @change="handleChangeTab"></c-tab>
       <el-input v-model="stationName" class="search-input" placeholder="请输入场站名称" @input="handleSearchStation"></el-input>
       <div class="station-list-vue" v-if="currentTab === 'list'" ref="lnsRef">
         <el-scrollbar id="station-scrollbar" ref="stationScrollbarRef" class="c-el-scrollbar station-scrollbar" :noresize="false">
           <el-tree ref="treeRef" node-key="treeId" :indent="0" :data="listData" :props="{ ...defaultProps, class: (item) => { return item.isDisabled ? 'disabled-station' : '' } }" default-expand-all @node-click="handleNodeClick" highlight-current :filter-node-method="handleFilterNode">
             <template #default="{ node, data }">
               <div :class="['tree-row']" :style="getNodeStyle(node)">
-                <c-icon i="c-circle" size="18" v-if="!data.stationType"></c-icon>
-                <c-icon i="c-station-solar" size="16" v-if="data.stationType?.includes('光伏')"></c-icon>
-                <c-icon i="c-station-wind" size="16" v-if="data.stationType?.includes('风电')"></c-icon>
-                <c-icon i="c-station-fire" size="16" v-if="data.stationType?.includes('火电')"></c-icon>
-                <c-icon i="c-station-storage" size="16" v-if="data.stationType?.includes('储能')"></c-icon>
-                <c-icon i="c-station-nuclear" size="16" v-if="data.stationType?.includes('核电')"></c-icon>
+                <c-icon i="c-show-circle" size="18" v-if="!data.stationType"></c-icon>
+                <c-icon i="c-show-station-solar" size="16" v-if="data.stationType?.includes('光伏')"></c-icon>
+                <c-icon i="c-show-station-wind" size="16" v-if="data.stationType?.includes('风电')"></c-icon>
+                <c-icon i="c-show-station-fire" size="16" v-if="data.stationType?.includes('火电')"></c-icon>
+                <c-icon i="c-show-station-storage" size="16" v-if="data.stationType?.includes('储能')"></c-icon>
+                <c-icon i="c-show-station-nuclear" size="16" v-if="data.stationType?.includes('核电')"></c-icon>
                 <span>{{ data.treeName }}</span>
               </div>
             </template>
@@ -30,12 +30,12 @@
           <el-tree ref="treeRef" node-key="treeId" :indent="0" :data="treeData" :props="{ ...defaultProps, class: (item) => { return item.isDisabled ? 'disabled-station' : '' } }" default-expand-all @node-click="handleNodeClick" highlight-current :filter-node-method="handleFilterNode">
             <template #default="{ node, data }">
               <div :class="['tree-row']" :style="getNodeStyle(node)">
-                <c-icon i="c-circle" size="18" v-if="!data.stationType"></c-icon>
-                <c-icon i="c-station-solar" size="16" v-if="data.stationType?.includes('光伏')" class=""></c-icon>
-                <c-icon i="c-station-wind" size="16" v-if="data.stationType?.includes('风电')"></c-icon>
-                <c-icon i="c-station-fire" size="16" v-if="data.stationType?.includes('火电')"></c-icon>
-                <c-icon i="c-station-storage" size="16" v-if="data.stationType?.includes('储能')"></c-icon>
-                <c-icon i="c-station-nuclear" size="16" v-if="data.stationType?.includes('核电')"></c-icon>
+                <c-icon i="c-show-circle" size="18" v-if="!data.stationType"></c-icon>
+                <c-icon i="c-show-station-solar" size="16" v-if="data.stationType?.includes('光伏')" class=""></c-icon>
+                <c-icon i="c-show-station-wind" size="16" v-if="data.stationType?.includes('风电')"></c-icon>
+                <c-icon i="c-show-station-fire" size="16" v-if="data.stationType?.includes('火电')"></c-icon>
+                <c-icon i="c-show-station-storage" size="16" v-if="data.stationType?.includes('储能')"></c-icon>
+                <c-icon i="c-show-station-nuclear" size="16" v-if="data.stationType?.includes('核电')"></c-icon>
                 <span>{{ data.treeName }}</span>
               </div>
             </template>
@@ -46,11 +46,11 @@
     <div class="current-station-part">
       <div class="left">
         <span class="left-label">当前场站</span>
-        <img v-if="stationStore?.currentStation?.stationType?.includes('光伏')" src="@/assets/images/c-sloar-station.png" alt="光伏场站">
-        <img v-if="stationStore?.currentStation?.stationType?.includes('风电')" src="@/assets/images/c-wind-station.png" alt="风电场站">
-        <img v-if="stationStore?.currentStation?.stationType?.includes('火电')" src="@/assets/images/c-fire-station.png" alt="火电场站">
-        <img v-if="stationStore?.currentStation?.stationType?.includes('储能')" src="@/assets/images/c-storage-station.png" alt="储能场站">
-        <img v-if="stationStore?.currentStation?.stationType?.includes('核电')" src="@/assets/images/c-nuclear-station.png" alt="核电场站">
+        <img v-if="stationStore?.currentStation?.stationType?.includes('光伏')" src="@/assets/images/c-show-station-solar.png" alt="光伏场站">
+        <img v-if="stationStore?.currentStation?.stationType?.includes('风电')" src="@/assets/images/c-show-station-wind.png" alt="风电场站">
+        <img v-if="stationStore?.currentStation?.stationType?.includes('火电')" src="@/assets/images/c-show-station-fire.png" alt="火电场站">
+        <img v-if="stationStore?.currentStation?.stationType?.includes('储能')" src="@/assets/images/c-show-station-storage.png" alt="储能场站">
+        <img v-if="stationStore?.currentStation?.stationType?.includes('核电')" src="@/assets/images/c-show-station-nuclear.png" alt="核电场站">
       </div>
       <div class="right">
         <span class="station-name">
@@ -95,10 +95,9 @@ function init() {
 const lnsRef = ref(null)
 const stationScrollbarRef = ref(null)
 function setResizeObserver() {
-  // const lnsRef = document.getElementById('left-nav-station')
   useResizeObserver(lnsRef, () => {
-    // console.log('left-nav-station大小变化',)
-    stationScrollbarRef.value?.update()
+    console.log('left-nav-station大小变化',)
+    // stationScrollbarRef.value?.update()
   })
 }
 // ^
@@ -156,7 +155,7 @@ const stationName = ref('')
 function handleSearchStation() {
   proxy.$debounce(e => {
     treeRef.value.filter(stationName.value)
-  }, 500)()
+  }, 1500)()
 }
 function handleFilterNode(value, data) {
   if (!value) return true
@@ -189,7 +188,7 @@ function handleVerticalToggle() {
 // # 6、根据 node.level 设置不同的 padding-left
 function getNodeStyle(node) {
   return {
-    paddingLeft: `${node.level * 15}px`, // 每一层递增 20px
+    paddingLeft: `${node.level * 15}px`, // 每一层递增 15px
   }
 }
 // ^
@@ -281,20 +280,13 @@ defineExpose({ isVerticalCollapse })
 
   :deep(.c-tab) {
     width: calc(100% - 20px);
-    margin: 10px;
-    margin-top: 5px;
-    display: flex;
-
-    .tab-item {
-      flex: 1;
-      flex-shrink: 0;
-    }
+    margin: 5px 10px 10px;
   }
 
   .search-input {
     width: calc(100% - 20px);
-    margin: 0 10px;
-    margin-bottom: 10px;
+    height: 30px;
+    margin: 0 10px 10px;
   }
 
 
@@ -312,19 +304,13 @@ defineExpose({ isVerticalCollapse })
     :deep(.el-tree) {
       flex: 1;
       flex-shrink: 0;
-      // overflow: hidden;
-      // margin-bottom: 10px;
       overflow-y: auto;
-      // padding-left: 20px;
       padding-left: 0;
       background-color: transparent;
 
       .el-tree-node {
         &.disabled-station {
           pointer-events: none;
-        }
-
-        &.disabled-station {
           opacity: 0.6;
         }
       }
@@ -361,8 +347,6 @@ defineExpose({ isVerticalCollapse })
           align-items: center;
           color: var(--fct);
 
-
-
           .circle {
             display: inline-block;
             width: 6px;
@@ -376,13 +360,8 @@ defineExpose({ isVerticalCollapse })
             white-space: nowrap;
             padding-right: 10px;
             font-size: 14px;
-            // color: var(--fcs);
           }
 
-
-          &.active {
-            background-color: var(--tca005);
-          }
         }
       }
 
@@ -392,14 +371,12 @@ defineExpose({ isVerticalCollapse })
             background-color: var(--tca005);
 
             &::before {
-              // display: none;
               content: "";
               position: absolute;
               top: 50%;
               left: 0;
               transform: translateY(-50%);
               width: 4px;
-              // height: 30px;
               height: 100%;
               border-radius: 1px;
               background-color: var(--tc);
@@ -481,17 +458,6 @@ defineExpose({ isVerticalCollapse })
         padding-right: 15px;
         color: var(--fct);
       }
-    }
-  }
-
-}
-
-
-
-.left-nav-vue {
-  &.is-collapse {
-    .station-tree-vue {
-      display: none;
     }
   }
 }

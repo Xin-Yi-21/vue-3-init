@@ -1,6 +1,6 @@
 import { login, logout, getInfo } from '@/api/common/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import defaultAvatar from '@/assets/icons/svg/c-profile.svg'
+import defaultAvatar from '@/assets/icons/svg/c-show-profile.svg'
 
 const useUserStore = defineStore('user', {
   state: () => ({
