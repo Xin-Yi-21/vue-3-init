@@ -248,7 +248,6 @@ defineExpose({ isVerticalCollapse })
 </script>
 
 <style lang="scss" scoped>
-// 样式2：set菜单
 .left-nav-vue.style2 {
   width: calc(100% - 20px);
   flex: 1;
@@ -357,9 +356,7 @@ defineExpose({ isVerticalCollapse })
     }
   }
 }
-</style>
 
-<style lang="scss" scoped>
 #left-nav-vue {
 
   // 公共部分

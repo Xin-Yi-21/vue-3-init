@@ -27,11 +27,11 @@
       </div>
       <div class="c-search-operate">
         <div class="left">
-          <c-button type="primary" class="query-button" i="c-search" @click="getTableInfo">查询</c-button>
-          <c-button type="info" class="refresh-button" i="c-refresh" @click="setDefault"></c-button>
+          <c-button type="primary" class="query-button" i="c-operate-search" @click="getTableInfo">查询</c-button>
+          <c-button type="info" class="refresh-button" i="c-operate-refresh" @click="setDefault"></c-button>
         </div>
         <div class="right">
-          <c-button type="primary" i="c-add" @click="handleAdd">新增</c-button>
+          <c-button type="primary" i="c-operate-add" @click="handleAdd">新增</c-button>
         </div>
       </div>
     </div>
@@ -57,9 +57,9 @@
         </el-table-column>
         <el-table-column label="操作" prop="" align="center" class-name="c-table-operate-column">
           <template #default="scope">
-            <c-icon i="c-t-view" tip="查看" color="#55c791" hoverColor="#55c791" :showType="scope.$index ? 'c' : 'el'" cursor="pointer" @click="handleView(scope.row)"></c-icon>
-            <c-icon i="c-t-update" tip="更新" color="#0077FF" hoverColor="#0077FF" :showType="scope.$index ? 'c' : 'el'" cursor="pointer" @click="handleUpdate(scope.row)"></c-icon>
-            <c-icon i="c-t-delete" tip="删除" color="#FA4B4B" hoverColor="#FA4B4B" :showType="scope.$index ? 'c' : 'el'" cursor="pointer" @click="handleDelete(scope.row)"></c-icon>
+            <c-icon i="c-operate-view" tip="查看" color="#55c791" hoverColor="#55c791" :showType="scope.$index ? 'c' : 'el'" cursor="pointer" @click="handleView(scope.row)"></c-icon>
+            <c-icon i="c-operate-update" tip="更新" color="#0077FF" hoverColor="#0077FF" :showType="scope.$index ? 'c' : 'el'" cursor="pointer" @click="handleUpdate(scope.row)"></c-icon>
+            <c-icon i="c-operate-delete" tip="删除" color="#FA4B4B" hoverColor="#FA4B4B" :showType="scope.$index ? 'c' : 'el'" cursor="pointer" @click="handleDelete(scope.row)"></c-icon>
           </template>
         </el-table-column>
       </el-table>

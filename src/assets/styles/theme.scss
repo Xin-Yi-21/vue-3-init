@@ -97,15 +97,14 @@
   }
   // 左侧导航
   & {
-    &[leftNavStatus='expand'] {
-      // --left-nav-width: 220px;
-      --left-nav-width: 240px;
+    &[leftSideStatus='expand'] {
+      --left-side-width: 240px;
     }
-    &[leftNavStatus='collapse'] {
-      --left-nav-width: 0px;
+    &[leftSideStatus='collapse'] {
+      --left-side-width: 0px;
     }
-    &[leftNavStatus='hide'] {
-      --left-nav-width: 0px;
+    &[leftSideStatus='hide'] {
+      --left-side-width: 0px;
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
-  <div class="top-header-vue">
+  <div class="top-header-container">
     <div class="project">
-      <c-icon i="c-logo" cursor="auto" size="24"></c-icon>
+      <c-icon i="c-show-logo" cursor="auto" size="24"></c-icon>
       <div class="title">项目初始化系统</div>
       <!-- <Breadcrumb v-if="settingStore.topHeader.isBreadcrumbShow" separator=">" class="breadcrumb-container" /> -->
     </div>
@@ -21,19 +21,19 @@
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item command="profile">
-            <c-icon i="c-account"></c-icon>
+            <c-icon i="c-show-account"></c-icon>
             <span>个人中心</span>
           </el-dropdown-item>
           <el-dropdown-item command="userManage">
-            <c-icon i="c-user-manage"></c-icon>
+            <c-icon i="c-menu-user"></c-icon>
             <span>用户管理</span>
           </el-dropdown-item>
           <el-dropdown-item command="layoutSet">
-            <c-icon i="c-layout"></c-icon>
+            <c-icon i="c-show-layout"></c-icon>
             <span>布局设置</span>
           </el-dropdown-item>
           <el-dropdown-item divided command="logout">
-            <c-icon i="c-logout"></c-icon>
+            <c-icon i="c-operate-logout"></c-icon>
             <span>退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -126,7 +126,7 @@ onBeforeUnmount(() => {
   font-style: normal;
 }
 
-.top-header-vue {
+.top-header-container {
   display: flex;
   align-items: center;
   background-color: var(--bg-topHeader);

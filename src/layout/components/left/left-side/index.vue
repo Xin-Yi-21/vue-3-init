@@ -1,5 +1,5 @@
 <template>
-  <div :class="['left-side-vue', isCollapse ? 'is-collapse' : 'is-expand',]">
+  <div :class="['left-side-container', isCollapse ? 'is-collapse' : 'is-expand',]">
     <left-nav></left-nav>
     <left-station></left-station>
     <c-hamburger :isCollapse="isCollapse" class="left-side-toggle" @toggleClick="handleHorizonalToggleSide" />
@@ -30,8 +30,7 @@ const handleHorizonalToggleSide = () => {
 </script>
 
 <style lang="scss" scoped>
-.left-side-vue {
-  width: 220px;
+.left-side-container {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -43,31 +42,6 @@ const handleHorizonalToggleSide = () => {
 
   &.is-collapse {
     width: 0;
-
-    // ToDo
-    // :deep(.left-nav-menu) {
-    //   .menu-title {
-    //     display: none;
-    //   }
-
-    //   .el-sub-menu__icon-arrow {
-    //     display: none;
-    //   }
-
-    //   .el-menu-item {
-    //     padding: 0 !important;
-
-    //     .el-tooltip {
-    //       padding: 0 !important;
-    //       text-align: center;
-    //     }
-    //   }
-
-    //   .el-submenu__title {
-    //     justify-content: center;
-    //     padding: 0 !important;
-    //   }
-    // }
   }
 
   :deep(.left-side-toggle) {

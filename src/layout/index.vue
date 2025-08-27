@@ -1,13 +1,11 @@
 <template>
-  <div class="layout-vue">
+  <div class="layout-container">
     <template v-if="isLayoutShow">
       <top-header @setLayout="setLayout" v-if="settingStore.topHeader.isShow"></top-header>
       <div class="main-container">
         <left-side v-if="settingStore.leftSide.isShow"></left-side>
         <div class="main-right-container">
-          <div class="top-container">
-            <!-- <top-tag v-if="settingStore.topTag.isShow"></top-tag> -->
-          </div>
+          <!-- <top-tag v-if="settingStore.topTag.isShow"></top-tag> -->
           <app-main />
         </div>
         <setting ref="settingRef"></setting>
@@ -81,26 +79,22 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.layout-vue {
+.layout-container {
   width: 100%;
   height: 100%;
   background-color: var(--bg-layout);
   overflow: hidden;
 
-  .top-header-vue {
-    height: var(--top-header-height);
+  .top-header-container {
+    height: 70px;
   }
 
   .main-container {
     display: flex;
-    height: calc(100% - var(--top-header-height));
+    height: calc(100% - 70px);
 
-    &.n-t-h {
-      height: 100%;
-    }
-
-    .left-nav-vue {
-      width: var(--left-nav-width);
+    .left-side-container {
+      width: var(--left-side-width);
       flex-shrink: 0;
     }
 
@@ -108,7 +102,7 @@ onUnmounted(() => {
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
-      width: calc(100% - var(--left-nav-width));
+      width: calc(100% - var(--left-side-width));
       height: 100%;
       overflow: hidden;
 

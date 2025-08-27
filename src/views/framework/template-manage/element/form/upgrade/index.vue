@@ -4,16 +4,16 @@
       <template #left> <c-card-title title="进阶模版" icon="circle"></c-card-title> </template>
       <template #center> </template>
       <template #right>
-        <c-button i="c-download" @click="handleDownloadFile" :loading="loading.downloadFile">文件下载</c-button>
-        <c-button i="c-upload" @click="handleUploadFile" :loading="loading.uploadFile">文件上传</c-button>
+        <c-button i="c-operate-download" @click="handleDownloadFile" :loading="loading.downloadFile">文件下载</c-button>
+        <c-button i="c-operate-upload" @click="handleUploadFile" :loading="loading.uploadFile">文件上传</c-button>
 
-        <c-button i="c-export-image" @click="handleImageExport" :loading="loading.imageExport">图片导出</c-button>
-        <c-button i="c-export-excel" @click="handleDomExport" :loading="loading.domExport">结构导出</c-button>
-        <c-button i="c-export-excel" @click="handleDataExport" :loading="loading.dataExport">数据导出</c-button>
+        <c-button i="c-operate-export-image" @click="handleImageExport" :loading="loading.imageExport">图片导出</c-button>
+        <c-button i="c-operate-export-excel" @click="handleDomExport" :loading="loading.domExport">结构导出</c-button>
+        <c-button i="c-operate-export-excel" @click="handleDataExport" :loading="loading.dataExport">数据导出</c-button>
 
-        <c-button i="c-submit" @click="handleBatchSumbit">批量提交</c-button>
-        <c-button i="c-audit" @click="handleBatchAudit">批量审核</c-button>
-        <c-button i="c-delete" @click="handleBatchDelete">批量删除</c-button>
+        <c-button i="c-operate-submit" @click="handleBatchSumbit">批量提交</c-button>
+        <c-button i="c-operate-audit" @click="handleBatchAudit">批量审核</c-button>
+        <c-button i="c-operate-delete" @click="handleBatchDelete">批量删除</c-button>
       </template>
     </c-card-header>
     <div class="c-search" v-load="{ loading: loading.result, showAnim: false }">
@@ -42,11 +42,11 @@
       </div>
       <div class="c-search-operate">
         <div class="left">
-          <c-button type="primary" class="query-button" i="c-search" @click="getTableInfo">查询</c-button>
-          <c-button type="info" class="refresh-button" i="c-refresh" @click="setDefault"></c-button>
+          <c-button type="primary" class="query-button" i="c-operate-search" @click="getTableInfo">查询</c-button>
+          <c-button type="info" class="refresh-button" i="c-operate-refresh" @click="setDefault"></c-button>
         </div>
         <div class="right">
-          <c-button type="primary" i="c-add" @click="handleAdd">新增</c-button>
+          <c-button type="primary" i="c-operate-add" @click="handleAdd">新增</c-button>
         </div>
       </div>
     </div>
@@ -90,11 +90,11 @@
         </el-table-column>
         <el-table-column label="图标操作" prop="" align="center" class-name="c-table-operate-column" width="140">
           <template #default="scope">
-            <c-icon i="c-confirm" tip="确认" color="#55c791" :showType="scope.$index ? 'c' : 'el'" button :disabled="true" :loading="loading[`confirm-${scope.row.id}`]" @click="handleConfirm(scope.row)"> </c-icon>
-            <!-- <c-icon i="c-confirm" tip="确认" color="#55c791" :showType="scope.$index ? 'c' : 'el'"  :disabled="false" v-load="{ loading: loading[`confirm-${scope.row.id}`], type: 'breath', }" @click="handleConfirm(scope.row)"> </c-icon> -->
-            <c-icon i="c-t-view" tip="查看" color="#55c791" :showType="scope.$index ? 'c' : 'el'" button @click="handleView(scope.row)"></c-icon>
-            <c-icon i="c-t-update" tip="更新" color="#0077FF" :showType="scope.$index ? 'c' : 'el'" button @click="handleUpdate(scope.row)"></c-icon>
-            <c-icon i="c-t-delete" tip="删除" color="#FA4B4B" :showType="scope.$index ? 'c' : 'el'" button @click="handleDelete(scope.row)"></c-icon>
+            <c-icon i="c-operate-confirm" tip="确认" color="#55c791" :showType="scope.$index ? 'c' : 'el'" button :disabled="true" :loading="loading[`confirm-${scope.row.id}`]" @click="handleConfirm(scope.row)"> </c-icon>
+            <!-- <c-icon i="c-operate-confirm" tip="确认" color="#55c791" :showType="scope.$index ? 'c' : 'el'"  :disabled="false" v-load="{ loading: loading[`confirm-${scope.row.id}`], type: 'breath', }" @click="handleConfirm(scope.row)"> </c-icon> -->
+            <c-icon i="c-operate-view" tip="查看" color="#55c791" :showType="scope.$index ? 'c' : 'el'" button @click="handleView(scope.row)"></c-icon>
+            <c-icon i="c-operate-update" tip="更新" color="#0077FF" :showType="scope.$index ? 'c' : 'el'" button @click="handleUpdate(scope.row)"></c-icon>
+            <c-icon i="c-operate-delete" tip="删除" color="#FA4B4B" :showType="scope.$index ? 'c' : 'el'" button @click="handleDelete(scope.row)"></c-icon>
           </template>
         </el-table-column>
         <el-table-column label="按钮操作" prop="" align="center" class-name="c-table-operate-column" width="220">
