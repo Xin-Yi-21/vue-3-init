@@ -3,7 +3,6 @@
 </template>
 
 <script setup>
-// import variable from '@/assets/styles/variable.scss'
 const props = defineProps({
   // 矩形背景色
   bg: { type: String, default: '', },

@@ -1,8 +1,8 @@
-@import './basic.scss';
-@import './mixin.scss';
-@import './variable.scss';
-@import './custom.scss';
-@import './project.scss';
-@import './element.scss';
-@import './theme.scss';
-@import './animation.scss';
+@forward './basic.scss';
+@forward './mixin.scss';
+@forward './variable.scss';
+@forward './custom.scss';
+@forward './project.scss';
+@forward './element.scss';
+@forward './theme.scss';
+@forward './animation.scss';

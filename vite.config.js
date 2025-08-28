@@ -94,7 +94,9 @@ export default defineConfig(async ({ mode, command }) => {
       // 配置mixin
       preprocessorOptions: {
         scss: {
-          additionalData: `@import "./src/assets/styles/mixin.scss";`
+          api: 'modern',
+          silenceDeprecations: ['legacy-js-api'],
+          additionalData: `@use "@/assets/styles/mixin.scss" as *;`,
         }
       },
     },

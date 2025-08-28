@@ -94,6 +94,13 @@ function init() {
   getEnums()
   setDefault()
   getTableInfo()
+  proxy.$message({
+    message: '哈哈哈哈哈哈哈',
+    type: 'warning',
+    duration: 0, // 设置为 0 表示不自动关闭
+    showClose: true // 建议加上关闭按钮，不然用户没法关
+  })
+  // 总结一下， 其实对于element的主题色，我可以通过css变量形式来改变，但是比如primary、danger等的颜色还延伸出了很多种比如light的1-9级别，并且并没有关联到 
 }
 // ^
 // # (2) 获取枚举

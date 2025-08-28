@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/common/login'
+import { login, logout, loginInfoGet } from '@/api/common/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import defaultAvatar from '@/assets/icons/svg/c-show-profile.svg'
 
@@ -32,7 +32,7 @@ const useUserStore = defineStore('user', {
     // 获取用户信息
     getInfo() {
       return new Promise((resolve, reject) => {
-        getInfo().then(res => {
+        loginInfoGet().then(res => {
           const user = res.user
           const avatar = user.avatar ? defaultAvatar : defaultAvatar
           // const avatar = (user.avatar == "" || user.avatar == null) ? defaultAvatar : import.meta.env.VITE_APP_BASE_API + user.avatar;

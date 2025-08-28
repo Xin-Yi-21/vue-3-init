@@ -1,6 +1,30 @@
-// 一、element变量配置
-// 1、直接变量配置
+// ⭐ element变量配置
+// 一、主题风格
+// 1、通用
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': #3a84ff
+    ),
+    'danger': (
+      'base': #ff4d4f
+    ),
+    'warning': (
+      'base': #fbc21c
+    ),
+    'success': (
+      'base': #52c41a
+    ),
+    'info': (
+      'base': #909399
+    )
+  )
+);
+
+@use 'element-plus/theme-chalk/src/index.scss' as *;
+
 :root {
+  // 背景
   --el-fill-color: var(--bg-inner-primary); // 分页页码卡片色等
   --el-fill-color-blank: var(--bg-inner-primary); // 表单输入背景色等
   --el-bg-color: var(--bg-inner-primary); // 组件背景色等
@@ -25,7 +49,6 @@
   --el-disabled-bg-color: var(--el-fill-color-light);
   --el-disabled-text-color: var(--el-text-color-placeholder);
   --el-disabled-border-color: var(--el-border-color-light);
-
   // 浅色主题变量
   &[theme-style='light'] {
   }
@@ -38,10 +61,11 @@
     --el-border-color-hover: #999; // 悬浮边框色
   }
 }
-// 2、主题特殊配置（.el-table .el-calendar .el-description)
-// (1) 主题颜色
+// 2、组件
+// el-table
 :root {
   &[theme-style='light'] {
+    // 表格
     --bg-tableHeader: var(--tca01); // 表格头部背景色
     --bg-tableHoverRow: var(--tca005); // 表格悬浮行背景色
     --bg-tableCurrentRow: var(--tca02); // 表格选中行背景色
@@ -51,6 +75,7 @@
   }
 
   &[theme-style='dark'] {
+    // 表格
     --bg-tableHeader: #a1a1a1; // 表格头部背景色
     --bg-tableHoverRow: var(--tca005); // 表格悬浮行背景色
     --bg-tableCurrentRow: var(--tca02); // 表格选中行背景色
@@ -157,8 +182,38 @@
     }
   }
 }
+// el-calendar
+:root {
+  &[theme-style='light'],
+  &[theme-style='dark'] {
+    .el-calendar {
+      --el-calendar-border: 1px solid var(--bct);
+    }
+  }
+}
+// el-descriptions
+:root {
+  &[theme-style='light'],
+  &[theme-style='dark'] {
+    .el-descriptions {
+      --el-descriptions-table-border: 1px var(--bcs) solid;
+      .el-descriptions__label {
+        background-color: var(--bg-tableHeader);
+        color: #333;
+        font-weight: 400;
+        font-size: 14px;
+      }
+      .el-descriptions__content {
+        color: var(--fcs);
+        font-weight: 400;
+        font-size: 14px;
+      }
+    }
+  }
+}
 
-// (2) 主题大小
+// 二、主题大小
+// el-form
 :root {
   &[theme-size='large'],
   &[theme-size='normal'],
@@ -176,6 +231,13 @@
         }
       }
     }
+  }
+}
+// el-input
+:root {
+  &[theme-size='large'],
+  &[theme-size='normal'],
+  &[theme-size='small'] {
     .el-input {
       --el-input-height: var(--ch);
       font-size: var(--cfs);
@@ -186,6 +248,13 @@
         }
       }
     }
+  }
+}
+// el-select
+:root {
+  &[theme-size='large'],
+  &[theme-size='normal'],
+  &[theme-size='small'] {
     .el-select {
       --el-select-input-font-size: var(--cfs);
       height: var(--ch);
@@ -208,25 +277,56 @@
         }
       }
     }
+  }
+}
+// el-radio
+:root {
+  &[theme-size='large'],
+  &[theme-size='normal'],
+  &[theme-size='small'] {
     .el-radio {
       height: var(--ch);
       --el-radio-input-height: var(--cfs);
       --el-radio-input-width: var(--cfs);
       --el-radio-font-size: var(--cfs);
     }
+  }
+}
+// el-checkbox
+:root {
+  &[theme-size='large'],
+  &[theme-size='normal'],
+  &[theme-size='small'] {
     .el-checkbox {
       --el-checkbox-font-size: var(--cfs);
     }
+  }
+}
+// el-button
+:root {
+  &[theme-size='large'],
+  &[theme-size='normal'],
+  &[theme-size='small'] {
     .el-button {
       height: var(--ch);
       font-size: var(--cfs);
     }
+  }
+}
+// el-table
+:root {
+  &[theme-size='large'],
+  &[theme-size='normal'],
+  &[theme-size='small'] {
     .el-table {
       .cell {
         font-size: var(--cfs);
       }
     }
   }
+}
+// el-tag
+:root {
   &[theme-size='large'] {
     .el-tag {
       --el-tag-font-size: 14px;
@@ -247,7 +347,7 @@
   }
 }
 
-// 二、element样式直改（.el-select .el-table .el-tooltip)
+// 三、element样式直改
 // .el-select
 .el-select {
   &[is-disabled='true'] {

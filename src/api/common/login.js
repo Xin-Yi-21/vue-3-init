@@ -30,7 +30,7 @@ export function imageCodeGet() {
 }
 
 // 获取当前登录用户信息
-export function getInfo() {
+export function loginInfoGet() {
   return request({
     url: '/profile',
     method: 'get'
@@ -38,13 +38,33 @@ export function getInfo() {
 }
 
 // 注册
-export function register() {
+export function register(data) {
   return request({
-    url: '/profile',
-    method: 'get'
+    url: '/register',
+    method: 'post',
+    data
   })
 }
 
+// 获取手机验证码
+export function phoneCodeGet(params) {
+  return request({
+    url: '/register',
+    method: 'get',
+    params
+  })
+}
+
+
+
+// 修改密码
+export function passwordChange(data) {
+  return request({
+    url: '/register',
+    method: 'post',
+    data
+  })
+}
 
 
 

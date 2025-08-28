@@ -21,6 +21,7 @@ app.component('svg-icon', SvgIcon)
 app.use(elementIcons)
 // ⭐ 常用样式
 import '@/assets/styles/index.scss' // 全局样式
+
 // import '@/mock/index.js'
 
 setConfig().then(async (cEnv) => {

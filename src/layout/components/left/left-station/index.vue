@@ -96,7 +96,6 @@ const lnsRef = ref(null)
 const stationScrollbarRef = ref(null)
 function setResizeObserver() {
   useResizeObserver(lnsRef, () => {
-    console.log('left-nav-station大小变化',)
     // stationScrollbarRef.value?.update()
   })
 }
