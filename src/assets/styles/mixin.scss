@@ -1,4 +1,5 @@
 // 二、mixin
+// 1、增加选择器权重
 @mixin acw($selector: '&', $amount: 1, $mode: 'repeat') {
   @if $amount <= 0 {
     #{$selector} {

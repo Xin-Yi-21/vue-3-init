@@ -226,6 +226,14 @@ defineExpose({ isVerticalCollapse })
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.16);
   border-radius: 2px;
 
+  :root[theme-style='dark'] & {
+    background-color: var(--bg-card);
+  }
+
+  :root[theme-style='light'] & {
+    background-color: var(--bg-card);
+  }
+
   &.is-vertical-collapse {
     flex: initial;
     height: 40px;

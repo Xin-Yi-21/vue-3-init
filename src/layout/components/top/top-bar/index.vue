@@ -21,6 +21,14 @@ const handleLeftNav = () => {
   display: flex;
   height: 40px;
   border-bottom: 1px solid var(--bcp);
-  background-color: var(--bg-topBar);
+
+  :root[theme-style='dark'] & {
+    background-color: var(--bg-card);
+  }
+
+  :root[theme-style='light'] & {
+    background-color: var(--bg-card);
+  }
+
 }
 </style>

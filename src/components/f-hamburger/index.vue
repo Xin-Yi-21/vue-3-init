@@ -23,7 +23,7 @@ const handleToggle = () => {
   align-items: center;
   height: 100%;
   padding: 0 10px;
-  color: var(--fcpl);
+  color: var(--fcs);
 
   .is-collapse {
     transform: rotate(180deg);

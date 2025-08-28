@@ -56,7 +56,7 @@ getBreadcrumb()
   font-size: 14px;
 
   a {
-    color: var(--fcpl);
+    color: var(--fcs);
   }
 
   .no-redirect {

@@ -83,6 +83,15 @@ watch(() => settingStore.isTemplateManage, (nv, ov) => {
   padding: 0 50px;
   align-items: center;
 
+  :root[theme-style='dark'] & {
+    background-color: var(--bg-card);
+  }
+
+  :root[theme-style='light'] & {
+    background-color: var(--bg-card);
+  }
+
+
   :deep(.top-nav-el-menu) {
     width: 100%;
     height: 100%;
@@ -92,7 +101,7 @@ watch(() => settingStore.isTemplateManage, (nv, ov) => {
     .menu-item-container {
       flex: 1;
       flex-shrink: 0;
-      background-color: var(--bg-topHeader);
+
 
       &.is-top-active {
         .menu-title {

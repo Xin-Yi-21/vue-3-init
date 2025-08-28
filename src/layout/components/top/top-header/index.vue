@@ -129,8 +129,17 @@ onBeforeUnmount(() => {
 .top-header-container {
   display: flex;
   align-items: center;
-  background-color: var(--bg-topHeader);
   font-size: 14px;
+
+  :root[theme-style='dark'] & {
+    background-color: var(--bg-card);
+  }
+
+  :root[theme-style='light'] & {
+    background-color: var(--bg-card);
+  }
+
+
 
   &.is-fixed {
     position: fixed;
@@ -147,14 +156,14 @@ onBeforeUnmount(() => {
     padding: 0 10px;
 
     :deep(.svg-icon) {
-      color: var(--fcpl);
+      color: var(--fcs);
       font-size: 24px !important;
     }
 
     .title {
       display: flex;
       align-items: center;
-      color: var(--fcpl);
+      color: var(--fcs);
       font-size: 30px;
       font-weight: 700;
       font-family: 'TitleFont';
@@ -233,14 +242,14 @@ onBeforeUnmount(() => {
         height: 36px;
         margin-right: 10px;
         padding: 2px;
-        border: 2px solid var(--fcpl);
+        border: 2px solid var(--bcp);
         border-radius: 50%;
         background-color: #fff;
       }
 
       >span {
         margin-right: 10px;
-        color: var(--fcpl);
+        color: var(--fcs);
       }
 
       .el-icon {

@@ -36,7 +36,15 @@ const handleHorizonalToggleSide = () => {
   flex-direction: column;
   box-sizing: border-box;
   height: 100%;
-  background-color: var(--bg-leftNav);
+
+  :root[theme-style='dark'] & {
+    background-color: var(--bg-card);
+  }
+
+  :root[theme-style='light'] & {
+    background-color: var(--bg-card);
+  }
+
   box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.1);
   padding-bottom: 100px;
 

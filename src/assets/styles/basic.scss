@@ -1,10 +1,7 @@
 // ⭐一、基础初始化
 * {
   box-sizing: border-box;
-  // color: var(--fcp);
-  // font-family: Microsoft YaHei;
   font-family: Source Han Sans CN;
-  // line-height: 1;
   &:not([class^='el-']):not([class*=' el-']) {
     line-height: 1;
   }
@@ -38,10 +35,6 @@ body {
     background-color: transparent;
   }
 
-  // &::-webkit-scrollbar-button:horizontal:single-button:start
-  // &::-webkit-scrollbar-button:horizontal:single-button:end
-  // &::-webkit-scrollbar-button:vertical:single-button:startz
-  // &::-webkit-scrollbar-button:vertical:single-button:end
   &::-webkit-scrollbar-button:horizontal:decrement {
     background-image: url('@/assets/images/c-arrow-left-bold.svg');
   }

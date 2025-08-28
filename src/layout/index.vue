@@ -73,7 +73,6 @@ onMounted(() => { init() })
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeyDown)
 })
-
 // ^
 
 </script>
@@ -86,7 +85,7 @@ onUnmounted(() => {
   overflow: hidden;
 
   .top-header-container {
-    height: 70px;
+    height: var(--top-header-height);
   }
 
   .main-container {
