@@ -1,13 +1,6 @@
 // 处理主题风格
 export function handleThemeStyle(themeStyle) {
   document.documentElement.setAttribute('theme-style', themeStyle)
-  // if (themeStyle === 'light') {
-  //   app.config.globalProperties.$echartTheme = { bg: '#fff', fcp: '#333', fcs: '#666', fct: '#999', bcp: '#ccc', bcs: '#ddd', bct: '#eee', }
-  // } else if (themeStyle === 'dark') {
-  //   app.config.globalProperties.$echartTheme = { bg: '#333', fcp: '#fff', fcs: 'rgba(255, 255, 255, 0.8)', fct: 'rgba(255, 255, 255, 0.6)', bcp: '#efefef', bcs: '#5d5d5d', bct: '#666', }
-  // }
-  // window.dispatchEvent(new CustomEvent('theme-style-change'))
-  // window.removeEventListener('theme-style-change')
 }
 // 处理主题颜色
 export function handleThemeColor(themeColor) {
@@ -30,15 +23,8 @@ export function handleThemeColor(themeColor) {
 // 处理主题大小
 export function handleThemeSize(themeSize) {
   document.documentElement.setAttribute('theme-size', themeSize)
-  // let tsLRV = {
-  //   'large': { themeSizeComponentHeight: '36px', fontSize: '14px', },
-  //   'normal': { themeSizeComponentHeight: '30px', fontSize: '13px' },
-  //   'small': { themeSizeComponentHeight: '24px', fontSize: '12px' },
-  // }
-  // document.documentElement.style.setProperty(`--ch`, tsLRV[themeSize]?.themeSizeComponentHeight)
-  // document.documentElement.style.setProperty(`--cfs`, tsLRV[themeSize]?.fontSize)
-  // document.documentElement.style.setProperty(`--fsnu`, 14)
 }
+
 // hex颜色转rgb颜色
 export function hexToRgb(str) {
   str = str.replace('#', '')
