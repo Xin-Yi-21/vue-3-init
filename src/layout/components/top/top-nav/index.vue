@@ -135,7 +135,7 @@ watch(() => settingStore.isTemplateManage, (nv, ov) => {
       font-family: 'Source Han Sans';
 
       &:hover {
-        background-color: var(--tca05);
+        background-color: var(--tc-alpha-50);
       }
 
       .menu-icon {
@@ -171,7 +171,7 @@ watch(() => settingStore.isTemplateManage, (nv, ov) => {
         font-family: 'Source Han Sans';
 
         &:hover {
-          background-color: var(--tca05);
+          background-color: var(--tc-alpha-50);
         }
 
         .menu-icon {
@@ -244,7 +244,7 @@ watch(() => settingStore.isTemplateManage, (nv, ov) => {
         background-color: var(--bg-card);
 
         &:hover {
-          background-color: var(--tca05);
+          background-color: var(--tc-alpha-50);
         }
 
         .menu-icon {
@@ -289,7 +289,7 @@ watch(() => settingStore.isTemplateManage, (nv, ov) => {
           font-family: 'Source Han Sans';
 
           &:hover {
-            background-color: var(--tca05);
+            background-color: var(--tc-alpha-50);
           }
 
           .menu-icon {

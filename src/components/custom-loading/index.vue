@@ -191,7 +191,7 @@ watch(() => props.disabled, (nv, ov) => {
 
       .loading-timeout {
         margin-top: 10px;
-        color: var(--tca9);
+        color: var(--tc-alpha-90);
         font-size: 12px;
         display: flex;
         align-items: center;
@@ -422,7 +422,7 @@ watch(() => props.disabled, (nv, ov) => {
 // 全局样式
 .c-popover {
   .loading-timeout {
-    color: var(--tca9);
+    color: var(--tc-alpha-90);
     font-size: 12px;
     display: flex;
     align-items: center;

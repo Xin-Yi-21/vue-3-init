@@ -375,7 +375,7 @@ defineExpose({ isVerticalCollapse })
       .el-tree-node {
         &.is-current {
           &>.el-tree-node__content {
-            background-color: var(--tca005);
+            background-color: var(--tc-alpha-5);
 
             &::before {
               content: "";
@@ -418,7 +418,7 @@ defineExpose({ isVerticalCollapse })
     height: 90px;
     margin-top: 10px;
     border-radius: 3px;
-    background-color: var(--tca005);
+    background-color: var(--tc-alpha-5);
 
     .left {
       width: 110px;

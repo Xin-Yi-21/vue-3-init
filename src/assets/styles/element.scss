@@ -66,9 +66,9 @@
 :root {
   &[theme-style='light'] {
     // 表格
-    --bg-tableHeader: var(--tca01); // 表格头部背景色
-    --bg-tableHoverRow: var(--tca005); // 表格悬浮行背景色
-    --bg-tableCurrentRow: var(--tca02); // 表格选中行背景色
+    --bg-tableHeader: var(--tc-alpha-10); // 表格头部背景色
+    --bg-tableHoverRow: var(--tc-alpha-5); // 表格悬浮行背景色
+    --bg-tableCurrentRow: var(--tc-alpha-20); // 表格选中行背景色
     --bg-tableOddRow: #ffffff; // 表格奇数行背景色
     --bg-tableEvenRow: #ffffff; // 表格偶数行背景色
     --bg-tableBody: #ffffff;
@@ -77,8 +77,8 @@
   &[theme-style='dark'] {
     // 表格
     --bg-tableHeader: #a1a1a1; // 表格头部背景色
-    --bg-tableHoverRow: var(--tca005); // 表格悬浮行背景色
-    --bg-tableCurrentRow: var(--tca02); // 表格选中行背景色
+    --bg-tableHoverRow: var(--tc-alpha-5); // 表格悬浮行背景色
+    --bg-tableCurrentRow: var(--tc-alpha-20); // 表格选中行背景色
     --bg-tableOddRow: #333; // 表格奇数行背景色
     --bg-tableEvenRow: #333; // 表格偶数行背景色
     --bg-tableBody: #333;

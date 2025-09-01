@@ -185,7 +185,7 @@ onMounted(() => { init() })
     thead {
       th {
         // background-color: #efefef60 !important;
-        background-color: var(--tca003) !important;
+        background-color: var(--tc-alpha-3) !important;
       }
 
       .el-table__cell {
