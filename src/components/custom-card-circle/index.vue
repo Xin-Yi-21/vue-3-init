@@ -25,7 +25,7 @@ const props = defineProps({
   height: 12px;
   margin-right: 5px;
   border-radius: 50%;
-  background-color: var(--tca2);
+  background-color: var(--tc-alpha-20);
 
   .inner-circle {
     position: absolute;

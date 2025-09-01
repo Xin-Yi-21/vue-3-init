@@ -62,9 +62,16 @@ const handleHorizonalToggleSide = () => {
     transform: translate(100%, calc(-50% - 50px));
     box-shadow: 3px 0px 4px 0px rgba(0, 0, 0, 0.1);
     border-radius: 0px 6px 6px 0px;
-    background-color: var(--bg-leftNav);
     cursor: pointer;
     z-index: 999;
+
+    :root[theme-style='dark'] & {
+      background-color: var(--bg-card);
+    }
+
+    :root[theme-style='light'] & {
+      background-color: var(--bg-card);
+    }
 
     .c-icon {
       margin: 0 !important;
