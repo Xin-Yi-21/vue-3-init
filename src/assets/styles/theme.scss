@@ -24,8 +24,8 @@
 
   &[theme-style='dark'] {
     --bg-layout: #141415; // 布局背景色
-    --bg-card: #222325; // 卡片背景色
-    --bg-mask: rgba(255, 255, 255, 0.8); // 遮罩背景色
+    --bg-card: rgb(34, 35, 36); // 卡片背景色
+    --bg-mask: rgba(34, 35, 36, 0.8); // 遮罩背景色
 
     --bg-inner-primary: #1a1a1a; // --bg-inner-primary : 组件主要背景色
     --bg-inner-secondary: #333; // --bg-inner-secondary : 组件二级背景色

@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-    <div class="c-result">
+    <div class="c-result" v-load="loading.result">
       <el-table :data="table.data" border class="c-table" stripe>
         <el-table-column label="序号" prop="index" align="center" width="60" />
         <el-table-column label="人物" prop="" align="center">

@@ -1,36 +1,57 @@
-import { createVNode, render, } from 'vue'
+import { createVNode, render } from 'vue'
 import Loading from '@/components/custom-loading'
+
+function getType(binding) {
+  if (typeof binding.value === 'object') {
+    return binding.value.type || 'rocket'
+  }
+  return 'rocket'
+}
+
+function getloading(binding) {
+  if (typeof binding.value === 'boolean') return binding.value
+  return binding.value?.loading
+}
 
 export default {
   mounted(el, binding) {
-    // el.classList.add('c-loading-parent')
-    el.style.position = 'relative'
-    const isLoading = typeof binding.value === 'boolean' ? binding.value : binding.value?.isLoading
-    const { fullscreen, text, timeout, isShowCancel, onCancel } = typeof binding.value === 'object' ? binding.value : {}
-    const loadingInstance = createVNode(Loading, { target: el, fullscreen, text, timeout, onCancel, })
-    if (isLoading) {
-      render(loadingInstance, el)
+    const type = getType(binding)
+    const loading = getloading(binding)
+
+    if (!el.style.position || el.style.position === 'static') {
+      el.style.position = 'relative'
+    }
+
+    const { fullscreen, text, maxTime, onCancel, showAnim } = binding.value || {}
+    const vnode = createVNode(Loading, { target: el, fullscreen, text, maxTime, onCancel, type, showAnim })
+
+    if (loading) {
+      render(vnode, el)
     } else {
       render(null, el)
     }
-    el.__loadingInstance = loadingInstance
+
+    el.__loadingVNode = vnode
   },
+
   updated(el, binding) {
-    // const loadingInstance = el.__loadingInstance
-    const isLoading = typeof binding.value === 'boolean' ? binding.value : binding.value?.isLoading
-    const { fullscreen, text, timeout, isShowCancel, onCancel } = typeof binding.value === 'object' ? binding.value : {}
-    if (isLoading !== binding.oldValue) {
-      if (isLoading) {
-        el.classList.add('c-loading-parent')
-        render(createVNode(Loading, { target: el, fullscreen, text, timeout, onCancel }), el)
-      } else {
-        el.classList.remove('c-loading-parent')
-        render(null, el)
-      }
+    const type = getType(binding)
+    const loading = getloading(binding)
+    const oldloading = getloading({ value: binding.oldValue })
+
+    if (loading === oldloading) return
+
+    if (loading) {
+      const { fullscreen, text, maxTime, onCancel, showAnim } = binding.value || {}
+      const vnode = createVNode(Loading, { target: el, fullscreen, text, maxTime, onCancel, type, showAnim })
+      render(vnode, el)
+      el.__loadingVNode = vnode
+    } else {
+      render(null, el)
     }
   },
+
   beforeUnmount(el) {
-    el.classList.remove('c-loading-parent')
     render(null, el)
-  }
+  },
 }

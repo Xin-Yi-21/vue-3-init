@@ -1,11 +1,4 @@
 // 一、布局类
-// 卡片主体
-.c-card-body {
-  width: 100%;
-  height: calc(100% - 50px);
-  overflow: hidden;
-}
-
 // 搜索
 .c-search {
   width: calc(100% - 20px);
@@ -93,7 +86,6 @@
     }
   }
 }
-
 // 结果
 .c-result {
   width: calc(100% - 20px);
