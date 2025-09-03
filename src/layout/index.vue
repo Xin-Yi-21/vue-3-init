@@ -90,7 +90,7 @@ onUnmounted(() => {
 
   .main-container {
     display: flex;
-    height: calc(100% - 70px);
+    height: calc(100% - var(--top-header-height));
 
     .left-side-container {
       width: var(--left-side-width);
@@ -98,32 +98,21 @@ onUnmounted(() => {
     }
 
     .main-right-container {
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
       width: calc(100% - var(--left-side-width));
       height: 100%;
       overflow: hidden;
 
-      // margin-top: 5px;
-      .top-container {
-        margin-top: 10px;
-      }
-
       .app-main-vue {
-        width: 100%;
-        flex: 1;
-        flex-shrink: 0;
+        width: calc(100% - 20px);
+        height: calc(100% - 20px);
         overflow: auto auto;
-        margin-top: 10px;
-        // margin-top: 5px;
+        margin: 10px;
+        border-radius: 0 0 4px 4px;
+        overflow: hidden;
 
         &>* {
-          // border-top: 1px solid transparent;
-          width: calc(100% - 20px);
-          height: calc(100% - 10px);
-          margin: 0 10px;
-          border-radius: 0 0 4px 4px;
+          width: 100%;
+          height: 100%;
           background-color: var(--bg-card);
           overflow: hidden;
         }
