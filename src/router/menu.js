@@ -12,7 +12,8 @@ const eg = {
     title: '系统管理',                   // 路由标题
     icon: 'c-menu-manage',              // 路由图标
     noCache: false,                     // 路由是否禁用keep-alive缓存
-    link: null,                         // 路由是否外链
+    link: null,                         // 路由外链地址
+    linkOpenType: 'self',               // 路由外链打开方式
     class: [],                          // 路由样式类名
     showIn: ['top', 'left'],            // 路由显示区域
     clickIn: true,                      // 路由是否点入
@@ -39,10 +40,10 @@ export const menuGet = () => {
           children: [
             {
               name: 'ElementPlus',
-              path: 'https://element-plus.org/zh-CN',
+              path: 'element',
               component: 'Layout',
               hidden: false,
-              meta: { title: 'Element Plus', icon: 'c-element', noCache: false, link: null, showIn: ['left',], }
+              meta: { title: 'Element Plus', icon: 'c-element', noCache: false, link: 'https://element-plus.org/zh-CN', showIn: ['left',], }
             },
             {
               name: 'ECharts',

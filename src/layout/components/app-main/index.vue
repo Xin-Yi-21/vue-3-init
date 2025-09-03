@@ -7,9 +7,8 @@
         </keep-alive>
       </transition>
     </router-view>
-    <iframe-toggle />
+    <c-iframe-toggle />
   </section>
-  <!-- <router-view :key="key" /> -->
 </template>
 
 <script setup>
