@@ -8,7 +8,7 @@
         <span class="text">
           <c-tooltip :content="currentShow.fullTitle" targetClass="overflow-test" placement="top" effect="light" maxWidth="400">
             <c-scroll direction="x" scrollType="smooth" :stepTime="1000" :stayTime="0" :scrollBar="false">
-              <span class="overflow-test"> {{ currentShow.menuGroup?.meta?.title || currentShow.menu?.[0]?.meta?.title }} </span>
+              <span class="overflow-test"> {{ currentShow.menuGroup?.meta?.title || currentShow.menu?.[0]?.meta?.title || '菜单管理' }} </span>
             </c-scroll>
           </c-tooltip>
         </span>
@@ -66,8 +66,8 @@ function setResizeObserver() {
 // # 2、获取显示菜单
 const menuRef = ref(null)
 const menuKey = ref(0)
-// # (1) 初始化菜单
 const allMenu = ref([])
+// # (1) 初始化菜单
 function initMenu() {
   allMenu.value = JSON.parse(JSON.stringify(menuStore.navRoutes || []))
   let routeName = route.name
@@ -100,7 +100,7 @@ function locateMenuGroup(targetName) {
     if (path) break
   }
   if (!path) return []
-  path = path.filter(item => item.meta.menu?.includes('left'))
+  path = path.filter(item => item.meta.showIn?.includes('left'))
   // console.log('递归定位path', path)
   for (let i = path.length - 1; i >= 0; i--) {
     if (path[i].meta?.clickIn && targetName != path[i].name) {
@@ -215,6 +215,7 @@ watch(() => route, () => {
 
 // 监听currentTopMenu,刷新菜单
 watch(() => menuStore.currentTopMenu, (nv, ov) => {
+  console.log('查1231231231231',)
   let routeName = nv.name
   let menuGroup = locateMenuGroup(routeName)
   setCurrentShow(menuGroup)

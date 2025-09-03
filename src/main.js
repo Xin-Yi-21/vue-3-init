@@ -13,8 +13,8 @@ app.use(ElementPlus, { locale: locale, size: 'default' })
 
 // ⭐ svg图标 相关文件 
 import 'virtual:svg-icons-register'
-import SvgIcon from '@/components/f-svg-icon'
-import elementIcons from '@/components/f-svg-icon/svgicon'
+import SvgIcon from '@/components/custom-svg-icon'
+import elementIcons from '@/components/custom-svg-icon/svgicon'
 import '@/assets/iconfont/iconfont.css'
 // import 'default-passive-events' // 解决wheel控制台警告信息
 app.component('svg-icon', SvgIcon)

@@ -19,7 +19,7 @@ import useStore from '@/store'
 const route = useRoute()
 const { menuStore, settingStore } = useStore()
 const navRoutes = computed(() => menuStore.navRoutes)
-const topMenuSetting = { showType: 'all', isJump: true, } // showType:['all','set']
+const topMenuSetting = { showType: 'set', isJump: false, } // showType:['all','set']
 // ^
 
 // # 二、模块功能
@@ -36,7 +36,7 @@ function getTopMenu() {
     const res = []
     routes.forEach(routeItem => {
       const newRoute = { ...routeItem }
-      if (newRoute.meta?.menu?.includes('top')) {
+      if (newRoute.meta?.showIn?.includes('top')) {
         if (Array.isArray(newRoute.children) && newRoute.children.length) {
           newRoute.children = getMenu(newRoute.children)
         }

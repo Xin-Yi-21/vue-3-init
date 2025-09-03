@@ -16,7 +16,8 @@ export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/login'),
-    hidden: true
+    hidden: true,
+    meta: { menu: ['top', 'left'], },
   },
   {
     path: '/register',
@@ -25,12 +26,12 @@ export const constantRoutes = [
   },
   {
     path: "/:pathMatch(.*)*",
-    component: () => import('@/components/f-error/404'),
+    component: () => import('@/components/custom-error/404'),
     hidden: true
   },
   {
     path: '/401',
-    component: () => import('@/components/f-error/401'),
+    component: () => import('@/components/custom-error/401'),
     hidden: true
   },
   // 这个可以访问

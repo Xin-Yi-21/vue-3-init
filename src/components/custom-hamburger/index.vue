@@ -1,19 +1,20 @@
 <template>
   <div class="hamburger" @click="handleToggle">
-    <c-icon i="c-operate-hamburger-side-collapse" :class="{ 'is-collapse': isCollapse }" cursor="pointer" size="12"></c-icon>
+    <c-icon i="c-operate-hamburger-side-collapse" :class="{ 'is-collapse': isCollapse }" cursor="pointer" size="12" v-if="type === 'left'"></c-icon>
+    <c-icon i="c-hamburger-collapse" :class="{ 'is-collapse': isCollapse }" cursor="pointer" size="24" v-if="type === 'top'"></c-icon>
   </div>
 </template>
 
 <script setup>
-defineProps({
-  isCollapse: {
-    type: Boolean,
-    default: false
-  }
+const props = defineProps({
+  type: { type: String, default: 'left' },
+  isCollapse: { type: Boolean, default: false },
 })
 const emit = defineEmits()
 const handleToggle = () => {
-  emit('toggleClick')
+  if (props.type === 'left') {
+    emit('toggleClick')
+  }
 }
 </script>
 
