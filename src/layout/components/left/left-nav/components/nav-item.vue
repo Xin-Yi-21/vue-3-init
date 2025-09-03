@@ -1,17 +1,17 @@
 <template>
   <div class="menu-item-container" v-if="!navInfo.hidden">
-    <Link v-if="isNoChildShow()" :to="handleLinkPath(onlyOne.path, onlyOne.query)">
+    <!-- <Link v-if="isNoChildShow()" :to="handleLinkPath(onlyOne.path, onlyOne.query)">
     <el-menu-item :index="onlyOne.path" :class="[...(onlyOne.meta?.class || [])]" @click="handleClickMenuItem(onlyOne,)" @contextmenu.prevent="handleRightClickMenuItem($event, onlyOne)">
       <svg-icon :icon-class="onlyOne.meta?.icon || navInfo.meta?.icon || ''" />
       <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta?.title)">{{ onlyOne.meta?.title }}</span></template>
-    </el-menu-item>
-    </Link>
+</el-menu-item>
+</Link> -->
 
 
-    <!-- <el-menu-item v-if="isNoChildShow()" :index="onlyOne.path" :class="[...(onlyOne.meta?.class || [])]" @click="handleClickMenuItem(onlyOne,)" @contextmenu.prevent="handleRightClickMenuItem($event, onlyOne)">
+    <el-menu-item v-if="isNoChildShow()" :index="onlyOne.path" :class="[...(onlyOne.meta?.class || [])]" @click="handleClickMenuItem(onlyOne,)" @contextmenu.prevent="handleRightClickMenuItem($event, onlyOne)">
       <svg-icon :icon-class="onlyOne.meta?.icon || navInfo.meta?.icon || ''" />
       <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta?.title)">{{ onlyOne.meta?.title }}</span></template>
-    </el-menu-item> -->
+    </el-menu-item>
 
     <el-sub-menu v-else ref="subMenu" :index="navInfo.meta?.fullPath" :class="[...(navInfo.meta?.class || []), navInfo.meta?.clickIn && navInfo.name != currentIn && !isCollapse ? 'n-o-i' : '']" teleported popper-class="left-nav-el-vertical-menu" @click="handleClickSubMenu(navInfo, $event)">
       <template v-if="navInfo.meta" #title>
@@ -113,6 +113,11 @@ function hasTitle(title) {
 // # 4、el-menu-item 事件
 // # (1) 单击
 function handleClickMenuItem(self) {
+
+  // 跳转
+
+
+
   // tagStore.updateTag(self, { station: stationStore.currentStation })
 }
 // ^

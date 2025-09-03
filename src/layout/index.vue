@@ -110,13 +110,12 @@ onUnmounted(() => {
         margin: 10px 10px 0;
       }
 
-      .app-main-vue {
+      .app-main-container {
         width: calc(100% - 20px);
         margin: 0 10px 10px;
         flex: 1;
         flex-shrink: 0;
         overflow: auto auto;
-
         border-radius: 0 0 4px 4px;
         overflow: hidden;
 

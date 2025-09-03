@@ -215,7 +215,6 @@ watch(() => route, () => {
 
 // 监听currentTopMenu,刷新菜单
 watch(() => menuStore.currentTopMenu, (nv, ov) => {
-  console.log('查1231231231231',)
   let routeName = nv.name
   let menuGroup = locateMenuGroup(routeName)
   setCurrentShow(menuGroup)

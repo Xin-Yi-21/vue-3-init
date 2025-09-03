@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main-vue">
+  <section class="app-main-container">
     <router-view v-slot="{ Component, route }">
       <transition name="fade-transform" mode="out-in">
         <keep-alive :include="tagStore.cachedViews">
@@ -7,13 +7,19 @@
         </keep-alive>
       </transition>
     </router-view>
-    <c-iframe-toggle />
+    <div class="iframe-container" v-show="currentRoute.meta?.link"> <c-iframe-toggle /></div>
   </section>
 </template>
 
 <script setup>
+// # 一、综合
+// 组件
 import CIframeToggle from "@/components/custom-iframe-toggle/index"
-import useTagStore from '@/store/tag'
-const tagStore = useTagStore()
-
+// store
+import useStore from '@/store'
+// 声明
+const { tagStore } = useStore()
+const currentRoute = useRoute()
+// ^
 </script>
+<style lang="scss" scoped></style>

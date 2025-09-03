@@ -47,10 +47,10 @@ export const menuGet = () => {
             },
             {
               name: 'ECharts',
-              path: 'https://echarts.apache.org/zh/index.html',
+              path: 'echarts',
               component: 'Layout',
               hidden: false,
-              meta: { title: 'ECharts', icon: 'c-echarts', noCache: false, link: null, showIn: ['left',], }
+              meta: { title: 'ECharts', icon: 'c-echarts', noCache: false, link: 'https://www.baidu.com', showIn: ['left',], }
             },
           ]
         },
