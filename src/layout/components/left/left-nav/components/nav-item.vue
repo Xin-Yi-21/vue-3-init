@@ -1,13 +1,5 @@
 <template>
   <div class="menu-item-container" v-if="!navInfo.hidden">
-    <!-- <Link v-if="isNoChildShow()" :to="handleLinkPath(onlyOne.path, onlyOne.query)">
-    <el-menu-item :index="onlyOne.path" :class="[...(onlyOne.meta?.class || [])]" @click="handleClickMenuItem(onlyOne,)" @contextmenu.prevent="handleRightClickMenuItem($event, onlyOne)">
-      <svg-icon :icon-class="onlyOne.meta?.icon || navInfo.meta?.icon || ''" />
-      <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta?.title)">{{ onlyOne.meta?.title }}</span></template>
-</el-menu-item>
-</Link> -->
-
-
     <el-menu-item v-if="isNoChildShow()" :index="onlyOne.path" :class="[...(onlyOne.meta?.class || [])]" @click="handleClickMenuItem(onlyOne,)" @contextmenu.prevent="handleRightClickMenuItem($event, onlyOne)">
       <svg-icon :icon-class="onlyOne.meta?.icon || navInfo.meta?.icon || ''" />
       <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta?.title)">{{ onlyOne.meta?.title }}</span></template>
@@ -26,8 +18,7 @@
 
 <script setup>
 // # 一、综合
-// 组件
-import Link from './link'
+
 // 插件
 import { isExternal } from '@/utils/validate'
 // import { getNormalPath } from '@/utils/ruoyi'
@@ -113,10 +104,13 @@ function hasTitle(title) {
 // # 4、el-menu-item 事件
 // # (1) 单击
 function handleClickMenuItem(self) {
-
-  // 跳转
-
-
+  if (onlyOne.value.meta?.link && onlyOne.value.meta?.linkOpenType === 'blank') {
+    const link = document.createElement('a')
+    link.href = onlyOne.value.meta.link
+    link.target = '_blank'
+    link.click()
+  }
+  router.push(onlyOne.value.path)
 
   // tagStore.updateTag(self, { station: stationStore.currentStation })
 }

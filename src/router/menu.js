@@ -40,17 +40,32 @@ export const menuGet = () => {
           children: [
             {
               name: 'ElementPlus',
-              path: 'element',
-              component: 'Layout',
+              path: 'element-plus',
+              component: 'InnerLink',
               hidden: false,
-              meta: { title: 'Element Plus', icon: 'c-element', noCache: false, link: 'https://element-plus.org/zh-CN', showIn: ['left',], }
+              meta: { title: 'Element Plus', icon: 'c-element', noCache: false, link: 'https://element-plus.org/zh-CN/', linkOpenType: 'self', showIn: ['left',], }
             },
+
             {
               name: 'ECharts',
               path: 'echarts',
-              component: 'Layout',
+              component: 'InnerLink',
               hidden: false,
-              meta: { title: 'ECharts', icon: 'c-echarts', noCache: false, link: 'https://www.baidu.com', showIn: ['left',], }
+              meta: { title: 'ECharts', icon: 'c-echarts', noCache: false, link: 'https://echarts.apache.org/zh/index.html', linkOpenType: 'blank', showIn: ['left',], }
+            },
+            {
+              name: 'AntDesign',
+              path: 'ant-design',
+              component: 'OuterLink',
+              hidden: false,
+              meta: { title: 'AntDesign', icon: 'c-iconfont', noCache: false, link: 'https://www.antdv.com/components/overview-cn', linkOpenType: 'self', showIn: ['left',], }
+            },
+            {
+              name: 'Iconfont',
+              path: 'iconfont',
+              component: 'OuterLink',
+              hidden: false,
+              meta: { title: 'Iconfont', icon: 'c-echarts', noCache: false, link: 'https://www.iconfont.cn/', linkOpenType: 'blank', showIn: ['left',], }
             },
           ]
         },
