@@ -4,19 +4,24 @@ import request from '@/api/request'
 const eg = {
   name: 'FrameworkSystemManage',        // 路由名称
   path: '/system-manage',               // 路由路径
-  component: 'ParentView',              // 路由渲染组件：Layout、ParentView、LinkView、NormalView
+  component: 'ParentView',              // 路由渲染组件：Layout、ParentView、InnerLink、、NormalView
   hidden: false,                        // 路由是否在菜单显示
   alwaysShow: true,                     // 路由是否在唯一子路由时显示
   redirect: '/system-manage/user',      // 路由重定向路径
   meta: {                               // 路由元信息
     title: '系统管理',                   // 路由标题
     icon: 'c-menu-manage',              // 路由图标
-    noCache: false,                     // 路由是否禁用keep-alive缓存
-    link: null,                         // 路由外链地址
-    linkOpenType: 'self',               // 路由外链打开方式
-    class: [],                          // 路由样式类名
-    showIn: ['top', 'left'],            // 路由显示区域
-    clickIn: true,                      // 路由是否点入
+
+    cache: false,                       // 路由是否缓存，默认false
+    affix: false,                       // 路由是否固定，默认false
+
+    link: null,                         // 路由链接地址，默认null
+    linkBlank: false,                   // 路由链接是否新浏览器标签页打开，默认false
+    linkVirtual: false,                 // 路由链接是否虚拟，默认false
+
+    clickIn: false,                     // 路由是否点入，默认false
+    hideIn: [],                         // 路由隐藏区域，默认[],值有'top'和'left'。
+    class: [],                          // 路由样式类名,
   },
   children: [],                         // 路由子项
 }
@@ -41,31 +46,31 @@ export const menuGet = () => {
             {
               name: 'ElementPlus',
               path: 'element-plus',
-              component: 'InnerLink',
+              component: 'LinkView',
               hidden: false,
-              meta: { title: 'Element Plus', icon: 'c-element', noCache: false, link: 'https://element-plus.org/zh-CN/', linkOpenType: 'self', showIn: ['left',], }
+              meta: { title: 'Element Plus', icon: 'c-element', noCache: false, link: 'https://element-plus.org/zh-CN/', linkBlank: false, linkVirtual: false, showIn: ['left',], }
             },
 
             {
               name: 'ECharts',
               path: 'echarts',
-              component: 'InnerLink',
+              component: 'LinkView',
               hidden: false,
-              meta: { title: 'ECharts', icon: 'c-echarts', noCache: false, link: 'https://echarts.apache.org/zh/index.html', linkOpenType: 'blank', showIn: ['left',], }
+              meta: { title: 'ECharts', icon: 'c-echarts', noCache: false, link: 'https://echarts.apache.org/zh/index.html', linkBlank: true, linkVirtual: false, showIn: ['left',], }
             },
             {
               name: 'AntDesign',
               path: 'ant-design',
-              component: 'OuterLink',
+              component: 'LinkView',
               hidden: false,
-              meta: { title: 'AntDesign', icon: 'c-iconfont', noCache: false, link: 'https://www.antdv.com/components/overview-cn', linkOpenType: 'self', showIn: ['left',], }
+              meta: { title: 'AntDesign', icon: 'c-iconfont', noCache: false, link: 'https://www.antdv.com/components/overview-cn', linkBlank: false, linkVirtual: true, linkOpenType: 'self', showIn: ['left',], }
             },
             {
               name: 'Iconfont',
               path: 'iconfont',
-              component: 'OuterLink',
+              component: 'LinkView',
               hidden: false,
-              meta: { title: 'Iconfont', icon: 'c-echarts', noCache: false, link: 'https://www.iconfont.cn/', linkOpenType: 'blank', showIn: ['left',], }
+              meta: { title: 'Iconfont', icon: 'c-echarts', noCache: false, link: 'https://www.iconfont.cn/', linkBlank: true, linkVirtual: true, showIn: ['left',], }
             },
           ]
         },

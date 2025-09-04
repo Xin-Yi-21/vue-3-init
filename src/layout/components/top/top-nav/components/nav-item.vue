@@ -97,7 +97,7 @@ function hasTitle(title) {
 // # (1) 单击
 function handleClickMenuItem(self) {
   if (props.isJump) {
-    if (onlyOne.value.meta?.link && onlyOne.value.meta?.linkOpenType === 'blank') {
+    if (onlyOne.value.meta?.link && onlyOne.value.meta?.linkBlank) {
       const link = document.createElement('a')
       link.href = onlyOne.value.meta.link
       link.target = '_blank'

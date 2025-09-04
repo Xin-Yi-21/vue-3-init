@@ -103,7 +103,7 @@ function hasTitle(title) {
 // # 4、el-menu-item 事件
 // # (1) 单击
 function handleClickMenuItem(self) {
-  if (onlyOne.value.meta?.link && onlyOne.value.meta?.linkOpenType === 'blank') {
+  if (onlyOne.value.meta?.link && onlyOne.value.meta?.linkBlank) {
     const link = document.createElement('a')
     link.href = onlyOne.value.meta.link
     link.target = '_blank'

@@ -1,42 +1,41 @@
 <template>
   <div class="top-bar-container">
     <scroll-pane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleCloseContextMenu">
-      <router-link v-for="(tag, index) in visitedViews"
+      <router-link v-for="(item, index) in visitedViews"
         :key="index"
-        :class="['tags-view-item', isActive(tag) ? 'active' : '']"
-        :style="activeStyle(tag)"
-        :data-path="tag.path"
-        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-        @click.middle="handleMiddleClickTag(tag)"
-        @contextmenu.prevent="handleOpenContextMenu(tag, $event)">
-        <span class="tag-title"> {{ tag.title }}</span>
-        <close class="tag-close" v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)" />
+        :class="['tags-view-item', item.path === route.path ? 'is-actived' : '']"
+        :data-path="item.path"
+        :to="{ path: item.path, query: item.query, }"
+        @click.middle="handleMiddleClickTag(item)"
+        @contextmenu.prevent="handleOpenContextMenu(item, $event)">
+        <span class="tag-title"> {{ item.title }}</span>
+        <c-icon v-if="!item.meta.affix" i="c-operate-close" button @click.prevent.stop="hanleCloseSelectedTag(item)"> </c-icon>
       </router-link>
     </scroll-pane>
 
     <ul v-show="isContextMenuVisible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">
-        <refresh-right style="width: 1em; height: 1em;" />
+      <li @click="handleRefreshSelectedTag(selectedTag)">
+        <c-icon class="operate-icon" i="c-operate-refresh"></c-icon>
         <span class="operate-text">刷新页面</span>
       </li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
-        <close style="width: 1em; height: 1em;" />
+      <li v-if="handleOperateShow('关闭当前')" @click="hanleCloseSelectedTag(selectedTag)">
+        <c-icon class="operate-icon" i="c-operate-close"></c-icon>
         <span class="operate-text">关闭当前</span>
       </li>
-      <li @click="closeOthersTags">
-        <circle-close style="width: 1em; height: 1em;" />
+      <li @click="handleCloseOtherTag">
+        <c-icon class="operate-icon" i="c-operate-close"></c-icon>
         <span class="operate-text">关闭其他</span>
       </li>
-      <li v-if="!isFirstView()" @click="closeLeftTags">
-        <back style="width: 1em; height: 1em;" />
+      <li v-if="handleOperateShow('关闭左侧')" @click="handleCloseLeftTag">
+        <c-icon class="operate-icon" i="c-operate-close"></c-icon>
         <span class="operate-text">关闭左侧</span>
       </li>
-      <li v-if="!isLastView()" @click="closeRightTags">
-        <right style="width: 1em; height: 1em;" />
+      <li v-if="handleOperateShow('关闭右侧')" @click="handleCloseRightTag">
+        <c-icon class="operate-icon" i="c-operate-close"></c-icon>
         <span class="operate-text">关闭右侧</span>
       </li>
-      <li @click="closeAllTags(selectedTag)">
-        <circle-close style="width: 1em; height: 1em;" />
+      <li @click="handleCloseAllTag(selectedTag)">
+        <c-icon class="operate-icon" i="c-operate-close"></c-icon>
         <span class="operate-text">全部关闭</span>
       </li>
     </ul>
@@ -44,109 +43,96 @@
 </template>
 
 <script setup>
+// # 一、综合
+// 组件
 import ScrollPane from './components/scroll-pane'
-import { getNormalPath } from '@/utils/ruoyi'
-import useTagStore from '@/store/tag'
-import useSettingStore from '@/store/setting'
-import useMenuStore from '@/store/menu'
-
-const { proxy } = getCurrentInstance()
+// store
+import useStore from '@/store'
+// 声明
 const route = useRoute()
 const router = useRouter()
+const { proxy } = getCurrentInstance()
+const { tagStore, menuStore } = useStore()
+const routes = computed(() => menuStore.navRoutes)
+const visitedViews = computed(() => tagStore.visitedViews)
+// ^
 
-const routes = computed(() => useMenuStore().navRoutes)
-const theme = computed(() => useSettingStore().themeColor)
-const visitedViews = computed(() => useTagStore().visitedViews)
-
+// # 二、模块功能
 const selectedTag = ref({})
-const affixTags = ref([])
 const scrollPaneRef = ref(null)
-// 一、初始化相关
-// 监听路由
-watch(route, () => {
-  addTags()            // 添加当前路由标签
-  moveToCurrentTag()   // 高亮当前路由标签
-})
-// 监听右键菜单
 const isContextMenuVisible = ref(false)
 const top = ref(0)
 const left = ref(0)
-watch(isContextMenuVisible, (value) => {
-  if (value) {
-    document.body.addEventListener('click', handleCloseContextMenu)
-  } else {
-    document.body.removeEventListener('click', handleCloseContextMenu)
-  }
-})
-// dom加载
-onMounted(() => {
-  initTags()   // 初始化固定标签
-  addTags()    // 添加当前路由标签
-})
-// 固定标签
-function initTags() {
-  const res = filterAffixTags(routes.value)
-  affixTags.value = res
-  res.forEach(item => { item.name && useTagStore().addVisitedView(item) })
+// # 1、初始化
+function init() {
+  handleAffixedTag()
+  handleAddCurrentTag()
 }
-// 工具函数-筛选固定标签
-function filterAffixTags(routes, basePath = '') {
-  let tags = []
-  routes.forEach(route => {
-    if (route.meta && route.meta.affix) {
-      const tagPath = getNormalPath(basePath + '/' + route.path)
-      tags.push({ path: tagPath, fullPath: tagPath, name: route.name, meta: { ...route.meta } })
-    }
-    if (route.children) {
-      const tempTags = filterAffixTags(route.children, route.path)
-      if (tempTags.length >= 1) {
-        tags = [...tags, ...tempTags]
+// # (1) 固定标签
+const affixedTag = ref([])
+function handleAffixedTag() {
+  // 工具函数-筛选固定标签
+  function filterAffixedTags(targetRoutes) {
+    let tags = []
+    targetRoutes.forEach(item => {
+      if (item.meta.affix) {
+        tags.push(Object.assign({}, item, { path: item.meta.absolutePath, children: {}, fullPath: item.meta.absolutePath }))
       }
-    }
-  })
-  return tags
-}
-// 添加当前路由标签
-function addTags() {
-  if (route.name) {
-    useTagStore().addView(route)
-    route.meta.link && useTagStore().addIframeView(route)
+      if (item.children) {
+        const tempTags = filterAffixedTags(item.children)
+        if (tempTags.length) { tags = [...tags, ...tempTags] }
+      }
+    })
+    return tags
   }
-  return false
+  const res = filterAffixedTags(routes.value)
+  affixedTag.value = res
+
+  res.forEach(item => { tagStore.addView(item) })
 }
-// 视图移动至当前标签
-function moveToCurrentTag() {
+// ^
+// # (2) 添加当前标签
+function handleAddCurrentTag() {
+  if (route.name) {
+    tagStore.addView(route)
+    // route.meta.link && tagStore.addIframeView(route)
+  }
+}
+// ^
+// ^
+// # 2、视图跳转
+// # (1) 视图移动至当前标签
+function handleMoveToCurrentTag() {
   nextTick(() => {
     visitedViews.value.forEach(item => {
       if (item.path === route.path) {
         scrollPaneRef.value.moveToTarget(item)
-        // 用户当前标签进行操作或导航导致不同，更新访问记录为当前
         if (item.fullPath !== route.fullPath) {
-          useTagStore().updateVisitedView(route)
+          tagStore.updateVisitedView(route)
         }
       }
     })
   })
 }
-// 视图跳转至最后标签
-function moveToLastTag(visitedViews, view) {
+// ^
+// # (2) 视图跳转至最后标签
+function handleMoveToLastTag(visitedViews, view) {
   const latestView = visitedViews.slice(-1)[0]
   if (latestView) {
     router.push(latestView.fullPath)
   } else {
-    // now the default is to redirect to the home page if there is no tags-view,
-    // you can adjust it according to your needs.
     if (view.name === 'Home') {
-      // to reload home page
       router.replace({ path: '/redirect' + view.fullPath })
     } else {
-      router.push('/')
+      router.replace('/')
     }
   }
 }
+// ^
+// ^
 
-// 二、操作类
-// 打开右键菜单
+// # 3、右键菜单
+// # (1) 打开右键菜单
 function handleOpenContextMenu(tag, e) {
   const menuMinWidth = 105
   const offsetLeft = proxy.$el.getBoundingClientRect().left // container margin left
@@ -166,86 +152,103 @@ function handleOpenContextMenu(tag, e) {
   isContextMenuVisible.value = true
   selectedTag.value = tag
 }
-// 关闭右键菜单
+// ^
+// # (2) 关闭右键菜单
 function handleCloseContextMenu() {
   isContextMenuVisible.value = false
 }
-// 中键点击标签
+// ^
+// # (3) 中键点击标签
 function handleMiddleClickTag(tag) {
-  !isAffix(tag) && closeSelectedTag(tag)
+  !tag.meta.affix && hanleCloseSelectedTag(tag)
 }
-// 刷新选中标签
-function refreshSelectedTag(view) {
+// ^
+// # (4) 刷新选中标签
+function handleRefreshSelectedTag(view) {
   proxy.$tag.refreshPage(view)
   if (route.meta.link) {
-    useTagStore().delIframeView(route)
+    tagStore.delIframeView(route)
   }
 }
-// 关闭选中标签
-function closeSelectedTag(view) {
+// ^
+// # (5) 关闭选中标签
+function hanleCloseSelectedTag(view) {
   proxy.$tag.closePage(view).then(({ visitedViews }) => {
-    if (isActive(view)) {
-      moveToLastTag(visitedViews, view)
+    if (view.meta.fullPath === route.meta.fullPath) {
+      handleMoveToLastTag(visitedViews, view)
     }
   })
 }
-// 关闭左侧标签
-function closeLeftTags() {
+// ^
+// # (6) 关闭左侧标签
+function handleCloseLeftTag() {
   proxy.$tag.closeLeftPage(selectedTag.value).then(visitedViews => {
-    if (!visitedViews.find(i => i.fullPath === route.fullPath)) { moveToLastTag(visitedViews) }
+    if (!visitedViews.find(i => i.fullPath === route.fullPath)) { handleMoveToLastTag(visitedViews) }
   })
 }
-// 关闭右侧标签
-function closeRightTags() {
+// ^
+// # (7) 关闭右侧标签
+function handleCloseRightTag() {
   proxy.$tag.closeRightPage(selectedTag.value).then(visitedViews => {
-    if (!visitedViews.find(i => i.fullPath === route.fullPath)) { moveToLastTag(visitedViews) }
+    if (!visitedViews.find(i => i.fullPath === route.fullPath)) { handleMoveToLastTag(visitedViews) }
   })
 }
-// 关闭其他标签
-function closeOthersTags() {
+// ^
+// # (8) 关闭其他标签
+function handleCloseOtherTag() {
   router.push(selectedTag.value).catch(() => { });
-  proxy.$tag.closeOtherPage(selectedTag.value).then(() => { moveToCurrentTag() })
+  proxy.$tag.closeOtherPage(selectedTag.value).then(() => { handleMoveToCurrentTag() })
 }
-// 关闭全部标签
-function closeAllTags(view) {
+// ^
+// # (9) 关闭全部标签
+function handleCloseAllTag(view) {
   proxy.$tag.closeAllPage().then(({ visitedViews }) => {
-    if (affixTags.value.some(tag => tag.path === route.path)) { return }
-    moveToLastTag(visitedViews, view)
+    if (affixedTag.value.some(tag => tag.path === route.path)) { return }
+    handleMoveToLastTag(visitedViews, view)
   })
 }
-// X、判断类
-// 判断是否激活项
-function isActive(rowItem) {
-  return rowItem.path === route.path
-}
-// 激活项样式设置
-function activeStyle(tag) {
-  if (!isActive(tag)) return {}
-  return {
-    "background-color": theme.value,
-    "border-color": theme.value
+// ^
+// # (10) 操作显示
+function handleOperateShow(type) {
+  let flag = false
+  switch (type) {
+    case '关闭当前':
+      flag = !selectedTag.value.meta?.affix
+      break
+    case '关闭左侧':
+      flag = !(selectedTag.value.fullPath === visitedViews.value?.[0]?.fullPath)
+      break
+    case '关闭右侧':
+      flag = !(selectedTag.value.fullPath === visitedViews.value?.[visitedViews.value.length - 1]?.fullPath)
+      break
+    default:
+      break
   }
+  return flag
 }
-// 判断是否不是
-function isAffix(tag) {
-  return tag.meta && tag.meta.affix
-}
-// 判断是否首标签
-function isFirstView() {
-  try {
-    return selectedTag.value.fullPath === '/index' || selectedTag.value.fullPath === visitedViews.value[1].fullPath
-  } catch (err) {
-    return false
+// ^
+// ^
+
+// # 三、机制
+onMounted(() => {
+  init()
+  console.log('tagStore.visitedViews', tagStore.visitedViews,)
+  console.log('tagStore.cachedViews', tagStore.cachedViews,)
+  console.log('tagStore.iframeViews', tagStore.iframeViews,)
+})
+watch(route, () => {
+  handleAddCurrentTag()
+  handleMoveToCurrentTag()
+})
+watch(isContextMenuVisible, (value) => {
+  if (value) {
+    document.body.addEventListener('click', handleCloseContextMenu)
+  } else {
+    document.body.removeEventListener('click', handleCloseContextMenu)
   }
-}
-// 判断是否末标签
-function isLastView() {
-  try {
-    return selectedTag.value.fullPath === visitedViews.value[visitedViews.value.length - 1].fullPath
-  } catch (err) {
-    return false
-  }
-}
+})
+// ^
+
 </script>
 
 <style lang='scss' scoped>
@@ -296,7 +299,7 @@ function isLastView() {
             margin-right: 15px;
           }
 
-          &.active {
+          &.is-actived {
             background-color: var(--tc);
             border-color: var(--tc);
             color: #fff;

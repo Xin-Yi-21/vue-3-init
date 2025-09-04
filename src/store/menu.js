@@ -4,9 +4,7 @@ import router, { constantRoutes, dynamicRoutes } from '@/router'
 import { menuGet } from '@/router/menu.js'
 import Layout from '@/layout/index'
 import ParentView from '@/components/custom-parent-view'
-import InnerLink from '@/components/custom-inner-link'
-import OuterLink from '@/components/custom-outer-link'
-
+import LinkView from '@/components/custom-link-view'
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('@/views/**/*.vue')
 
@@ -60,7 +58,7 @@ const useMenuStore = defineStore('menu', {
           let backendRoutes = handleAdjustRoutes(resData)
           let backendFilterRoutes = handleFilterRoutes(backendRoutes)
           // 3、新访问路由
-          let addRoutes = [...dynamicFilterRoutes, ...backendFilterRoutes]
+          let addRoutes = handleCompleteRoutes([...dynamicFilterRoutes, ...backendFilterRoutes])
           let addFlattenRoutes = handleFlattenRoutes(addRoutes)
           this.setAddRoutes(addRoutes)
           // 4、全部路由
@@ -128,12 +126,9 @@ export function handleAdjustRoutes(routes) {
       } else if (newRoute.component === 'ParentView') {
         newRoute.component = ParentView
         newRoute.meta.componentType = 'ParentView'
-      } else if (newRoute.component === 'InnerLink') {
-        newRoute.component = InnerLink
-        newRoute.meta.componentType = 'InnerLink'
-      } else if (newRoute.component === 'OuterLink') {
-        newRoute.component = OuterLink
-        newRoute.meta.componentType = 'OuterLink'
+      } else if (newRoute.component === 'LinkView') {
+        newRoute.component = LinkView
+        newRoute.meta.componentType = 'LinkView'
       } else {
         newRoute.component = loadView(newRoute.component)
         newRoute.meta.componentType = 'Normal'
@@ -190,14 +185,18 @@ export function handleCompleteRoutes(routes, parentMeta = {}) {
     // 当前pathArr
     const currentPathArr = [...parentPathArr, currentPath]
     // 当前fullPath
+    let currentAbsolutePath
     let currentFullPath
     if (isExternal(currentPath)) {
       currentFullPath = currentPath
+      currentAbsolutePath = currentPath
     } else if (currentPath.startsWith('/')) {
       currentFullPath = currentPath
+      currentAbsolutePath = currentPath
     } else {
       const raw = parentFullPath ? `${parentFullPath}/${currentPath}` : currentPath
       currentFullPath = raw.replace(/\/+/g, '/')
+      currentAbsolutePath = raw.replace(/\/+/g, '/')
     }
 
     // 当前title
@@ -208,7 +207,7 @@ export function handleCompleteRoutes(routes, parentMeta = {}) {
     const currentFullTitle = currentTitleArr.join(' - ')
 
     // 挂载到 meta
-    Object.assign(newRoute.meta, { pathArr: currentPathArr, titleArr: currentTitleArr, fullPath: currentFullPath, fullTitle: currentFullTitle, })
+    Object.assign(newRoute.meta, { pathArr: currentPathArr, titleArr: currentTitleArr, fullPath: currentFullPath, absolutePath: currentAbsolutePath, fullTitle: currentFullTitle, })
 
     // 递归处理子路由
     if (Array.isArray(newRoute.children) && newRoute.children.length) {

@@ -3,18 +3,18 @@
     <router-view v-slot="{ Component, route }">
       <transition name="fade-transform" mode="out-in">
         <keep-alive :include="tagStore.cachedViews">
-          <component v-if="route.meta?.componentType !== 'OuterLink'" :is="Component" :key="route.path" />
+          <component v-if="!route.meta?.linkVirtual" :is="Component" :key="route.path" />
         </keep-alive>
       </transition>
+      <c-iframe-toggle></c-iframe-toggle>
     </router-view>
-    <outer-link />
   </section>
 </template>
 
 <script setup>
 // # 一、综合
 // 组件
-import OuterLink from "@/components/custom-outer-link/index"
+import cIframeToggle from "@/components/custom-iframe-toggle/index"
 // store
 import useStore from '@/store'
 import { useRoute } from "vue-router"

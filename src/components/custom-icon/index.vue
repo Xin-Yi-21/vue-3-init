@@ -46,7 +46,7 @@ const props = defineProps({
   // 加载
   loading: { type: Boolean, default: false, },
   // 鼠标效果
-  cursor: { type: String, default: 'auto', },
+  cursor: { type: String, default: 'inherit', },
   // 显示类型
   showType: { type: String, default: 'c', },
   // 显示类名
