@@ -4,7 +4,6 @@
       <svg-icon :icon-class="onlyOne.meta?.icon || navInfo.meta?.icon || ''" />
       <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta?.title)">{{ onlyOne.meta?.title }}</span></template>
     </el-menu-item>
-
     <el-sub-menu v-else ref="subMenu" :index="navInfo.meta?.fullPath" :class="[...(navInfo.meta?.class || []), navInfo.meta?.clickIn && navInfo.name != currentIn && !isCollapse ? 'n-o-i' : '']" teleported popper-class="left-nav-el-vertical-menu" @click="handleClickSubMenu(navInfo, $event)">
       <template v-if="navInfo.meta" #title>
         <svg-icon :icon-class="navInfo.meta?.icon || ''" />

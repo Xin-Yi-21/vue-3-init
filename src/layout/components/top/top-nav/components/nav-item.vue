@@ -1,18 +1,9 @@
 <template>
   <div class="menu-item-container" v-if="!navInfo.hidden">
-
-    <el-menu-item v-if="isNoChildShow() && !isJump" :index="onlyOne.path" :class="[...(onlyOne.meta?.class || [])]" @click="handleClickMenuItem(onlyOne,)">
+    <el-menu-item v-if="isNoChildShow()" :index="onlyOne.path" :class="[...(onlyOne.meta?.class || [])]" @click="handleClickMenuItem(onlyOne,)">
       <svg-icon v-if="(!isNest && isShowFirstIcon) || (isNest && isShowNestIcon)" :icon-class="onlyOne.meta?.icon || ''" class-name="menu-icon" />
       <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta?.title)">{{ onlyOne.meta?.title }}</span></template>
     </el-menu-item>
-
-    <Link v-else-if="isNoChildShow() && isJump" :to="handleLinkPath(onlyOne.path, onlyOne.query)">
-    <el-menu-item :index="onlyOne.path" :class="[...(onlyOne.meta?.class || [])]" @click="handleClickMenuItem(onlyOne,)">
-      <svg-icon v-if="(!isNest && isShowFirstIcon) || (isNest && isShowNestIcon)" :icon-class="onlyOne.meta?.icon || ''" class-name="menu-icon" />
-      <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta?.title)">{{ onlyOne.meta?.title }}</span></template>
-    </el-menu-item>
-    </Link>
-
     <el-sub-menu v-else ref="subMenu" :index="navInfo.meta?.fullPath" :class="[...(navInfo.meta?.class || [])]" teleported popper-class="top-nav-el-menu-vertical">
       <template v-if="navInfo.meta" #title>
         <svg-icon v-if="(!isNest && isShowFirstIcon) || (isNest && isShowNestIcon)" :icon-class="navInfo.meta?.icon || ''" class-name="menu-icon" />
@@ -25,8 +16,6 @@
 
 <script setup>
 // # 一、综合
-// 组件
-import Link from './link'
 // 插件
 import { isExternal } from '@/utils/validate'
 // pinia
@@ -107,6 +96,15 @@ function hasTitle(title) {
 // # 4、el-menu-item 事件
 // # (1) 单击
 function handleClickMenuItem(self) {
+  if (props.isJump) {
+    if (onlyOne.value.meta?.link && onlyOne.value.meta?.linkOpenType === 'blank') {
+      const link = document.createElement('a')
+      link.href = onlyOne.value.meta.link
+      link.target = '_blank'
+      link.click()
+    }
+    router.push(onlyOne.value.path)
+  }
   menuStore.setCurrentTopMenu(self)
 }
 // ^
