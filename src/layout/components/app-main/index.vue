@@ -3,7 +3,7 @@
     <router-view v-slot="{ Component, route }">
       <transition name="fade-transform" mode="out-in">
         <keep-alive :include="tagStore.cachedViews">
-          <component v-if="route.meta?.componentType !== 'outerLink'" :is="Component" :key="route.path" />
+          <component v-if="route.meta?.componentType !== 'OuterLink'" :is="Component" :key="route.path" />
         </keep-alive>
       </transition>
     </router-view>

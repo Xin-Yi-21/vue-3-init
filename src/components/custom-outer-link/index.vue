@@ -1,5 +1,5 @@
 <template>
-  <div class="iframe-container" v-show="route.meta?.linkType === 'outer'">
+  <div class="iframe-container" v-show="route.meta?.componentType === 'OuterLink'">
     <c-card-tip v-if="route.meta?.linkOpenType === 'blank'">当前菜单已在新浏览器标签页打开，请前往查看！</c-card-tip>
     <iframe v-for="(item, index) in tagStore.iframeViews" v-show="route.path === item.path && route.meta?.linkOpenType !== 'blank'" :key="item.path" :id="`iframe${index}`" :src="handleIframeUrl(item.meta.link, item.query)" style="width: 100%; height: 100%" frameborder="no"></iframe>
   </div>
