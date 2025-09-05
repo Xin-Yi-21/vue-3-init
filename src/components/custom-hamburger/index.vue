@@ -1,21 +1,31 @@
 <template>
-  <div class="hamburger" @click="handleToggle">
-    <c-icon i="c-operate-hamburger-side-collapse" :class="{ 'is-collapse': isCollapse }" cursor="pointer" size="12" v-if="type === 'left'"></c-icon>
-    <c-icon i="c-hamburger-collapse" :class="{ 'is-collapse': isCollapse }" cursor="pointer" size="24" v-if="type === 'top'"></c-icon>
+  <div :class="['hamburger', `${type}-hamburger`]" @click="handleToggle">
+    <c-icon i="c-operate-hamburger-collapse-left" :class="{ 'is-collapse': isCollapse }" cursor="pointer" size="12" v-if="type === 'left'"></c-icon>
+    <c-icon i="c-operate-hamburger-collapse-top" :class="{ 'is-collapse': isCollapse }" cursor="pointer" size="18" v-if="type === 'top'"></c-icon>
   </div>
 </template>
 
 <script setup>
+// # 一、综合
+// props
 const props = defineProps({
   type: { type: String, default: 'left' },
-  isCollapse: { type: Boolean, default: false },
 })
-const emit = defineEmits()
+// pinia
+import useStore from '@/store'
+// 声明
+const { settingStore } = useStore()
+// 计算属性
+const isCollapse = computed(() => settingStore.leftSide.isCollapse)
+// ^
+// # 二、模块功能
+// # 1、切换 折叠展开
 const handleToggle = () => {
-  if (props.type === 'left') {
-    emit('toggleClick')
-  }
+  settingStore.leftSide.isCollapse = !settingStore.leftSide.isCollapse
+  settingStore.setLeftSide()
 }
+// ^
+// ^
 </script>
 
 <style lang="scss" scoped>
@@ -23,7 +33,6 @@ const handleToggle = () => {
   display: inline-flex;
   align-items: center;
   height: 100%;
-  padding: 0 10px;
   color: var(--fct);
 
   .is-collapse {

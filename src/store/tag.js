@@ -8,14 +8,14 @@ const useTagStore = defineStore('tag', {
   }),
 
   actions: {
-    // 1、添加路由
-    // (1) 添加路由
+    // 1、添加路由页面
+    // (1) 添加路由页面
     addView(view) {
       this.addVisitedView(view)
       this.addCachedView(view)
       this.addIframeView(view)
     },
-    // (2) 添加已访路由
+    // (2) 添加已访路由页面
     addVisitedView(view) {
       if (this.visitedViews.some(item => item.path === view.path)) return
       this.visitedViews.push({
@@ -23,12 +23,12 @@ const useTagStore = defineStore('tag', {
         title: view.meta.title || ''
       })
     },
-    // (3) 添加缓存路由
+    // (3) 添加缓存路由页面
     addCachedView(view) {
       if (view.meta?.cache || this.cachedViews.includes(view.name)) return
       if (!view.meta.noCache) this.cachedViews.push(view.name)
     },
-    // (4) 添加链接路由
+    // (4) 添加链接路由页面
     addIframeView(view) {
       if (this.iframeViews.some(item => item.path === view.path)) return
       this.iframeViews.push({
@@ -37,96 +37,76 @@ const useTagStore = defineStore('tag', {
       })
     },
 
-
-
-    // 删除路由
+    // 2、删除路由页面
+    // (1) 删除路由页面
     deleteView(view) {
       this.deleteVisitedView(view)
       this.deleteCachedView(view)
+      this.deleteIframeView(view)
     },
-
-    // 删除访问路由
+    // (2) 删除访问路由页面
     deleteVisitedView(view) {
       this.visitedViews = this.visitedViews.filter(item => item.path !== view.path)
-      this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
     },
-
-    // 删除链接路由
-    deleteIframeView(view) {
-      this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
-    },
-
-    // 删除缓存路由
+    // (3) 删除缓存路由页面
     deleteCachedView(view) {
       const index = this.cachedViews.indexOf(view.name)
       if (index > -1) this.cachedViews.splice(index, 1)
     },
-
-    // 删除其他路由
-    deleteOthersViews(view) {
-      this.deleteOthersVisitedViews(view)
-      this.deleteOthersCachedViews(view)
+    // (4) 删除链接路由页面
+    deleteIframeView(view) {
+      this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
     },
-
-    deleteOthersVisitedViews(view) {
+    // (5) 删除其他路由页面
+    deleteOtherViews(view) {
+      // 访问
       this.visitedViews = this.visitedViews.filter(item => item.meta.affix || item.path === view.path)
-      this.iframeViews = this.iframeViews.filter(item => item.path === view.path)
-    },
-
-    deleteOthersCachedViews(view) {
+      // 缓存
       const index = this.cachedViews.indexOf(view.name)
       this.cachedViews = index > -1 ? this.cachedViews.slice(index, index + 1) : []
+      // 链接
+      this.iframeViews = this.iframeViews.filter(item => item.meta.affix || item.path === view.path)
     },
-
-    // 删除全部路由
+    // (6) 删除全部路由页面
     deleteAllViews() {
-      this.deleteAllVisitedViews()
-      this.deleteAllCachedViews()
-    },
-
-    deleteAllVisitedViews() {
       const affixTags = this.visitedViews.filter(item => item.meta.affix)
+      // 访问
       this.visitedViews = affixTags
-      this.iframeViews = []
-    },
-
-    deleteAllCachedViews() {
+      // 缓存
       this.cachedViews = []
+      // 链接
+      this.iframeViews == affixTags
+    },
+    // (7) 删除左侧标签
+    deleteLeftTags(view) {
+      const matchIndex = this.visitedViews.findIndex(item => item.path === view.path)
+      if (matchIndex === -1) return
+      this.visitedViews = this.visitedViews.filter((item, index) => {
+        if (matchIndex <= index || item.meta?.affix) return true
+        this.deleteCachedView(item)
+        this.deleteIframeView(item)
+        return false
+      })
+    },
+    // (8) 删除右侧标签
+    deleteRightTags(view) {
+      const matchIndex = this.visitedViews.findIndex(item => item.path === view.path)
+      if (matchIndex === -1) return
+      this.visitedViews = this.visitedViews.filter((item, index) => {
+        if (matchIndex >= index || item.meta?.affix) return true
+        this.deleteCachedView(item)
+        this.deleteIframeView(item)
+        return false
+      })
     },
 
-    // 更新已访路由
+    // 3、更新已访路由
     updateVisitedView(view) {
-      const idx = this.visitedViews.findIndex(item => item.path === view.path)
-      if (idx > -1) {
-        this.visitedViews[idx] = { ...this.visitedViews[idx], ...view }
+      const matchIndex = this.visitedViews.findIndex(item => item.path === view.path)
+      if (matchIndex > -1) {
+        this.visitedViews[matchIndex] = { ...this.visitedViews[matchIndex], ...view }
       }
     },
-
-    // 删除右侧标签
-    deleteRightTags(view) {
-      const index = this.visitedViews.findIndex(item => item.path === view.path)
-      if (index === -1) return
-
-      this.visitedViews = this.visitedViews.filter((item, idx) => {
-        if (idx <= index || item.meta?.affix) return true
-        this.deleteCachedView(item)
-        if (item.meta.link) this.deleteIframeView(item)
-        return false
-      })
-    },
-
-    // 删除左侧标签
-    deleteLeftTags(view) {
-      const index = this.visitedViews.findIndex(item => item.path === view.path)
-      if (index === -1) return
-
-      this.visitedViews = this.visitedViews.filter((item, idx) => {
-        if (idx >= index || item.meta?.affix) return true
-        this.deleteCachedView(item)
-        if (item.meta.link) this.deleteIframeView(item)
-        return false
-      })
-    }
   }
 })
 

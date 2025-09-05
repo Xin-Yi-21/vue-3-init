@@ -10,10 +10,12 @@
 </template>
 
 <script setup>
-// 一、综合初始化
+// 一、综合
+// props
 const props = defineProps({
   separator: { type: String, default: '/' }
 })
+// 声明
 const route = useRoute()
 const router = useRouter()
 

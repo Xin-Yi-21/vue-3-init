@@ -1,5 +1,5 @@
 <template>
-  <i ref="cIconRef" :class="['c-icon', i, button ? 'is-button' : '', disabled ? 'is-disabled' : '', loading ? 'is-loading' : '',]" :style="`color:${color};font-size:${size}px;--cursor:${cursor};--hoverColor:${hoverColor || color};`">
+  <i ref="cIconRef" :class="['c-icon', i, button ? 'is-button' : '', disabled ? 'is-disabled' : '', loading ? 'is-loading' : '',]" :style="`--color:${color};--font-size:${size}px;--cursor:${cursor};--hoverColor:${hoverColor || color};`">
     <el-tooltip v-if="tip && showType == 'el'" :popper-class="['c-icon-tooltip', tipClass]" v-bind="$attrs" :placement="placement" :offset="offset" :hide-after="1">
       <template #default>
         <svg-icon :icon-class="i"></svg-icon>
@@ -36,7 +36,7 @@ const props = defineProps({
   // 图标悬浮色
   hoverColor: { type: String, default: '', },
   // 图标大小
-  size: { type: [Number, String], default: '', },
+  size: { type: [Number, String], default: '14', },
   // 图标提示
   tip: { type: String, default: '', },
   // 按钮
@@ -122,7 +122,8 @@ watch(() => props.loading, (loading) => {
   position: relative;
   display: inline-flex;
   margin: 0 5px;
-  font-size: calc(var(--cfs) + 2px);
+  color: var(--color);
+  font-size: var(--font-size);
   font-style: normal;
   font-weight: 400;
   cursor: var(--cursor);

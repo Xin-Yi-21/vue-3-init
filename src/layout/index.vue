@@ -5,7 +5,7 @@
       <div class="main-container">
         <left-side v-if="settingStore.leftSide.isShow"></left-side>
         <div class="main-right-container">
-          <top-bar v-if="settingStore.topTag.isShow"></top-bar>
+          <top-bar></top-bar>
           <app-main />
         </div>
         <setting ref="settingRef"></setting>

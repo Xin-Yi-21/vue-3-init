@@ -2,7 +2,7 @@
   <div :class="['left-side-container', isCollapse ? 'is-collapse' : 'is-expand',]">
     <left-nav></left-nav>
     <left-station></left-station>
-    <c-hamburger :isCollapse="isCollapse" class="left-side-toggle" @toggleClick="handleHorizonalToggleSide" />
+    <c-hamburger class="left-side-toggle" />
   </div>
 </template>
 
@@ -12,20 +12,9 @@
 import LeftNav from '@/layout/components/left/left-nav'
 import LeftStation from '@/layout/components/left/left-station'
 import cHamburger from '@/components/custom-hamburger'
-// pinia
-import useStore from '@/store'
-// 声明
-const { settingStore } = useStore()
 // ^
 
 // # 二、模块功能
-// 1、折叠展开左侧导航
-const isCollapse = computed(() => settingStore.leftSide.isCollapse)
-const handleHorizonalToggleSide = () => {
-  settingStore.leftSide.isCollapse = !settingStore.leftSide.isCollapse
-  settingStore.setLeftSide()
-}
-// ^
 // ^
 </script>
 
