@@ -58,35 +58,32 @@ const visitedViews = computed(() => tagStore.visitedViews)
 // ^
 
 // # 二、模块功能
+// # 1、初始化
 const selectedTag = ref({})
 const scrollPaneRef = ref(null)
-const isContextMenuVisible = ref(false)
-const top = ref(0)
-const left = ref(0)
-// # 1、初始化
 function init() {
-  handleAffixedTag()
+  handleAffixTag()
   handleAddCurrentTag()
 }
 // # (1) 固定标签
-const affixedTag = ref([])
-function handleAffixedTag() {
+const affixTag = ref([])
+function handleAffixTag() {
   // 工具函数-筛选固定标签
-  function filterAffixedTags(targetRoutes) {
+  function filterAffixTags(targetRoutes) {
     let tags = []
     targetRoutes.forEach(item => {
       if (item.meta.affix) {
         tags.push(Object.assign({}, item, { path: item.meta.absolutePath, children: {}, fullPath: item.meta.absolutePath }))
       }
       if (item.children) {
-        const tempTags = filterAffixedTags(item.children)
+        const tempTags = filterAffixTags(item.children)
         if (tempTags.length) { tags = [...tags, ...tempTags] }
       }
     })
     return tags
   }
-  const res = filterAffixedTags(routes.value)
-  affixedTag.value = res
+  const res = filterAffixTags(routes.value)
+  affixTag.value = res
 
   res.forEach(item => { tagStore.addView(item) })
 }
@@ -95,44 +92,16 @@ function handleAffixedTag() {
 function handleAddCurrentTag() {
   if (route.name) {
     tagStore.addView(route)
-    // route.meta.link && tagStore.addIframeView(route)
   }
 }
 // ^
 // ^
-// # 2、视图跳转
-// # (1) 视图移动至当前标签
-function handleMoveToCurrentTag() {
-  nextTick(() => {
-    visitedViews.value.forEach(item => {
-      if (item.path === route.path) {
-        scrollPaneRef.value.moveToTarget(item)
-        if (item.fullPath !== route.fullPath) {
-          tagStore.updateVisitedView(route)
-        }
-      }
-    })
-  })
-}
-// ^
-// # (2) 视图跳转至最后标签
-function handleMoveToLastTag(visitedViews, view) {
-  const latestView = visitedViews.slice(-1)[0]
-  if (latestView) {
-    router.push(latestView.fullPath)
-  } else {
-    if (view.name === 'Home') {
-      router.replace({ path: '/redirect' + view.fullPath })
-    } else {
-      router.replace('/')
-    }
-  }
-}
-// ^
-// ^
-
-// # 3、右键菜单
-// # (1) 打开右键菜单
+// # 2、右键菜单
+// # (1) 右键菜单开关
+const top = ref(0)
+const left = ref(0)
+const isContextMenuVisible = ref(false)
+// # -A- 打开右键菜单
 function handleOpenContextMenu(tag, e) {
   const menuMinWidth = 105
   const offsetLeft = proxy.$el.getBoundingClientRect().left // container margin left
@@ -153,60 +122,106 @@ function handleOpenContextMenu(tag, e) {
   selectedTag.value = tag
 }
 // ^
-// # (2) 关闭右键菜单
+// # -B- 关闭右键菜单
 function handleCloseContextMenu() {
   isContextMenuVisible.value = false
 }
 // ^
-// # (3) 中键点击标签
+// ^
+// # (2) 中键点击标签
 function handleMiddleClickTag(tag) {
   !tag.meta.affix && hanleCloseSelectedTag(tag)
 }
 // ^
-// # (4) 刷新选中标签
-function handleRefreshSelectedTag(view) {
-  proxy.$tag.refreshPage(view)
-  if (route.meta.link) {
-    tagStore.delIframeView(route)
+// # (3) 刷新选中标签
+function handleRefreshSelectedTag(tag) {
+  // 刷新当前页面
+  if (tag === undefined) {
+    const { path, query, matched } = router.currentRoute.value
+    matched.forEach((m) => {
+      if (m.components && m.components.default && m.components.default.name) {
+        if (!['Layout', 'ParentView'].includes(m.components.default.name)) {
+          tag = { name: m.components.default.name, path, query }
+        }
+      }
+    })
+    refreshView(tag)
+  }
+  // 刷新选中页面
+  else {
+    refreshView(tag)
+  }
+  function refreshView(tag) {
+    tagStore.deleteCachedView(tag)
+    tag.meta?.link && tagStore.deleteIframeView(tag)
+    router.replace({ path: '/redirect' + tag.path, query: tag.query })
   }
 }
 // ^
-// # (5) 关闭选中标签
-function hanleCloseSelectedTag(view) {
-  proxy.$tag.closePage(view).then(({ visitedViews }) => {
-    if (view.meta.fullPath === route.meta.fullPath) {
-      handleMoveToLastTag(visitedViews, view)
-    }
+// # (4) 关闭选中标签
+function hanleCloseSelectedTag(tag) {
+  // 删除当前页面
+  if (!tag) {
+    tagStore.deleteView(router.currentRoute.value)
+  }
+  // 删除选中页面
+  else {
+    tagStore.deleteView(tag)
+  }
+  handleMoveToLastTag()
+}
+// ^
+// # (5) 关闭左侧标签
+function handleCloseLeftTag(tag) {
+  tagStore.deleteLeftTags(tag || router.currentRoute.value)
+  if (!tagStore.visitedViews.find(item => item.fullPath === route.fullPath)) { handleMoveToLastTag() }
+}
+// ^
+// # (6) 关闭右侧标签
+function handleCloseRightTag(tag) {
+  tagStore.deleteRightTags(tag || router.currentRoute.value);
+  if (!tagStore.visitedViews.find(item => item.fullPath === route.fullPath)) { handleMoveToLastTag() }
+}
+// ^
+// # (7) 关闭其他标签
+function handleCloseOtherTag(tag) {
+  router.push(selectedTag.value).catch(() => { })
+  tagStore.deleteOthersViews(tag || router.currentRoute.value)
+  handleMoveToCurrentTag()
+}
+// ^
+// # (8) 关闭全部标签
+function handleCloseAllTag(tag) {
+  tagStore.deleteAllViews()
+  if (affixTag.value.some(tag => tag.path === route.path)) { return }
+  handleMoveToLastTag()
+}
+// ^
+// # (9) 工具函数 
+// # -A- 视图跳转至最后标签
+function handleMoveToCurrentTag() {
+  nextTick(() => {
+    visitedViews.value.forEach(item => {
+      if (item.path === route.path) {
+        scrollPaneRef.value.moveToTarget(item)
+        if (item.fullPath !== route.fullPath) {
+          tagStore.updateVisitedView(route)
+        }
+      }
+    })
   })
 }
 // ^
-// # (6) 关闭左侧标签
-function handleCloseLeftTag() {
-  proxy.$tag.closeLeftPage(selectedTag.value).then(visitedViews => {
-    if (!visitedViews.find(i => i.fullPath === route.fullPath)) { handleMoveToLastTag(visitedViews) }
-  })
+// # -B- 视图跳转至最后标签
+function handleMoveToLastTag() {
+  const latestView = tagStore.visitedViews.slice(-1)[0]
+  if (latestView) {
+    router.push(latestView.fullPath)
+  } else {
+    router.replace('/')
+  }
 }
 // ^
-// # (7) 关闭右侧标签
-function handleCloseRightTag() {
-  proxy.$tag.closeRightPage(selectedTag.value).then(visitedViews => {
-    if (!visitedViews.find(i => i.fullPath === route.fullPath)) { handleMoveToLastTag(visitedViews) }
-  })
-}
-// ^
-// # (8) 关闭其他标签
-function handleCloseOtherTag() {
-  router.push(selectedTag.value).catch(() => { });
-  proxy.$tag.closeOtherPage(selectedTag.value).then(() => { handleMoveToCurrentTag() })
-}
-// ^
-// # (9) 关闭全部标签
-function handleCloseAllTag(view) {
-  proxy.$tag.closeAllPage().then(({ visitedViews }) => {
-    if (affixedTag.value.some(tag => tag.path === route.path)) { return }
-    handleMoveToLastTag(visitedViews, view)
-  })
-}
 // ^
 // # (10) 操作显示
 function handleOperateShow(type) {
@@ -226,6 +241,8 @@ function handleOperateShow(type) {
   }
   return flag
 }
+// ^
+// ^
 // ^
 // ^
 

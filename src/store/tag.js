@@ -1,181 +1,130 @@
+import { defineStore } from 'pinia'
+
 const useTagStore = defineStore('tag', {
   state: () => ({
     visitedViews: [],   // 已访路由
     cachedViews: [],    // 缓存路由
     iframeViews: [],    // 链接路由
   }),
+
   actions: {
+    // 1、添加路由
+    // (1) 添加路由
     addView(view) {
       this.addVisitedView(view)
       this.addCachedView(view)
       this.addIframeView(view)
     },
-    // 添加已访路由
+    // (2) 添加已访路由
     addVisitedView(view) {
       if (this.visitedViews.some(item => item.path === view.path)) return
-      this.visitedViews.push(Object.assign({}, view, { title: view.meta.title || '' }))
+      this.visitedViews.push({
+        ...view,
+        title: view.meta.title || ''
+      })
     },
-    // 添加缓存路由
+    // (3) 添加缓存路由
     addCachedView(view) {
       if (view.meta?.cache || this.cachedViews.includes(view.name)) return
-      if (!view.meta.noCache) { this.cachedViews.push(view.name) }
+      if (!view.meta.noCache) this.cachedViews.push(view.name)
     },
-    // 添加链接路由
+    // (4) 添加链接路由
     addIframeView(view) {
-      if (this.iframeViews.some(v => v.path === view.path)) return
-      this.iframeViews.push(Object.assign({}, view, { title: view.meta.title || '' }))
+      if (this.iframeViews.some(item => item.path === view.path)) return
+      this.iframeViews.push({
+        ...view,
+        title: view.meta.title || ''
+      })
     },
+
+
+
     // 删除路由
-    delView(view) {
-      return new Promise(resolve => {
-        this.delVisitedView(view)
-        this.delCachedView(view)
-        resolve({ visitedViews: [...this.visitedViews], cachedViews: [...this.cachedViews] })
-      })
+    deleteView(view) {
+      this.deleteVisitedView(view)
+      this.deleteCachedView(view)
     },
+
     // 删除访问路由
-    delVisitedView(view) {
-      return new Promise(resolve => {
-        for (const [i, v] of this.visitedViews.entries()) {
-          if (v.path === view.path) {
-            this.visitedViews.splice(i, 1)
-            break
-          }
-        }
-        this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
-        resolve([...this.visitedViews])
-      })
+    deleteVisitedView(view) {
+      this.visitedViews = this.visitedViews.filter(item => item.path !== view.path)
+      this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
     },
+
     // 删除链接路由
-    delIframeView(view) {
-      return new Promise(resolve => {
-        this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
-        resolve([...this.iframeViews])
-      })
+    deleteIframeView(view) {
+      this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
     },
+
     // 删除缓存路由
-    delCachedView(view) {
-      return new Promise(resolve => {
-        const index = this.cachedViews.indexOf(view.name)
-        index > -1 && this.cachedViews.splice(index, 1)
-        resolve([...this.cachedViews])
-      })
+    deleteCachedView(view) {
+      const index = this.cachedViews.indexOf(view.name)
+      if (index > -1) this.cachedViews.splice(index, 1)
     },
+
     // 删除其他路由
-    delOthersViews(view) {
-      return new Promise(resolve => {
-        this.delOthersVisitedViews(view)
-        this.delOthersCachedViews(view)
-        resolve({
-          visitedViews: [...this.visitedViews],
-          cachedViews: [...this.cachedViews]
-        })
-      })
+    deleteOthersViews(view) {
+      this.deleteOthersVisitedViews(view)
+      this.deleteOthersCachedViews(view)
     },
-    // 删除其他已访路由
-    delOthersVisitedViews(view) {
-      return new Promise(resolve => {
-        this.visitedViews = this.visitedViews.filter(v => {
-          return v.meta.affix || v.path === view.path
-        })
-        this.iframeViews = this.iframeViews.filter(item => item.path === view.path)
-        resolve([...this.visitedViews])
-      })
+
+    deleteOthersVisitedViews(view) {
+      this.visitedViews = this.visitedViews.filter(item => item.meta.affix || item.path === view.path)
+      this.iframeViews = this.iframeViews.filter(item => item.path === view.path)
     },
-    // 删除其他缓存路由
-    delOthersCachedViews(view) {
-      return new Promise(resolve => {
-        const index = this.cachedViews.indexOf(view.name)
-        if (index > -1) {
-          this.cachedViews = this.cachedViews.slice(index, index + 1)
-        } else {
-          this.cachedViews = []
-        }
-        resolve([...this.cachedViews])
-      })
+
+    deleteOthersCachedViews(view) {
+      const index = this.cachedViews.indexOf(view.name)
+      this.cachedViews = index > -1 ? this.cachedViews.slice(index, index + 1) : []
     },
+
     // 删除全部路由
-    delAllViews(view) {
-      return new Promise(resolve => {
-        this.delAllVisitedViews(view)
-        this.delAllCachedViews(view)
-        resolve({
-          visitedViews: [...this.visitedViews],
-          cachedViews: [...this.cachedViews]
-        })
-      })
+    deleteAllViews() {
+      this.deleteAllVisitedViews()
+      this.deleteAllCachedViews()
     },
-    // 删除全部已访路由
-    delAllVisitedViews(view) {
-      return new Promise(resolve => {
-        const affixTags = this.visitedViews.filter(tag => tag.meta.affix)
-        this.visitedViews = affixTags
-        this.iframeViews = []
-        resolve([...this.visitedViews])
-      })
+
+    deleteAllVisitedViews() {
+      const affixTags = this.visitedViews.filter(item => item.meta.affix)
+      this.visitedViews = affixTags
+      this.iframeViews = []
     },
-    // 删除全部缓存路由
-    delAllCachedViews(view) {
-      return new Promise(resolve => {
-        this.cachedViews = []
-        resolve([...this.cachedViews])
-      })
+
+    deleteAllCachedViews() {
+      this.cachedViews = []
     },
+
     // 更新已访路由
     updateVisitedView(view) {
-      for (let v of this.visitedViews) {
-        if (v.path === view.path) {
-          v = Object.assign(v, view)
-          break
-        }
+      const idx = this.visitedViews.findIndex(item => item.path === view.path)
+      if (idx > -1) {
+        this.visitedViews[idx] = { ...this.visitedViews[idx], ...view }
       }
     },
+
     // 删除右侧标签
-    delRightTags(view) {
-      return new Promise(resolve => {
-        const index = this.visitedViews.findIndex(v => v.path === view.path)
-        if (index === -1) {
-          return
-        }
-        this.visitedViews = this.visitedViews.filter((item, idx) => {
-          if (idx <= index || (item.meta && item.meta.affix)) {
-            return true
-          }
-          const i = this.cachedViews.indexOf(item.name)
-          if (i > -1) {
-            this.cachedViews.splice(i, 1)
-          }
-          if (item.meta.link) {
-            const fi = this.iframeViews.findIndex(v => v.path === item.path)
-            this.iframeViews.splice(fi, 1)
-          }
-          return false
-        })
-        resolve([...this.visitedViews])
+    deleteRightTags(view) {
+      const index = this.visitedViews.findIndex(item => item.path === view.path)
+      if (index === -1) return
+
+      this.visitedViews = this.visitedViews.filter((item, idx) => {
+        if (idx <= index || item.meta?.affix) return true
+        this.deleteCachedView(item)
+        if (item.meta.link) this.deleteIframeView(item)
+        return false
       })
     },
+
     // 删除左侧标签
-    delLeftTags(view) {
-      return new Promise(resolve => {
-        const index = this.visitedViews.findIndex(v => v.path === view.path)
-        if (index === -1) {
-          return
-        }
-        this.visitedViews = this.visitedViews.filter((item, idx) => {
-          if (idx >= index || (item.meta && item.meta.affix)) {
-            return true
-          }
-          const i = this.cachedViews.indexOf(item.name)
-          if (i > -1) {
-            this.cachedViews.splice(i, 1)
-          }
-          if (item.meta.link) {
-            const fi = this.iframeViews.findIndex(v => v.path === item.path)
-            this.iframeViews.splice(fi, 1)
-          }
-          return false
-        })
-        resolve([...this.visitedViews])
+    deleteLeftTags(view) {
+      const index = this.visitedViews.findIndex(item => item.path === view.path)
+      if (index === -1) return
+
+      this.visitedViews = this.visitedViews.filter((item, idx) => {
+        if (idx >= index || item.meta?.affix) return true
+        this.deleteCachedView(item)
+        if (item.meta.link) this.deleteIframeView(item)
+        return false
       })
     }
   }

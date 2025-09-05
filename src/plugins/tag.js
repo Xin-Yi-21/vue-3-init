@@ -3,44 +3,44 @@ import router from '@/router'
 
 export default {
   // 刷新当前tab页签
-  refreshPage(obj) {
-    const { path, query, matched } = router.currentRoute.value;
-    if (obj === undefined) {
+  refreshPage(tag) {
+    const { path, query, matched } = router.currentRoute.value
+    if (tag === undefined) {
       matched.forEach((m) => {
         if (m.components && m.components.default && m.components.default.name) {
           if (!['Layout', 'ParentView'].includes(m.components.default.name)) {
-            obj = { name: m.components.default.name, path: path, query: query };
+            tag = { name: m.components.default.name, path, query }
           }
         }
-      });
-    }
-    return useTagStore().delCachedView(obj).then(() => {
-      const { path, query } = obj
-      router.replace({
-        path: '/redirect' + path,
-        query: query
       })
-    })
+    }
+    const tagStore = useTagStore()
+    if (tag.meta?.link) { tagStore.delIframeView }
+    tagStore.delCachedView(tag)
+    router.replace({ path: '/redirect' + tag.path, query: tag.query })
   },
   // 关闭当前tab页签，打开新页签
   closeOpenPage(obj) {
-    useTagStore().delView(router.currentRoute.value);
+    useTagStore().delView(router.currentRoute.value)
     if (obj !== undefined) {
       return router.push(obj);
     }
   },
   // 关闭指定tab页签
-  closePage(obj) {
-    if (obj === undefined) {
-      return useTagStore().delView(router.currentRoute.value).then(({ visitedViews }) => {
-        const latestView = visitedViews.slice(-1)[0]
-        if (latestView) {
-          return router.push(latestView.fullPath)
-        }
-        return router.push('/');
-      });
+  closePage(view) {
+    const tagStore = useTagStore()
+    if (!view) {
+      tagStore.delView(router.currentRoute.value)
+      const latestView = tagStore.visitedViews.slice(-1)[0]
+      if (latestView) {
+        router.push(latestView.fullPath)
+      } else {
+        router.push('/')
+      }
+      return
     }
-    return useTagStore().delView(obj);
+    // 传了 view，就删掉这个标签
+    tagStore.delView(view)
   },
   // 关闭所有tab页签
   closeAllPage() {
