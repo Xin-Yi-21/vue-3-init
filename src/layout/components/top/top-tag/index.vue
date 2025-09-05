@@ -254,8 +254,6 @@ watch(isContextMenuVisible, (value) => {
 
 <style lang='scss' scoped>
 .top-tag-container {
-  flex: 1;
-  height: 24px;
   display: flex;
   align-items: center;
 

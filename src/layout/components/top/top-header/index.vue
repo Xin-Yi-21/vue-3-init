@@ -3,7 +3,6 @@
     <div class="project">
       <c-icon i="c-show-logo" cursor="auto" size="24"></c-icon>
       <div class="title">项目初始化系统</div>
-      <!-- <Breadcrumb v-if="settingStore.topHeader.isBreadcrumbShow" separator=">" class="breadcrumb-container" /> -->
     </div>
 
     <div class="menu">
@@ -12,7 +11,7 @@
 
     <div class="time" v-html="time"></div>
 
-    <el-dropdown @command="handleCommand" class="setting" trigger="click" append-to-body="true">
+    <el-dropdown @command="handleCommand" class="setting" trigger="click" append-to-body="true" popper-class="top-header-setting-el-dropdown">
       <div class="avatar">
         <img :src="userStore.avatar" />
         <span class="name">admin</span>
@@ -20,13 +19,9 @@
       </div>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item command="profile">
+          <el-dropdown-item command="profile" style="margin-bottom:5px;">
             <c-icon i="c-show-account"></c-icon>
             <span>个人中心</span>
-          </el-dropdown-item>
-          <el-dropdown-item command="userManage">
-            <c-icon i="c-menu-user"></c-icon>
-            <span>用户管理</span>
           </el-dropdown-item>
           <el-dropdown-item command="layoutSet">
             <c-icon i="c-show-layout"></c-icon>
@@ -96,13 +91,9 @@ function setLayout() {
 }
 // (3) 登出
 function logout() {
-  ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
+  proxy.$confirm('确定注销并退出系统吗？', '确认消息', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', customClass: 'c-message-confirm' }).then(async () => {
     userStore.logOut().then(() => {
-      location.href = '/index'
+      location.href = ''
     })
   }).catch(() => { })
 }
@@ -138,8 +129,6 @@ onBeforeUnmount(() => {
   :root[theme-style='light'] & {
     background-color: var(--bg-card);
   }
-
-
 
   &.is-fixed {
     position: fixed;
@@ -257,9 +246,14 @@ onBeforeUnmount(() => {
       }
     }
   }
-}
 
-:deep(.el-dropdown-menu) {
+
+}
+</style>
+
+<style lang="scss">
+// 全局样式
+.top-header-setting-el-dropdown {
   .el-dropdown-menu__item {
     display: flex;
     align-items: center;

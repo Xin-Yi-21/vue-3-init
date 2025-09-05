@@ -165,6 +165,7 @@ defineExpose({ openSetting, })
         width: 100px;
         margin-right: 10px;
         font-size: var(--cfs);
+        color: var(--fcs);
       }
 
       .el-radio-group {

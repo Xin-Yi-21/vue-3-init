@@ -5,7 +5,7 @@
       <div class="main-container">
         <left-side v-if="settingStore.leftSide.isShow"></left-side>
         <div class="main-right-container">
-          <top-bar></top-bar>
+          <top-tag></top-tag>
           <app-main />
         </div>
         <setting ref="settingRef"></setting>
@@ -19,7 +19,7 @@
 // 组件
 import TopHeader from '@/layout/components/top/top-header/index.vue'
 import LeftSide from '@/layout/components/left/left-side/index.vue'
-import TopBar from '@/layout/components/top/top-bar/index.vue'
+import TopTag from '@/layout/components/top/top-tag/index.vue'
 import AppMain from '@/layout/components/app-main/index.vue'
 import Setting from '@/layout/components/setting/index.vue'
 // pinia
@@ -104,7 +104,7 @@ onUnmounted(() => {
       height: 100%;
       overflow: hidden;
 
-      .top-bar-container {
+      .top-tag-container {
         width: calc(100% - 20px);
         height: 24px;
         margin: 10px 10px 0;

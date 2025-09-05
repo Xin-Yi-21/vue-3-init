@@ -53,7 +53,7 @@ function handleTabClick(tabItem) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    // min-width: 120px;
+    flex: 1;
     padding: 0 20px;
     border: 1px solid var(--bcs);
     border-right: 0;
@@ -65,7 +65,7 @@ function handleTabClick(tabItem) {
     }
 
     &:last-child {
-      // border-right: 1px solid var(--bcs);
+      border-right: 1px solid var(--bcs);
       border-radius: 0 100px 100px 0;
     }
 

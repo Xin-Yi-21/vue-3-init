@@ -382,12 +382,6 @@ defineExpose({ isVerticalCollapse })
     .el-menu {
       background-color: transparent;
 
-
-      a {
-        display: block;
-        text-decoration: none;
-      }
-
       .svg-icon {
         flex-shrink: 0;
         // font-size: 14px;
@@ -417,7 +411,7 @@ defineExpose({ isVerticalCollapse })
           .el-sub-menu__title {
             display: flex;
             align-items: center;
-            height: 40px;
+            height: 36px;
             color: var(--fcs);
 
             &:hover {
@@ -452,7 +446,7 @@ defineExpose({ isVerticalCollapse })
         }
 
         &.el-menu-item {
-          height: 40px;
+          height: 36px;
           color: var(--fcs);
 
           &:hover {
@@ -510,34 +504,37 @@ defineExpose({ isVerticalCollapse })
         }
       }
 
-      >a {
-        .el-menu-item {
-          display: flex;
-          align-items: center;
-          min-width: 0;
-          box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-          border-radius: 2px 2px 2px 2px;
-          font-size: 16px;
+      >.el-menu-item {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+        border-radius: 2px 2px 2px 2px;
+        font-size: 16px;
 
-          :root[theme-style='light'] & {
-            background-color: #fff;
-          }
+        :root[theme-style='light'] & {
+          background-color: #fff;
+        }
 
-          :root[theme-style='dark'] & {
-            background: transparent;
-            border: 1px solid var(--tc);
-          }
+        :root[theme-style='dark'] & {
+          background: transparent;
+          border: 1px solid var(--tc);
+        }
 
-          &.is-active {
-            font-weight: 500;
-            background-color: var(--tc) !important;
+        &:hover {
+          background-color: var(--bg-hover) !important;
+        }
 
-            & * {
-              color: #fff;
-            }
+        &.is-active {
+          font-weight: 500;
+          background-color: var(--tc) !important;
+
+          & * {
+            color: #fff !important;
           }
         }
       }
+
     }
 
     .level-2 {
@@ -549,12 +546,10 @@ defineExpose({ isVerticalCollapse })
         }
       }
 
-      >a {
-        .el-menu-item {
-          height: 36px;
-          padding: 0 20px 0 30px;
-          font-size: 14px;
-        }
+      >.el-menu-item {
+        height: 36px;
+        padding: 0 20px 0 30px;
+        font-size: 14px;
       }
 
     }
@@ -564,12 +559,10 @@ defineExpose({ isVerticalCollapse })
       min-height: 22px;
       margin: 4px 0;
 
-      >a {
-        .el-menu-item {
-          height: 26px;
-          padding: 0 20px 0 50px;
-          font-size: 12px;
-        }
+      >.el-menu-item {
+        height: 26px;
+        padding: 0 20px 0 50px;
+        font-size: 12px;
       }
     }
   }

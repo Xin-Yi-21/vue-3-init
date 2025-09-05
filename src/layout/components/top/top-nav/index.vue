@@ -97,6 +97,7 @@ watch(() => settingStore.isTemplateManage, (nv, ov) => {
     height: 100%;
     display: flex;
     border-bottom: 0;
+    background-color: transparent;
 
     .menu-item-container {
       flex: 1;
