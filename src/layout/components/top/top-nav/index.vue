@@ -36,7 +36,7 @@ function getTopMenu() {
     const res = []
     routes.forEach(routeItem => {
       const newRoute = { ...routeItem }
-      if (newRoute.meta?.showIn?.includes('top')) {
+      if (!newRoute.meta?.hideIn?.includes('top')) {
         if (Array.isArray(newRoute.children) && newRoute.children.length) {
           newRoute.children = getMenu(newRoute.children)
         }

@@ -100,7 +100,7 @@ function locateMenuGroup(targetName) {
     if (path) break
   }
   if (!path) return []
-  path = path.filter(item => item.meta.showIn?.includes('left'))
+  path = path.filter(item => !item.meta.hideIn?.includes('left'))
   // console.log('递归定位path', path)
   for (let i = path.length - 1; i >= 0; i--) {
     if (path[i].meta?.clickIn && targetName != path[i].name) {
