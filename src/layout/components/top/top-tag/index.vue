@@ -1,19 +1,19 @@
 <template>
   <div class="top-tag-container">
-    <scroll-pane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleCloseContextMenu">
+    <scroll-pane ref="scrollPaneRef" class="top-tag-scroll-pane" @scroll="handleCloseContextMenu">
       <router-link v-for="(item, index) in visitedViews"
         :key="index"
-        :class="['tags-view-item', item.path === route.path ? 'is-actived' : '']"
+        :class="['tag-view-item', item.path === route.path ? 'is-actived' : '', item.meta?.affix ? 'is-affix' : '']"
         :data-path="item.path"
         :to="{ path: item.path, query: item.query, }"
         @click.middle="handleMiddleClickTag(item)"
         @contextmenu.prevent="handleOpenContextMenu(item, $event)">
         <span class="tag-title"> {{ item.title }}</span>
-        <c-icon v-if="!item.meta.affix" i="c-operate-close" button @click.prevent.stop="hanleCloseSelectedTag(item)"> </c-icon>
+        <c-icon v-if="!item.meta?.affix" i="c-operate-close" button @click.prevent.stop="hanleCloseSelectedTag(item)"> </c-icon>
       </router-link>
     </scroll-pane>
 
-    <c-icon i="c-operate-add" button tip="新增标签页" class="add-tag"> </c-icon>
+    <c-icon i="c-operate-add" class="add-tag-icon" button tip="新增标签页" :hoverColor="settingStore.themeColor" showType="el"> </c-icon>
 
     <ul v-show="isContextMenuVisible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
       <li @click="handleRefreshSelectedTag(selectedTag)"><c-icon i="c-operate-refresh"></c-icon>刷新页面</li>
@@ -36,7 +36,7 @@ import useStore from '@/store'
 const route = useRoute()
 const router = useRouter()
 const { proxy } = getCurrentInstance()
-const { tagStore, menuStore } = useStore()
+const { tagStore, menuStore, settingStore } = useStore()
 const routes = computed(() => menuStore.navRoutes)
 const visitedViews = computed(() => tagStore.visitedViews)
 // ^
@@ -255,11 +255,11 @@ watch(isContextMenuVisible, (value) => {
 <style lang='scss' scoped>
 .top-tag-container {
   flex: 1;
-  height: 100%;
+  height: 24px;
   display: flex;
   align-items: center;
 
-  .tags-view-wrapper {
+  .top-tag-scroll-pane {
     height: 100%;
     width: auto;
 
@@ -273,27 +273,46 @@ watch(isContextMenuVisible, (value) => {
         align-items: center;
         flex-wrap: nowrap;
 
-        .tags-view-item {
+        .tag-view-item {
           position: relative;
           display: inline-flex;
           align-items: center;
-          height: 24px;
-          margin-left: 10px;
-          padding: 0 30px;
-          cursor: pointer;
-          border-radius: 3px;
-          background-color: var(--bg-topTag);
-          border: 1px solid var(--bcs);
+          height: 100%;
+          margin-right: 10px;
+          padding: 0 30px 0 20px;
+          border-radius: 4px 4px 0 0;
+          background-color: var(--bg-card);
           color: var(--fcs);
           font-size: 12px;
           text-decoration: none;
+          cursor: pointer;
 
           &:first-of-type {
-            margin-left: 15px;
+            margin-left: 0px;
           }
 
           &:last-of-type {
-            margin-right: 15px;
+            margin-right: 10px;
+          }
+
+          &.is-affix {
+            padding: 0 20px;
+          }
+
+          .c-operate-close {
+            font-size: 12px;
+            padding: 2px;
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--fcs);
+            margin: 0;
+
+            &:hover {
+              background-color: var(--tc-light-4);
+              border-radius: 50%;
+            }
           }
 
           &.is-actived {
@@ -301,39 +320,23 @@ watch(isContextMenuVisible, (value) => {
             border-color: var(--tc);
             color: #fff;
 
-            .tag-close {
+            .c-operate-close {
               color: #fff;
             }
           }
 
-          &:has(.tag-close) {
-            padding: 0 30px 0 20px;
-          }
 
-          .tag-title {
-            font-size: 12px;
-          }
 
-          .tag-close {
-            position: absolute;
-            right: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1em;
-            height: 1em;
-            color: var(--fcs);
 
-            &:hover {
-              scale: 1.1;
-            }
-          }
+
+
         }
       }
     }
   }
 
-  :deep(.add-tag) {
-    font-size: 16px;
+  :deep(.add-tag-icon) {
+    font-size: 14px;
     color: var(--fcs);
 
     &:hover {
@@ -345,10 +348,10 @@ watch(isContextMenuVisible, (value) => {
     position: absolute;
     margin: 0;
     padding: 5px 0;
+    border-radius: 4px;
     background: var(--bg-inner-primary);
     z-index: 3000;
     list-style-type: none;
-    border-radius: 4px;
     color: var(--fcs);
     font-size: 12px;
     font-weight: 400;
@@ -363,46 +366,16 @@ watch(isContextMenuVisible, (value) => {
       font-size: 12px;
       cursor: pointer;
 
-      .operate-text {
-        font-size: 12px;
+      .c-icon {
+        font-size: 10px;
+        margin: 0 5px 0 0;
+        transform: translateY(1px);
       }
 
-      svg {
-        margin-right: 5px;
-      }
 
       &:hover {
         background: var(--bg-hover);
-      }
-    }
-  }
-}
-</style>
-
-<style lang="scss">
-//reset element css of el-icon-close
-.tags-view-wrapper {
-  .tags-view-item {
-    .el-icon-close {
-      width: 16px;
-      height: 16px;
-      vertical-align: 2px;
-      border-radius: 50%;
-      text-align: center;
-      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-      transform-origin: 100% 50%;
-
-      &:before {
-        transform: scale(0.6);
-        display: inline-block;
-        vertical-align: -3px;
-      }
-
-      &:hover {
-        // background-color: #b4bccc;
-        scale: 1.1;
-        width: 12px !important;
-        height: 12px !important;
+        color: var(--tc);
       }
     }
   }

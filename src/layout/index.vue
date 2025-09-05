@@ -106,7 +106,7 @@ onUnmounted(() => {
 
       .top-bar-container {
         width: calc(100% - 20px);
-        height: 30px;
+        height: 24px;
         margin: 10px 10px 0;
       }
 

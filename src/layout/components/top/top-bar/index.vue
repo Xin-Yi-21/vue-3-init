@@ -1,7 +1,7 @@
 <template>
   <div class="top-bar-container">
-    <hamburger type="top" />
-    <!-- <breadcrumb /> -->
+    <!-- <hamburger type="top" />
+    <breadcrumb /> -->
     <top-tag></top-tag>
   </div>
 </template>
@@ -32,16 +32,20 @@ onMounted(() => {
 <style lang="scss" scoped>
 .top-bar-container {
   width: 100%;
-  height: 30px;
   display: flex;
   align-items: center;
 
-  :root[theme-style='dark'] & {
-    // background-color: var(--bg-card);
+  .c-hamburger {
+    padding: 0 5px;
+    border-radius: 4px 4px 0 0;
+    background-color: var(--bg-card);
   }
 
-  :root[theme-style='light'] & {
-    // background-color: var(--bg-card);
+  .c-breadcrumb {
+    padding: 0 10px;
+    border-radius: 4px 4px 0 0;
+    margin: 0 10px;
+    background-color: var(--bg-card);
   }
 }
 </style>

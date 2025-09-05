@@ -1,5 +1,5 @@
 <template>
-  <div :class="['hamburger', `${type}-hamburger`]" @click="handleToggle">
+  <div :class="['c-hamburger', `${type}-hamburger`]" @click="handleToggle">
     <c-icon i="c-operate-hamburger-collapse-left" :class="{ 'is-collapse': isCollapse }" cursor="pointer" size="12" v-if="type === 'left'"></c-icon>
     <c-icon i="c-operate-hamburger-collapse-top" :class="{ 'is-collapse': isCollapse }" cursor="pointer" size="18" v-if="type === 'top'"></c-icon>
   </div>
@@ -29,11 +29,15 @@ const handleToggle = () => {
 </script>
 
 <style lang="scss" scoped>
-.hamburger {
+.c-hamburger {
   display: inline-flex;
   align-items: center;
   height: 100%;
   color: var(--fct);
+
+  .c-icon {
+    margin: 0;
+  }
 
   .is-collapse {
     transform: rotate(180deg);
