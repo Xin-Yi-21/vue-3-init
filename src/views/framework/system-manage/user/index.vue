@@ -1,6 +1,6 @@
 <template>
-  <div class="xxx-vue">
-    用户管理
+  <div class="user-vue">
+    <c-card-tip>用户管理</c-card-tip>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.xxx-vue {
+.user-vue {
   width: 100%;
   height: 100%;
 }
