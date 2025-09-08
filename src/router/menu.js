@@ -194,28 +194,28 @@ export const menuGet = () => {
                           path: 'element-plus',
                           component: 'LinkView',
                           hidden: false,
-                          meta: { title: 'Element Plus', icon: 'c-element', link: 'https://element-plus.org/zh-CN/', linkBlank: false, linkVirtual: false, hideIn: ['top',], }
+                          meta: { title: 'Element Plus', icon: 'c-menu-circle', link: 'https://element-plus.org/zh-CN/', linkBlank: false, linkVirtual: false, hideIn: ['top',], }
                         },
                         {
                           name: 'ECharts',
                           path: 'echarts',
                           component: 'LinkView',
                           hidden: false,
-                          meta: { title: 'ECharts', icon: 'c-echarts', link: 'https://echarts.apache.org/zh/index.html', linkBlank: true, linkVirtual: false, hideIn: ['top',], }
+                          meta: { title: 'ECharts', icon: 'c-menu-circle', link: 'https://echarts.apache.org/zh/index.html', linkBlank: true, linkVirtual: false, hideIn: ['top',], }
                         },
                         {
                           name: 'AntDesign',
                           path: 'ant-design',
                           component: 'LinkView',
                           hidden: false,
-                          meta: { title: 'AntDesign', icon: 'c-iconfont', link: 'https://www.antdv.com/components/overview-cn', linkBlank: false, linkVirtual: true, linkOpenType: 'self', hideIn: ['top',], }
+                          meta: { title: 'AntDesign', icon: 'c-menu-circle', link: 'https://www.antdv.com/components/overview-cn', linkBlank: false, linkVirtual: true, linkOpenType: 'self', hideIn: ['top',], }
                         },
                         {
                           name: 'Iconfont',
                           path: 'iconfont',
                           component: 'LinkView',
                           hidden: false,
-                          meta: { title: 'Iconfont', icon: 'c-echarts', link: 'https://www.iconfont.cn/', linkBlank: true, linkVirtual: true, hideIn: ['top',], }
+                          meta: { title: 'Iconfont', icon: 'c-menu-circle', link: 'https://www.iconfont.cn/', linkBlank: true, linkVirtual: true, hideIn: ['top',], }
                         },
                       ]
                     },

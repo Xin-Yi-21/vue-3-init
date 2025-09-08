@@ -555,14 +555,38 @@ defineExpose({ isVerticalCollapse })
     }
 
     .level-3 {
-      height: 26px;
-      min-height: 22px;
       margin: 4px 0;
 
+      >.el-sub-menu {
+        .el-sub-menu__title {
+          height: 26px !important;
+          padding: 0 20px 0 50px;
+          font-size: 12px;
+        }
+      }
+
       >.el-menu-item {
-        height: 26px;
+        height: 26px !important;
         padding: 0 20px 0 50px;
         font-size: 12px;
+      }
+    }
+
+    .level-4 {
+      margin: 2px 0;
+
+      >.el-sub-menu {
+        .el-sub-menu__title {
+          height: 22px !important;
+          padding: 0 20px 0 70px;
+          font-size: 10px;
+        }
+      }
+
+      >.el-menu-item {
+        height: 22px !important;
+        padding: 0 20px 0 70px;
+        font-size: 10px;
       }
     }
   }

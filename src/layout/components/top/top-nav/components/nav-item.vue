@@ -1,12 +1,12 @@
 <template>
   <div class="menu-item-container" v-if="!navInfo.hidden">
     <el-menu-item v-if="isNoChildShow()" :index="onlyOne.path" :class="[...(onlyOne.meta?.class || [])]" @click="handleClickMenuItem(onlyOne,)">
-      <svg-icon v-if="(!isNest && isShowFirstIcon) || (isNest && isShowNestIcon)" :icon-class="onlyOne.meta?.icon || ''" class-name="menu-icon" />
+      <c-icon :i="onlyOne.meta?.icon || ''" class="menu-icon" />
       <template #title><span class="menu-title" :title="hasTitle(onlyOne.meta?.title)">{{ onlyOne.meta?.title }}</span></template>
     </el-menu-item>
     <el-sub-menu v-else ref="subMenu" :index="navInfo.meta?.fullPath" :class="[...(navInfo.meta?.class || [])]" teleported popper-class="top-nav-el-menu-vertical">
       <template v-if="navInfo.meta" #title>
-        <svg-icon v-if="(!isNest && isShowFirstIcon) || (isNest && isShowNestIcon)" :icon-class="navInfo.meta?.icon || ''" class-name="menu-icon" />
+        <c-icon :i="navInfo.meta?.icon || ''" class="menu-icon" />
         <span class="menu-title" :title="hasTitle(navInfo.meta?.title)">{{ navInfo.meta?.title }}</span>
       </template>
       <nav-item v-for="(item, index) in navInfo.children" :key="index" :isJump="isJump" :isNest="true" :navInfo="item" />
