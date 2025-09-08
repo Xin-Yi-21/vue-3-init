@@ -1,6 +1,6 @@
 <template>
   <div class="department-vue">
-    <c-card-tip>部门管理</c-card-tip>
+    <c-card-tip>基础框架 - 系统管理 - 部门管理</c-card-tip>
   </div>
 </template>
 

@@ -33,47 +33,6 @@ export const menuGet = () => {
   return new Promise((resolve, reject) => {
     try {
       const routes = [
-        // 外网链接
-        {
-          name: 'Website',
-          path: '/website',
-          component: 'Layout',
-          hidden: false,
-          alwaysShow: true,
-          redirect: 'noRedirect',
-          meta: { title: '参考网址', icon: 'c-website', hideIn: [], },
-          children: [
-            {
-              name: 'ElementPlus',
-              path: 'element-plus',
-              component: 'LinkView',
-              hidden: false,
-              meta: { title: 'Element Plus', icon: 'c-element', link: 'https://element-plus.org/zh-CN/', linkBlank: false, linkVirtual: false, hideIn: ['top',], }
-            },
-
-            {
-              name: 'ECharts',
-              path: 'echarts',
-              component: 'LinkView',
-              hidden: false,
-              meta: { title: 'ECharts', icon: 'c-echarts', link: 'https://echarts.apache.org/zh/index.html', linkBlank: true, linkVirtual: false, hideIn: ['top',], }
-            },
-            {
-              name: 'AntDesign',
-              path: 'ant-design',
-              component: 'LinkView',
-              hidden: false,
-              meta: { title: 'AntDesign', icon: 'c-iconfont', link: 'https://www.antdv.com/components/overview-cn', linkBlank: false, linkVirtual: true, linkOpenType: 'self', hideIn: ['top',], }
-            },
-            {
-              name: 'Iconfont',
-              path: 'iconfont',
-              component: 'LinkView',
-              hidden: false,
-              meta: { title: 'Iconfont', icon: 'c-echarts', link: 'https://www.iconfont.cn/', linkBlank: true, linkVirtual: true, hideIn: ['top',], }
-            },
-          ]
-        },
         // 基础框架
         {
           name: 'Framework',
@@ -84,6 +43,187 @@ export const menuGet = () => {
           redirect: '/framework/template-manage/element',
           meta: { title: '基础框架', icon: 'c-menu-framework', hideIn: [], },
           children: [
+            // 文档管理
+            {
+              name: 'FrameworkDocumentManage',
+              path: '/document-manage',
+              component: 'ParentView',
+              hidden: false,
+              alwaysShow: true,
+              meta: { title: '文档管理', icon: 'c-menu-document-manage', hideIn: [], },
+              children: [
+                {
+                  name: 'FrameworkDocumentManageStandard',
+                  path: 'standard',
+                  component: 'framework/document-manage/standard/index',
+                  hidden: false,
+                  meta: { title: '前端规范', icon: 'c-menu-document-manage-standard', hideIn: ['top'], },
+                },
+                {
+                  name: 'FrameworkDocumentManageProcess',
+                  path: 'process',
+                  component: 'ParentView',
+                  redirect: '/document-manage/process/develop',
+                  hidden: false,
+                  meta: { title: '前端进程', icon: 'c-menu-document-manage-process', hideIn: ['top'], },
+                  children: [
+                    {
+                      name: 'FrameworkDocumentManageProcessDevelop',
+                      path: 'develop',
+                      component: 'framework/document-manage/process/develop/index',
+                      hidden: false,
+                      meta: { title: '前端开发', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkDocumentManageProcessDebug',
+                      path: 'debug',
+                      component: 'framework/document-manage/process/debug/index',
+                      hidden: false,
+                      meta: { title: '前端调试', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkDocumentManageProcessDeploy',
+                      path: 'deploy',
+                      component: 'framework/document-manage/process/deploy/index',
+                      hidden: false,
+                      meta: { title: '前端部署', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkDocumentManageProcessVersion',
+                      path: 'version',
+                      component: 'framework/document-manage/process/version/index',
+                      hidden: false,
+                      meta: { title: '前端版本', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                  ],
+                },
+                {
+                  name: 'FrameworkDocumentManageTool',
+                  path: 'tool',
+                  component: 'ParentView',
+                  redirect: '/document-manage/tool/style',
+                  hidden: false,
+                  alwaysShow: true,
+                  meta: { title: '前端工具', icon: 'c-menu-document-manage-tool', hideIn: ['top'], },
+                  children: [
+                    {
+                      name: 'FrameworkDocumentManageToolStyle',
+                      path: 'style',
+                      component: 'framework/document-manage/tool/style/index',
+                      hidden: false,
+                      meta: { title: '工具样式', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkDocumentManageToolComponent',
+                      path: 'component',
+                      component: 'framework/document-manage/tool/component/index',
+                      hidden: false,
+                      meta: { title: '工具组件', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkDocumentManageToolPlugin',
+                      path: 'plugin',
+                      component: 'framework/document-manage/tool/plugin/index',
+                      hidden: false,
+                      meta: { title: '工具插件', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkDocumentManageToolDirective',
+                      path: 'directive',
+                      component: 'framework/document-manage/tool/directive/index',
+                      hidden: false,
+                      meta: { title: '工具指令', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkDocumentManageToolUtil',
+                      path: 'util',
+                      component: 'framework/document-manage/tool/util/index',
+                      hidden: false,
+                      meta: { title: '工具函数', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                  ],
+                },
+                {
+                  name: 'FrameworkDocumentManageCollaboration',
+                  path: 'collaboration',
+                  component: 'ParentView',
+                  redirect: '/document-manage/collaboration/fronted-prototype-interface',
+                  hidden: false,
+                  meta: { title: '前端协作', icon: 'c-menu-document-manage-collaboration', hideIn: ['top'], },
+                  children: [
+                    {
+                      name: 'FrameworkDocumentManageCollaborationFrontedPrototypeInterface',
+                      path: 'fronted-prototype-interface',
+                      component: 'framework/document-manage/collaboration/fronted-prototype-interface/index',
+                      hidden: false,
+                      meta: { title: '前端-原型-界面', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkDocumentManageCollaborationFrontedBackendOperation',
+                      path: 'fronted-backend-operation',
+                      component: 'framework/document-manage/collaboration/fronted-backend-operation/index',
+                      hidden: false,
+                      meta: { title: '前端-后端-运维', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                  ],
+                },
+                {
+                  name: 'FrameworkDocumentManageSupport',
+                  path: 'support',
+                  component: 'ParentView',
+                  redirect: '/document-manage/support/vscode',
+                  hidden: false,
+                  meta: { title: '前端支持', icon: 'c-menu-document-manage-support', hideIn: ['top'], },
+                  children: [
+                    {
+                      name: 'FrameworkDocumentManageSupportVscode',
+                      path: 'vscode',
+                      component: 'framework/document-manage/support/vscode/index',
+                      hidden: false,
+                      meta: { title: 'Vscode', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkDocumentManageSupportLink',
+                      path: 'link',
+                      component: 'ParentView',
+                      hidden: false,
+                      meta: { title: '链接网站', icon: 'c-menu-circle', hideIn: ['top'], },
+                      children: [
+                        {
+                          name: 'ElementPlus',
+                          path: 'element-plus',
+                          component: 'LinkView',
+                          hidden: false,
+                          meta: { title: 'Element Plus', icon: 'c-element', link: 'https://element-plus.org/zh-CN/', linkBlank: false, linkVirtual: false, hideIn: ['top',], }
+                        },
+                        {
+                          name: 'ECharts',
+                          path: 'echarts',
+                          component: 'LinkView',
+                          hidden: false,
+                          meta: { title: 'ECharts', icon: 'c-echarts', link: 'https://echarts.apache.org/zh/index.html', linkBlank: true, linkVirtual: false, hideIn: ['top',], }
+                        },
+                        {
+                          name: 'AntDesign',
+                          path: 'ant-design',
+                          component: 'LinkView',
+                          hidden: false,
+                          meta: { title: 'AntDesign', icon: 'c-iconfont', link: 'https://www.antdv.com/components/overview-cn', linkBlank: false, linkVirtual: true, linkOpenType: 'self', hideIn: ['top',], }
+                        },
+                        {
+                          name: 'Iconfont',
+                          path: 'iconfont',
+                          component: 'LinkView',
+                          hidden: false,
+                          meta: { title: 'Iconfont', icon: 'c-echarts', link: 'https://www.iconfont.cn/', linkBlank: true, linkVirtual: true, hideIn: ['top',], }
+                        },
+                      ]
+                    },
+                  ],
+                },
+              ],
+            },
+            // 模版管理
             {
               name: 'FrameworkTemplateManage',
               path: 'template-manage',
@@ -91,31 +231,32 @@ export const menuGet = () => {
               hidden: false,
               alwaysShow: true,
               redirect: '/framework/template-manage/element',
-              meta: { title: '模版管理', icon: 'c-menu-template', hideIn: [], clickIn: false },
+              meta: { title: '模版管理', icon: 'c-menu-template-manage', hideIn: [], clickIn: false },
               children: [
                 {
-                  name: 'FrameworkElementTemplate',
+                  name: 'FrameworkTemplateManageElement',
                   path: 'element',
                   component: 'framework/template-manage/element/index',
                   hidden: false,
-                  meta: { title: 'element 模板', icon: 'c-menu-element', hideIn: ['top'], }
+                  meta: { title: 'element 模板', icon: 'c-menu-template-manage-element', hideIn: ['top'], }
                 },
                 {
-                  name: 'FrameworkEchartsTemplate',
+                  name: 'FrameworkTemplateManageEcharts',
                   path: 'echarts',
                   component: 'framework/template-manage/echarts/index',
                   hidden: false,
-                  meta: { title: 'echarts 模板', icon: 'c-menu-echarts', hideIn: ['top'], }
+                  meta: { title: 'echarts 模板', icon: 'c-menu-template-manage-echarts', hideIn: ['top'], }
                 },
                 {
-                  name: 'FrameworkMapTemplate',
+                  name: 'FrameworkTemplateManageMap',
                   path: 'map',
                   component: 'framework/template-manage/map/index',
                   hidden: false,
-                  meta: { title: 'map 模版', icon: 'c-menu-map', hideIn: ['top'], }
+                  meta: { title: 'map 模版', icon: 'c-menu-template-manage-map', hideIn: ['top'], }
                 },
               ]
             },
+            // 系统管理
             {
               name: 'FrameworkSystemManage',
               path: 'system-manage',
@@ -123,194 +264,107 @@ export const menuGet = () => {
               hidden: false,
               alwaysShow: true,
               redirect: '/framework/system-manage/user',
-              meta: { title: '系统管理', icon: 'c-menu-manage', hideIn: [], },
+              meta: { title: '系统管理', icon: 'c-menu-system-manage', hideIn: [], },
               children: [
                 {
-                  name: 'FrameworkDepartmentManage',
-                  path: 'department',
-                  component: 'framework/system-manage/user/index',
-                  hidden: false,
-                  meta: { title: '登录系统', icon: 'c-menu-department', hideIn: ['top'], },
-                },
-                {
-                  name: 'FrameworkDepartmentManage',
-                  path: 'department',
-                  component: 'framework/system-manage/user/index',
-                  hidden: false,
-                  meta: { title: '部门管理', icon: 'c-menu-department', hideIn: ['top'], },
-                },
-                {
-                  name: 'FrameworkUserManage',
+                  name: 'FrameworkSystemManageUser',
                   path: 'user',
                   component: 'framework/system-manage/user/index',
                   hidden: false,
-                  meta: { title: '用户管理', icon: 'c-menu-user', hideIn: ['top'], },
+                  meta: { title: '用户管理', icon: 'c-menu-system-manage-user', hideIn: ['top'], },
                 },
                 {
-                  name: 'FrameworkRoleManage',
-                  path: 'role',
-                  component: 'framework/system-manage/role/index',
+                  name: 'FrameworkSystemManageDepartment',
+                  path: 'department',
+                  component: 'framework/system-manage/department/index',
                   hidden: false,
-                  meta: { title: '角色管理', icon: 'c-menu-role', hideIn: ['top'], }
+                  meta: { title: '部门管理', icon: 'c-menu-system-manage-department', hideIn: ['top'], },
                 },
                 {
-                  name: 'FrameworkPermissionManage',
-                  path: 'permission',
-                  component: 'framework/system-manage/permission/index',
+                  name: 'FrameworkSystemManageAccess',
+                  path: 'access',
+                  component: 'framework/system-manage/access/index',
                   hidden: false,
-                  meta: { title: '权限管理', icon: 'c-menu-permission', hideIn: ['top'], }
+                  meta: { title: '访问管理', icon: 'c-menu-system-manage-access', hideIn: ['top'], }
                 },
                 {
-                  name: 'FrameworkPermissionManage',
-                  path: 'permission',
-                  component: 'framework/system-manage/permission/index',
+                  name: 'FrameworkSystemManageFile',
+                  path: 'file',
+                  component: 'framework/system-manage/file/index',
                   hidden: false,
-                  meta: { title: '文件管理', icon: 'c-menu-permission', hideIn: ['top'], }
+                  meta: { title: '文件管理', icon: 'c-menu-system-manage-file', hideIn: ['top'], }
                 },
               ]
             },
+            // 布局管理
             {
-              name: 'FrameworkAdaptation',
-              path: '/adaptaion-manage',
+              name: 'FrameworkLayoutManage',
+              path: '/layout-manage',
               component: 'ParentView',
+              redirect: '/layout-manage/adaptaion/normal',
               hidden: false,
               alwaysShow: true,
-              meta: { title: '适配管理', icon: 'c-menu-adaptaion', hideIn: [], },
+              meta: { title: '布局管理', icon: 'c-menu-layout-manage', hideIn: [], },
               children: [
                 {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
+                  name: 'FrameworkLayoutManageAdaptation',
+                  path: '/adaptaion',
+                  component: 'ParentView',
+                  redirect: '/layout-manage/adaptaion/normal',
                   hidden: false,
-                  meta: { title: '常规适配', icon: 'c-menu-big-screen', hideIn: ['top'], }
+                  alwaysShow: true,
+                  meta: { title: '多端适配', icon: 'c-menu-layout-manage-adaptaion', hideIn: ['top'], },
+                  children: [
+                    {
+                      name: 'FrameworkLayoutManageAdaptationNormal',
+                      path: 'normal',
+                      component: 'framework/layout-manage/adaptaion/normal/index',
+                      hidden: false,
+                      meta: { title: '常规适配', icon: 'c-menu-circle', hideIn: ['top'], }
+                    },
+                    {
+                      name: 'FrameworkLayoutManageAdaptationBigScreen',
+                      path: 'big-screen',
+                      component: 'framework/layout-manage/adaptaion/big-screen/index',
+                      hidden: false,
+                      meta: { title: '大屏适配', icon: 'c-menu-circle', hideIn: ['top'], }
+                    },
+                    {
+                      name: 'FrameworkLayoutManageAdaptaionResponsive',
+                      path: 'responsive',
+                      component: 'framework/layout-manage/adaptaion/responsive/index',
+                      hidden: false,
+                      meta: { title: '响应适配', icon: 'c-menu-circle', hideIn: ['top'], }
+                    },
+                    {
+                      name: 'FrameworkLayoutManageAdaptaionMobile',
+                      path: 'mobile',
+                      component: 'framework/layout-manage/adaptaion/mobile/index',
+                      hidden: false,
+                      meta: { title: '移动适配', icon: 'c-menu-circle', hideIn: ['top'], }
+                    },
+                  ],
                 },
                 {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
+                  name: 'FrameworkLayoutManageTheme',
+                  path: 'theme',
+                  component: 'framework/layout-manage/theme/index',
                   hidden: false,
-                  meta: { title: '大屏适配', icon: 'c-menu-big-screen', hideIn: ['top'], }
+                  meta: { title: '主题样式', icon: 'c-menu-layout-manage-theme', hideIn: ['top'], }
                 },
                 {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
+                  name: 'FrameworkLayoutManageNormal',
+                  path: 'normal',
+                  component: 'framework/layout-manage/normal/index',
                   hidden: false,
-                  meta: { title: '响应适配', icon: 'c-menu-big-screen', hideIn: ['top'], }
+                  meta: { title: '常规布局', icon: 'c-menu-layout-manage-normal', hideIn: ['top'], }
                 },
                 {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
+                  name: 'FrameworkLayoutManageShowHide',
+                  path: 'show-hide',
+                  component: 'framework/layout-manage/show-hide/index',
                   hidden: false,
-                  meta: { title: '移动适配', icon: 'c-menu-big-screen', hideIn: ['top'], }
-                },
-                {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
-                  hidden: false,
-                  meta: { title: '显示隐藏', icon: 'c-menu-big-screen', hideIn: ['top'], }
-                },
-              ],
-            },
-            {
-              name: 'FrameworkAdaptation',
-              path: '/adaptaion-manage',
-              component: 'ParentView',
-              hidden: false,
-              alwaysShow: true,
-              meta: { title: '文档管理', icon: 'c-menu-adaptaion', hideIn: [], },
-              children: [
-                {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
-                  hidden: false,
-                  meta: { title: '前端规范', icon: 'c-menu-big-screen', hideIn: ['top'], }
-                },
-                {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
-                  hidden: false,
-                  meta: { title: '前端支持', icon: 'c-menu-big-screen', hideIn: ['top'], }
-                },
-                {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
-                  hidden: false,
-                  meta: { title: '多方协同', icon: 'c-menu-big-screen', hideIn: ['top'], }
-                },
-              ],
-            },
-            {
-              name: 'FrameworkAdaptation',
-              path: '/adaptaion-manage',
-              component: 'ParentView',
-              hidden: false,
-              alwaysShow: true,
-              meta: { title: '布局管理', icon: 'c-menu-adaptaion', hideIn: [], },
-              children: [
-                {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
-                  hidden: false,
-                  meta: { title: '常规布局', icon: 'c-menu-big-screen', hideIn: ['top'], }
-                },
-                {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
-                  hidden: false,
-                  meta: { title: '菜单标签', icon: 'c-menu-big-screen', hideIn: ['top'], }
-                },
-                {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
-                  hidden: false,
-                  meta: { title: '主题样式', icon: 'c-menu-big-screen', hideIn: ['top'], }
-                },
-              ],
-            },
-            {
-              name: 'FrameworkAdaptation',
-              path: '/adaptaion-manage',
-              component: 'ParentView',
-              hidden: false,
-              alwaysShow: true,
-              meta: { title: '工具管理', icon: 'c-menu-adaptaion', hideIn: [], },
-              children: [
-                {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
-                  hidden: false,
-                  meta: { title: '组件', icon: 'c-menu-big-screen', hideIn: ['top'], }
-                },
-                {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
-                  hidden: false,
-                  meta: { title: '插件', icon: 'c-menu-big-screen', hideIn: ['top'], }
-                },
-                {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
-                  hidden: false,
-                  meta: { title: '指令', icon: 'c-menu-big-screen', hideIn: ['top'], }
-                },
-                {
-                  name: 'FrameworkBigScreen',
-                  path: 'big-screen',
-                  component: 'framework//permission/index',
-                  hidden: false,
-                  meta: { title: '函数', icon: 'c-menu-big-screen', hideIn: ['top'], }
+                  meta: { title: '显示隐藏', icon: 'c-menu-layout-manage-show-hide', hideIn: ['top'], }
                 },
               ],
             },

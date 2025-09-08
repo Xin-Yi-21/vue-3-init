@@ -1,6 +1,6 @@
 <template>
-  <div class="user-vue">
-    <c-card-tip>基础框架 - 系统管理 - 用户管理</c-card-tip>
+  <div class="access-vue">
+    <c-card-tip>基础框架 - 系统管理 - 访问管理</c-card-tip>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.user-vue {
+.access-vue {
   width: 100%;
   height: 100%;
 }

@@ -1,6 +1,6 @@
 <template>
-  <div class="user-vue">
-    <c-card-tip>基础框架 - 系统管理 - 用户管理</c-card-tip>
+  <div class="normal-vue">
+    <c-card-tip>基础框架 - 布局管理 - 多端适配 - 常规适配</c-card-tip>
   </div>
 </template>
 
@@ -11,11 +11,9 @@
 
 // # 二、模块功能
 // # 1、初始化
-// # (1) 初始化总调用
 function init() {
 
 }
-// ^
 // ^
 // ^
 
@@ -27,7 +25,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.user-vue {
+.normal-vue {
   width: 100%;
   height: 100%;
 }
