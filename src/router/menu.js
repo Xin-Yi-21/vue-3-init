@@ -288,6 +288,13 @@ export const menuGet = () => {
                   meta: { title: '访问管理', icon: 'c-menu-system-manage-access', hideIn: ['top'], }
                 },
                 {
+                  name: 'FrameworkSystemManageService',
+                  path: 'service',
+                  component: 'framework/system-manage/service/index',
+                  hidden: false,
+                  meta: { title: '服务管理', icon: 'c-menu-system-manage-service', hideIn: ['top'], }
+                },
+                {
                   name: 'FrameworkSystemManageFile',
                   path: 'file',
                   component: 'framework/system-manage/file/index',
