@@ -49,7 +49,7 @@ function handleEchartInfo() {
 // # 3、渲染echart
 function initEchart() {
   let option = {
-    title: { text: '水球图', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
+    title: { text: '水球图', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartCssV.fcp, fontWeight: 'bold', fontSize: 14 }, },
     series: [
       {
         type: "liquidFill",
@@ -104,7 +104,7 @@ function initEchart() {
 // # 4、导出echart
 function handleExportEchart() {
   let exportFileName = '水球图'
-  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartCssV.bg })
 }
 // ^
 // ^

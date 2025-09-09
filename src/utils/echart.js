@@ -362,9 +362,9 @@ const $settingStore = useSettingStore()
 export function $getLineEchartOption({ echartInfo, settingStore, getType, optionList }) {
   !settingStore && (settingStore = $settingStore)
   let option = {
-    title: { text: '', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
+    title: { text: '', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartCssV.fcp, fontWeight: 'bold', fontSize: 14 }, },
     grid: { top: 80, left: 50, right: 50, bottom: 5, containLabel: true, },
-    legend: { type: 'scroll', top: 30, orient: 'horizontal', width: '1000', height: '40', textStyle: { color: settingStore.theme.echartTheme.fcs }, },
+    legend: { type: 'scroll', top: 30, orient: 'horizontal', width: '1000', height: '40', textStyle: { color: settingStore.theme.echartCssV.fcs }, },
     tooltip: {
       trigger: 'axis',
       padding: [0, 0],
@@ -404,10 +404,10 @@ export function $getLineEchartOption({ echartInfo, settingStore, getType, option
     xAxis: [
       {
         type: 'category',
-        axisLine: { show: true, lineStyle: { color: settingStore.theme.echartTheme.bcp } },
-        axisTick: { show: true, lineStyle: { color: settingStore.theme.echartTheme.bcs }, alignWithLabel: true },
+        axisLine: { show: true, lineStyle: { color: settingStore.theme.echartCssV.bcp } },
+        axisTick: { show: true, lineStyle: { color: settingStore.theme.echartCssV.bcs }, alignWithLabel: true },
         axisLabel: {
-          show: true, color: settingStore.theme.echartTheme.fcp, align: 'center',
+          show: true, color: settingStore.theme.echartCssV.fcp, align: 'center',
           showMinLabel: true,
           showMaxLabel: true,
         },
@@ -417,17 +417,17 @@ export function $getLineEchartOption({ echartInfo, settingStore, getType, option
       {
         type: 'value',
         nameTextStyle: {
-          color: settingStore.theme.echartTheme.fcs,
+          color: settingStore.theme.echartCssV.fcs,
           fontSize: 14,
           fontWeight: 600,
           padding: [0, 0, 0, -30]
         },
         nameGap: 15,
         max: function (value) { return Math.ceil(value.max) },
-        axisLine: { show: true, lineStyle: { color: settingStore.theme.echartTheme.bcp } },
+        axisLine: { show: true, lineStyle: { color: settingStore.theme.echartCssV.bcp } },
         axisTick: { show: false },
-        axisLabel: { color: settingStore.theme.echartTheme.fcp, fontSize: 14 },
-        splitLine: { show: true, lineStyle: { color: settingStore.theme.echartTheme.bcs, type: 'dashed' } }
+        axisLabel: { color: settingStore.theme.echartCssV.fcp, fontSize: 14 },
+        splitLine: { show: true, lineStyle: { color: settingStore.theme.echartCssV.bcs, type: 'dashed' } }
       },
     ],
     series: [
@@ -445,9 +445,9 @@ export function $getLineEchartOption({ echartInfo, settingStore, getType, option
 export function $getCrossLineEchartOption({ echartInfo, settingStore, getType, optionList, bandData }) {
   !settingStore && (settingStore = $settingStore)
   let option = {
-    title: { text: '', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
+    title: { text: '', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartCssV.fcp, fontWeight: 'bold', fontSize: 14 }, },
     grid: { top: 80, left: 50, right: 50, bottom: 5, containLabel: true, },
-    legend: { type: 'scroll', top: 30, orient: 'horizontal', width: '1000', height: '40', textStyle: { color: settingStore.theme.echartTheme.fcs }, },
+    legend: { type: 'scroll', top: 30, orient: 'horizontal', width: '1000', height: '40', textStyle: { color: settingStore.theme.echartCssV.fcs }, },
     tooltip: {
       trigger: 'axis',
       padding: [0, 0],
@@ -487,10 +487,10 @@ export function $getCrossLineEchartOption({ echartInfo, settingStore, getType, o
     xAxis: [
       {
         type: 'category',
-        axisLine: { show: true, lineStyle: { color: settingStore.theme.echartTheme.bcp } },
-        axisTick: { show: true, lineStyle: { color: settingStore.theme.echartTheme.bcs }, alignWithLabel: true },
+        axisLine: { show: true, lineStyle: { color: settingStore.theme.echartCssV.bcp } },
+        axisTick: { show: true, lineStyle: { color: settingStore.theme.echartCssV.bcs }, alignWithLabel: true },
         axisLabel: {
-          show: true, color: settingStore.theme.echartTheme.fcp, align: 'center',
+          show: true, color: settingStore.theme.echartCssV.fcp, align: 'center',
           showMinLabel: true,
           showMaxLabel: true,
         },
@@ -500,17 +500,17 @@ export function $getCrossLineEchartOption({ echartInfo, settingStore, getType, o
       {
         type: 'value',
         nameTextStyle: {
-          color: settingStore.theme.echartTheme.fcs,
+          color: settingStore.theme.echartCssV.fcs,
           fontSize: 14,
           fontWeight: 600,
           padding: [0, 0, 0, -30]
         },
         nameGap: 15,
         max: function (value) { return Math.ceil(value.max) },
-        axisLine: { show: true, lineStyle: { color: settingStore.theme.echartTheme.bcp } },
+        axisLine: { show: true, lineStyle: { color: settingStore.theme.echartCssV.bcp } },
         axisTick: { show: false },
-        axisLabel: { color: settingStore.theme.echartTheme.fcp, fontSize: 14 },
-        splitLine: { show: true, lineStyle: { color: settingStore.theme.echartTheme.bcs, type: 'dashed' } }
+        axisLabel: { color: settingStore.theme.echartCssV.fcp, fontSize: 14 },
+        splitLine: { show: true, lineStyle: { color: settingStore.theme.echartCssV.bcs, type: 'dashed' } }
       },
     ],
     series: [
@@ -545,9 +545,9 @@ export function $getCrossLineEchartOption({ echartInfo, settingStore, getType, o
 export function $getBarEchartOption({ echartInfo, settingStore, getType, optionList }) {
   !settingStore && (settingStore = $settingStore)
   let option = {
-    title: { text: '', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
+    title: { text: '', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartCssV.fcp, fontWeight: 'bold', fontSize: 14 }, },
     grid: { top: 70, left: 50, right: 50, bottom: 10, containLabel: true, },
-    legend: { top: 30, textStyle: { color: settingStore.theme.echartTheme.fcs }, },
+    legend: { top: 30, textStyle: { color: settingStore.theme.echartCssV.fcs }, },
     tooltip: {
       trigger: 'axis',
       backgroundColor: 'rgba(255,255,255,0.55)',
@@ -588,10 +588,10 @@ export function $getBarEchartOption({ echartInfo, settingStore, getType, optionL
     xAxis: [
       {
         type: 'category',
-        axisLine: { show: true, lineStyle: { color: settingStore.theme.echartTheme.bcp } },
-        axisTick: { show: true, lineStyle: { color: settingStore.theme.echartTheme.bcs }, alignWithLabel: true },
+        axisLine: { show: true, lineStyle: { color: settingStore.theme.echartCssV.bcp } },
+        axisTick: { show: true, lineStyle: { color: settingStore.theme.echartCssV.bcs }, alignWithLabel: true },
         axisLabel: {
-          show: true, color: settingStore.theme.echartTheme.fcp, align: 'center',
+          show: true, color: settingStore.theme.echartCssV.fcp, align: 'center',
           showMinLabel: true,
           showMaxLabel: true,
         },
@@ -601,17 +601,17 @@ export function $getBarEchartOption({ echartInfo, settingStore, getType, optionL
       {
         type: 'value',
         nameTextStyle: {
-          color: settingStore.theme.echartTheme.fcs,
+          color: settingStore.theme.echartCssV.fcs,
           fontSize: 14,
           fontWeight: 600,
           padding: [0, 0, 0, -30]
         },
         nameGap: 15,
         max: function (value) { return Math.ceil(value.max) },
-        axisLine: { show: true, lineStyle: { color: settingStore.theme.echartTheme.bcp } },
+        axisLine: { show: true, lineStyle: { color: settingStore.theme.echartCssV.bcp } },
         axisTick: { show: false },
-        axisLabel: { color: settingStore.theme.echartTheme.fcp, fontSize: 14 },
-        splitLine: { show: true, lineStyle: { color: settingStore.theme.echartTheme.bcs, type: 'dashed' } }
+        axisLabel: { color: settingStore.theme.echartCssV.fcp, fontSize: 14 },
+        splitLine: { show: true, lineStyle: { color: settingStore.theme.echartCssV.bcs, type: 'dashed' } }
       },
     ],
     series: [
@@ -629,9 +629,9 @@ export function $getBarEchartOption({ echartInfo, settingStore, getType, optionL
 export function $getDateHeatmapEchartOption({ echartInfo, settingStore, getType, optionList }) {
   !settingStore && (settingStore = $settingStore)
   let option = {
-    title: { text: '', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
+    title: { text: '', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartCssV.fcp, fontWeight: 'bold', fontSize: 14 }, },
     grid: { top: 70, left: 50, right: 50, bottom: 10, containLabel: true, },
-    legend: { top: 30, textStyle: { color: settingStore.theme.echartTheme.fcs }, },
+    legend: { top: 30, textStyle: { color: settingStore.theme.echartCssV.fcs }, },
     tooltip: {},
     xAxis: [
       {

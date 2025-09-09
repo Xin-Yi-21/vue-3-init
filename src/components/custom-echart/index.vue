@@ -181,7 +181,7 @@ function handleCopyData() {
 function handleExportImage(type) {
   if (type === 'normal') {
     let newExportFileName = (props.eInfo.exportFileName || '') + '图'
-    proxy.$exportEchartImage(props.eInfo.instance, { name: newExportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+    proxy.$exportEchartImage(props.eInfo.instance, { name: newExportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartCssV.bg })
   }
   if (type === 'fullscreen') {
     let newExportFileName = (props.eInfoFs.exportFileName || '') + '图'

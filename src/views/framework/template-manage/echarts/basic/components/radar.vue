@@ -80,7 +80,7 @@ function handleEchartInfo() {
 // # 3、渲染echart
 function initEchart() {
   let option = {
-    title: { text: '雷达图', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
+    title: { text: '雷达图', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartCssV.fcp, fontWeight: 'bold', fontSize: 14 }, },
     grid: { top: 70, left: 50, right: 50, bottom: 10, containLabel: true, },
     tooltip: {
       trigger: 'item',
@@ -106,7 +106,7 @@ function initEchart() {
         return start + content + end
       }
     },
-    legend: { top: 30, icon: 'diamond', textStyle: { color: settingStore.theme.echartTheme.fcs, }, itemWidth: 14, itemHeight: 14, },
+    legend: { top: 30, icon: 'diamond', textStyle: { color: settingStore.theme.echartCssV.fcs, }, itemWidth: 14, itemHeight: 14, },
     radar: {
       splitNumber: 5,
       splitLine: { show: true, },
@@ -115,7 +115,7 @@ function initEchart() {
         show: true,
         fontSize: 14,
         fontWeight: "bold",
-        color: settingStore.theme.echartTheme.fcs,
+        color: settingStore.theme.echartCssV.fcs,
       },
       axisNameGap: 3,
       radius: 90,
@@ -130,7 +130,7 @@ function initEchart() {
 // # 4、导出echart
 function handleExportEchart() {
   let exportFileName = '雷达图'
-  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartCssV.bg })
 }
 // ^
 // # 三、生命周期

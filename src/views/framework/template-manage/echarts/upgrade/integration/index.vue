@@ -266,7 +266,7 @@ function handleCopyData() {
 // # (3) 导出图片
 function handleExportImage() {
   let exportFileName = (echartInfo.value.exportFileName || '') + '图'
-  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartCssV.bg })
 }
 // ^
 // # (4) 导出表格

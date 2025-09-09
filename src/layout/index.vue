@@ -123,7 +123,6 @@ onUnmounted(() => {
           width: 100%;
           height: 100%;
           background-color: var(--bg-card);
-          overflow: hidden;
         }
 
         // 滚动条大小

@@ -162,10 +162,10 @@ function getWindInfo(data, directionsLRV) {
 // # 3、渲染echart
 function initEchart() {
   let option = {
-    title: { text: '风向玫瑰图', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
+    title: { text: '风向玫瑰图', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartCssV.fcp, fontWeight: 'bold', fontSize: 14 }, },
     legend: {
       top: 30,
-      textStyle: { color: settingStore.theme.echartTheme.fcs },
+      textStyle: { color: settingStore.theme.echartCssV.fcs },
       data: echartInfo.value.lData
     },
     tooltip: {
@@ -227,7 +227,7 @@ function initEchart() {
 // # 4、导出echart
 function handleExportEchart() {
   let exportFileName = '风向玫瑰图'
-  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartCssV.bg })
 }
 // ^
 // ^

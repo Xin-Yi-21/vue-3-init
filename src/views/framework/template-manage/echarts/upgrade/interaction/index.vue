@@ -290,7 +290,7 @@ function handleEchartPointToolboxClick(e, type) {
         if (k === type && k !== 'myClear') {
           toolbox[k].iconStyle = { color: settingStore.theme.themeColor, borderColor: settingStore.theme.themeColor, }
         } else {
-          toolbox[k].iconStyle = { color: settingStore.theme.echartTheme.bcp, borderColor: settingStore.theme.echartTheme.bcp }
+          toolbox[k].iconStyle = { color: settingStore.theme.echartCssV.bcp, borderColor: settingStore.theme.echartCssV.bcp }
         }
       }
     }
@@ -369,7 +369,7 @@ function handleEchartIconStyle(iconName) {
   if ((iconName === 'emphasis' || iconName === currentEchartOperate.value) && iconName !== 'myClear') {
     return { color: settingStore.themeColor, borderColor: settingStore.themeColor }
   } else {
-    return { color: settingStore.theme.echartTheme.bcp, borderColor: settingStore.theme.echartTheme.bcp }
+    return { color: settingStore.theme.echartCssV.bcp, borderColor: settingStore.theme.echartCssV.bcp }
   }
 }
 // ^

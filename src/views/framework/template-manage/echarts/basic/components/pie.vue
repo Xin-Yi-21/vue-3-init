@@ -100,7 +100,7 @@ function handleEchartInfo() {
 // # 3、渲染echart
 function initEchart() {
   let option = {
-    title: { text: '扇形图', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
+    title: { text: '扇形图', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartCssV.fcp, fontWeight: 'bold', fontSize: 14 }, },
     grid: { top: 70, left: 50, right: 50, bottom: 10, containLabel: true, },
     tooltip: {
       trigger: 'item',
@@ -123,7 +123,7 @@ function initEchart() {
         return start + content + end
       }
     },
-    legend: { top: 30, icon: 'circle', textStyle: { color: settingStore.theme.echartTheme.fcs, }, itemWidth: 14, itemHeight: 14, },
+    legend: { top: 30, icon: 'circle', textStyle: { color: settingStore.theme.echartCssV.fcs, }, itemWidth: 14, itemHeight: 14, },
     avoidLabelOverlap: true,
     series: echartInfo.value.sData
   }
@@ -133,7 +133,7 @@ function initEchart() {
 // # 4、导出echart
 function handleExportEchart() {
   let exportFileName = '扇形图'
-  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartCssV.bg })
 }
 // ^
 // ^

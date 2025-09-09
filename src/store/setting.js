@@ -122,7 +122,7 @@ const useSettingStore = defineStore('setting', {
         elementCssV,
         customCssV
       }
-      // console.log('查settingStore.theme', this.theme)
+      console.log('查settingStore.theme', this.theme)
     },
     // 设置网页标题
     setTitle(title) {

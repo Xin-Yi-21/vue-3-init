@@ -47,7 +47,7 @@ function handleEchartInfo() {
 // # 3、渲染echart
 function initEchart() {
   let option = {
-    title: { text: '仪表图', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
+    title: { text: '仪表图', top: 5, left: 'center', textStyle: { color: settingStore.theme.echartCssV.fcp, fontWeight: 'bold', fontSize: 14 }, },
     series: [{
       type: 'gauge',
       center: ['50%', '60%'],
@@ -73,7 +73,7 @@ function initEchart() {
 // # 4、导出echart
 function handleExportEchart() {
   let exportFileName = '水球图'
-  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartTheme.bg })
+  proxy.$exportEchartImage(echartInfo.value.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: settingStore.theme.echartCssV.bg })
 }
 // ^
 // ^
@@ -158,7 +158,7 @@ export default {
       chartDom && chartDom.removeAttribute('_echarts_instance_')
       let myChart = echarts.getInstanceByDom(chartDom) || echarts.init(chartDom)
       let option = {
-        title: { text: '仪表图', top: 5, left: 'center', textStyle: { color: this.$echartTheme.fcp, fontWeight: 'bold', fontSize: 14 }, },
+        title: { text: '仪表图', top: 5, left: 'center', textStyle: { color: this.$echartCssV.fcp, fontWeight: 'bold', fontSize: 14 }, },
         series: [{
           type: 'gauge',
           center: ['50%', '60%'],
@@ -189,7 +189,7 @@ export default {
     // 4、导出echart
     handleExportEchart() {
       let exportFileName = '折线图'
-      this.$exportEchartImg(this.echartInfo.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: this.$echartTheme.bg })
+      this.$exportEchartImg(this.echartInfo.instance, { name: exportFileName, type: 'png', pixelRatio: 10, backgroundColor: this.$echartCssV.bg })
     },
   },
 

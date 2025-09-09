@@ -230,29 +230,92 @@ export const menuGet = () => {
               component: 'ParentView',
               hidden: false,
               alwaysShow: true,
-              redirect: '/framework/template-manage/element',
+              redirect: '/framework/template-manage/element/comprehensive',
               meta: { title: '模版管理', icon: 'c-menu-template-manage', hideIn: [], clickIn: false },
               children: [
                 {
                   name: 'FrameworkTemplateManageElement',
                   path: 'element',
-                  component: 'framework/template-manage/element/index',
+                  component: 'ParentView',
+                  redirect: '/framework/template-manage/element/comprehensive',
                   hidden: false,
-                  meta: { title: 'element 模板', icon: 'c-menu-template-manage-element', hideIn: ['top'], }
+                  meta: { title: 'element 模板', icon: 'c-menu-template-manage-element', hideIn: ['top'], },
+                  children: [
+                    {
+                      name: 'FrameworkTemplateManageElementComprehensive',
+                      path: 'comprehensive',
+                      component: 'framework/template-manage/element/comprehensive/index',
+                      hidden: false,
+                      meta: { title: '综合模版', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkTemplateManageElementTypical',
+                      path: 'typical',
+                      component: 'framework/template-manage/element/typical/index',
+                      hidden: false,
+                      meta: { title: '典型模版', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                  ],
                 },
                 {
                   name: 'FrameworkTemplateManageEcharts',
                   path: 'echarts',
-                  component: 'framework/template-manage/echarts/index',
+                  component: 'framework/template-manage/echarts/basic',
                   hidden: false,
-                  meta: { title: 'echarts 模板', icon: 'c-menu-template-manage-echarts', hideIn: ['top'], }
+                  meta: { title: 'echarts 模板', icon: 'c-menu-template-manage-echarts', hideIn: ['top'], },
+                  children: [
+                    {
+                      name: 'FrameworkTemplateManageEchartsBasic',
+                      path: 'basic',
+                      component: 'framework/template-manage/echarts/basic/index',
+                      hidden: false,
+                      meta: { title: '基础模版', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkTemplateManageEchartsUpgrade',
+                      path: 'upgrade',
+                      component: 'framework/template-manage/echarts/upgrade/index',
+                      hidden: false,
+                      meta: { title: '进阶模版', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                  ],
                 },
                 {
                   name: 'FrameworkTemplateManageMap',
                   path: 'map',
-                  component: 'framework/template-manage/map/index',
+                  component: 'framework/template-manage/map/station',
                   hidden: false,
-                  meta: { title: 'map 模版', icon: 'c-menu-template-manage-map', hideIn: ['top'], }
+                  meta: { title: 'map 模版', icon: 'c-menu-template-manage-map', hideIn: ['top'], },
+                  children: [
+                    {
+                      name: 'FrameworkTemplateManageMapStation',
+                      path: 'station',
+                      component: 'framework/template-manage/map/station/index',
+                      hidden: false,
+                      meta: { title: '站点地图', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkTemplateManageMapMeteorology',
+                      path: 'meteorology',
+                      component: 'framework/template-manage/map/meteorology/index',
+                      hidden: false,
+                      meta: { title: '气象地图', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkTemplateManageMapTyphoon',
+                      path: 'typhoon',
+                      component: 'framework/template-manage/map/typhoon/index',
+                      hidden: false,
+                      meta: { title: '台风地图', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                    {
+                      name: 'FrameworkTemplateManageMapThreeDimensional',
+                      path: 'three-dimensional',
+                      component: 'framework/template-manage/map/three-dimensional/index',
+                      hidden: false,
+                      meta: { title: '3D地图', icon: 'c-menu-circle', hideIn: ['top'], },
+                    },
+                  ],
                 },
               ]
             },
