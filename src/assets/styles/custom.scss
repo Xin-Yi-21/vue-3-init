@@ -1,4 +1,64 @@
-// 一、布局类
+// 一、布局
+.c-row {
+  width: 100%;
+  display: flex;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  &[class*='efi'] {
+    height: var(--ch);
+    overflow: visible;
+    margin-bottom: 20px;
+
+    .el-form-item {
+      margin-bottom: 0 !important;
+
+      .el-form-item__content {
+        margin-left: 0 !important;
+      }
+    }
+  }
+
+  &[class*='aic'] {
+    align-items: center;
+  }
+
+  &[class*='fdc'] {
+    flex-direction: column;
+  }
+}
+.c-column {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.c-label {
+  width: var(--label-width, 110px);
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  padding-right: 10px;
+  text-align: right;
+  color: var(--fcs);
+  font-size: var(--cfs);
+  font-weight: 400;
+}
+
+.c-content {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  color: var(--fct);
+  font-size: var(--cfs);
+}
+
+// 二、常用分区
 // 搜索
 .c-search {
   width: calc(100% - 20px);
@@ -106,85 +166,13 @@
     border-bottom: 1px solid var(--bc);
   }
 
-  .c-result-content {
+  .c-result-main {
     width: 100%;
     flex: 1;
   }
-
-  .c-result-bottom-tool {
-    display: flex;
-    align-items: center;
-  }
 }
 
-// 常用行属性
-.c-row {
-  width: 100%;
-  display: flex;
-  flex-shrink: 0;
-  overflow: hidden;
-
-  &[class*='efi'] {
-    height: var(--ch);
-    overflow: visible;
-    margin-bottom: 20px;
-
-    .el-form-item {
-      margin-bottom: 0 !important;
-
-      .el-form-item__content {
-        margin-left: 0 !important;
-      }
-    }
-  }
-
-  &[class*='aic'] {
-    align-items: center;
-  }
-
-  &[class*='fdc'] {
-    flex-direction: column;
-  }
-}
-
-.c-column {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  align-items: center;
-}
-
-.c-label {
-  width: var(--label-width, 110px);
-  height: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-shrink: 0;
-  padding-right: 10px;
-  text-align: right;
-  color: var(--fcs);
-  font-size: var(--cfs);
-  font-weight: 400;
-}
-
-.c-content {
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  display: inline-flex;
-  align-items: center;
-  color: var(--fct);
-  font-size: var(--cfs);
-}
-
-.c-between-line {
-  text-align: center;
-  line-height: var(--ch);
-  color: var(--bcs);
-}
-
-// 二、表单类
+// 三、表单
 // 表单
 .c-form {
   display: flex;
@@ -267,7 +255,139 @@
     }
   }
 }
+// 确认消息框
+.c-message-confirm {
+  padding: 0 !important;
+  z-index: 999;
 
+  .el-message-box__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    padding: 0 !important;
+
+    .el-message-box__title {
+      margin-left: 10px;
+      font-weight: 700;
+    }
+
+    border-bottom: 1px solid var(--bcs);
+
+    .el-message-box__headerbtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      top: 0;
+
+      .el-icon:hover {
+        color: var(--tc);
+      }
+    }
+  }
+
+  .el-message-box__content {
+    overflow: hidden;
+
+    .el-message-box__container {
+      display: flex;
+      align-items: center;
+      min-height: 30px;
+      line-height: 30px;
+      margin: 10px;
+
+      .el-message-box-icon--warning {
+        color: #ff6100;
+      }
+    }
+
+    .el-message-box__message {
+      p {
+        margin-top: 0px;
+        font-size: 14px;
+        font-weight: 700;
+        word-break: break-all;
+      }
+    }
+  }
+
+  .el-message-box__btns {
+    padding: 0 15px;
+    margin-bottom: 10px;
+
+    .el-button {
+      height: 34px !important;
+
+      &:last-child {
+        background: var(--tc);
+        border-color: var(--tc);
+        margin-left: 15px;
+
+        &:hover {
+          border-color: var(--tc-light-3);
+          background-color: var(--tc-light-3);
+        }
+      }
+    }
+  }
+}
+// 单输入消息框
+.c-message-prompt {
+  z-index: 999;
+
+  .el-message-box__header {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    height: 40px;
+
+    .el-message-box__title {
+      margin-left: 10px;
+      font-weight: 700;
+    }
+
+    border-bottom: 1px solid #efefef;
+
+    .el-message-box__headerbtn {
+      top: 12px;
+    }
+  }
+
+  .el-message-box__content {
+    .el-message-box__container {
+      display: flex;
+      align-items: center;
+      min-height: 30px;
+      line-height: 30px;
+    }
+
+    .el-message-box__message {
+      p {
+        margin-top: 3px;
+        font-size: 14px;
+        font-weight: 700;
+        word-break: break-all;
+      }
+    }
+  }
+
+  .el-message-box__btns {
+    padding: 0 15px;
+
+    .el-button {
+      &:last-child {
+        background: var(--themeColor);
+        border-color: var(--themeColor);
+
+        &:hover {
+          border-color: rgba(85, 199, 145, 0.6);
+          background-color: rgba(85, 199, 145, 0.6);
+        }
+      }
+    }
+  }
+}
 // el-select 多选
 .c-multiple-select {
   height: 100%;
@@ -320,8 +440,33 @@
     }
   }
 }
+// 表单特殊验证：单个el-form-item样式
+.c-efi-se {
+  &.is-error {
+    .c-normal-content {
+      display: none;
+    }
+  }
+}
+// 表单特殊验证：悬浮提示样式
+.c-error-tip {
+  background-color: rgba(245, 108, 108) !important;
+  color: #fff !important;
+  border: 1px solid var(--bcp) !important;
+  opacity: 0.9;
 
-// 表单必填验证：*号样式
+  .el-popper__arrow {
+    position: absolute;
+
+    &::before,
+    &::after {
+      background-color: rgba(245, 108, 108) !important;
+
+      border-color: var(--bcp) !important;
+    }
+  }
+}
+// 表单模拟必填验证：*号样式
 .c-require {
   &.el-form-item {
     .el-form-item__label {
@@ -341,36 +486,14 @@
     }
   }
 }
-
-// 表单特殊验证：单个el-form-item样式
-.c-efi-se {
-  &.is-error {
-    .c-normal-content {
-      display: none;
-    }
-  }
+// 表单模拟时间框连接线
+.c-between-line {
+  text-align: center;
+  line-height: var(--ch);
+  color: var(--bcs);
 }
 
-// 表单特殊验证：悬浮提示样式
-.c-error-tip {
-  background-color: rgba(245, 108, 108) !important;
-  color: #fff !important;
-  border: 1px solid var(--bcp) !important;
-  opacity: 0.9;
-
-  .el-popper__arrow {
-    position: absolute;
-
-    &::before,
-    &::after {
-      background-color: rgba(245, 108, 108) !important;
-
-      border-color: var(--bcp) !important;
-    }
-  }
-}
-
-// 二、表格
+// 四、表格
 // 自定义表格
 .c-table {
   &.el-table {
@@ -409,7 +532,6 @@
     }
   }
 }
-
 // 一对一表格
 .c-desc-table {
   width: calc(100% - 20px);
@@ -566,8 +688,7 @@
     }
   }
 }
-
-// 可编辑表格列：编辑样式 + 表单验证样式
+// 可编辑表格列：编辑 + 表单验证
 .c-table-update-column:not(th) {
   padding: 0 !important;
   height: 39px;
@@ -608,7 +729,7 @@
   }
 }
 
-// 三、弹出类
+// 五、弹框
 // 模态框
 .c-dialog {
   overflow: hidden;
@@ -793,143 +914,13 @@
     }
   }
 }
-
-// 确认消息框
-.c-message-confirm {
-  padding: 0 !important;
-  z-index: 999;
-
-  .el-message-box__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 40px;
-    padding: 0 !important;
-
-    .el-message-box__title {
-      margin-left: 10px;
-      font-weight: 700;
-    }
-
-    border-bottom: 1px solid var(--bcs);
-
-    .el-message-box__headerbtn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      top: 0;
-
-      .el-icon:hover {
-        color: var(--tc);
-      }
-    }
-  }
-
-  .el-message-box__content {
-    overflow: hidden;
-
-    .el-message-box__container {
-      display: flex;
-      align-items: center;
-      min-height: 30px;
-      line-height: 30px;
-      margin: 10px;
-
-      .el-message-box-icon--warning {
-        color: #ff6100;
-      }
-    }
-
-    .el-message-box__message {
-      p {
-        margin-top: 0px;
-        font-size: 14px;
-        font-weight: 700;
-        word-break: break-all;
-      }
-    }
-  }
-
-  .el-message-box__btns {
-    padding: 0 15px;
-    margin-bottom: 10px;
-
-    .el-button {
-      height: 34px !important;
-
-      &:last-child {
-        background: var(--tc);
-        border-color: var(--tc);
-        margin-left: 15px;
-
-        &:hover {
-          border-color: var(--tc-light-3);
-          background-color: var(--tc-light-3);
-        }
-      }
-    }
-  }
+.c-popover {
+  width: auto !important;
+  padding: 9px !important;
 }
 
-// 单输入消息框
-.c-message-prompt {
-  z-index: 999;
-
-  .el-message-box__header {
-    display: flex;
-    align-items: center;
-    padding: 0;
-    height: 40px;
-
-    .el-message-box__title {
-      margin-left: 10px;
-      font-weight: 700;
-    }
-
-    border-bottom: 1px solid #efefef;
-
-    .el-message-box__headerbtn {
-      top: 12px;
-    }
-  }
-
-  .el-message-box__content {
-    .el-message-box__container {
-      display: flex;
-      align-items: center;
-      min-height: 30px;
-      line-height: 30px;
-    }
-
-    .el-message-box__message {
-      p {
-        margin-top: 3px;
-        font-size: 14px;
-        font-weight: 700;
-        word-break: break-all;
-      }
-    }
-  }
-
-  .el-message-box__btns {
-    padding: 0 15px;
-
-    .el-button {
-      &:last-child {
-        background: var(--themeColor);
-        border-color: var(--themeColor);
-
-        &:hover {
-          border-color: rgba(85, 199, 145, 0.6);
-          background-color: rgba(85, 199, 145, 0.6);
-        }
-      }
-    }
-  }
-}
-
-// echart tooltip样式
+// 六、显示效果
+// echart tooltip
 .c-echart-tooltip {
   min-width: 100px;
   min-height: 50px;
@@ -990,8 +981,6 @@
     }
   }
 }
-
-// 四、加载类
 // el-scrollbar
 .c-el-scrollbar {
   width: 100%;
@@ -1024,9 +1013,4 @@
       opacity: 1;
     }
   }
-}
-
-.c-popover {
-  width: auto !important;
-  padding: 9px !important;
 }

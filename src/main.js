@@ -109,8 +109,6 @@ setConfig().then(async (cEnv) => {
     const cText = (await import('@/components/custom-text')).default
     // // const cPreview = (await import('@/components/custom-preview')).default
     // const cFileList = (await import('@/components/custom-file-list')).default
-    const cCardCircle = (await import('@/components/custom-card-circle')).default
-    const cCardRectangle = (await import('@/components/custom-card-rectangle')).default
     const cCardTitle = (await import('@/components/custom-card-title')).default
     const cCardHeader = (await import('@/components/custom-card-header')).default
     const cCardTip = (await import('@/components/custom-card-tip')).default
@@ -130,8 +128,6 @@ setConfig().then(async (cEnv) => {
     app.component('cText', cText)
     // app.component('cPreview', cPreview)
     // app.component('cFileList', cFileList)
-    app.component('cCardCircle', cCardCircle)
-    app.component('cCardRectangle', cCardRectangle)
     app.component('cCardTitle', cCardTitle)
     app.component('cCardHeader', cCardHeader)
     app.component('cCardTip', cCardTip)
