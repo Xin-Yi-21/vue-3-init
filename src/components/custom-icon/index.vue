@@ -1,5 +1,5 @@
 <template>
-  <i ref="cIconRef" :class="['c-icon', i, button ? 'is-button' : '', disabled ? 'is-disabled' : '', loading ? 'is-loading' : '',]" :style="`--color:${color};--font-size:${size}px;--cursor:${cursor};--hoverColor:${hoverColor || color};`">
+  <i ref="cIconRef" :class="['c-icon', i, button ? 'is-button' : '', disabled ? 'is-disabled' : '', loading ? 'is-loading' : '',]" :style="`--color:${color};--font-size:${size}px;--cursor:${cursor};--hoverColor:${hoverColor || color}; color:${color};font-size:${size}px;cursor:${cursor};`">
     <el-tooltip v-if="tip && showType == 'el'" :popper-class="['c-icon-tooltip', tipClass]" v-bind="$attrs" :placement="placement" :offset="offset" :hide-after="1">
       <template #default>
         <svg-icon :icon-class="i"></svg-icon>
@@ -156,7 +156,7 @@ watch(() => props.loading, (loading) => {
 
   &.is-button {
     &:not(.is-disabled):not(.is-loading) {
-      cursor: pointer;
+      cursor: pointer !important;
 
       &:hover {
         transform: scale(1.05); // 轻微放大

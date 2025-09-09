@@ -52,7 +52,7 @@
     </div>
     <div class="c-result" v-load="{ loading: loading.result, onCancel: () => loading.result = false }">
       <!-- v-animation="{ class: 'c-a-fade-in', isRefresh: !isLoading, timeout: 1000 }" -->
-      <el-table :data="table.data" border class="c-table" id="c-table" stripe @selection-change="handleChangeSelection">
+      <el-table :data="table.data" border class="c-table" id="c-table" stripe @selection-change="handleChangeSelected">
         <el-table-column type="selection" align="center" width="60" />
         <!-- <el-table-column type="index" label="序号" align="center" width="60" :index="i => (i + 1).toString().padStart(2, '0')" /> -->
         <el-table-column label="序号" prop="index" align="center" width="60" />
@@ -113,13 +113,13 @@
         </el-table-column>
       </el-table>
       <c-pagination v-model:currentPageNum="form.currentPageNum" v-model:currentPageSize="form.currentPageSize" :total="table.total" :selectedOptions="{ show: true, total: table.selected.length, alwaysShow: false, trigger: 'hover' }" :pageSizeOptions="{ isCustom: true, isAll: true, isUpdate: true }" @getTable="getTableInfo('byPagination')">
-        <template #selected> <c-selection v-bind="tableSelection" onlySelected></c-selection> </template>
+        <template #selected> <c-selection v-bind="table.selection" onlySelected></c-selection> </template>
       </c-pagination>
     </div>
 
     <c-confirm ref="confirmRef">
       <template #default>
-        <c-selection v-bind="tableSelection" class="w-500px" v-if="confirmRef?.nature == 'selection'"></c-selection>
+        <c-selection v-bind="table.selection" class="w-500px" v-if="confirmRef?.nature == 'selection'"></c-selection>
         <c-audit ref="auditRef" v-if="confirmRef?.nature == 'audit'" :info="auditInfo"></c-audit>
       </template>
     </c-confirm>
@@ -191,13 +191,16 @@ function setDefault() {
   form.value = Object.assign({}, form.value, newForm)
 }
 // ^
-// # (3) 获取表格数据 
+// ^
+// # 2、获取表格数据 
 const table = ref({
   data: [],
   total: 0,
-  selected: [],     // 选中的数据
-  filterType: '',
+  selected: [],
+  selectBy: '',
+  selection: handleSelection()
 })
+// # (1) 获取表格信息
 async function getTableInfo(type) {
   try {
     loading.value.result = true
@@ -218,7 +221,8 @@ async function getTableInfo(type) {
     loading.value.result = false
   }
 }
-
+// ^
+// # (2) 处理表格信息
 function handleTableInfo() {
   // 查询参数
   let params = cached.value.tSearch
@@ -233,7 +237,7 @@ function handleTableInfo() {
 }
 // ^
 // ^
-// # 2、模态框 
+// # 3、模态框 
 const operateDialog = ref({})
 // # (1) 新增 
 function handleAdd() {
@@ -243,21 +247,18 @@ function handleAdd() {
 // ^
 // # (2) 查看
 function handleView(rowInfo) {
-  console.log('查看',)
   let newOperateDialog = { visible: true, operate: 'view', info: JSON.parse(JSON.stringify(rowInfo)), }
   operateDialog.value = newOperateDialog
 }
 // ^
 // # (3) 编辑
 function handleUpdate(rowInfo) {
-  console.log('编辑',)
   let newOperateDialog = { visible: true, operate: 'update', info: JSON.parse(JSON.stringify(rowInfo)), }
   operateDialog.value = newOperateDialog
 }
 // ^
 // # (4) 删除
 function handleDelete(rowInfo) {
-  console.log('删除',)
   proxy.$confirm('确定删除吗？', '确认消息', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', customClass: 'c-message-confirm' }).then(() => {
     let params = { id: rowInfo.id }
     const res = xxxDelete(params)
@@ -276,7 +277,7 @@ async function handleConfirm(rowInfo) {
 }
 // ^
 // ^
-// # 3、顶部功能
+// # 4、顶部功能
 // # (1) 文件下载
 async function handleDownloadFile() {
   try {
@@ -347,13 +348,13 @@ async function handleDataExport() {
 async function handleBatchSumbit() {
   try {
     if (!table.value.selected?.length) { return proxy.$message.warning('请至少选择一条数据进行批量操作！') }
-    table.value.filterType = '批量提交'
-    if (!tableSelection.value.selectedE?.tableData?.length) { return proxy.$message.warning('当前选中数据不符合条件！') }
+    table.value.selectBy = '批量提交'
+    if (!table.value.selection.selectedE?.tableData?.length) { return proxy.$message.warning('当前选中数据不符合条件！') }
     const confirmed = await proxy.$cConfirm(confirmRef, { title: '筛选执行提示', nature: 'selection' }).catch(() => { proxy.$message.info('已取消执行！') })
     if (!confirmed) return
     proxy.$message.success('确认操作执行！')
   } finally {
-    setTimeout(() => { table.value.filterType = '' }, 300)
+    setTimeout(() => { table.value.selectBy = '' }, 300)
   }
 }
 // ^
@@ -363,8 +364,8 @@ const auditInfo = ref({})
 async function handleBatchAudit() {
   try {
     if (!table.value.selected?.length) { return proxy.$message.warning('请至少选择一条数据进行批量操作！') }
-    table.value.filterType = '批量审核'
-    if (!tableSelection.value.selectedE?.tableData?.length) { return proxy.$message.warning('当前选中数据不符合条件！') }
+    table.value.selectBy = '批量审核'
+    if (!table.value.selection.selectedE?.tableData?.length) { return proxy.$message.warning('当前选中数据不符合条件！') }
     // 第一确认弹窗
     const confirmed1 = await proxy.$cConfirm(confirmRef, { title: '筛选执行提示', nature: 'selection' }).catch(() => { proxy.$message.info('已取消执行！') })
     if (!confirmed1) return
@@ -391,15 +392,15 @@ async function handleBatchAudit() {
       }
     }
   } finally {
-    setTimeout(() => { table.value.filterType = '' }, 300)
+    setTimeout(() => { table.value.selectBy = '' }, 300)
   }
 }
 // ^
 // # (8) 批量删除
 async function handleBatchDelete() {
   if (!table.value.selected?.length) { return proxy.$message.warning('请至少选择一条数据进行批量操作！') }
-  table.value.filterType = '批量删除'
-  if (!tableSelection.value.selectedE?.tableData?.length) { return proxy.$message.warning('当前选中数据不符合条件！') }
+  table.value.selectBy = '批量删除'
+  if (!table.value.selection.selectedE?.tableData?.length) { return proxy.$message.warning('当前选中数据不符合条件！') }
 
   // 第一确认弹窗
   const confirmed1 = await proxy.$cConfirm(confirmRef, { title: '筛选执行提示', nature: 'selection' }).catch(() => { proxy.$message.info('已取消执行！') })
@@ -421,8 +422,66 @@ function handleChangeCondition(type) {
 }
 // ^
 // # (2) 表格选中
-function handleChangeSelection(value) {
+function handleChangeSelected(value) {
   table.value.selected = value
+}
+// ^
+// # (3) 表格选项
+function handleSelection() {
+  return computed(() => {
+    let filterObj = {}
+    let selectBy = table.value.selectBy
+    const statusMap = {
+      '批量提交': ['待提交', '审核未通过'],
+      '批量审核': ['待审核'],
+      '批量删除': ['待提交', '审核未通过'],
+    }
+    switch (selectBy) {
+      case '批量提交':
+      case '批量删除':
+      case '批量审核':
+        filterObj = filter(table.value.selected, statusMap[selectBy])
+        break
+      default:
+        filterObj = { selectedE: [], selectedIE: [] }
+    }
+
+    function filter(selected = [], statusE = []) {
+      const selectedE = []
+      const selectedIE = []
+      for (const item of selected) {
+        (statusE.includes(item.status) ? selectedE : selectedIE).push(item)
+      }
+      return { selectedE, selectedIE }
+    }
+
+    let selection = {
+      tableShow: ['selectedE', 'selectedIE'],
+      selected: {
+        tableData: table.value.selected,
+        tableColumnShow: [
+          { label: '序号', value: 'index', width: '60' },
+          { label: '人物', value: 'personName', width: '140' },]
+      },
+      selectedE: {
+        tableData: filterObj.selectedE,
+        tableColumnShow: [
+          { label: '序号', value: 'index', width: '60' },
+          { label: '人物', value: 'personName', width: '' },
+          // { label: '状态（原因）', value: 'status', width: '' },
+        ]
+      },
+      selectedIE: {
+        tableData: filterObj.selectedIE,
+        tableColumnShow: [
+          { label: '序号', value: 'index', width: 60 },
+          { label: '人物', value: 'personName', width: '' },
+          // { label: '状态（原因）', value: 'status', width: '' },
+        ]
+      },
+    }
+    return selection
+  })
 }
 // ^
 // ^
@@ -435,60 +494,62 @@ onMounted(() => {
 })
 // ^
 // # 2、计算属性
-const tableSelection = computed(() => {
-  let filterObj = {}
-  let filterType = table.value.filterType
-  const statusMap = {
-    '批量提交': ['待提交', '审核未通过'],
-    '批量审核': ['待审核'],
-    '批量删除': ['待提交', '审核未通过'],
-  }
-  switch (filterType) {
-    case '批量提交':
-    case '批量删除':
-    case '批量审核':
-      filterObj = filter(table.value.selected, statusMap[filterType])
-      break
-    default:
-      filterObj = { selectedE: [], selectedIE: [] }
-  }
 
-  function filter(selected = [], statusE = []) {
-    const selectedE = []
-    const selectedIE = []
-    for (const item of selected) {
-      (statusE.includes(item.status) ? selectedE : selectedIE).push(item)
-    }
-    return { selectedE, selectedIE }
-  }
 
-  let selection = {
-    tableShow: ['selectedE', 'selectedIE'],
-    selected: {
-      tableData: table.value.selected,
-      tableColumnShow: [
-        // { label: '序号', value: 'index', width: '60' },
-        { label: '人物', value: 'personName', width: '140' },]
-    },
-    selectedE: {
-      tableData: filterObj.selectedE,
-      tableColumnShow: [
-        // { label: '序号', value: 'index', width: '60' },
-        { label: '人物', value: 'personName', width: '' },
-        // { label: '状态（原因）', value: 'status', width: '' },
-      ]
-    },
-    selectedIE: {
-      tableData: filterObj.selectedIE,
-      tableColumnShow: [
-        // { label: '序号', value: 'index', width: 60 },
-        { label: '人物', value: 'personName', width: '' },
-        // { label: '状态（原因）', value: 'status', width: '' },
-      ]
-    },
-  }
-  return selection
-})
+// const tableSelection = computed(() => {
+//   let filterObj = {}
+//   let selectBy = table.value.selectBy
+//   const statusMap = {
+//     '批量提交': ['待提交', '审核未通过'],
+//     '批量审核': ['待审核'],
+//     '批量删除': ['待提交', '审核未通过'],
+//   }
+//   switch (selectBy) {
+//     case '批量提交':
+//     case '批量删除':
+//     case '批量审核':
+//       filterObj = filter(table.value.selected, statusMap[selectBy])
+//       break
+//     default:
+//       filterObj = { selectedE: [], selectedIE: [] }
+//   }
+
+//   function filter(selected = [], statusE = []) {
+//     const selectedE = []
+//     const selectedIE = []
+//     for (const item of selected) {
+//       (statusE.includes(item.status) ? selectedE : selectedIE).push(item)
+//     }
+//     return { selectedE, selectedIE }
+//   }
+
+//   let selection = {
+//     tableShow: ['selectedE', 'selectedIE'],
+//     selected: {
+//       tableData: table.value.selected,
+//       tableColumnShow: [
+//         // { label: '序号', value: 'index', width: '60' },
+//         { label: '人物', value: 'personName', width: '140' },]
+//     },
+//     selectedE: {
+//       tableData: filterObj.selectedE,
+//       tableColumnShow: [
+//         // { label: '序号', value: 'index', width: '60' },
+//         { label: '人物', value: 'personName', width: '' },
+//         // { label: '状态（原因）', value: 'status', width: '' },
+//       ]
+//     },
+//     selectedIE: {
+//       tableData: filterObj.selectedIE,
+//       tableColumnShow: [
+//         // { label: '序号', value: 'index', width: 60 },
+//         { label: '人物', value: 'personName', width: '' },
+//         // { label: '状态（原因）', value: 'status', width: '' },
+//       ]
+//     },
+//   }
+//   return selection
+// })
 // ^
 // ^
 </script>
