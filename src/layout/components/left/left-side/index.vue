@@ -12,6 +12,12 @@
 import LeftNav from '@/layout/components/left/left-nav'
 import LeftStation from '@/layout/components/left/left-station'
 import cHamburger from '@/components/custom-hamburger'
+// pinia
+import useStore from '@/store'
+// 声明
+const { settingStore } = useStore()
+// 计算属性
+const isCollapse = computed(() => settingStore.leftSide.isCollapse)
 // ^
 
 // # 二、模块功能

@@ -18,7 +18,6 @@ const props = defineProps({
 // 声明
 const { tagStore } = useStore()
 const route = useRoute()
-console.log('查route', route)
 // ^
 
 // # 二、模块功能

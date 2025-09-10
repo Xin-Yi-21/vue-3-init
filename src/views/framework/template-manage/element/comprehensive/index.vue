@@ -15,7 +15,7 @@ import Upgrade from './upgrade/index.vue'
 // ^
 // # 二、模块功能
 // # tab
-const currentTab = ref('基础')
+const currentTab = ref('进阶')
 const tabList = [
   { label: '基础', value: '基础', },
   { label: '进阶', value: '进阶' },

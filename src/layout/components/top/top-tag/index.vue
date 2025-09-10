@@ -233,9 +233,9 @@ function handleOperateShow(type) {
 // # 三、机制
 onMounted(() => {
   init()
-  console.log('tagStore.visitedViews', tagStore.visitedViews,)
-  console.log('tagStore.cachedViews', tagStore.cachedViews,)
-  console.log('tagStore.iframeViews', tagStore.iframeViews,)
+  // console.log('tagStore.visitedViews', tagStore.visitedViews,)
+  // console.log('tagStore.cachedViews', tagStore.cachedViews,)
+  // console.log('tagStore.iframeViews', tagStore.iframeViews,)
 })
 watch(route, () => {
   handleAddCurrentTag()

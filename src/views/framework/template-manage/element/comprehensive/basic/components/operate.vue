@@ -3,7 +3,7 @@
     <template #header="{ close }">
       <div class="c-d-header">
         <div class="h-t"><c-icon :i="dialog.icon" class="mr-5" size="18" cursor="" v-if="dialog.icon"></c-icon> {{ dialog.title }}</div>
-        <svg-icon icon-class="c-close" class-name="n-o-i" @click="close"></svg-icon>
+        <svg-icon icon-class="c-operate-close" class-name="n-o-i" @click="close"></svg-icon>
       </div>
     </template>
     <div class="c-d-c">
@@ -70,7 +70,7 @@ async function getEnums() {
   enums.value = Object.assign({}, enums.value, newEnums)
 }
 // ^
-// # (2) 初始化表单
+// # (2) 设置默认
 const form = ref({})
 const formRules = ref({
   personName: [{ required: true, message: '姓名不能为空', trigger: 'blur' },],
@@ -88,16 +88,16 @@ function setDefault() {
   }
   switch (props.operate) {
     case 'add':
-      dialog.value = { visible: true, operate: 'add', title: '人物管理 - 新增', icon: 'c-d-add' }
+      dialog.value = { visible: true, operate: 'add', title: '人物管理 - 新增', icon: 'c-operate-add' }
       form.value = {}
       break
     case 'view':
-      dialog.value = { visible: true, operate: 'view', title: '人物管理 - 查看', icon: 'c-d-view' }
+      dialog.value = { visible: true, operate: 'view', title: '人物管理 - 查看', icon: 'c-operate-view' }
       disabled.value.view = true
       form.value = newForm
       break
     case 'update':
-      dialog.value = { visible: true, operate: 'update', title: '人物管理 - 更新', icon: 'c-d-update' }
+      dialog.value = { visible: true, operate: 'update', title: '人物管理 - 更新', icon: 'c-operate-update' }
       disabled.value.update = true
       form.value = newForm
       break
