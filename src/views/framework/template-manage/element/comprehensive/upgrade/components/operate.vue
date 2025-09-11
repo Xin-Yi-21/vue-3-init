@@ -19,7 +19,7 @@
         <div class="c-row">
           <!-- 普通输入框 -->
           <el-form-item label="姓名：" prop="personName">
-            <el-input v-model="form.personName" placeholder="请输入姓名" disabled></el-input>
+            <el-input v-model="form.personName" placeholder="请输入姓名"></el-input>
           </el-form-item>
         </div>
         <div class="c-row gap-10">
@@ -58,13 +58,13 @@
         <div class="c-row gap-10">
           <!-- 单选下拉框 -->
           <el-form-item label="阵营：" prop="side">
-            <el-select v-model="form.side" placeholder="请选择阵营" :popper-append-to-body="true">
+            <el-select v-model="form.side" placeholder="请选择阵营">
               <el-option v-for="(item, index) in enums.side" :key="index" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
           <!-- 多选下拉框 -->
           <el-form-item label="身份：" prop="identity">
-            <el-select v-model="form.identity" multiple class="c-multiple-select" placeholder="请选择角色" :popper-append-to-body="true">
+            <el-select v-model="form.identity" multiple placeholder="请选择角色" class="c-multiple-select">
               <el-option v-for="(item, index) in enums.identity" :key="index" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
@@ -206,17 +206,17 @@
             <div class="c-label c-require">地区：</div>
             <div class="c-content gap-10">
               <el-form-item label="" prop="province">
-                <el-select v-model="form.province" placeholder="请选择省" :popper-append-to-body="true">
+                <el-select v-model="form.province" placeholder="请选择省" clearable>
                   <el-option v-for="(item, index) in enums.province" :key="index" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="" prop="city">
-                <el-select v-model="form.city" placeholder="请选择市" :popper-append-to-body="true">
+                <el-select v-model="form.city" placeholder="请选择市" clearable>
                   <el-option v-for="(item, index) in enums.city" :key="index" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="" prop="district">
-                <el-select v-model="form.district" placeholder="请选择区/县" :popper-append-to-body="true">
+                <el-select v-model="form.district" placeholder="请选择区/县" clearable>
                   <el-option v-for="(item, index) in enums.district" :key="index" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
@@ -276,13 +276,13 @@ const props = defineProps({
 })
 // pinia
 import useStore from '@/store'
-
 // 声明
 const emit = defineEmits()
 const { proxy } = getCurrentInstance()
 const { enumsStore } = useStore()
 const visible = ref(true)
 const isConfirmLoading = ref(false)
+const cached = ref({})
 // ^
 // # 二、模块功能
 // # 1、初始化
@@ -291,9 +291,7 @@ async function init() {
   setDefault()
 }
 // # (1) 获取枚举
-const enums = ref({
-  city: handleComputedCity()
-})
+const enums = ref({})
 async function getEnums() {
   let allEnums = JSON.parse(JSON.stringify(enumsStore.allEnums))
   let newEnums = {
@@ -323,10 +321,8 @@ async function getEnums() {
   enums.value = Object.assign({}, enums.value, newEnums)
   await getPerson()
   await getPCD()
-  getProvince()
 }
-// ^
-// # -A- 获取人物 
+// # -1- 获取人物 
 async function getPerson() {
   let params = {
     currentPageNum: 1,
@@ -340,30 +336,43 @@ async function getPerson() {
   enums.value.person = res.data?.list || []
 }
 // ^
-// # -B- 获取省市区
-const pcdData = ref({})
+// # -2- 获取省市区
 function getPCD() {
-  pcdData.value = chinaData
+  cached.value.chinaData = chinaData
+  function deepTraverse(data) {
+    return data.map(item => ({
+      label: item.name,
+      value: item.code,
+      children: item.children ? deepTraverse(item.children) : []
+    }))
+  }
+  cached.value.chinaData = deepTraverse(chinaData)
+  getProvince()
+  getCity()
+  getDistrict()
 }
+// # -A- 获取省
 function getProvince() {
-  console.log('查chinaData', chinaData)
-  enums.value.province = chinaData.map(item => ({ label: item.name, value: item.code, }))
-  enums.value.city = 计算属性写法
-  enums.value.district = 计算属性写法
-  console.log('查  enums.value.province', enums.value.province)
-}
-
-function handleComputedCity() {
-  return computed(() => {
-    console.log('查pcdData', pcdData)
-    const newCityList = pcdData?.value?.find(p => p.code === form.value.province)?.children || []
-    let res = newCityList?.map(item => ({ label: item.name, value: item.code })) || []
-    console.log('查????????', res)
-    return res
-  })
+  enums.value.province = cached.value.chinaData
+  form.value.province = undefined
 }
 // ^
-
+// # -B- 获取市
+function getCity() {
+  const newCity = enums.value.province?.find(item => item.value === form.value.province)?.children || []
+  enums.value.city = newCity
+  form.value.city = undefined
+  form.value.district = undefined
+}
+// ^
+// # -C- 获取市
+function getDistrict() {
+  const newDistrict = enums.value.city?.find(item => item.value === form.value.city)?.children || []
+  enums.value.district = newDistrict
+  form.value.district = undefined
+}
+// ^
+// ^
 // ^
 // # (2) 设置默认
 const form = ref({})
@@ -525,6 +534,8 @@ function handleClose(done) {
 // ^
 // # 三、生命周期
 init()
+watch(() => form.value.province, (nv, ov) => { getCity() })
+watch(() => form.value.city, (nv, ov) => { getDistrict() })
 // ^
 </script>
 

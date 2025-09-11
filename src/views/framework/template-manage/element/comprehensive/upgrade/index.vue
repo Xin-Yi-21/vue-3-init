@@ -87,6 +87,13 @@
             <el-progress class="progress-line" type="line" color="#55c791" :show-text="false" :format="(p) => p || '0'" :percentage="scope.row.progress"></el-progress>
           </template>
         </el-table-column>
+
+        <el-table-column label="操作记录" prop="" align="center">
+          <template #default="scope">
+            <c-text size="14" color="#0077FF" button :disabled="false" :loading="false">操作记录</c-text>
+          </template>
+        </el-table-column>
+
         <el-table-column label="状态" prop="" align="center" width="140">
           <template #default="scope">
             <c-tag v-if="scope.row.status" :color="$getEnumsLabel(enums.status, scope.row.status, 'color', 'value')" v-disabled="false" button effect="dark">{{ scope.row.status }}</c-tag>
