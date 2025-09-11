@@ -18,9 +18,9 @@
       <el-table :data="tableData" border class="c-table" stripe v-animation="{ class: 'c-a-fade-in', isRefresh: !isLoading, timeout: 1000 }">
         <el-table-column label="" align="center" width="150">
           <template #header>
-            <c-icon i="c-select-page" tip="全选本页" showType="el" cursor="pointer" style="margin:0 7px;" @click="handleSelectPage"></c-icon>
-            <c-icon i="c-select-all" tip="全选全部" showType="el" cursor="pointer" style="margin:0 7px;" @click="handleSelectAll"></c-icon>
-            <c-icon i="c-select-clear" tip="取消选择" showType="el" cursor="pointer" style="margin:0 7px;" @click="handleSelectClear"></c-icon>
+            <c-icon i="c-operate-select-page" tip="全选本页" showType="el" cursor="pointer" style="margin:0 7px;" @click="handleSelectPage"></c-icon>
+            <c-icon i="c-operate-select-all" tip="全选全部" showType="el" cursor="pointer" style="margin:0 7px;" @click="handleSelectAll"></c-icon>
+            <c-icon i="c-operate-select-clear" tip="取消选择" showType="el" cursor="pointer" style="margin:0 7px;" @click="handleSelectClear"></c-icon>
           </template>
           <template #default="scope">
             <el-checkbox v-model="scope.row.isChecked" @change="handleSelectChange(scope.row)"></el-checkbox>
@@ -119,9 +119,9 @@ async function getTableData(type) {
   }
   const res = await cPersonGet(params)
   recentParams.value = params
-  tableTotal.value = res.total
+  tableTotal.value = res.data.total
   setTimeout(() => { isLoading.value = false }, 200)
-  tableData.value = handleTableData(res.data || [])
+  tableData.value = handleTableData(res.data.list || [])
   handleTableBatchSelect(type)
   renderCheckbox()
 }

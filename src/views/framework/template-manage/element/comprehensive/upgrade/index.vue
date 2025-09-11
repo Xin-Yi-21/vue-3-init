@@ -52,9 +52,8 @@
     </div>
     <div class="c-result" v-load="{ loading: loading.result, onCancel: () => loading.result = false }">
       <!-- v-animation="{ class: 'c-a-fade-in', isRefresh: !isLoading, timeout: 1000 }" -->
-      <el-table :data="table.data" border class="c-table" id="c-table" stripe @selection-change="handleChangeSelected">
-        <el-table-column type="selection" align="center" width="60" />
-        <!-- <el-table-column type="index" label="序号" align="center" width="60" :index="i => (i + 1).toString().padStart(2, '0')" /> -->
+      <el-table :data="table.data" border class="c-table" id="c-table" stripe @selection-change="handleChangeSelected" row-key="id">
+        <el-table-column type="selection" align="center" width="60" reserve-selection />
         <el-table-column label="序号" prop="index" align="center" width="60" />
         <el-table-column label="人物" prop="" align="center" class-name="a">
           <template #default="scope"> {{ scope.row.personName }} </template>
@@ -78,9 +77,14 @@
             <c-data-with-unit :data="scope.row.popularity" unit="票" :showTip="true"></c-data-with-unit>
           </template>
         </el-table-column>
-        <el-table-column label="攻略度" prop="" align="center" width="80">
+        <el-table-column label="智力值" prop="" align="center" width="80">
           <template #default="scope">
-            <el-progress class="complete-progress" type="circle" color="#55c791" :stroke-width="3" :width="30" :format="(p) => p || '0'" :percentage="scope.row.progress"></el-progress>
+            <el-progress class="progress-circle" type="circle" color="#55c791" :stroke-width="3" :width="30" :format="(p) => p || '0'" :percentage="scope.row.progress"></el-progress>
+          </template>
+        </el-table-column>
+        <el-table-column label="武力值" prop="" align="center" width="80">
+          <template #default="scope">
+            <el-progress class="progress-line" type="line" color="#55c791" :show-text="false" :format="(p) => p || '0'" :percentage="scope.row.progress"></el-progress>
           </template>
         </el-table-column>
         <el-table-column label="状态" prop="" align="center" width="140">
@@ -154,13 +158,11 @@ const pickerOptions = ref({
 
 // # 二、模块功能
 // # 1、初始化
-// # (0) 初始化总调用
 function init() {
   getEnums()
   setDefault()
   getTableInfo()
 }
-// ^
 // # (1) 获取枚举 
 const enums = ref({})
 async function getEnums() {
@@ -423,7 +425,8 @@ function handleChangeCondition(type) {
 // ^
 // # (2) 表格选中
 function handleChangeSelected(value) {
-  table.value.selected = value
+  // table.value.selected = value
+  console.log('查value', value)
 }
 // ^
 // # (3) 表格选项
@@ -562,7 +565,7 @@ onMounted(() => {
   flex-direction: column;
   overflow: hidden;
 
-  :deep(.complete-progress) {
+  :deep(.progress-circle) {
     transform: translateY(3px);
     overflow: hidden;
 
@@ -570,8 +573,8 @@ onMounted(() => {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 30px !important;
-      height: 30px !important;
+      width: 30px;
+      height: 30px;
     }
 
     .el-progress__text {
@@ -581,6 +584,23 @@ onMounted(() => {
       font-size: 12px !important;
       font-weight: 700;
       min-width: auto;
+    }
+  }
+
+  :deep(.progress-line) {
+    display: inline-flex;
+    width: 100%;
+    height: 10px;
+
+    .el-progress-bar__outer {
+      padding: 1px 2px;
+      height: 6px;
+      background-color: #efefef;
+
+      .el-progress-bar__inner {
+        position: relative;
+        height: 4px;
+      }
     }
   }
 }
