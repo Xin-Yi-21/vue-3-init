@@ -37,6 +37,8 @@
 
 <script setup>
 // # 一、综合
+// 组件
+import { ElTooltip, ElPopover } from 'element-plus'
 // props
 const props = defineProps({
   // 引用svg文件名称

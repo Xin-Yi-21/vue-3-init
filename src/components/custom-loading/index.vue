@@ -8,7 +8,6 @@
         <button class="loading-cancel-button" @click.stop="cancelLoading"> 取消加载 </button>
       </div>
     </template>
-
     <template v-else>
       <div v-if="onCancel && isTimeOut" class="timeout">
         <el-popover placement="top" trigger="hover" :teleported="true" popper-class="c-popover">

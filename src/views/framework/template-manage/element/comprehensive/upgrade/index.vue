@@ -430,8 +430,10 @@ function handleChangeCondition(type) {
 // ^
 // # (2) 表格选中
 function handleChangeSelected(value) {
-  // table.value.selected = value
-  console.log('查value', value)
+  table.value.selected = value
+
+  proxy.$sortArray(table.value.selected, 'number', 'id')
+  // console.log('查value', value)
 }
 // ^
 // # (3) 表格选项
