@@ -1,11 +1,11 @@
 <template>
   <el-button class="c-button" v-bind="$attrs" :style="`width:${width ? width + 'px' : 'auto'};${height ? 'height:' + height + 'px' : ''};--textColor:${textColor};`">
     <template #loading>
-      <svg-icon icon-class="c-loading-circle" class-name="el-icon is-loading" :style="`${iSize ? 'fontSize:' + iSize + 'px' : ''}`"></svg-icon>
+      <c-icon i="c-loading-circle" class="el-icon is-loading" :style="`${iSize ? 'fontSize:' + iSize + 'px' : ''}`"></c-icon>
     </template>
 
     <template #icon v-if="slots.icon || i">
-      <svg-icon v-if="i" :icon-class="i" :style="`${iSize ? 'fontSize:' + iSize + 'px' : ''}`"></svg-icon>
+      <c-icon v-if="i" :i="i" :style="`${iSize ? 'fontSize:' + iSize + 'px' : ''}`"></c-icon>
     </template>
     <template #default v-if="slots.default">
       <span class="button-text" :style="`${fSize ? 'fontSize:' + fSize + 'px' : ''}`">

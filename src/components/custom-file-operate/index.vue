@@ -18,8 +18,8 @@
           <template slot-scope="{data,node}">
             <!-- <Tooltip :content="data.name" placement="top" :containerDomName="`.el-tree-node__content .tree-row .dom${data.id}`"> -->
             <div :class="['tree-row', currentActiveNode.id === data.id ? 'active' : '']">
-              <svg-icon icon-class="file-open" class-name="left-tree-icon file-open-svg" v-if="node.expanded && (data.children && data.children.length > 0)"></svg-icon>
-              <svg-icon icon-class="file-close" class-name="left-tree-icon file-close-svg" v-if="!node.expanded || (data.children && data.children.length === 0)"></svg-icon>
+              <c-icon i="file-open" class="left-tree-icon file-open-svg" v-if="node.expanded && (data.children && data.children.length > 0)"></c-icon>
+              <c-icon i="file-close" class="left-tree-icon file-close-svg" v-if="!node.expanded || (data.children && data.children.length === 0)"></c-icon>
               <span ref="create" class="create-part" v-if="showCreateCatalogue && (data.id === 'CC')">
                 <el-input ref="createCatalogueInput" v-model="createCatalogueName" :minlength="1" @blur="handleCreateCatalogueBlur"></el-input>
               </span>

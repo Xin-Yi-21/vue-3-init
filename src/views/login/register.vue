@@ -4,33 +4,33 @@
       <div class="register-title">应龙卫星功率预测系统</div>
       <el-form-item prop="username" label="">
         <el-input v-model="registerForm.username" type="text" auto-complete="off" placeholder="请输入用户名">
-          <svg-icon slot="prefix" icon-class="account" class="input-icon account-svg" />
+          <c-icon slot="prefix" i="account" class="input-icon account-svg" />
         </el-input>
       </el-form-item>
       <el-form-item prop="phone" label="">
         <el-input v-model="registerForm.phone" type="text" auto-complete="off" placeholder="请输入手机号">
-          <svg-icon slot="prefix" icon-class="phone" class="input-icon phone-svg" />
+          <c-icon slot="prefix" i="phone" class="input-icon phone-svg" />
         </el-input>
       </el-form-item>
       <el-form-item prop="verifCode" label="">
         <el-input v-model="registerForm.verifCode" type="text" auto-complete="off" placeholder="请输入手机验证码" @keyup.enter.native="handleLogin">
-          <svg-icon slot="prefix" icon-class="code" class="input-icon code-svg" />
+          <c-icon slot="prefix" i="code" class="input-icon code-svg" />
         </el-input>
         <el-button class="verify-code-button" @click="handleSendPhoneCode" :disabled="typeof (phone.verifyCodeText) === 'number'">{{ phone.verifyCodeText }}</el-button>
       </el-form-item>
       <el-form-item prop="email" label="">
         <el-input v-model="registerForm.email" type="text" auto-complete="off" placeholder="请输入邮箱">
-          <svg-icon slot="prefix" icon-class="email" class="input-icon email-svg" />
+          <c-icon slot="prefix" i="email" class="input-icon email-svg" />
         </el-input>
       </el-form-item>
       <el-form-item prop="password" label="">
         <el-input v-model="registerForm.password" type="password" show-password autocomplete="new-password" placeholder="密码" @keyup.enter.native="handleRegister">
-          <svg-icon slot="prefix" icon-class="password" class="input-icon password-svg" />
+          <c-icon slot="prefix" i="password" class="input-icon password-svg" />
         </el-input>
       </el-form-item>
       <el-form-item prop="confirmPassword" label="">
         <el-input v-model="registerForm.confirmPassword" type="password" show-password autocomplete="new-password" placeholder="确认密码" @keyup.enter.native="handleRegister">
-          <svg-icon slot="prefix" icon-class="password" class="input-icon password-svg" />
+          <c-icon slot="prefix" i="password" class="input-icon password-svg" />
         </el-input>
       </el-form-item>
       <div class="register-part">

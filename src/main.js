@@ -10,18 +10,15 @@ import 'element-plus/dist/index.css'
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 app.use(ElementPlus, { locale: locale, size: 'default' })
 // app.use(ElementPlus, { locale: locale, size: !storageSetting.themeSize ? 'large' : storageSetting.themeSize == 'normal' ? 'default' : storageSetting.themeSize })
-
-// ⭐ svg图标 相关文件 
-import 'virtual:svg-icons-register'
-import SvgIcon from '@/components/custom-svg-icon'
-import elementIcons from '@/components/custom-svg-icon/svgicon'
+// 
 import '@/assets/iconfont/iconfont.css'
-// import 'default-passive-events' // 解决wheel控制台警告信息
-app.component('svg-icon', SvgIcon)
-app.use(elementIcons)
+import elementIcons from '@/components/custom-icon/element-icon'
+app.use(elementIcons)                                            // 注册element图标组件
+
 // ⭐ 常用样式
 import '@/assets/styles/index.scss' // 全局样式
-
+import 'virtual:svg-icons-register'                              // 打包雪碧图
+// import 'default-passive-events' // 解决wheel控制台警告信息
 // import '@/mock/index.js'
 
 setConfig().then(async (cEnv) => {
@@ -101,10 +98,11 @@ setConfig().then(async (cEnv) => {
     // app.config.globalProperties.$loadingEnd = $loadingEnd
 
     // 全局组件
+    const cIcon = (await import('@/components/custom-icon')).default
     const cTooltip = (await import('@/components/custom-tooltip')).default
     const cPagination = (await import('@/components/custom-pagination')).default
     const cButton = (await import('@/components/custom-button')).default
-    const cIcon = (await import('@/components/custom-icon')).default
+
     const cTag = (await import('@/components/custom-tag')).default
     const cText = (await import('@/components/custom-text')).default
     // // const cPreview = (await import('@/components/custom-preview')).default
@@ -143,10 +141,6 @@ setConfig().then(async (cEnv) => {
     app.component('cSelection', cSelection)
     app.component('cSelectionTree', cSelectionTree)
     app.component('cAudit', cAudit)
-
-
-
-
 
     app.mount('#app')
   } catch (error) {

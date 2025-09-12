@@ -3,7 +3,7 @@
     <template #header="{ close }">
       <div class="c-d-header">
         <div class="h-t"><c-icon :i="dialog.icon" class="mr-5" size="18" cursor="" v-if="dialog.icon"></c-icon> {{ dialog.title }}</div>
-        <svg-icon icon-class="c-operate-close" class-name="n-o-i" @click="close"></svg-icon>
+        <c-icon i="c-operate-close" class="n-o-i" @click="close"></c-icon>
       </div>
     </template>
     <div class="c-d-c">

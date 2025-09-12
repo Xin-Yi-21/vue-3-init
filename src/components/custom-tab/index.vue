@@ -4,7 +4,7 @@
       :class="['tab-item', (modelValue === item.value || currentTab === item.value) ? 'is-active' : '', item.disabled ? 'is-disabled' : '']"
       :style="`${fontSize ? 'font-size:' + fontSize + 'px' : ''}`"
       @click="handleTabClick(item)">
-      <svg-icon :icon-class="item.icon" class-name="tab-item-icon" v-if="item.icon"></svg-icon>
+      <c-icon :i="item.icon" class="tab-item-icon" v-if="item.icon"></c-icon>
       <span class="tab-item-text"> {{ item.label }}</span>
     </div>
   </div>

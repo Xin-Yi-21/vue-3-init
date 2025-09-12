@@ -1,25 +1,35 @@
 <template>
-  <i ref="cIconRef" :class="['c-icon', i, button ? 'is-button' : '', disabled ? 'is-disabled' : '', loading ? 'is-loading' : '',]" :style="`--color:${color};--font-size:${size}px;--cursor:${cursor};--hoverColor:${hoverColor || color}; color:${color};font-size:${size}px;cursor:${cursor};`">
+  <i ref="cIconRef" :class="['c-icon', i, button ? 'is-button' : '', disabled ? 'is-disabled' : '', loading ? 'is-loading' : '',]"
+    :style="`--color:${color};--font-size:${size}px;--cursor:${cursor};--hoverColor:${hoverColor || color}; color:${color};font-size:${size}px;cursor:${cursor};`">
+    <!-- 一、显示类型：自定义提示 -->
+    <template v-if="showType == 'c'">
+      <svg class="svg-icon" aria-hidden="true">
+        <use :xlink:href="`#icon-${i}`" :fill="color" />
+      </svg>
+      <span class="icon-tip" :style="`transform:translate(-50%,-${offset}px)`" v-if="tip">{{ tip }}</span>
+    </template>
+
+    <!-- 二、显示类型：el-tooltip提示 -->
     <el-tooltip v-if="tip && showType == 'el'" :popper-class="['c-icon-tooltip', tipClass]" v-bind="$attrs" :placement="placement" :offset="offset" :hide-after="1">
       <template #default>
-        <svg-icon :icon-class="i"></svg-icon>
+        <svg class="svg-icon" aria-hidden="true">
+          <use :xlink:href="`#icon-${i}`" :fill="color" />
+        </svg>
       </template>
       <template #content>
         <span :style="`color:${hoverColor || color};`">{{ tip }}</span>
       </template>
     </el-tooltip>
 
-    <template v-if="showType == 'c'">
-      <svg-icon :icon-class="i"> </svg-icon>
-      <span class="icon-tip" :style="`transform:translate(-50%,-${offset}px)`" v-if="tip">{{ tip }}</span>
-    </template>
-
-    <el-popover v-if="showType == 'ep'" trigger="click" :popper-class="['c-icon-popover', tipClass]" v-bind="$attrs" :placement="placement">
+    <!-- 三、显示类型：el-popover提示 -->
+    <el-popover v-if="showType == 'ep'" :popper-class="['c-icon-popover', tipClass]" v-bind="$attrs" :placement="placement" trigger="click">
       <template #default>
         <slot name="tip"></slot>
       </template>
       <template #reference>
-        <svg-icon :icon-class="i"> </svg-icon>
+        <svg class="svg-icon" aria-hidden="true">
+          <use :xlink:href="`#icon-${i}`" :fill="color" />
+        </svg>
       </template>
     </el-popover>
   </i>
@@ -57,16 +67,11 @@ const props = defineProps({
   offset: { type: [String, Number], default: 5 }
 })
 // ^
+
 // # 二、模块功能
-const EVENTS = [
-  'click', 'dblclick',
-  'mousedown', 'mouseup', 'mouseenter', 'mouseleave', 'mousemove',
-  'contextmenu',
-  'touchstart', 'touchmove', 'touchend', 'touchcancel',
-  'keydown', 'keyup', 'keypress'
-]
-const cIconRef = ref(null)
 // # 1、遮罩的创建和移除
+const EVENTS = ['click', 'dblclick', 'mousedown', 'mouseup', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu', 'touchstart', 'touchmove', 'touchend', 'touchcancel', 'keydown', 'keyup', 'keypress']
+const cIconRef = ref(null)
 function createMask(el, className) {
   let maskEl = el.querySelector(`.${className}`)
   if (!maskEl) {
@@ -91,7 +96,6 @@ function removeMask(el, className) {
   }
 }
 // ^
-// ^
 
 // # 三、机制
 onMounted(() => {
@@ -114,14 +118,13 @@ watch(() => props.loading, (loading) => {
   loading ? createMask(cIconRef.value, 'c-icon-loading-mask') : removeMask(cIconRef.value, 'c-icon-loading-mask')
 })
 // ^
-
 </script>
 
 <style lang="scss" scoped>
 .c-icon {
   position: relative;
   display: inline-flex;
-  margin: 0 5px;
+  margin-right: 5px;
   color: var(--color);
   font-size: var(--font-size);
   font-style: normal;
@@ -131,6 +134,10 @@ watch(() => props.loading, (loading) => {
   .svg-icon {
     font-size: inherit;
     outline: none;
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    // vertical-align: -2px;
   }
 
   .svg-icon:hover~.icon-tip {
@@ -208,11 +215,10 @@ watch(() => props.loading, (loading) => {
         opacity: 0.6;
       }
     }
-
-
   }
 }
 </style>
+
 <style lang="scss">
 // 全局样式
 .c-icon-tooltip {

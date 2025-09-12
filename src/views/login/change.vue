@@ -5,12 +5,12 @@
       <el-form :model="form" :rules="formRules" ref="formRef">
         <el-form-item prop="password" label="">
           <el-input v-model="form.password" type="password" show-password auto-complete="new-password" placeholder="密码" @keyup.enter.native="handleRegister">
-            <svg-icon slot="prefix" icon-class="password" class="input-icon password-svg" />
+            <c-icon slot="prefix" i="password" class="input-icon password-svg" />
           </el-input>
         </el-form-item>
         <el-form-item prop="confirmPassword" label="">
           <el-input v-model="form.confirmPassword" type="password" show-password auto-complete="new-password" placeholder="确认密码" @keyup.enter.native="handleRegister">
-            <svg-icon slot="prefix" icon-class="password" class="input-icon password-svg" />
+            <c-icon slot="prefix" i="password" class="input-icon password-svg" />
           </el-input>
         </el-form-item>
         <el-button class="confirm-button" @click="handleConfirm">确认修改</el-button>

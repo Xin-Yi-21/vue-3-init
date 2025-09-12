@@ -3,7 +3,7 @@
     <template #header="{ close }">
       <div class="c-d-header">
         <div class="h-t"> 滚动展示 </div>
-        <svg-icon icon-class="c-close" class-name="n-o-i" @click="close"></svg-icon>
+        <c-icon icon-class="c-close" class-name="n-o-i" @click="close"></c-icon>
       </div>
     </template>
     <div class="c-d-c">

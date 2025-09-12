@@ -9,12 +9,12 @@
         <div class="phone-verify" v-if="currentTab === 'phone'">
           <el-form-item prop="phone" label="">
             <el-input v-model="form.phone" type="text" auto-complete="off" placeholder="请输入手机号">
-              <svg-icon slot="prefix" icon-class="phone" class="input-icon phone-svg" />
+              <c-icon slot="prefix" i="phone" class="input-icon phone-svg" />
             </el-input>
           </el-form-item>
           <el-form-item prop="verifyCode" label="">
             <el-input v-model="form.verifyCode" type="text" auto-complete="off" placeholder="请输入手机验证码" @keyup.enter.native="handleLogin">
-              <svg-icon slot="prefix" icon-class="code" class="input-icon code-svg" />
+              <c-icon slot="prefix" i="code" class="input-icon code-svg" />
             </el-input>
             <el-button class="verify-code-button" @click="handleSendPhoneCode" :disabled="typeof (phone.verifyCodeText) === 'number'">{{ phone.verifyCodeText }}</el-button>
           </el-form-item>
@@ -22,12 +22,12 @@
         <div class="email-verify" v-if="currentTab === 'email'">
           <el-form-item prop="email" label="">
             <el-input v-model="form.email" type="text" auto-complete="off" placeholder="请输入邮箱">
-              <svg-icon slot="prefix" icon-class="email" class="input-icon email-svg" />
+              <c-icon slot="prefix" i="email" class="input-icon email-svg" />
             </el-input>
           </el-form-item>
           <el-form-item prop="verifyCode" label="">
             <el-input v-model="form.verifyCode" type="text" auto-complete="off" placeholder="请输入邮箱验证码" @keyup.enter.native="handleLogin">
-              <svg-icon slot="prefix" icon-class="code" class="input-icon code-svg" />
+              <c-icon slot="prefix" i="code" class="input-icon code-svg" />
             </el-input>
             <el-button class="verify-code-button" @click="handleSendEmailCode" :disabled="typeof (email.verifyCodeText) === 'number'">{{ email.verifyCodeText }}</el-button>
           </el-form-item>

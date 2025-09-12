@@ -5,18 +5,18 @@
       <template v-if="loginForm.loginType === 'account'">
         <el-form-item prop="username">
           <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="请输入手机号账号">
-            <svg-icon slot="prefix" icon-class="account" class="input-icon account-svg" />
+            <c-icon slot="prefix" i="account" class="input-icon account-svg" />
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input v-model="loginForm.password" type="password" show-password autocomplete="new-password" placeholder="请输入密码" @keyup.enter.native="handleLogin">
-            <svg-icon slot="prefix" icon-class="password" class="input-icon password-svg" />
+            <c-icon slot="prefix" i="password" class="input-icon password-svg" />
           </el-input>
         </el-form-item>
 
         <el-form-item prop="code" v-if="captchaOnOff">
           <el-input v-model="loginForm.code" type="text" auto-complete="off" placeholder="请输入图片验证码" style="width: 63%" @keyup.enter.native="handleLogin">
-            <svg-icon slot="prefix" icon-class="code" class="input-icon code-svg" />
+            <c-icon slot="prefix" i="code" class="input-icon code-svg" />
           </el-input>
           <div class="image-code">
             <img :src="codeUrl" @click="getImageCode" />
@@ -27,12 +27,12 @@
       <template v-if="loginForm.loginType === 'phone'">
         <el-form-item prop="phone">
           <el-input v-model="loginForm.phone" type="text" auto-complete="off" placeholder="请输入手机号账号">
-            <svg-icon slot="prefix" icon-class="phone" class="input-icon phone-svg" />
+            <c-icon slot="prefix" i="phone" class="input-icon phone-svg" />
           </el-input>
         </el-form-item>
         <el-form-item prop="verifyCode">
           <el-input v-model="loginForm.verifyCode" type="text" auto-complete="off" placeholder="请输入手机验证码" @keyup.enter.native="handleLogin">
-            <svg-icon slot="prefix" icon-class="code" class="input-icon code-svg" />
+            <c-icon slot="prefix" i="code" class="input-icon code-svg" />
           </el-input>
           <el-button class="verify-code-button" @click="handleSendPhoneCode" :disabled="typeof (phone.verifyCodeText) === 'number'">{{ phone.verifyCodeText }}</el-button>
         </el-form-item>
@@ -41,12 +41,12 @@
       <template v-if="loginForm.loginType === 'email'">
         <el-form-item prop="email">
           <el-input v-model="loginForm.email" type="text" auto-complete="off" placeholder="请输入邮箱">
-            <svg-icon slot="prefix" icon-class="email" class="input-icon email-svg" />
+            <c-icon slot="prefix" i="email" class="input-icon email-svg" />
           </el-input>
         </el-form-item>
         <el-form-item prop="verifyCode">
           <el-input v-model="loginForm.verifyCode" type="text" auto-complete="off" placeholder="请输入邮箱验证码" @keyup.enter.native="handleLogin">
-            <svg-icon slot="prefix" icon-class="code" class="input-icon code-svg" />
+            <c-icon slot="prefix" i="code" class="input-icon code-svg" />
           </el-input>
           <el-button class="verify-code-button" @click="handleSendEmailCode" :disabled="typeof (email.verifyCodeText) === 'number'">{{ email.verifyCodeText }}</el-button>
         </el-form-item>
@@ -67,15 +67,15 @@
 
       <div class="type-part">
         <div class="type-item" v-if="loginForm.loginType !== 'account'">
-          <svg-icon icon-class="account" class-name="account-svg"></svg-icon>
+          <c-icon i="account" class="account-svg"></c-icon>
           <span @click="handleChangeLoginType('account')">账号密码登录</span>
         </div>
         <div class="type-item" v-if="loginForm.loginType !== 'phone'">
-          <svg-icon icon-class="phone" class-name="phone-svg"></svg-icon>
+          <c-icon i="phone" class="phone-svg"></c-icon>
           <span @click="handleChangeLoginType('phone')">手机验证登录</span>
         </div>
         <div class="type-item" v-if="loginForm.loginType !== 'email'">
-          <svg-icon icon-class="email" class-name="email-svg"></svg-icon>
+          <c-icon i="email" class="email-svg"></c-icon>
           <span @click="handleChangeLoginType('email')">邮箱验证登录</span>
         </div>
       </div>

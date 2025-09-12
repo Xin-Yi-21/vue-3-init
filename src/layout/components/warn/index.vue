@@ -2,7 +2,7 @@
   <div class="warn-vue">
     <div class="warn-left">
       <div class="warn-title">
-        <svg-icon icon-class="warn" class-name=""></svg-icon>告警栏
+        <c-icon i="warn" class=""></c-icon>告警栏
       </div>
       <div class="warn-type">
         <span>缺失（{{ warnStat.miss }}）</span>
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div class="warn-right"> <svg-icon icon-class="setting" class-name="" @click="handleWarningSet"></svg-icon></div>
+    <div class="warn-right"> <c-icon i="setting" class="" @click="handleWarningSet"></c-icon></div>
   </div>
 </template>
 
