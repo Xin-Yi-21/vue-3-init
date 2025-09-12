@@ -54,7 +54,6 @@ const props = defineProps({
 const visible = ref(true)
 const showPreview = ref(true)
 const vueInstance = ref(null)
-console.log('查??????', props.info)
 function rendered() {
   // console.log("渲染完成")
 }

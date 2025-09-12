@@ -6,7 +6,6 @@
 
 <script setup>
 // # 一、综合
-// import cTable from '@/components/custom-table'
 // ^
 
 // # 二、模块功能
@@ -23,7 +22,6 @@ const fileInfo = ref({
 // # 三、机制
 onMounted(() => {
   // init()
-  console.log('查啊？',)
 })
 // ^
 </script>
