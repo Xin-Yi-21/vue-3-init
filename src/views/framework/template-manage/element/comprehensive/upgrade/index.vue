@@ -431,9 +431,7 @@ function handleChangeCondition(type) {
 // # (2) 表格选中
 function handleChangeSelected(value) {
   table.value.selected = value
-
   proxy.$sortArray(table.value.selected, 'number', 'id')
-  // console.log('查value', value)
 }
 // ^
 // # (3) 表格选项
@@ -490,6 +488,7 @@ function handleSelection() {
         ]
       },
     }
+    console.log('查123', selection)
     return selection
   })
 }
@@ -498,69 +497,10 @@ function handleSelection() {
 // ^
 
 // # 三、机制
-// # 1、生命周期
+// 生命周期
 onMounted(() => {
   init()
 })
-// ^
-// # 2、计算属性
-
-
-// const tableSelection = computed(() => {
-//   let filterObj = {}
-//   let selectBy = table.value.selectBy
-//   const statusMap = {
-//     '批量提交': ['待提交', '审核未通过'],
-//     '批量审核': ['待审核'],
-//     '批量删除': ['待提交', '审核未通过'],
-//   }
-//   switch (selectBy) {
-//     case '批量提交':
-//     case '批量删除':
-//     case '批量审核':
-//       filterObj = filter(table.value.selected, statusMap[selectBy])
-//       break
-//     default:
-//       filterObj = { selectedE: [], selectedIE: [] }
-//   }
-
-//   function filter(selected = [], statusE = []) {
-//     const selectedE = []
-//     const selectedIE = []
-//     for (const item of selected) {
-//       (statusE.includes(item.status) ? selectedE : selectedIE).push(item)
-//     }
-//     return { selectedE, selectedIE }
-//   }
-
-//   let selection = {
-//     tableShow: ['selectedE', 'selectedIE'],
-//     selected: {
-//       tableData: table.value.selected,
-//       tableColumnShow: [
-//         // { label: '序号', value: 'index', width: '60' },
-//         { label: '人物', value: 'personName', width: '140' },]
-//     },
-//     selectedE: {
-//       tableData: filterObj.selectedE,
-//       tableColumnShow: [
-//         // { label: '序号', value: 'index', width: '60' },
-//         { label: '人物', value: 'personName', width: '' },
-//         // { label: '状态（原因）', value: 'status', width: '' },
-//       ]
-//     },
-//     selectedIE: {
-//       tableData: filterObj.selectedIE,
-//       tableColumnShow: [
-//         // { label: '序号', value: 'index', width: 60 },
-//         { label: '人物', value: 'personName', width: '' },
-//         // { label: '状态（原因）', value: 'status', width: '' },
-//       ]
-//     },
-//   }
-//   return selection
-// })
-// ^
 // ^
 </script>
 
