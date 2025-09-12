@@ -1,18 +1,18 @@
 <template>
   <div class="practice-vue">
-    <c-table :data="table.data">
+    <!-- <c-table :data="table.data">
       <el-table-column label="字段1" prop="" align="center" />
       <el-table-column label="字段2" prop="" align="center" />
       <el-table-column label="字段3" prop="" align="center" />
       <el-table-column label="字段4" prop="" align="center" />
       <el-table-column label="字段5" prop="" align="center" />
-    </c-table>
+    </c-table> -->
   </div>
 </template>
 
 <script setup>
 // # 一、综合
-import cTable from '@/components/custom-table'
+// import cTable from '@/components/custom-table'
 // ^
 
 // # 二、模块功能

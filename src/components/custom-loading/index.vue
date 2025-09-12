@@ -29,6 +29,7 @@
 
 <script setup>
 // # 一、综合
+import CIcon from '@/components/custom-icon'
 import { ElPopover } from 'element-plus'
 const props = defineProps({
   // 目标元素
@@ -153,7 +154,7 @@ watch(() => props.disabled, (nv, ov) => {
       .loading-icon {
         display: block;
         color: var(--tc);
-        font-size: 30px;
+        font-size: 30px !important;
         font-style: normal;
         margin-bottom: 10px;
         animation: shake 2s ease-in-out infinite;
