@@ -1,7 +1,7 @@
 <template>
   <div class="c-preview" v-if="showPreview">
     <template v-if="info.previewType === '_self'">
-      <el-dialog class="c-dialog c-preview-self" :style="info.fileType === 'ppt' ? `width:1400px;` : ''" :visible="true" :modal-append-to-body="true" :append-to-body="true" :close-on-click-modal="false" :before-close="handleCloseDialog">
+      <el-dialog class="c-dialog c-preview-self" :style="info.fileType === 'ppt' ? `width:1400px;` : ''" v-model="visible" :modal-append-to-body="true" :append-to-body="true" :close-on-click-modal="false" :before-close="handleCloseDialog">
         <div class="c-d-header">
           <span class="c-d-title">文件预览 - {{ info.fileName }}</span>
           <i class="el-icon-close" @click="handleCloseDialog"></i>
@@ -10,9 +10,9 @@
           <div class="c-d-c-inner">
             <vue-office-docx v-if="info.fileType === 'word'" :src="info.fileUrl" @rendered="rendered" style="width:100%; height: 100%;" />
             <vue-office-excel v-if="info.fileType === 'excel'" :src="info.fileUrl" @rendered="rendered" style="width: 100%; height: 100%;" />
-            <!-- <vue-office-pdf v-if="info.fileType==='pdf'" :src="info.fileUrl" @rendered="rendered" style="width: 100%; height: 100%;" /> -->
+            <vue-office-pdf v-if="info.fileType === 'pdf'" :src="info.fileUrl" @rendered="rendered" style="width: 100%; height: 100%;" />
             <img v-if="info.fileType === 'image'" :src="info.fileUrl" style="width: 100%; height: calc(100% - 4px);border:0;border:0;objectFit:contain;">
-            <iframe v-if="info.fileType === 'pdf'" :src="info.fileUrl" style="width: 100%; height: calc(100% - 4px);border:0;"></iframe>
+            <!-- <iframe v-if="info.fileType === 'pdf'" :src="info.fileUrl" style="width: 100%; height: calc(100% - 4px);border:0;"></iframe> -->
 
             <iframe v-if="info.fileType === 'txt'" :src="info.fileUrl" style="width: 100%; height: calc(100% - 4px);border:0;"></iframe>
             <video v-if="info.fileType === 'video'" controls :src="info.fileUrl" style="width: 100%; height: calc(100% - 4px);border:0;"></video>
@@ -33,8 +33,9 @@
     </template>
   </div>
 </template>
-
-<script>
+<script setup>
+// # 一、综合
+// 组件
 // VueOfficeDocx组件
 import VueOfficeDocx from '@vue-office/docx'
 import '@vue-office/docx/lib/index.css'
@@ -43,33 +44,25 @@ import VueOfficeExcel from '@vue-office/excel'
 import '@vue-office/excel/lib/index.css'
 // VueOfficePdf组件
 import VueOfficePdf from '@vue-office/pdf'
-export default {
-  components: { VueOfficeDocx, VueOfficeExcel, VueOfficePdf, },
-  props: {
-    info: {
-      type: Object,
-      default: () => { }
-    },
-  },
-  data() {
-    return {
-      showPreview: true,
-      vueInstance: null,
-    }
-  },
-  mounted() {
-    // console.log('预览文件信息', this.info)
-  },
-  methods: {
-    rendered() {
-      // console.log("渲染完成")
-    },
-    // 关闭模态框
-    handleCloseDialog() {
-      this.$set(this, 'showPreview', false)
-    },
-  },
-};
+// props
+const props = defineProps({
+  info: { type: Object, default: () => { } },
+})
+
+// ^
+// # 二、模块功能
+const visible = ref(true)
+const showPreview = ref(true)
+const vueInstance = ref(null)
+console.log('查??????', props.info)
+function rendered() {
+  // console.log("渲染完成")
+}
+// 关闭模态框
+function handleCloseDialog() {
+  showPreview.value = false
+}
+// ^
 </script>
 
 <style lang="scss" scoped>

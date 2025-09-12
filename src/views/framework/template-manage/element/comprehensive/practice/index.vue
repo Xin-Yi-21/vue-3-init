@@ -1,12 +1,6 @@
 <template>
   <div class="practice-vue">
-    <!-- <c-table :data="table.data">
-      <el-table-column label="字段1" prop="" align="center" />
-      <el-table-column label="字段2" prop="" align="center" />
-      <el-table-column label="字段3" prop="" align="center" />
-      <el-table-column label="字段4" prop="" align="center" />
-      <el-table-column label="字段5" prop="" align="center" />
-    </c-table> -->
+    <c-preview :info="fileInfo"></c-preview>
   </div>
 </template>
 
@@ -17,18 +11,19 @@
 
 // # 二、模块功能
 // # 1、初始化
-const table = ref({
-  data: [{}, {}, {}]
+const fileInfo = ref({
+  fileName: '前端规范.pdf',
+  fileType: 'pdf',
+  fileUrl: '/A/framework-file/前端规范.pdf',
+  previewType: '_self',
 })
-function init() {
-
-}
 // ^
 // ^
 
 // # 三、机制
 onMounted(() => {
-  init()
+  // init()
+  console.log('查啊？',)
 })
 // ^
 </script>

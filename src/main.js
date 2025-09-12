@@ -105,7 +105,7 @@ setConfig().then(async (cEnv) => {
 
     const cTag = (await import('@/components/custom-tag')).default
     const cText = (await import('@/components/custom-text')).default
-    // // const cPreview = (await import('@/components/custom-preview')).default
+    const cPreview = (await import('@/components/custom-preview')).default
     // const cFileList = (await import('@/components/custom-file-list')).default
     const cCardTitle = (await import('@/components/custom-card-title')).default
     const cCardHeader = (await import('@/components/custom-card-header')).default
@@ -124,7 +124,7 @@ setConfig().then(async (cEnv) => {
     app.component('cIcon', cIcon)
     app.component('cTag', cTag)
     app.component('cText', cText)
-    // app.component('cPreview', cPreview)
+    app.component('cPreview', cPreview)
     // app.component('cFileList', cFileList)
     app.component('cCardTitle', cCardTitle)
     app.component('cCardHeader', cCardHeader)

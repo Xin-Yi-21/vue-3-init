@@ -4,7 +4,7 @@
     <div class="tab-pane">
       <Basic v-if="currentTab === '基础'"> </Basic>
       <Upgrade v-if="currentTab === '进阶'"> </Upgrade>
-      <!-- <Practice v-if="currentTab === '练习'"> </Practice> -->
+      <Practice v-if="currentTab === '练习'"> </Practice>
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@ import Practice from './practice/index.vue'
 // ^
 // # 二、模块功能
 // # tab
-const currentTab = ref('进阶')
+const currentTab = ref('练习')
 const tabList = [
   { label: '基础', value: '基础', },
   { label: '进阶', value: '进阶' },
