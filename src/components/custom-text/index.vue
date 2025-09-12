@@ -1,12 +1,7 @@
 <template>
   <el-text ref="cTextRef" :class="['c-text', button ? 'is-button' : '', disabled ? 'is-disabled' : '', loading ? 'is-loading' : '',]" v-bind="$attrs" size="default"
-    :style="`${width ? 'width:' + width + 'px;' : 'width:auto;'}
-    ${height ? 'height:' + height + 'px;' : ''}
-    font-size:${size}px;
-    --cursor:${cursor};
-    --color:${color};
-    --hoverColor:${hoverColor || color};
-  `">
+    :style="`${width ? 'width:' + width + 'px;' : 'width:auto;'}${height ? 'height:' + height + 'px;' : ''}
+    font-size:${size}px;--cursor:${cursor};--color:${color};--hoverColor:${hoverColor || color};`">
     <slot></slot>
   </el-text>
 
@@ -95,6 +90,7 @@ watch(() => props.loading, (loading) => {
 
 <style lang="scss" scoped>
 .c-text {
+  display: inline-flex;
   color: var(--color);
   cursor: var(--cursor);
 
@@ -113,7 +109,7 @@ watch(() => props.loading, (loading) => {
         content: "";
         position: absolute;
         left: 0;
-        bottom: -2px;
+        bottom: 0px;
         width: 100%;
         height: 2px;
         background: currentColor;

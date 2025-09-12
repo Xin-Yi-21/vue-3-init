@@ -20,7 +20,7 @@
       <div class="c-search-condition">
         <el-form :model="form" ref="formRef">
           <el-form-item label="性别">
-            <el-select disabled v-model="form.gender" placeholder="请选择" style="width:120px" @change="handleChangeCondition('gender')">
+            <el-select v-model="form.gender" placeholder="请选择" style="width:120px" @change="handleChangeCondition('gender')">
               <el-option v-for="(item, index) in enums.gender" :key="index" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
@@ -55,16 +55,16 @@
       <el-table :data="table.data" border class="c-table" id="c-table" stripe @selection-change="handleChangeSelected" row-key="id">
         <el-table-column type="selection" align="center" width="60" reserve-selection />
         <el-table-column label="序号" prop="index" align="center" width="60" />
-        <el-table-column label="人物" prop="" align="center" class-name="a">
+        <el-table-column label="人物" prop="" align="center">
           <template #default="scope"> {{ scope.row.personName }} </template>
         </el-table-column>
-        <el-table-column label="性别" prop="" align="center" width="120">
+        <el-table-column label="性别" prop="" align="center" width="60">
           <template #default="scope"> {{ scope.row.genderName }} </template>
         </el-table-column>
-        <el-table-column label="年龄" prop="" align="center" width="120">
+        <el-table-column label="年龄" prop="" align="center" width="60">
           <template #default="scope"> {{ scope.row.age }} </template>
         </el-table-column>
-        <el-table-column label="角色" prop="" align="center" width="120">
+        <el-table-column label="角色" prop="" align="center" width="80">
           <template #default="scope">{{ scope.row.role }}</template>
         </el-table-column>
         <el-table-column label="人物介绍" prop="" align="center">
@@ -84,42 +84,40 @@
         </el-table-column>
         <el-table-column label="武力值" prop="" align="center" width="80">
           <template #default="scope">
-            <el-progress class="progress-line" type="line" color="#55c791" :show-text="false" :format="(p) => p || '0'" :percentage="scope.row.progress"></el-progress>
+            <c-tooltip :content="scope.row.progress" alwaysShow>
+              <el-progress class="progress-line" type="line" color="#55c791" :show-text="false" :text-inside="false" :format="(p) => p || '0'" :percentage="scope.row.progress"></el-progress>
+            </c-tooltip>
           </template>
         </el-table-column>
-
-        <el-table-column label="操作记录" prop="" align="center">
+        <el-table-column label="操作记录" prop="" align="center" width="100">
           <template #default="scope">
             <c-text size="14" color="#0077FF" button :disabled="false" :loading="false">操作记录</c-text>
           </template>
         </el-table-column>
-
         <el-table-column label="状态" prop="" align="center" width="140">
           <template #default="scope">
             <c-tag v-if="scope.row.status" :color="$getEnumsLabel(enums.status, scope.row.status, 'color', 'value')" v-disabled="false" button effect="dark">{{ scope.row.status }}</c-tag>
           </template>
         </el-table-column>
-        <el-table-column label="图标操作" prop="" align="center" class-name="c-table-operate-column" width="140">
+        <el-table-column label="图标操作" prop="" align="center" class-name="c-table-operate-column" width="120">
           <template #default="scope">
-            <c-icon i="c-operate-confirm" tip="确认" color="#55c791" :showType="scope.$index ? 'c' : 'el'" button :disabled="true" :loading="loading[`confirm-${scope.row.id}`]" @click="handleConfirm(scope.row)"> </c-icon>
-            <!-- <c-icon i="c-operate-confirm" tip="确认" color="#55c791" :showType="scope.$index ? 'c' : 'el'"  :disabled="false" v-load="{ loading: loading[`confirm-${scope.row.id}`], type: 'breath', }" @click="handleConfirm(scope.row)"> </c-icon> -->
-            <c-icon i="c-operate-view" tip="查看" color="#55c791" :showType="scope.$index ? 'c' : 'el'" button @click="handleView(scope.row)"></c-icon>
+            <c-icon i="c-operate-view" tip="查看" color="#55c791" :showType="scope.$index ? 'c' : 'el'" button :disabled="false" :loading="false" @click="handleView(scope.row)"></c-icon>
             <c-icon i="c-operate-update" tip="更新" color="#0077FF" :showType="scope.$index ? 'c' : 'el'" button @click="handleUpdate(scope.row)"></c-icon>
             <c-icon i="c-operate-delete" tip="删除" color="#FA4B4B" :showType="scope.$index ? 'c' : 'el'" button @click="handleDelete(scope.row)"></c-icon>
           </template>
         </el-table-column>
-        <el-table-column label="按钮操作" prop="" align="center" class-name="c-table-operate-column" width="220">
-          <template #default="scope">
-            <c-button>查看</c-button>
-            <c-button>更新</c-button>
-            <c-button>删除</c-button>
-          </template>
-        </el-table-column>
         <el-table-column label="文字操作" prop="" align="center" class-name="c-table-operate-column" width="140">
           <template #default="scope">
-            <c-text size="14" color="#55c791" button :disabled="false" :loading="false">查看</c-text>
-            <c-text size="14" color="#0077FF" button>更新</c-text>
-            <c-text size="14" color="#FA4B4B" button>删除</c-text>
+            <c-text size="14" color="#55c791" button :disabled="false" :loading="false" @click="handleView(scope.row)">查看</c-text>
+            <c-text size="14" color="#0077FF" button @click="handleUpdate(scope.row)">更新</c-text>
+            <c-text size="14" color="#FA4B4B" button @click="handleDelete(scope.row)">删除</c-text>
+          </template>
+        </el-table-column>
+        <el-table-column label="按钮操作" prop="" align="center" class-name="c-table-operate-column" width="280">
+          <template #default="scope">
+            <c-button type="primary" color="#55c791" i="c-operate-view" textColor="#fff" :disabled="false" :loading="false" @click="handleView(scope.row)">查看</c-button>
+            <c-button type="primary" color="#0077FF" i="c-operate-update" @click="handleUpdate(scope.row)">更新</c-button>
+            <c-button type="primary" color="#FA4B4B" i="c-operate-delete" @click="handleDelete(scope.row)">删除</c-button>
           </template>
         </el-table-column>
       </el-table>
@@ -201,7 +199,7 @@ function setDefault() {
 }
 // ^
 // ^
-// # 2、获取表格数据 
+// # 2、表格
 const table = ref({
   data: [],
   total: 0,

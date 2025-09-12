@@ -1,5 +1,5 @@
 <template>
-  <el-button class="c-button" v-bind="$attrs" :style="`width:${width ? width + 'px' : 'auto'};${height ? 'height:' + height + 'px' : ''}`">
+  <el-button class="c-button" v-bind="$attrs" :style="`width:${width ? width + 'px' : 'auto'};${height ? 'height:' + height + 'px' : ''};--textColor:${textColor};`">
     <template #loading>
       <svg-icon icon-class="c-loading-circle" class-name="el-icon is-loading" :style="`${iSize ? 'fontSize:' + iSize + 'px' : ''}`"></svg-icon>
     </template>
@@ -27,6 +27,8 @@ const props = defineProps({
   width: { type: [Number, String], default: '' },
   // 按钮高度
   height: { type: [Number, String], default: '' },
+  // 字体颜色
+  textColor: { type: String, default: '' },
 })
 const slots = useSlots()
 defineOptions({ inheritAttrs: false })
@@ -41,6 +43,7 @@ defineOptions({ inheritAttrs: false })
   height: var(--ch);
   margin: 0 10px;
   padding: 0 15px;
+  color: var(--textColor, var(--el-button-text-color));
 
   &[class*="is-disabled"] {
     cursor: not-allowed;
