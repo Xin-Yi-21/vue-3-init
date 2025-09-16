@@ -6,12 +6,12 @@
 // 一、综合
 // 插件
 import { scaleFit, scaleAdapt } from '@/plugins/screen-adaptation/scale'
-import { setRem } from '@/plugins/screen-adaptation/rem'
+import { setRem } from '@/plugins/adaptation'
 // ^
 // # 二、模块功能
 // # 1、初始化
 function init() {
-  scaleFit()
+  // scaleFit()
   setRem()
 }
 // ^

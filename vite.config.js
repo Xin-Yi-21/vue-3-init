@@ -58,17 +58,17 @@ export default defineConfig(async ({ mode, command }) => {
               }
             }
           },
-          // postcsspxtorem({
-          //   rootValue: 1,                         // 基准大小
-          //   unit: 'rpx',                          // 要转换单位
-          //   minPixelValue: 1,                     // 最小转换像素，默认值是1，<=1px不转换为rem
-          //   unitPrecision: 3,                     // 转rem精确位数
-          //   propList: ['*'],                      // 可转换的属性
-          //   selectorBlackList: ['no-rem'],        // 不转换的选择器
-          //   mediaQuery: false,                    // 媒体查询是否转换
-          //   include: null,                        // 转换目录
-          //   exclude: /node_modules|index\.html/i, // 不转换目录
-          // }),
+          postcsspxtorem({
+            rootValue: 1,                            // 基准大小
+            unit: 'px',                              // 要转换单位
+            minPixelValue: 1,                        // 最小转换像素，默认值是1，<=1px不转换为rem
+            unitPrecision: 3,                        // 转rem精确位数
+            propList: ['*'],                         // 可转换的属性
+            selectorBlackList: ['no-rem'],           // 不转换的选择器
+            mediaQuery: false,                       // 媒体查询是否转换
+            include: null,                           // 转换目录
+            exclude: /node_modules|index\.html/i,    // 不转换目录
+          }),
 
           // postcsspxtoviewport({
           //   viewportWidth: 1920,                  // 视口宽度

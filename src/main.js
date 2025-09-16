@@ -45,7 +45,11 @@ setConfig().then(async (cEnv) => {
     const { $getEnumsLabel, $getEnumsLabelList, $uniqueArray, $sortArray, $accurate, $hasValue, $exportExcel, $readExcel, $getRouteClass, $exportDomToImage, $exportDomToExcel, $exportDataToExcel, $cConfirm, $addTableIndex, $downloadFile } = await import('@/utils/common.js')
     const { throttle, debounce, cloneDeep, merge } = await import('lodash')
     const { $makeChartSeries, $makeChartFramework, $completeChartData, $completeChartData1, $transformEchartDataset, $newResizeObserver, $initEchart, $linkageEchartTooltips, $echartsClickEvent, $destroyEchart, $completeEchartXY, $exportEchartImage, $getEchartSeriesColor, $getLineEchartOption, $getCrossLineEchartOption, $getBarEchartOption, $getDateHeatmapEchartOption, $getDataZoomEchartOption, $getXdataIntervalOption, $getXPosition, $getXDistance } = await import('@/utils/echart.js')
-
+    const { $pr, $pvw, $pvh, $setCssSize, } = await import('@/plugins/adaptation')
+    app.config.globalProperties.$pr = $pr
+    app.config.globalProperties.$pvw = $pvw
+    app.config.globalProperties.$pvh = $pvh
+    app.config.globalProperties.$setCssSize = $setCssSize
     // 基础公共方法
     app.config.globalProperties.$dayjs = dayjs
     app.config.globalProperties.$getEnumsLabel = $getEnumsLabel

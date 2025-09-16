@@ -1,7 +1,7 @@
 <template>
   <div :class="['c-loading', { fullscreen }]">
     <template v-if="type === 'rocket' && showAnim">
-      <c-icon i="c-show-loading-rocket" class="loading-icon"></c-icon>
+      <!-- <c-icon i="c-show-loading-rocket" class="loading-icon"></c-icon> -->
       <div class="loading-text"> {{ text }} <span class="dot" v-for="n in 3" :key="n"></span> </div>
       <div v-if="onCancel && isTimeOut" class="loading-timeout">
         <span class="loading-timeout-tip"> 系统正在努力加载，操作可能不成功，是否取消等待？ </span>
@@ -18,7 +18,7 @@
             </div>
           </template>
           <template #reference>
-            <c-icon i="c-show-attention" class="warning-icon" />
+            <!-- <c-icon i="c-show-attention" class="warning-icon" /> -->
           </template>
         </el-popover>
       </div>
@@ -28,7 +28,7 @@
 
 <script setup>
 // # 一、综合
-import CIcon from '@/components/custom-icon'
+// import CIcon from '@/components/custom-icon'
 import { ElPopover } from 'element-plus'
 const props = defineProps({
   // 目标元素

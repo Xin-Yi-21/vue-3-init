@@ -101,7 +101,7 @@
         </el-table-column>
         <el-table-column label="图标操作" prop="" align="center" class-name="c-table-operate-column" width="120">
           <template #default="scope">
-            <c-icon i="c-operate-view" tip="查看" color="#55c791" :showType="scope.$index ? 'c' : 'el'" button :disabled="false" :loading="false" @click="handleView(scope.row)"></c-icon>
+            <c-icon i="c-operate-view" tip="查看" size="20" color="#55c791" :showType="scope.$index ? 'c' : 'el'" button :disabled="false" :loading="false" @click="handleView(scope.row)"></c-icon>
             <c-icon i="c-operate-update" tip="更新" color="#0077FF" :showType="scope.$index ? 'c' : 'el'" button @click="handleUpdate(scope.row)"></c-icon>
             <c-icon i="c-operate-delete" tip="删除" color="#FA4B4B" :showType="scope.$index ? 'c' : 'el'" button @click="handleDelete(scope.row)"></c-icon>
           </template>
@@ -488,7 +488,6 @@ function handleSelection() {
         ]
       },
     }
-    console.log('查123', selection)
     return selection
   })
 }
