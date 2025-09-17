@@ -1,8 +1,8 @@
 <template>
-  <div :class="['c-tab', cTabClass]" :style="`${height ? 'height:' + height + 'px' : ''}`">
+  <div :class="['c-tab', cTabClass]" :style="`${height ? '--height:' + $setCssSize(height) : ''}`">
     <div v-for="(item, index) in tabList" :key="index"
       :class="['tab-item', (modelValue === item.value || currentTab === item.value) ? 'is-active' : '', item.disabled ? 'is-disabled' : '']"
-      :style="`${fontSize ? 'font-size:' + fontSize + 'px' : ''}`"
+      :style="`${fontSize ? `--fontSize:${$setCssSize(fontSize, 'rem')};` : ''}`"
       @click="handleTabClick(item)">
       <c-icon :i="item.icon" class="tab-item-icon" v-if="item.icon"></c-icon>
       <span class="tab-item-text"> {{ item.label }}</span>
@@ -11,6 +11,8 @@
 </template>
 
 <script setup>
+// # 一、综合
+// props
 const props = defineProps({
   tabList: { type: Array, default: () => [] },
   currentTab: { type: [String, Number], default: '' },
@@ -19,8 +21,10 @@ const props = defineProps({
   height: { type: [String, Number], default: 36 },
   fontSize: { type: [String, Number], default: 14 }
 })
+// 声明
 const emit = defineEmits(['click', 'change', 'update:modelValue'])
-
+const { proxy } = getCurrentInstance()
+// 计算属性
 const cTabClass = computed(() => {
   let newClassLRV = {
     'normal': 'c-tab-normal',
@@ -30,7 +34,12 @@ const cTabClass = computed(() => {
   }
   return newClassLRV[props.type] || 'c-tab-normal'
 })
+// ^
 
+
+
+// # 二、模块功能
+// 1、tab点击
 function handleTabClick(tabItem) {
   if (!tabItem.disabled) {
     emit('click', tabItem)
@@ -40,14 +49,17 @@ function handleTabClick(tabItem) {
     }
   }
 }
+// ^
+
 </script>
 
 <style lang="scss" scoped>
 .c-tab.c-tab-normal {
   display: inline-flex;
   overflow: hidden;
+  height: var(--height);
   border-radius: 100px;
-  font-size: var(--cfs);
+  font-size: var(--font-size, var(--cfs));
 
   .tab-item {
     display: inline-flex;
@@ -99,7 +111,9 @@ function handleTabClick(tabItem) {
   width: 100%;
   display: flex;
   align-items: center;
+  height: var(--height);
   border-bottom: 1px solid var(--bcs);
+  font-size: var(--font-size, var(--cfs));
 
   .tab-item {
     height: 100%;
@@ -157,7 +171,9 @@ function handleTabClick(tabItem) {
   width: 100%;
   display: flex;
   align-items: center;
+  height: var(--height);
   border-bottom: 1px solid var(--bcs);
+  font-size: var(--font-size, var(--cfs));
 
   .tab-item {
     height: 100%;
@@ -191,6 +207,8 @@ function handleTabClick(tabItem) {
   width: 100%;
   display: flex;
   align-items: center;
+  height: var(--height);
+  font-size: var(--font-size, var(--cfs));
 
   :root[theme-style='dark'] & {
     background-color: #f5f7fa;

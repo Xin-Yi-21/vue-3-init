@@ -30,7 +30,7 @@ export function $pvh(px) {
   return (px / designHeight * 100) + 'vw'
 }
 // 综合
-export function $setCssSize(value, to) {
+export function $setCssSize(value, to = 'rem') {
   if (typeof value === 'string' && /(px|rem|vw|vh)$/i.test(value)) { return value }
   const num = parseFloat(value); if (isNaN(num)) { return '0' }
   switch (to) {

@@ -1,14 +1,14 @@
 <template>
-  <el-button class="c-button" v-bind="$attrs" :style="`width:${width ? width + 'px' : 'auto'};${height ? 'height:' + height + 'px' : ''};--textColor:${textColor};`">
+  <el-button class="c-button" v-bind="$attrs" :style="`${width ? `--width:${$setCssSize(width)};` : ''} ${height ? `--height:${$setCssSize(height)};` : ''} ${iSize ? `--iSize:${setCssSize(iSize)};` : ''} ${fSize ? `--fSize:${$setCssSize(fSize)};` : ''} ${cColor ? `--cColor:${cColor};` : ''}`">
     <template #loading>
-      <c-icon i="c-loading-circle" class="el-icon is-loading" :style="`${iSize ? 'fontSize:' + iSize + 'px' : ''}`"></c-icon>
+      <c-icon i="c-loading-circle" class="el-icon is-loading"></c-icon>
     </template>
 
     <template #icon v-if="slots.icon || i">
-      <c-icon v-if="i" :i="i" :style="`${iSize ? 'fontSize:' + iSize + 'px' : ''}`"></c-icon>
+      <c-icon v-if="i" :i="i" :size="iSize"></c-icon>
     </template>
     <template #default v-if="slots.default">
-      <span class="button-text" :style="`${fSize ? 'fontSize:' + fSize + 'px' : ''}`">
+      <span class="button-text">
         <slot></slot>
       </span>
     </template>
@@ -16,6 +16,8 @@
 </template>
 
 <script setup>
+
+
 const props = defineProps({
   // 非element按钮图标
   i: { type: String, default: '', },
@@ -27,8 +29,8 @@ const props = defineProps({
   width: { type: [Number, String], default: '' },
   // 按钮高度
   height: { type: [Number, String], default: '' },
-  // 字体颜色
-  textColor: { type: String, default: '' },
+  // 内容颜色
+  cColor: { type: String, default: '' },
 })
 const slots = useSlots()
 defineOptions({ inheritAttrs: false })
@@ -40,10 +42,11 @@ defineOptions({ inheritAttrs: false })
   align-items: center;
   justify-content: center;
   // overflow: hidden;
-  height: var(--ch);
+  width: var(--width, 'auto');
+  height: var(--height, var(--ch));
   margin: 0 10px;
   padding: 0 15px;
-  color: var(--textColor, var(--el-button-text-color));
+  color: var(--cColor, var(--el-button-text-color));
 
   &[class*="is-disabled"] {
     cursor: not-allowed;
@@ -60,7 +63,7 @@ defineOptions({ inheritAttrs: false })
   }
 
   :deep(.el-icon) {
-    font-size: var(--cfs);
+    font-size: var(--iSize, var(--cfs));
   }
 
 
@@ -75,7 +78,7 @@ defineOptions({ inheritAttrs: false })
     align-items: center;
 
     .button-text {
-      font-size: var(--cfs);
+      font-size: var(--fSize, var(--cfs));
       font-weight: 400;
     }
   }

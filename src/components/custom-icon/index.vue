@@ -1,12 +1,12 @@
 <template>
   <i ref="cIconRef" :class="['c-icon', i, button ? 'is-button' : '', disabled ? 'is-disabled' : '', loading ? 'is-loading' : '',]"
-    :style="`--color:${color};--font-size:${$setCssSize(size, 'rem')};--cursor:${cursor};--hoverColor:${hoverColor || color};`">
+    :style="`${color ? `--color:${color};` : ''} ${fontSize ? `--fontSize:${fontSize};` : ''} ${cursor ? `--cursor:${cursor};` : ''} ${hoverColor || color ? `--hoverColor:${hoverColor || color};` : ''}`">
     <!-- 一、显示类型：自定义提示 -->
     <template v-if="showType == 'c'">
       <svg class="svg-icon" aria-hidden="true">
         <use :xlink:href="`#icon-${i}`" :fill="color" />
       </svg>
-      <span class="icon-tip" :style="`transform:translate(-50%,-${offset}px)`" v-if="tip">{{ tip }}</span>
+      <span class="icon-tip" :style="`transform:translate(-50%,-${$setCssSize(offset)})`" v-if="tip">{{ tip }}</span>
     </template>
 
     <!-- 二、显示类型：el-tooltip提示 -->
@@ -68,9 +68,7 @@ const props = defineProps({
   // 显示距离
   offset: { type: [String, Number], default: 5 }
 })
-
 // ^
-
 
 // # 二、模块功能
 // # 1、遮罩的创建和移除
@@ -130,7 +128,7 @@ watch(() => props.loading, (loading) => {
   display: inline-flex;
   margin-right: 5px;
   color: var(--color);
-  font-size: var(--font-size);
+  font-size: var(--fontSize, var(--cfs));
   font-style: normal;
   font-weight: 400;
   cursor: var(--cursor);

@@ -1,5 +1,5 @@
 <template>
-  <div class="c-card-header" :style="border ? `border-bottom:1px solid var(--bcs)` : ''">
+  <div class="c-card-header" :style="`${border ? `border-bottom:1px solid var(--bcs);` : ''}`">
     <div class="left">
       <c-card-title v-if="title" :title="title" :icon="icon"></c-card-title>
       <slot name="left"></slot>

@@ -79,7 +79,7 @@
         </el-table-column>
         <el-table-column label="智力值" prop="" align="center" width="80">
           <template #default="scope">
-            <el-progress class="progress-circle" type="circle" color="#55c791" :stroke-width="3" :width="30" :format="(p) => p || '0'" :percentage="scope.row.progress"></el-progress>
+            <el-progress class="progress-circle" type="circle" color="#55c791" :stroke-width="12" :format="(p) => p || '0'" :percentage="scope.row.progress"></el-progress>
           </template>
         </el-table-column>
         <el-table-column label="武力值" prop="" align="center" width="80">
@@ -115,7 +115,7 @@
         </el-table-column>
         <el-table-column label="按钮操作" prop="" align="center" class-name="c-table-operate-column" width="280">
           <template #default="scope">
-            <c-button type="primary" color="#55c791" i="c-operate-view" textColor="#fff" :disabled="false" :loading="false" @click="handleView(scope.row)">查看</c-button>
+            <c-button type="primary" color="#55c791" i="c-operate-view" cColor="#fff" :disabled="false" :loading="false" @click="handleView(scope.row)">查看</c-button>
             <c-button type="primary" color="#0077FF" i="c-operate-update" @click="handleUpdate(scope.row)">更新</c-button>
             <c-button type="primary" color="#FA4B4B" i="c-operate-delete" @click="handleDelete(scope.row)">删除</c-button>
           </template>
@@ -148,6 +148,7 @@ const props = defineProps({
 })
 // pinia
 import useStore from '@/store'
+import { remove } from 'nprogress'
 
 // 声明
 const { enumsStore } = useStore()
@@ -519,8 +520,8 @@ onMounted(() => {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 30px;
-      height: 30px;
+      width: 30px !important;
+      height: 30px !important;
     }
 
     .el-progress__text {

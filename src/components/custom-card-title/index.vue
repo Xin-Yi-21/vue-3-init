@@ -1,9 +1,9 @@
 <template>
   <div class="c-card-title">
-    <span v-if="icon === 'circle'" class="c-card-circle-icon out-circle" :style="`width:${outerSize}px;height:${outerSize}px;backgroundColor:${outerColor};`">
-      <span class="inner-circle" :style="`width:${innerSize}px;height:${innerSize}px;backgroundColor:${innerColor};`"></span>
+    <span v-if="icon === 'circle'" class="c-card-circle-icon out-circle" :style="`width:${$setCssSize(outerSize)};height:${$setCssSize(outerSize)};backgroundColor:${outerColor};`">
+      <span class="inner-circle" :style="`width:${$setCssSize(innerSize)};height:${$setCssSize(innerSize)};backgroundColor:${innerColor};`"></span>
     </span>
-    <span v-else-if="icon === 'rectangle'" class="c-card-rectangle-icon" :style="`width:${width}px;height:${height}px;backgroundColor:${bg};`"></span>
+    <span v-else-if="icon === 'rectangle'" class="c-card-rectangle-icon" :style="`width:${$setCssSize(width)};height:${$setCssSize(height)};backgroundColor:${bg};`"></span>
     <c-icon v-else-if="icon" :i="icon" class="c-card-title-icon"></c-icon>
     <span class="c-card-title-text">{{ title }}</span>
   </div>

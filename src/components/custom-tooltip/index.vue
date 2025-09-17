@@ -1,7 +1,7 @@
 <template>
   <el-tooltip popper-class="c-tooltip" :disabled="isDisabled" :placement="placement" v-bind="$attrs">
     <template #content>
-      <div class="c-tooltip-content" :style="`max-width:${maxWidth}px;`">{{ content }}</div>
+      <div class="c-tooltip-content" :style="`${maxWidth ? `max-width:${$setCssSize(maxWidth)};` : ''}`">{{ content }}</div>
     </template>
     <template #default>
       <div :class="['c-tooltip-trigger', triggerClass || '']" ref="slotRef" @mouseenter="handleMouseEnter">
