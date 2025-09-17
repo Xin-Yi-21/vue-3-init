@@ -1,6 +1,6 @@
 <template>
   <el-text ref="cTextRef" :class="['c-text', button ? 'is-button' : '', disabled ? 'is-disabled' : '', loading ? 'is-loading' : '',]" v-bind="$attrs" size="default"
-    :style="`${width ? `--width:${$setCssSize(width)};` : ''} ${height ? `--height:${$setCssSize(height)};` : ''} ${fontSize ? `--fontSize:${$setCssSize(fontSize)};` : ''} ${cursor ? `--cursor:${cursor};` : ''} ${color ? `--color:${color};` : ''} ${color || hoverColor ? `--hoverColor:${color || hoverColor};` : ''}`">
+    :style="`${width ? `--width:${$setCssSize(width)};` : ''} ${height ? `--height:${$setCssSize(height)};` : ''} ${size ? `--fontSize:${$setCssSize(size)};` : ''} ${cursor ? `--cursor:${cursor};` : ''} ${color ? `--color:${color};` : ''} ${color || hoverColor ? `--hoverColor:${color || hoverColor};` : ''}`">
     <slot></slot>
   </el-text>
 

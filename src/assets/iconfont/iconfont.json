@@ -6,72 +6,79 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5985623",
+      "name": "注意",
+      "font_class": "c-show-attention",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
       "icon_id": "9788943",
-      "name": "加载",
-      "font_class": "loading",
+      "name": "加载（圆环）",
+      "font_class": "c-show-loading-circle",
       "unicode": "e70d",
       "unicode_decimal": 59149
     },
     {
       "icon_id": "22266539",
       "name": "火箭",
-      "font_class": "huojian",
+      "font_class": "c-show-loading-rocket",
       "unicode": "e613",
       "unicode_decimal": 58899
     },
     {
       "icon_id": "8777509",
-      "name": "常规上",
-      "font_class": "c-normal-up",
+      "name": "上箭头（细）",
+      "font_class": "c-arrow-up-thin",
       "unicode": "e66e",
       "unicode_decimal": 58990
     },
     {
       "icon_id": "8777510",
-      "name": "常规左",
-      "font_class": "c-normal-left",
+      "name": "左箭头（细）",
+      "font_class": "c-arrow-left-thin",
       "unicode": "e66f",
       "unicode_decimal": 58991
     },
     {
       "icon_id": "8777511",
-      "name": "常规下",
-      "font_class": "c-normal-down",
+      "name": "下箭头（细）",
+      "font_class": "c-arrow-down-thin",
       "unicode": "e670",
       "unicode_decimal": 58992
     },
     {
       "icon_id": "8777512",
-      "name": "常规右",
-      "font_class": "c-normal-right",
+      "name": "右箭头（细）",
+      "font_class": "c-arrow-right-thin",
       "unicode": "e671",
       "unicode_decimal": 58993
     },
     {
       "icon_id": "8777600",
-      "name": "左箭头",
-      "font_class": "c-scroll-left",
+      "name": "左箭头（粗）",
+      "font_class": "c-arrow-left-bold",
       "unicode": "e676",
       "unicode_decimal": 58998
     },
     {
       "icon_id": "8777601",
-      "name": "右箭头",
-      "font_class": "c-scroll-right",
+      "name": "右箭头（粗）",
+      "font_class": "c-arrow-right-bold",
       "unicode": "e677",
       "unicode_decimal": 58999
     },
     {
       "icon_id": "8777602",
-      "name": "上箭头",
-      "font_class": "c-scroll-top",
+      "name": "上箭头（粗）",
+      "font_class": "c-arrow-top-bold",
       "unicode": "e678",
       "unicode_decimal": 59000
     },
     {
       "icon_id": "8777603",
-      "name": "下箭头",
-      "font_class": "c-scroll-down",
+      "name": "下箭头（粗）",
+      "font_class": "c-arrow-down-bold",
       "unicode": "e679",
       "unicode_decimal": 59001
     }

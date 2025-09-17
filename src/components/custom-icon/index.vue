@@ -1,6 +1,6 @@
 <template>
   <i ref="cIconRef" :class="['c-icon', i, button ? 'is-button' : '', disabled ? 'is-disabled' : '', loading ? 'is-loading' : '',]"
-    :style="`${color ? `--color:${color};` : ''} ${fontSize ? `--fontSize:${fontSize};` : ''} ${cursor ? `--cursor:${cursor};` : ''} ${hoverColor || color ? `--hoverColor:${hoverColor || color};` : ''}`">
+    :style="`${color ? `--color:${color};` : ''} ${size ? `--fontSize:${size};` : ''} ${cursor ? `--cursor:${cursor};` : ''} ${hoverColor || color ? `--hoverColor:${hoverColor || color};` : ''}`">
     <!-- 一、显示类型：自定义提示 -->
     <template v-if="showType == 'c'">
       <svg class="svg-icon" aria-hidden="true">
@@ -38,6 +38,7 @@
 <script setup>
 // # 一、综合
 // 组件
+import { $setCssSize } from '@/plugins/adaptation'
 import { ElTooltip, ElPopover } from 'element-plus'
 // props
 const props = defineProps({
