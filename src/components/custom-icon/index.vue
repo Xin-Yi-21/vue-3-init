@@ -38,7 +38,6 @@
 <script setup>
 // # 一、综合
 // 组件
-import { $setCssSize } from '@/plugins/adaptation'
 import { ElTooltip, ElPopover } from 'element-plus'
 // props
 const props = defineProps({

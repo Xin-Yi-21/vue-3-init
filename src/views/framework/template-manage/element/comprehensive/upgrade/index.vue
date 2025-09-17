@@ -4,7 +4,7 @@
       <template #left> <c-card-title title="进阶模版" icon="circle"></c-card-title> </template>
       <template #center> </template>
       <template #right>
-        <c-button i="c-operate-download" @click="handleDownloadFile" :loading="loading.downloadFile" v-load="{ type: 'other', loading: loading.result, onCancel: () => loading.result = false }">文件下载</c-button>
+        <c-button i="c-operate-download" @click="handleDownloadFile" :loading="loading.downloadFile">文件下载</c-button>
         <c-button i="c-operate-upload" @click="handleUploadFile" :loading="loading.uploadFile">文件上传</c-button>
 
         <c-button i="c-operate-export-image" @click="handleImageExport" :loading="loading.imageExport">图片导出</c-button>
@@ -226,7 +226,7 @@ async function getTableInfo(type) {
     handleTableInfo()
     await new Promise(resolve => setTimeout(resolve, 500))
   } finally {
-    loading.value.result = true
+    loading.value.result = false
   }
 }
 // ^
