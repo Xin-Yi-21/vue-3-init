@@ -1,9 +1,6 @@
 // 一、主题变量
 // 1、主题颜色
 :root {
-  --c: red;
-}
-:root {
   &[theme-style='light'] {
     --bg-layout: #ddd; // 布局背景色
     --bg-card: #fff; // 卡片背景色

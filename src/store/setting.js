@@ -69,27 +69,54 @@ const useSettingStore = defineStore('setting', {
       const el = document.documentElement
 
       // 公用函数：获取预设变量
-      const getPresetCssV = (onlyElement = false) => {
+      const getPresetCssV = (onlyElement = false, options = { themeStyle: this.themeStyle, themeSize: this.themeSize }) => {
         const vars = {}
+        const { themeStyle, themeSize } = options
+
         for (const sheet of document.styleSheets) {
           let rules
           try { rules = sheet.cssRules } catch (e) { continue } // 跨域忽略
           if (!rules) continue
 
           for (const rule of rules) {
-            if (rule.selectorText && rule.selectorText.includes(':root')) {
-              for (const prop of rule.style) {
-                if (!prop.startsWith('--')) continue
-                const value = rule.style.getPropertyValue(prop).trim()
-                const cleanProp = prop.slice(2)
-                if (onlyElement && prop.startsWith('--el-')) vars[cleanProp] = value
-                if (!onlyElement && !prop.startsWith('--el-')) vars[cleanProp] = value
+            if (!rule.selectorText) continue
+            if (!rule.selectorText.startsWith(':root')) continue
+
+            for (const prop of rule.style) {
+              if (!prop.startsWith('--')) continue
+              const value = rule.style.getPropertyValue(prop).trim()
+              const cleanProp = prop.slice(2)
+
+              // 1. 先收集所有 Element Plus 变量
+              if (prop.startsWith('--el-')) {
+                vars[cleanProp] = value
+                continue // 跳过主题筛选
               }
+
+              // 2. 自定义变量，按主题/大小筛选
+              const matchStyle = themeStyle && rule.selectorText.includes(`[theme-style="${themeStyle}"]`)
+              const matchSize = themeSize && rule.selectorText.includes(`[theme-size="${themeSize}"]`)
+
+              if ((themeStyle || themeSize) && !matchStyle && !matchSize) continue
+
+              // 3. 覆盖已有变量
+              vars[cleanProp] = value
             }
           }
         }
+
+        // 如果只要 Element Plus 变量，可以过滤掉其他
+        if (onlyElement) {
+          const elVars = {}
+          Object.keys(vars).forEach(key => {
+            if (key.startsWith('el-')) elVars[key] = vars[key]
+          })
+          return elVars
+        }
+
         return vars
       }
+
 
       // 1、echartCssV
       const echartCssV = (() => {
@@ -106,6 +133,7 @@ const useSettingStore = defineStore('setting', {
 
       // 3、customCssV
       const customStyleCssV = {}
+      // console.log('查el.style', el.style.cssText)
       for (let i = 0; i < el.style.length; i++) {
         const prop = el.style[i]
         if (prop.startsWith('--')) customStyleCssV[prop.slice(2)] = el.style.getPropertyValue(prop).trim()
@@ -131,7 +159,7 @@ const useSettingStore = defineStore('setting', {
 
       // let defaultTitle = window?.cEnv?.VITE_APP_TITLE || ''
       // if (this.isDynamicTitle) {
-      //   document.title = (stationName ? `${stationName} - ` : '') + this.routeTitle + (defaultTitle ? ` - ${defaultTitle}` : '')
+      //   document.title = (stationName ? `${ stationName } - ` : '') + this.routeTitle + (defaultTitle ? ` - ${ defaultTitle }` : '')
       // } else {
       //   document.title = defaultTitle
       // }

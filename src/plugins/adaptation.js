@@ -35,8 +35,8 @@ export function $setCssSize(value, to = 'rem') {
   const num = parseFloat(value); if (isNaN(num)) { return '0' }
   switch (to) {
     case 'rem': {
-      const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-      return (num / rootFontSize) + 'rem'
+      const rootValue = 1
+      return (num / rootValue) + 'rem'
     }
     case 'vw':
       return (num / designWidth * 100) + 'vw'

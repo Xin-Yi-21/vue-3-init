@@ -16,115 +16,70 @@
         <c-button i="c-operate-delete" @click="handleBatchDelete">批量删除</c-button>
       </template>
     </c-card-header>
-    <!-- <div class="c-search" v-load="{ loading: loading.result, showAnim: false }">
-      <div class="c-search-condition">
+
+    <c-search :rows="3">
+      <template #searchCondition>
+
+
         <el-form :model="form" ref="formRef">
+          <!-- <div class="c-row"> -->
+          <el-form-item label="人物" prop="name">
+            <el-input v-model="form.name" placeholder="请输入人物"></el-input>
+          </el-form-item>
           <el-form-item label="性别">
-            <el-select v-model="form.gender" placeholder="请选择" :style="`width:${$setCssSize(120)};`" @change="handleChangeCondition('gender')">
+            <el-select v-model="form.gender" multiple placeholder="请选择性别" @change="handleChangeCondition('gender')">
               <el-option v-for="(item, index) in enums.gender" :key="index" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="姓名" prop="name">
-            <el-input v-model="form.name" placeholder="请输入"></el-input>
+          <el-form-item label="年龄" prop="role">
+            <el-input v-model="form.age" placeholder="请输入年龄"></el-input>
           </el-form-item>
-          <el-form-item label="角色" prop="role">
-            <el-select v-model="form.role" multiple class="c-multiple-select" placeholder="请选择角色" :style="`width:${$setCssSize(200)};`">
-              <el-option v-for="(item, index) in enums.role" :key="index" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="姓名" prop="name">
-            <el-input v-model="form.name" placeholder="请输入"></el-input>
-          </el-form-item>
-          <el-form-item label="角色" prop="role">
-            <el-select v-model="form.role" multiple class="c-multiple-select" placeholder="请选择角色" :style="`width:${$setCssSize(200)};`">
-              <el-option v-for="(item, index) in enums.role" :key="index" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="起始时间">
+          <el-form-item label="开始时间">
             <el-date-picker v-model="form.startTime" type="datetime" placeholder="请选择开始时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :style="`width:${$setCssSize(200)};`" :disabled-date="pickerOptions.start" :clearable="false"></el-date-picker>
           </el-form-item>
           <el-form-item label="结束时间">
             <el-date-picker v-model="form.endTime" type="datetime" placeholder="请选择结束时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :style="`width:${$setCssSize(200)};`" :disabled-date="pickerOptions.end" :clearable="false"></el-date-picker>
           </el-form-item>
+          <el-form-item label="结束时间">
+            <el-date-picker v-model="form.endTime" type="datetime" placeholder="请选择结束时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :style="`width:${$setCssSize(200)};`" :disabled-date="pickerOptions.end" :clearable="false"></el-date-picker>
+          </el-form-item>
+          <!-- </div> -->
+          <!-- <div class="c-row">
+            <el-form-item label="人物B1" prop="name">
+              <el-input v-model="form.name1" placeholder="请输入人物"></el-input>
+            </el-form-item>
+            <el-form-item label="人物B2" prop="name">
+              <el-input v-model="form.name" placeholder="请输入人物"></el-input>
+            </el-form-item>
+            <el-form-item label="人物B3" prop="name">
+              <el-input v-model="form.name" placeholder="请输入人物"></el-input>
+            </el-form-item>
+            <el-form-item label="人物B4" prop="name">
+              <el-input v-model="form.name" placeholder="请输入人物"></el-input>
+            </el-form-item>
+            <el-form-item label="人物B5" prop="name">
+              <el-input v-model="form.name" placeholder="请输入人物"></el-input>
+            </el-form-item>
+          </div>
+          <div class="c-row">
+            <el-form-item label="人物C1" prop="name">
+              <el-input v-model="form.name" placeholder="请输入人物"></el-input>
+            </el-form-item>
+            <el-form-item label="人物C2" prop="name">
+              <el-input v-model="form.name" placeholder="请输入人物"></el-input>
+            </el-form-item>
+            <el-form-item label="人物C3" prop="name">
+              <el-input v-model="form.name" placeholder="请输入人物"></el-input>
+            </el-form-item>
+            <el-form-item label="人物C4" prop="name">
+              <el-input v-model="form.name" placeholder="请输入人物"></el-input>
+            </el-form-item>
+            <el-form-item label="人物C5" prop="name">
+              <el-input v-model="form.name" placeholder="请输入人物"></el-input>
+            </el-form-item>
+          </div> -->
         </el-form>
-      </div>
-      <div class="c-search-operate">
-        <div class="left">
-          <c-button type="primary" class="query-button" i="c-operate-search" @click="getTableInfo">查询</c-button>
-          <c-button type="info" class="refresh-button" i="c-operate-refresh" @click="setDefault"></c-button>
-        </div>
-        <div class="right">
-          <c-button type="primary" i="c-operate-add" @click="handleAdd">新增</c-button>
-        </div>
-      </div>
-    </div> -->
-    <c-search>
-      <template #searchCondition>
-        <el-form :model="form" ref="formRef">
-          <div class="c-row">
-            <el-form-item label="性别">
-              <el-select v-model="form.gender" placeholder="请选择" :style="`width:${$setCssSize(120)};`" @change="handleChangeCondition('gender')">
-                <el-option v-for="(item, index) in enums.gender" :key="index" :label="item.label" :value="item.value"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="姓名" prop="name">
-              <el-input v-model="form.name" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="角色" prop="role">
-              <el-select v-model="form.role" multiple class="c-multiple-select" placeholder="请选择角色" :style="`width:${$setCssSize(200)};`">
-                <el-option v-for="(item, index) in enums.role" :key="index" :label="item.label" :value="item.value"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="起始时间">
-              <el-date-picker v-model="form.startTime" type="datetime" placeholder="请选择开始时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :style="`width:${$setCssSize(200)};`" :disabled-date="pickerOptions.start" :clearable="false"></el-date-picker>
-            </el-form-item>
-            <el-form-item label="结束时间">
-              <el-date-picker v-model="form.endTime" type="datetime" placeholder="请选择结束时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :style="`width:${$setCssSize(200)};`" :disabled-date="pickerOptions.end" :clearable="false"></el-date-picker>
-            </el-form-item>
-          </div>
-          <div class="c-row">
-            <el-form-item label="性别">
-              <el-select v-model="form.gender" placeholder="请选择" :style="`width:${$setCssSize(120)};`" @change="handleChangeCondition('gender')">
-                <el-option v-for="(item, index) in enums.gender" :key="index" :label="item.label" :value="item.value"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="姓名" prop="name">
-              <el-input v-model="form.name" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="角色" prop="role">
-              <el-select v-model="form.role" multiple class="c-multiple-select" placeholder="请选择角色" :style="`width:${$setCssSize(200)};`">
-                <el-option v-for="(item, index) in enums.role" :key="index" :label="item.label" :value="item.value"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="起始时间">
-              <el-date-picker v-model="form.startTime" type="datetime" placeholder="请选择开始时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :style="`width:${$setCssSize(200)};`" :disabled-date="pickerOptions.start" :clearable="false"></el-date-picker>
-            </el-form-item>
-            <el-form-item label="结束时间">
-              <el-date-picker v-model="form.endTime" type="datetime" placeholder="请选择结束时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :style="`width:${$setCssSize(200)};`" :disabled-date="pickerOptions.end" :clearable="false"></el-date-picker>
-            </el-form-item>
-          </div>
-          <div class="c-row">
-            <el-form-item label="性别">
-              <el-select v-model="form.gender" placeholder="请选择" :style="`width:${$setCssSize(120)};`" @change="handleChangeCondition('gender')">
-                <el-option v-for="(item, index) in enums.gender" :key="index" :label="item.label" :value="item.value"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="姓名" prop="name">
-              <el-input v-model="form.name" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="角色" prop="role">
-              <el-select v-model="form.role" multiple class="c-multiple-select" placeholder="请选择角色" :style="`width:${$setCssSize(200)};`">
-                <el-option v-for="(item, index) in enums.role" :key="index" :label="item.label" :value="item.value"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="起始时间">
-              <el-date-picker v-model="form.startTime" type="datetime" placeholder="请选择开始时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :style="`width:${$setCssSize(200)};`" :disabled-date="pickerOptions.start" :clearable="false"></el-date-picker>
-            </el-form-item>
-            <el-form-item label="结束时间">
-              <el-date-picker v-model="form.endTime" type="datetime" placeholder="请选择结束时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :style="`width:${$setCssSize(200)};`" :disabled-date="pickerOptions.end" :clearable="false"></el-date-picker>
-            </el-form-item>
-          </div>
-        </el-form>
+        <!-- </el-scrollbar> -->
       </template>
       <template #extendOperate>
         <c-button type="primary" i="c-operate-add" @click="handleAdd">新增</c-button>
@@ -255,7 +210,6 @@ async function getEnums() {
   let allEnums = JSON.parse(JSON.stringify(enumsStore.allEnums))
   let newEnums = {
     gender: allEnums.gender,
-    role: allEnums.role,
     status: [
       { label: '待提交', value: '待提交', color: '#00b0f0' },
       { label: '待审核', value: '待审核', color: '#8A2BE2' },
@@ -617,16 +571,16 @@ onMounted(() => {
   :deep(.progress-line) {
     display: inline-flex;
     width: 100%;
-    height: 10px;
+    height: 10px !important;
 
     .el-progress-bar__outer {
       padding: 1px 2px;
-      height: 6px;
+      height: 6px !important;
       background-color: #efefef;
 
       .el-progress-bar__inner {
         position: relative;
-        height: 4px;
+        height: 4px !important;
       }
     }
   }
