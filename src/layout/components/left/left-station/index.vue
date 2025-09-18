@@ -9,7 +9,7 @@
       <c-tab height="30" fontSize="12" :tabList="tabList" :currentTab="currentTab" @change="handleChangeTab"></c-tab>
       <el-input v-model="stationName" class="search-input" placeholder="请输入场站名称" @input="handleSearchStation"></el-input>
       <div class="station-list-vue" v-if="currentTab === 'list'" ref="lnsRef">
-        <el-scrollbar id="station-scrollbar" ref="stationScrollbarRef" class="c-el-scrollbar station-scrollbar" :noresize="false">
+        <el-scrollbar>
           <el-tree ref="treeRef" node-key="treeId" :indent="0" :data="listData" :props="{ ...defaultProps, class: (item) => { return item.isDisabled ? 'disabled-station' : '' } }" default-expand-all @node-click="handleNodeClick" highlight-current :filter-node-method="handleFilterNode">
             <template #default="{ node, data }">
               <div :class="['tree-row']" :style="getNodeStyle(node)">
@@ -26,7 +26,7 @@
         </el-scrollbar>
       </div>
       <div :class="['station-tree-vue',]" v-if="currentTab === 'tree'" ref="lnsRef">
-        <el-scrollbar id="station-scrollbar" ref="stationScrollbarRef" class="c-el-scrollbar station-scrollbar" :noresize="false">
+        <el-scrollbar>
           <el-tree ref="treeRef" node-key="treeId" :indent="0" :data="treeData" :props="{ ...defaultProps, class: (item) => { return item.isDisabled ? 'disabled-station' : '' } }" default-expand-all @node-click="handleNodeClick" highlight-current :filter-node-method="handleFilterNode">
             <template #default="{ node, data }">
               <div :class="['tree-row']" :style="getNodeStyle(node)">
@@ -88,19 +88,9 @@ const { stationStore, settingStore, enumsStore } = useStore()
 // # 1、初始化
 function init() {
   getStation()
-  setResizeObserver()
   setBus()
 }
-// # (1) 设置大小监听
-const lnsRef = ref(null)
-const stationScrollbarRef = ref(null)
-function setResizeObserver() {
-  useResizeObserver(lnsRef, () => {
-    // stationScrollbarRef.value?.update()
-  })
-}
-// ^
-// # (2) 设置广播监听
+// # (1) 设置广播监听
 function setBus() {
   proxy.$bus.on('refreshCurrentStation', (newCurrentStationId) => {
     currentStationId.value = newCurrentStationId

@@ -211,6 +211,18 @@
     }
   }
 }
+// el-scrollbar
+:root {
+  &[theme-style='light'],
+  &[theme-style='dark'] {
+    .el-scrollbar {
+      --el-scrollbar-opacity: 0.5;
+      --el-scrollbar-bg-color: var(--tc);
+      --el-scrollbar-hover-opacity: 1;
+      --el-scrollbar-hover-bg-color: var(--tc);
+    }
+  }
+}
 
 // 二、主题大小
 // el-form

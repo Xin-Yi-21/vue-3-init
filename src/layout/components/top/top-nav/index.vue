@@ -1,6 +1,6 @@
 <template>
   <div class="top-nav-vue top-nav-menu">
-    <el-scrollbar class="c-el-scrollbar" v-wheel-h="{ target: '.el-scrollbar__wrap' }">
+    <el-scrollbar class="c-el-scrollbar" v-wheel="{ target: '.el-scrollbar__wrap' }">
       <!-- :default-active="activeMenu" -->
       <el-menu ref="topMenuRef" :unique-opened="true" :collapse-transition="false" mode="horizontal" :ellipsis="false" menu-trigger="click" class="top-nav-el-menu" :teleported="true" :close-on-click-outside="true">
         <nav-item v-for="(item, index) in topMenu" :key="index" :navInfo="item" :isNest="false" :basePath="''" :isJump="topMenuSetting.isJump" :class="activeTopMenu === item.path ? 'is-top-active' : ''" />

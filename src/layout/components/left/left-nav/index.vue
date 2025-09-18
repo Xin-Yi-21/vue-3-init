@@ -1,5 +1,5 @@
 <template>
-  <div :class="['left-nav-vue', isVerticalCollapse ? 'is-vertical-collapse' : 'is-vertical-expand', isHorizontalCollapse ? 'is-horizontal-collapse' : 'is-horizontal-expand', leftNavSetting.showType === 'all' ? 'style1' : 'style2']" id="left-nav-vue" ref="lnmRef">
+  <div :class="['left-nav-vue', isVerticalCollapse ? 'is-vertical-collapse' : 'is-vertical-expand', isHorizontalCollapse ? 'is-horizontal-collapse' : 'is-horizontal-expand', leftNavSetting.showType === 'all' ? 'style1' : 'style2']" id="left-nav-vue">
 
     <div class="part-header" v-if="leftNavSetting.isCustomHeader">
       <c-icon i="c-operate-back" v-if="currentShow.menuGroup?.meta?.clickIn && !isHorizontalCollapse" :tip="`返回上级菜单：${currentShow.previousMenuGroup?.meta?.fullTitle || currentShow.fullTitle.split(' - ')[0] || ''}`" tipClass="c-tooltip" hoverColor="" showType="el" size="16" cursor="pointer" class="back-icon" @click="handlePreviousMenu"></c-icon>
@@ -17,7 +17,7 @@
     </div>
 
     <el-menu :key="menuKey" mode="vertical" ref="menuRef" :collapse="isHorizontalCollapse" :unique-opened="false" :collapse-transition="false" :default-active="activeMenu" :default-openeds="opendMenu" :class="['left-el-menu',]" @select="handleMenuSelect" @close="handleMenuClose" @open="handleMenuOpen">
-      <el-scrollbar ref="menuScrollbarRef" class="c-el-scrollbar menu-scrollbar">
+      <el-scrollbar ref="menuScrollbarRef">
         <nav-item v-for="(item, index) in currentShow.menu" :key="index" :navInfo="item" :level="1" :currentIn="currentShow.menuGroup?.name" :isCollapse="isHorizontalCollapse" :isNest="true" @refresh="handleNextMenu" @rightClick="handleRightClick" :class="`level-${1}`" />
       </el-scrollbar>
     </el-menu>
@@ -50,16 +50,7 @@ const leftNavSetting = { showType: 'set', isMenuWithParent: false, isCustomHeade
 // # 二、模块功能
 // # 1、初始化
 function init() {
-  setResizeObserver()
   initMenu()
-}
-// # (1) 设置容器大小监听
-const lnmRef = ref(null)
-const menuScrollbarRef = ref(null)
-function setResizeObserver() {
-  useResizeObserver(lnmRef, () => {
-    menuScrollbarRef.value?.update()
-  })
 }
 // ^
 // ^

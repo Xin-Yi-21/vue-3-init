@@ -998,36 +998,3 @@
     }
   }
 }
-// el-scrollbar
-.c-el-scrollbar {
-  width: 100%;
-  height: 100%;
-
-  .el-scrollbar__wrap {
-    // overflow-x: hidden;
-    .el-scrollbar__view {
-      height: 100%;
-    }
-  }
-
-  .el-scrollbar__bar {
-    bottom: 2px;
-    right: 2px;
-
-    &.is-vertical {
-      width: 5px;
-      top: 2px;
-      right: 0;
-    }
-
-    &.is-horizontal {
-      height: 5px;
-      left: 2px;
-    }
-
-    .el-scrollbar__thumb {
-      background-color: var(--tc);
-      opacity: 1;
-    }
-  }
-}

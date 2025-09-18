@@ -1,10 +1,9 @@
 <template>
   <div :class="['c-search', Number(rows) > 1 && !isCollapse ? 'multiple-row' : 'single-row']" :style="`${height ? `--height:${$setCssSize(height)};` : ''} ${rows ? `--rows:${rows};` : 1}`">
     <div class="search-condition">
-      <el-scrollbar ref="menuScrollbarRef" class="c-el-scrollbar">
+      <el-scrollbar v-wheel="{ target: '.el-scrollbar__wrap' }">
         <slot name="searchCondition"></slot>
       </el-scrollbar>
-
     </div>
     <div class="search-operate">
       <c-icon i="c-arrow-down-double" :tip="isCollapse ? '展开' : '收起'" :class="isCollapse ? 'is-collapse' : 'is-expand'" :color="settingStore?.theme?.customCssV?.fcs" :hoverColor="settingStore.themeColor" cursor="pointer" v-if="(rows && rows != 1)" @click="isCollapse = !isCollapse"></c-icon>
@@ -34,12 +33,11 @@ import useStore from '@/store'
 const emit = defineEmits()
 const { settingStore } = useStore()
 // 计算属性
-console.log('settingStore.theme.customCssV.fcs', settingStore.theme.customCssV)
 // ^
 
 // # 二、模块功能
 // # 1、初始化
-const isCollapse = ref(true)
+const isCollapse = ref(false)
 
 function init() {
 
@@ -58,7 +56,6 @@ onMounted(() => {
 .c-search {
   width: calc(100% - 20px);
   display: flex;
-  // justify-content: space-between;
   margin: 10px;
   padding: 0 10px;
   background-color: var(--bg-card);
@@ -66,15 +63,13 @@ onMounted(() => {
   border-radius: 4px 4px 4px 4px;
   overflow: hidden;
 
-
   :deep(.search-condition) {
     height: 100%;
     overflow: hidden;
 
     .el-form {
-      width: 100%;
       height: 100%;
-      display: flex;
+      display: inline-flex;
       padding-top: calc(calc(var(--height)/2) - calc(var(--ch)/2));
       margin-bottom: 0;
       align-content: flex-start;
@@ -172,10 +167,11 @@ onMounted(() => {
     height: calc(((var(--rows) + 1) / 2) * var(--height) + ((var(--rows) - 1) / 2) * var(--ch));
 
     :deep(.search-condition) {
-
       .el-form {
-        flex-wrap: wrap;
-        align-content: flex-start;
+        display: block;
+        // flex-wrap: wrap;
+        // align-content: flex-start;
+        // width: auto;
       }
     }
   }
