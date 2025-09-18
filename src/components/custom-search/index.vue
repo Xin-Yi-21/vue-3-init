@@ -1,10 +1,14 @@
 <template>
-  <div :class="['c-search', Number(rows) > 1 && !isCollapse ? 'multiple-row' : 'single-row']" :style="`${height ? `--height:${$setCssSize(height)};` : ''} ${rows ? `--rows:${rows};` : 1}`">
+  <div :class="['c-search', Number(rows) > 1 && !isCollapse ? 'multiple-row' : 'single-row']" v-has="{ childClass: 'c-row', addClass: 'has-c-row', deep: true }" :style="`${height ? `--height:${$setCssSize(height)};` : ''} ${rows ? `--rows:${rows};` : 1}`">
+
+
     <div class="search-condition">
       <el-scrollbar v-wheel="{ target: '.el-scrollbar__wrap' }">
         <slot name="searchCondition"></slot>
       </el-scrollbar>
     </div>
+
+
     <div class="search-operate">
       <c-icon i="c-arrow-down-double" :tip="isCollapse ? '展开' : '收起'" :class="isCollapse ? 'is-collapse' : 'is-expand'" :color="settingStore?.theme?.customCssV?.fcs" :hoverColor="settingStore.themeColor" cursor="pointer" v-if="(rows && rows != 1)" @click="isCollapse = !isCollapse"></c-icon>
       <template v-if="useDSO">
@@ -37,8 +41,7 @@ const { settingStore } = useStore()
 
 // # 二、模块功能
 // # 1、初始化
-const isCollapse = ref(false)
-
+const isCollapse = ref(true)
 function init() {
 
 }
@@ -74,6 +77,7 @@ onMounted(() => {
       margin-bottom: 0;
       align-content: flex-start;
       gap: 0 20px;
+      margin-right: 10px;
 
       .c-row {
         width: auto;
@@ -122,7 +126,7 @@ onMounted(() => {
     gap: 10px;
     width: 180px;
     height: var(--height);
-    margin-left: 10px;
+
 
     .c-icon {
       margin: 0;
@@ -166,12 +170,19 @@ onMounted(() => {
   &.multiple-row {
     height: calc(((var(--rows) + 1) / 2) * var(--height) + ((var(--rows) - 1) / 2) * var(--ch));
 
+
     :deep(.search-condition) {
       .el-form {
-        display: block;
-        // flex-wrap: wrap;
-        // align-content: flex-start;
-        // width: auto;
+        flex-wrap: wrap;
+        align-content: flex-start;
+      }
+    }
+
+    &.has-c-row {
+      :deep(.search-condition) {
+        .el-form {
+          display: block;
+        }
       }
     }
   }

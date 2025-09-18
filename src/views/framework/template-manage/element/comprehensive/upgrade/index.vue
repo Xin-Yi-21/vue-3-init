@@ -17,7 +17,7 @@
       </template>
     </c-card-header>
 
-    <c-search :rows="3">
+    <c-search :rows="2">
       <template #searchCondition>
         <el-form :model="form" ref="formRef">
           <div class="c-row">
