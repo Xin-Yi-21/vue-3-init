@@ -122,6 +122,7 @@ setConfig().then(async (cEnv) => {
     const cSelection = (await import('@/components/custom-selection')).default
     const cSelectionTree = (await import('@/components/custom-selection-tree')).default
     const cAudit = (await import('@/components/custom-audit')).default
+    const cSearch = (await import('@/components/custom-search')).default
     app.component('cTooltip', cTooltip)
     app.component('cPagination', cPagination)
     app.component('cButton', cButton)
@@ -145,6 +146,7 @@ setConfig().then(async (cEnv) => {
     app.component('cSelection', cSelection)
     app.component('cSelectionTree', cSelectionTree)
     app.component('cAudit', cAudit)
+    app.component('cSearch', cSearch)
 
     app.mount('#app')
   } catch (error) {

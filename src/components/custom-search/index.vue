@@ -1,0 +1,190 @@
+<template>
+  <div :class="['c-search', Number(rows) > 1 && !isCollapse ? 'multiple-row' : 'single-row']" :style="`${height ? `--height:${$setCssSize(height)};` : ''} ${rows ? `--rows:${rows};` : 1}`">
+    <div class="search-condition">
+      <slot name="searchCondition"></slot>
+    </div>
+    <div class="search-operate">
+      <c-icon i="c-arrow-down-double" :tip="isCollapse ? '展开' : '收起'" :class="isCollapse ? 'is-collapse' : 'is-expand'" :color="settingStore.themeColor" cursor="pointer" v-if="(rows && rows != 1)" @click="isCollapse = !isCollapse"></c-icon>
+      <template v-if="useDSO">
+        <c-button type="primary" class="query-button" i="c-operate-search" @click="emit('search')">查询</c-button>
+        <c-button type="info" class="refresh-button" i="c-operate-refresh" @click="emit('refresh')"></c-button>
+      </template>
+      <slot name="searchOperate"></slot>
+    </div>
+    <div class="extend-operate">
+      <slot name="extendOperate"></slot>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// # 一、综合
+// props
+const props = defineProps({
+  height: { type: [Number, String], default: '60px' },
+  rows: { type: [Number, String], default: 2 },              // 行数。单行展示内容超出横向滚动。多行展示内容超出竖向滚动。
+  useDSO: { type: [Boolean], default: true },                // 使用默认查询操作
+})
+// pinia
+import useStore from '@/store'
+// 声明
+const emit = defineEmits()
+const { settingStore } = useStore()
+// 计算属性
+// ^
+
+// # 二、模块功能
+// # 1、初始化
+const isCollapse = ref(true)
+
+function init() {
+
+}
+// ^
+// ^
+
+// # 三、机制
+onMounted(() => {
+  init()
+})
+// ^
+</script>
+
+<style lang="scss" scoped>
+.c-search {
+  width: calc(100% - 20px);
+  display: flex;
+  margin: 10px;
+  padding: 0 10px;
+  background-color: var(--bg-card);
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 4px 4px 4px 4px;
+  overflow: hidden;
+
+
+  :deep(.search-condition) {
+    height: 100%;
+
+    .c-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .el-form {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+
+      .el-form-item {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        margin: 0 0 0 0;
+
+        .el-form-item__label {
+          flex-shrink: 0;
+          padding-right: 10px;
+        }
+
+        .el-form-item__content {
+          flex-grow: 1;
+          min-width: 80px;
+          flex-shrink: 0;
+
+          .el-input {
+            width: 100%;
+          }
+
+          .el-select {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  :deep(.search-operate) {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    width: 200px;
+    height: 60px;
+    flex: 1;
+    flex-shrink: 0;
+    gap: 10px;
+
+    .c-icon {
+      margin: 0;
+
+      .svg-icon {
+        transition: transform 0.5s ease;
+      }
+
+      &.is-expand {
+        .svg-icon {
+          transform: rotate(-180deg);
+        }
+      }
+    }
+
+    .c-button {
+      margin: 0;
+    }
+  }
+
+  :deep(.extend-operate) {
+    margin-left: 100px;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    flex: 1;
+    flex-shrink: 0;
+  }
+
+  &.single-row {
+    height: var(--height);
+
+    :deep(.search-condition) {
+      overflow-x: auto;
+
+      .el-form {
+        flex-wrap: nowrap;
+        gap: 20px;
+      }
+
+      .c-row {
+        flex-wrap: nowrap;
+        gap: 20px;
+      }
+    }
+  }
+
+  &.multiple-row {
+    height: calc(((var(--rows) + 1) / 2) * var(--height) + ((var(--rows) - 1) / 2) * var(--ch));
+
+    :deep(.search-condition) {
+
+      .el-form {
+        flex-wrap: wrap;
+        // overflow-y: auto;
+      }
+
+      .c-row {
+        gap: 20px;
+
+        &:nth-child(1) {
+          height: var(--height);
+        }
+
+        &:nth-child(n+2) {
+          margin-bottom: calc(calc(var(--height)/2) - calc(var(--ch)/2));
+        }
+      }
+    }
+  }
+
+}
+</style>
