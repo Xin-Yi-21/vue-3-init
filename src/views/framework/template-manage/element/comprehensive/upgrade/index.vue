@@ -38,6 +38,9 @@
             <el-form-item label="结束时间">
               <el-date-picker v-model="form.endTime" type="datetime" placeholder="请选择结束时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :style="`width:${$setCssSize(200)};`" :disabled-date="pickerOptions.end" :clearable="false"></el-date-picker>
             </el-form-item>
+            <el-form-item label="结束时间">
+              <el-date-picker v-model="form.endTime" type="datetime" placeholder="请选择结束时间" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" :style="`width:${$setCssSize(200)};`" :disabled-date="pickerOptions.end" :clearable="false"></el-date-picker>
+            </el-form-item>
           </div>
           <div class="c-row">
             <el-form-item label="人物B1" prop="name">
@@ -85,10 +88,11 @@
       <el-table :data="table.data" border class="c-table" id="c-table" stripe @selection-change="handleChangeSelected" row-key="id">
         <el-table-column type="selection" align="center" width="60" reserve-selection />
         <el-table-column label="序号" prop="index" align="center" width="60" />
+        <el-table-column label="序号" prop="index" align="center" :width="`${$px(60, 'rem', false)}`" />
         <el-table-column label="人物" prop="" align="center">
           <template #default="scope"> {{ scope.row.personName }} </template>
         </el-table-column>
-        <el-table-column label="性别" prop="" align="center" width="60">
+        <el-table-column label="性别" prop="" align="center" width="60rem">
           <template #default="scope"> {{ scope.row.genderName }} </template>
         </el-table-column>
         <el-table-column label="年龄" prop="" align="center" width="60">

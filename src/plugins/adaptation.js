@@ -1,4 +1,4 @@
-import { onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { debounce } from 'lodash'
 
 let designWidth = 1920
@@ -29,6 +29,52 @@ export function $pvw(px) {
 export function $pvh(px) {
   return (px / designHeight * 100) + 'vw'
 }
+
+// 转像素
+export function $px(value, from = 'rem', withUnit = true) {
+  function calculatePx(value, from, withUnit) {
+    if (value === null || value === undefined || value === '') return withUnit ? '0px' : 0
+    const num = parseFloat(value)
+    if (isNaN(num)) return withUnit ? '0px' : 0
+
+    const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize)
+    const width = document.body.clientWidth
+    const height = document.body.clientHeight
+    const rootValue = 1
+
+    let px
+    switch (from) {
+      case 'rem':
+        px = num * rootFontSize * rootValue
+        break
+      case 'vw':
+        px = (num / 100) * width
+        break
+      case 'vh':
+        px = (num / 100) * height
+        break
+      case 'px':
+      default:
+        px = num
+        break
+    }
+
+    return withUnit ? `${px}px` : px
+  }
+
+  const px = ref(calculatePx(value, from, withUnit))
+
+  const update = debounce(() => {
+    px.value = calculatePx(value, from, withUnit)
+  }, 100)
+
+  onMounted(() => window.addEventListener('resize', update))
+  onBeforeUnmount(() => window.removeEventListener('resize', update))
+
+  return px
+}
+
+
 // 综合
 export function $setCssSize(value, to = 'rem') {
   if (typeof value === 'string' && /(px|rem|vw|vh)$/i.test(value)) { return value }
@@ -46,3 +92,5 @@ export function $setCssSize(value, to = 'rem') {
       return num + 'px'
   }
 }
+
+
